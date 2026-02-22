@@ -70,7 +70,7 @@
             ]))
             : null;
         $quickCategories = collect($navCategories ?? [])->take(4);
-        $readyPanelTitle = setting('copy.landing.ready_panel_title', 'Ready To Rent');
+        $readyPanelTitle = setting('copy.landing.ready_panel_title', 'Siap Disewa');
         $readyPanelSubtitle = setting('copy.landing.ready_panel_subtitle', 'Item live dari inventory yang tersedia hari ini.');
         $flowKicker = setting('copy.landing.flow_kicker', 'Alur Rental');
         $flowTitle = setting('copy.landing.flow_title', 'Biar proses sewa tidak ribet');
@@ -79,13 +79,13 @@
         $quickCategoryTitle = setting('copy.landing.quick_category_title', 'Akses langsung ke kebutuhan produksi');
         $quickCategoryEmpty = setting('copy.landing.quick_category_empty', 'Belum ada kategori tersedia.');
         $step1Title = setting('copy.landing.step_1_title', 'Pilih Alat');
-        $step1Desc = setting('copy.landing.step_1_desc', 'Filter berdasarkan kategori, status ready, dan budget harian.');
+        $step1Desc = setting('copy.landing.step_1_desc', 'Filter berdasarkan kategori, status siap, dan budget harian.');
         $step2Title = setting('copy.landing.step_2_title', 'Isi Profil');
-        $step2Desc = setting('copy.landing.step_2_desc', 'Data identitas dan kontak disimpan agar checkout berikutnya lebih cepat.');
+        $step2Desc = setting('copy.landing.step_2_desc', 'Data identitas dan kontak disimpan agar transaksi berikutnya lebih cepat.');
         $step3Title = setting('copy.landing.step_3_title', 'Bayar via Midtrans');
         $step3Desc = setting('copy.landing.step_3_desc', 'Pilih metode pembayaran favorit tanpa pindah halaman berulang.');
         $step4Title = setting('copy.landing.step_4_title', 'Generate Resi');
-        $step4Desc = setting('copy.landing.step_4_desc', 'Setelah lunas, resi bisa dibuka dan dicetak langsung dari detail order.');
+        $step4Desc = setting('copy.landing.step_4_desc', 'Setelah lunas, resi bisa dibuka dan dicetak langsung dari detail pesanan.');
     @endphp
 
     <section class="bg-slate-50">
@@ -107,7 +107,7 @@
 
                     <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
                         <div class="flex items-center justify-between gap-2">
-                            <h2 class="text-sm font-semibold text-slate-900">Overview Alat Disewa</h2>
+                            <h2 class="text-sm font-semibold text-slate-900">Ringkasan Alat Disewa</h2>
                             <span class="text-xs font-semibold text-slate-500">Live</span>
                         </div>
                         <div class="mt-3 space-y-2.5">
@@ -160,7 +160,7 @@
                                 <div class="swiper-wrapper">
                                     @forelse ($productsReady as $product)
                                         @php
-                                            $name = data_get($product, 'name', 'Equipment');
+                                            $name = data_get($product, 'name', 'Alat');
                                             $slug = data_get($product, 'slug') ?? \Illuminate\Support\Str::slug($name);
                                             $imagePath = data_get($product, 'image_path') ?? data_get($product, 'image');
                                             $image = $imagePath
@@ -280,7 +280,7 @@
                                 <p class="mt-3 rounded-xl border border-rose-200 bg-white px-3 py-2 text-xs text-rose-700">{{ $damageAlertOrder->additional_fee_note }}</p>
                             @endif
 
-                            <p class="mt-3 text-sm text-slate-600">Pembayaran dilakukan melalui Midtrans pada detail order.</p>
+                            <p class="mt-3 text-sm text-slate-600">Pembayaran dilakukan melalui Midtrans pada detail pesanan.</p>
 
                             <div class="mt-5 grid gap-2 sm:grid-cols-2">
                                 <button
@@ -352,7 +352,7 @@
 
                     <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
                         <div class="mb-3 flex items-center justify-between gap-2">
-                            <h3 class="text-sm font-semibold text-slate-900">Order Lainnya</h3>
+                            <h3 class="text-sm font-semibold text-slate-900">Pesanan Lainnya</h3>
                             <a href="{{ route('booking.history') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-700">Semua</a>
                         </div>
                         <div class="space-y-2">
@@ -382,7 +382,7 @@
                                 </a>
                             @empty
                                 <div class="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-4 text-center text-xs text-slate-500">
-                                    Belum ada order lain.
+                                    Belum ada pesanan lain.
                                 </div>
                             @endforelse
                         </div>

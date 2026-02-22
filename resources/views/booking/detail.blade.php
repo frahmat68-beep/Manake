@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Detail Booking | Manake Rental</title>
+    <title>Detail Pemesanan | Manake Rental</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,7 +21,7 @@
         </a>
 
         <a href="{{ route('overview') }}" class="text-sm text-slate-600 hover:underline">
-            ← Kembali ke Overview
+            ← Kembali ke Riwayat
         </a>
     </div>
 </div>
@@ -47,14 +47,14 @@
                 <div class="mt-4 space-y-1 text-sm">
                     <p><b>Durasi:</b> 3 Hari</p>
                     <p><b>Tanggal:</b> 12 Feb – 15 Feb</p>
-                    <p><b>Kode Booking:</b> MNK-240212</p>
+                    <p><b>Kode Pesanan:</b> MNK-240212</p>
                 </div>
             </div>
         </div>
 
         <!-- STATUS TIMELINE -->
         <div class="bg-white rounded-2xl shadow p-6">
-            <h3 class="font-semibold mb-4">Status Booking</h3>
+            <h3 class="font-semibold mb-4">Status Pemesanan</h3>
 
             <div class="space-y-6">
 
@@ -62,7 +62,7 @@
                 <div class="flex gap-4">
                     <div class="h-4 w-4 rounded-full bg-green-600 mt-1"></div>
                     <div>
-                        <p class="font-medium">Booking Dibuat</p>
+                        <p class="font-medium">Pesanan Dibuat</p>
                         <p class="text-sm text-slate-500">
                             12 Feb 2024, 10:21
                         </p>

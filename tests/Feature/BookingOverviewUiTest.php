@@ -58,7 +58,7 @@ class BookingOverviewUiTest extends TestCase
 
         $response->assertOk();
         $response->assertDontSee('Lihat semua');
-        $response->assertSee('Detail & Reschedule', false);
+        $response->assertSee('Detail & Ubah Jadwal', false);
         $response->assertDontSee('>Riwayat</a>', false);
         $response->assertSee('Invoice');
     }

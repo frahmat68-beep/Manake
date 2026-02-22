@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Update Password') }}
+            Ubah Kata Sandi
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
+            Gunakan kata sandi yang panjang dan unik agar akun tetap aman.
         </p>
     </header>
 
@@ -14,7 +14,7 @@
         @method('put')
 
         <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
+            <x-input-label for="update_password_current_password" value="Kata Sandi Saat Ini" />
             <x-password-input
                 id="update_password_current_password"
                 name="current_password"
@@ -27,7 +27,7 @@
         </div>
 
         <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
+            <x-input-label for="update_password_password" value="Kata Sandi Baru" />
             <x-password-input
                 id="update_password_password"
                 name="password"
@@ -40,7 +40,7 @@
         </div>
 
         <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="update_password_password_confirmation" value="Konfirmasi Kata Sandi" />
             <x-password-input
                 id="update_password_password_confirmation"
                 name="password_confirmation"
@@ -53,7 +53,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <x-primary-button>Simpan</x-primary-button>
 
             @if (session('status') === 'password-updated')
                 <p
@@ -62,7 +62,7 @@
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
                     class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                >Tersimpan.</p>
             @endif
         </div>
     </form>

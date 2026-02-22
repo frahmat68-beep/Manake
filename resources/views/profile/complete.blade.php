@@ -14,8 +14,8 @@
             <div class="flex flex-wrap items-start justify-between gap-4">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-widest text-blue-600">Lengkapi Profil</p>
-                    <h1 class="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl">Data Profil Checkout</h1>
-                    <p class="mt-2 text-sm text-slate-600">Lengkapi data profil, verifikasi email, dan verifikasi nomor telepon sebelum checkout.</p>
+                    <h1 class="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl">Data Profil Penyewaan</h1>
+                    <p class="mt-2 text-sm text-slate-600">Lengkapi data profil, verifikasi email, dan verifikasi nomor telepon sebelum pembayaran.</p>
                 </div>
                 @if ($isCompleted)
                     <span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
@@ -62,7 +62,7 @@
                         <div class="flex flex-wrap items-center justify-between gap-3">
                             <div>
                                 <h2 class="text-lg font-semibold text-slate-900">Ringkasan Profil</h2>
-                                <p class="text-xs text-slate-500">Data yang dipakai saat checkout.</p>
+                                <p class="text-xs text-slate-500">Data yang dipakai saat pembayaran.</p>
                             </div>
                             <a href="{{ route('profile.complete', ['edit' => 1]) }}" class="inline-flex items-center rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:text-blue-600">
                                 Ubah Profil
@@ -129,7 +129,7 @@
                         </div>
 
                         <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                            <h3 class="text-sm font-semibold text-slate-900">Langkah Aktivasi Checkout</h3>
+                            <h3 class="text-sm font-semibold text-slate-900">Langkah Aktivasi Pembayaran</h3>
                             <ol class="mt-3 list-decimal space-y-2 pl-5 text-xs text-slate-600">
                                 <li>Email harus terverifikasi.</li>
                                 <li>Nomor telepon harus terverifikasi OTP.</li>
@@ -227,7 +227,7 @@
                         </article>
 
                         <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                            <h2 class="text-sm font-semibold text-slate-900">Emergency Contact</h2>
+                            <h2 class="text-sm font-semibold text-slate-900">Kontak Darurat</h2>
                             <div class="mt-4 grid grid-cols-1 gap-5 md:grid-cols-3">
                                 <div>
                                     <label class="text-xs font-semibold text-slate-500">Nama</label>
@@ -259,15 +259,15 @@
 
                     <aside class="space-y-4">
                         <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                            <h3 class="text-sm font-semibold text-slate-900">Syarat Checkout</h3>
+                            <h3 class="text-sm font-semibold text-slate-900">Syarat Pembayaran</h3>
                             <ul class="mt-3 list-disc space-y-2 pl-5 text-xs text-slate-600">
                                 <li>Profil lengkap dan valid.</li>
-                                <li>Email sudah verified.</li>
-                                <li>Nomor telepon sudah verified OTP.</li>
+                                <li>Email sudah terverifikasi.</li>
+                                <li>Nomor telepon sudah terverifikasi OTP.</li>
                             </ul>
                         </div>
                         <div class="rounded-2xl border border-blue-100 bg-blue-50 p-5 text-xs text-blue-700 shadow-sm">
-                            Setelah simpan profil, kamu akan diarahkan ke verifikasi nomor telepon bila belum verified.
+                            Setelah simpan profil, kamu akan diarahkan ke verifikasi nomor telepon bila belum terverifikasi.
                         </div>
                     </aside>
                 </form>

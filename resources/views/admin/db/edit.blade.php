@@ -1,6 +1,6 @@
 @extends('layouts.admin', ['activePage' => 'db'])
 
-@section('title', 'Edit Record')
+@section('title', 'Ubah Data')
 @section('page_title', 'Data Database')
 
 @section('content')

@@ -193,7 +193,7 @@
                                     {{ strtoupper(substr(auth()->user()->display_name ?? auth()->user()->name ?? 'U', 0, 1)) }}
                                 </span>
                                 <span class="hidden text-sm font-semibold text-slate-700 sm:inline">
-                                    {{ auth()->user()->display_name ?? auth()->user()->name ?? 'User' }}
+                                    {{ auth()->user()->display_name ?? auth()->user()->name ?? 'Pengguna' }}
                                 </span>
                             </div>
                         </div>

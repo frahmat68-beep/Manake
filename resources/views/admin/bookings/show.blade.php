@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin – Detail Booking</title>
+    <title>Admin – Detail Pemesanan</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-100 p-10">
 
 <div class="max-w-3xl mx-auto bg-white rounded-xl shadow p-8">
 
-    <h1 class="text-2xl font-semibold mb-6">Detail Booking #1</h1>
+    <h1 class="text-2xl font-semibold mb-6">Detail Pemesanan #1</h1>
 
     <div class="grid grid-cols-2 gap-4 text-sm">
-        <p><b>Nama User:</b> Kiki</p>
+        <p><b>Nama Pengguna:</b> Kiki</p>
         <p><b>Email:</b> kiki@email.com</p>
 
         <p><b>Alat:</b> Sony A7 III</p>
@@ -23,7 +23,7 @@
         <p><b>Status:</b>
             <span class="ml-2 px-3 py-1 rounded-full text-xs
                          bg-yellow-100 text-yellow-700">
-                Pending
+                Menunggu
             </span>
         </p>
     </div>

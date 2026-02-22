@@ -187,7 +187,7 @@ class HomeHeroCarouselTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Overview Alat Disewa');
+        $response->assertSee('Ringkasan Alat Disewa');
         $response->assertSee('HT Wlan UHF');
         $response->assertSee('x3');
         $response->assertSee('Tanggal sewa:');
@@ -198,7 +198,7 @@ class HomeHeroCarouselTest extends TestCase
         $response = $this->actingAs(User::factory()->create())->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Overview Alat Disewa');
+        $response->assertSee('Ringkasan Alat Disewa');
         $response->assertDontSee('Pending Bayar');
         $response->assertDontSee('Siap Diambil');
         $response->assertDontSee('Sedang Disewa');

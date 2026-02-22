@@ -1,17 +1,17 @@
 @extends('layouts.admin', ['activePage' => 'equipments'])
 
-@section('title', 'Edit Alat')
-@section('page_title', 'Edit Alat')
+@section('title', 'Ubah Alat')
+@section('page_title', 'Ubah Alat')
 
 @section('content')
     <div class="max-w-4xl mx-auto space-y-6">
         <section class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h2 class="text-lg font-semibold text-blue-700">Edit Alat</h2>
+                    <h2 class="text-lg font-semibold text-blue-700">Ubah Alat</h2>
                     <p class="text-xs text-slate-500">Perbarui detail, slug, dan status alat.</p>
                 </div>
-                <a href="{{ route('admin.equipments.index') }}" class="text-sm text-slate-600 hover:text-blue-600">← Kembali ke List</a>
+                <a href="{{ route('admin.equipments.index') }}" class="text-sm text-slate-600 hover:text-blue-600">← Kembali ke Daftar</a>
             </div>
 
             <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -167,9 +167,9 @@
                             required
                             class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                         >
-                            <option value="ready" {{ old('status', $equipment->status) === 'ready' ? 'selected' : '' }}>Ready</option>
-                            <option value="unavailable" {{ old('status', $equipment->status) === 'unavailable' ? 'selected' : '' }}>Unavailable</option>
-                            <option value="maintenance" {{ old('status', $equipment->status) === 'maintenance' ? 'selected' : '' }}>Maintenance</option>
+                            <option value="ready" {{ old('status', $equipment->status) === 'ready' ? 'selected' : '' }}>Siap</option>
+                            <option value="unavailable" {{ old('status', $equipment->status) === 'unavailable' ? 'selected' : '' }}>Tidak Tersedia</option>
+                            <option value="maintenance" {{ old('status', $equipment->status) === 'maintenance' ? 'selected' : '' }}>Perawatan</option>
                         </select>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                                 $imageUrl = $imagePath ? (str_starts_with($imagePath, 'http') ? $imagePath : asset('storage/' . $imagePath)) : null;
                             @endphp
                             @if ($imageUrl)
-                                <img src="{{ $imageUrl }}" alt="Current image" class="mt-3 h-24 w-24 rounded-xl object-contain border border-slate-200 bg-white p-1">
+                                <img src="{{ $imageUrl }}" alt="Foto saat ini" class="mt-3 h-24 w-24 rounded-xl object-contain border border-slate-200 bg-white p-1">
                             @endif
                         </div>
                         <label class="cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600 hover:border-blue-200 hover:text-blue-600 transition">
@@ -205,7 +205,7 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <p class="text-xs text-slate-500">Perubahan akan tersimpan dan kembali ke list.</p>
+                    <p class="text-xs text-slate-500">Perubahan akan tersimpan dan kembali ke daftar.</p>
                     <div class="flex gap-2">
                         <a href="{{ route('admin.equipments.index') }}" class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:border-blue-200 hover:text-blue-600 transition">Batal</a>
                         <button type="submit" class="rounded-xl bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition">Simpan Perubahan</button>

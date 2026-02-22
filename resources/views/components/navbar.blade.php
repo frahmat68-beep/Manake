@@ -11,10 +11,10 @@
             <!-- MENU -->
             <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
                 <a href="/equipments" class="hover:text-blue-600 transition">
-                    Catalog
+                    Katalog
                 </a>
                 <a href="/overview" class="hover:text-blue-600 transition">
-                    Overview
+                    Riwayat
                 </a>
             </div>
         </div>

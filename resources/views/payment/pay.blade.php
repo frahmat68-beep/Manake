@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Payment</title>
+    <title>Pembayaran</title>
     @php
         $snapSrc = config('services.midtrans.is_production')
             ? 'https://app.midtrans.com/snap/snap.js'
@@ -11,11 +11,11 @@
 </head>
 <body>
 
-<h2>Payment</h2>
-<p>Booking Ref: {{ $booking->reference }}</p>
+<h2>Pembayaran</h2>
+<p>Referensi Pesanan: {{ $booking->reference }}</p>
 <p>Total: Rp {{ number_format($amount) }}</p>
 
-<button id="pay-button">Pay Now</button>
+<button id="pay-button">Bayar Sekarang</button>
 
 <script>
 document.getElementById('pay-button').onclick = function () {

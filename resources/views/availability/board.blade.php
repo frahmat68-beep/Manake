@@ -25,7 +25,7 @@
     $availabilityMonthlyTitle = setting('copy.availability.monthly_title', 'Jadwal Aktif Bulan Ini');
     $availabilitySearchPlaceholder = setting('copy.availability.search_placeholder', 'Cari nama alat...');
     $availabilityShowButton = setting('copy.availability.show_button', 'Tampilkan');
-    $availabilityResetButton = setting('copy.availability.reset_button', 'Reset Pencarian');
+    $availabilityResetButton = setting('copy.availability.reset_button', 'Atur Ulang Pencarian');
     $availabilityDragHint = setting('copy.availability.drag_hint', 'Tap tanggal untuk detail, drag untuk cek sewa rentang hari.');
     $availabilityMetricTotal = setting('copy.availability.metric_total', 'Total Alat');
     $availabilityMetricBusy = setting('copy.availability.metric_busy', 'Sedang Disewa');
@@ -39,7 +39,7 @@
     $availabilityModalEmpty = setting('copy.availability.modal_empty', 'Tidak ada pesanan aktif pada tanggal ini.');
     $availabilityRangeKicker = setting('copy.availability.range_kicker', 'Cek Rentang Sewa');
     $availabilityRangeTitle = setting('copy.availability.range_title', 'Mau sewa di tanggal ini?');
-    $availabilityRangeFilterLabel = setting('copy.availability.range_filter_label', 'Filter Kategori Alat');
+    $availabilityRangeFilterLabel = setting('copy.availability.range_filter_label', 'Pilih Kategori Alat');
     $availabilityRangeAllCategories = setting('copy.availability.range_all_categories', 'Semua kategori');
     $availabilityRangeAvailableLabel = setting('copy.availability.range_available_label', 'Alat Tersedia');
     $availabilityRangeContinue = setting('copy.availability.range_continue', 'Lanjut ke Keranjang');
@@ -66,7 +66,7 @@
 
             return [
                 'id' => (int) data_get($row, 'id', 0),
-                'name' => (string) data_get($row, 'name', 'Equipment'),
+                'name' => (string) data_get($row, 'name', 'Alat'),
                 'slug' => (string) data_get($row, 'slug', ''),
                 'category' => (string) data_get($row, 'category', 'Lainnya'),
                 'category_id' => (int) data_get($row, 'category_id', 0),

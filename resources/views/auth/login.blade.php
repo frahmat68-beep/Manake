@@ -52,7 +52,7 @@
                     </div>
 
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">Password</label>
+                        <label class="text-xs font-semibold text-slate-500">Kata Sandi</label>
                         <x-password-input
                             id="login-password"
                             name="password"
@@ -86,12 +86,12 @@
                         Masuk untuk melanjutkan transaksi rental profesional.
                     </h1>
                     <p class="mt-3 text-sm text-blue-100 leading-relaxed">
-                        Login hanya diperlukan saat Anda ingin menambahkan item ke cart atau checkout. Jelajahi katalog bebas tanpa login.
+                        Login hanya diperlukan saat Anda ingin menambahkan item ke keranjang atau checkout. Jelajahi katalog bebas tanpa login.
                     </p>
                     <div class="mt-6 space-y-3 text-sm">
                         <div class="flex items-start gap-3">
                             <span class="mt-1 h-2 w-2 rounded-full bg-white"></span>
-                            <p>Track status booking dan histori pembayaran.</p>
+                            <p>Pantau status pesanan dan histori pembayaran.</p>
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="mt-1 h-2 w-2 rounded-full bg-white"></span>
@@ -99,11 +99,11 @@
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="mt-1 h-2 w-2 rounded-full bg-white"></span>
-                            <p>Checkout cepat dengan data profil tersimpan.</p>
+                            <p>Pembayaran cepat dengan data profil tersimpan.</p>
                         </div>
                     </div>
                     <a href="/" class="mt-6 inline-flex items-center justify-center rounded-xl border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition">
-                        Kembali ke Landing Page
+                        Kembali ke Beranda
                     </a>
                 </div>
             </div>

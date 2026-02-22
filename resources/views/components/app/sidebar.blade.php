@@ -2,7 +2,7 @@
     'logoUrl' => null,
     'brandName' => 'Manake',
     'categories' => collect(),
-    'displayName' => 'User',
+    'displayName' => 'Pengguna',
     'userInitial' => 'U',
     'isAuthenticated' => false,
 ])

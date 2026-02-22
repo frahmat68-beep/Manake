@@ -194,7 +194,7 @@
                                         {{ strtoupper(substr(auth()->user()->display_name ?? auth()->user()->name ?? 'U', 0, 1)) }}
                                     </span>
                                     <span class="hidden text-sm font-semibold text-slate-700 sm:inline">
-                                        {{ auth()->user()->display_name ?? auth()->user()->name ?? 'User' }}
+                                        {{ auth()->user()->display_name ?? auth()->user()->name ?? 'Pengguna' }}
                                     </span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="hidden sm:block h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z" clip-rule="evenodd" />

@@ -1,7 +1,7 @@
 @extends('layouts.admin', ['activePage' => 'orders'])
 
-@section('title', 'Admin Orders')
-@section('page_title', 'Orders')
+@section('title', 'Daftar Pesanan')
+@section('page_title', 'Daftar Pesanan')
 
 @section('content')
     <div class="mx-auto max-w-7xl space-y-6">
@@ -14,8 +14,8 @@
         <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <h2 class="text-lg font-semibold text-blue-700">Daftar Order</h2>
-                    <p class="text-xs text-slate-500">Monitoring transaksi, pembayaran, dan status pesanan.</p>
+                    <h2 class="text-lg font-semibold text-blue-700">Daftar Pesanan</h2>
+                    <p class="text-xs text-slate-500">Pantau transaksi, pembayaran, dan status pesanan.</p>
                 </div>
             </div>
 
@@ -24,16 +24,16 @@
                     type="text"
                     name="q"
                     value="{{ $search ?? '' }}"
-                    placeholder="Cari order / email user..."
+                    placeholder="Cari pesanan / email pengguna..."
                     class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                 >
                 <select name="status" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
-                    <option value="">Semua Status Bayar</option>
-                    <option value="pending" {{ ($status ?? '') === 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="paid" {{ ($status ?? '') === 'paid' ? 'selected' : '' }}>Paid</option>
-                    <option value="failed" {{ ($status ?? '') === 'failed' ? 'selected' : '' }}>Failed</option>
+                    <option value="">Semua Status Pembayaran</option>
+                    <option value="pending" {{ ($status ?? '') === 'pending' ? 'selected' : '' }}>Menunggu</option>
+                    <option value="paid" {{ ($status ?? '') === 'paid' ? 'selected' : '' }}>Lunas</option>
+                    <option value="failed" {{ ($status ?? '') === 'failed' ? 'selected' : '' }}>Gagal</option>
                 </select>
-                <button class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Filter</button>
+                <button class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Terapkan</button>
             </form>
         </section>
 
@@ -42,8 +42,8 @@
                 <table class="min-w-[860px] w-full text-sm">
                     <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                         <tr>
-                            <th class="px-5 py-3">Order</th>
-                            <th class="px-5 py-3">User</th>
+                            <th class="px-5 py-3">Pesanan</th>
+                            <th class="px-5 py-3">Pengguna</th>
                             <th class="px-5 py-3">Total</th>
                             <th class="px-5 py-3">Status Bayar</th>
                             <th class="px-5 py-3">Status Pesanan</th>
@@ -58,6 +58,11 @@
                                     'failed' => 'status-chip-danger',
                                     default => 'status-chip-warning',
                                 };
+                                $paymentStatusLabel = match($order->status_pembayaran) {
+                                    'paid' => 'LUNAS',
+                                    'failed' => 'GAGAL',
+                                    default => 'MENUNGGU',
+                                };
                                 $orderStatusLabel = match($order->status_pesanan) {
                                     'menunggu_pembayaran' => 'Menunggu Bayar',
                                     'diproses' => 'Diproses',
@@ -67,7 +72,7 @@
                                     'barang_rusak' => 'Barang Rusak',
                                     'selesai' => 'Selesai',
                                     'dibatalkan' => 'Dibatalkan',
-                                    'refund' => 'Refund',
+                                    'refund' => 'Pengembalian Dana',
                                     default => strtoupper((string) ($order->status_pesanan ?? '-')),
                                 };
                             @endphp
@@ -83,7 +88,7 @@
                                 <td class="px-5 py-4 font-semibold text-slate-800">Rp {{ number_format((int) ($order->grand_total ?? $order->total_amount), 0, ',', '.') }}</td>
                                 <td class="px-5 py-4">
                                     <span class="status-chip {{ $paymentBadge }}">
-                                        {{ strtoupper($order->status_pembayaran ?? 'pending') }}
+                                        {{ $paymentStatusLabel }}
                                     </span>
                                 </td>
                                 <td class="px-5 py-4 text-slate-600">{{ $orderStatusLabel }}</td>
@@ -95,7 +100,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-5 py-10 text-center text-sm text-slate-500">Belum ada order.</td>
+                                <td colspan="6" class="px-5 py-10 text-center text-sm text-slate-500">Belum ada pesanan.</td>
                             </tr>
                         @endforelse
                     </tbody>

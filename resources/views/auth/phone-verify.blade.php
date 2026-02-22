@@ -6,10 +6,10 @@
     <section class="bg-slate-50">
         <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
-                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">Verifikasi Phone</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">Verifikasi Telepon</p>
                 <h1 class="mt-2 text-2xl font-semibold text-slate-900">Verifikasi Nomor Telepon</h1>
                 <p class="mt-2 text-sm text-slate-600">
-                    Checkout hanya bisa diproses setelah nomor telepon terverifikasi. OTP dikirim via driver log (development mode).
+                    Pembayaran hanya bisa diproses setelah nomor telepon terverifikasi. OTP dikirim via driver log (mode pengembangan).
                 </p>
 
                 @if (session('status'))
@@ -27,7 +27,7 @@
                 <div class="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
                     <form method="POST" action="{{ route('phone.otp.request') }}" class="space-y-3 rounded-xl border border-slate-200 p-4">
                         @csrf
-                        <h2 class="text-sm font-semibold text-slate-900">1) Request OTP</h2>
+                        <h2 class="text-sm font-semibold text-slate-900">1) Minta OTP</h2>
                         <label class="block text-xs font-semibold text-slate-500">Nomor Telepon</label>
                         <input
                             type="text"
@@ -79,7 +79,7 @@
                         Kembali ke Profil
                     </a>
                     <a href="{{ route('checkout') }}" class="inline-flex items-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
-                        Coba Lanjut Checkout
+                        Coba Lanjut Pembayaran
                     </a>
                 </div>
             </div>

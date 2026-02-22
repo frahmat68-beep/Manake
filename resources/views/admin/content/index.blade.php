@@ -104,7 +104,7 @@
             @endforeach
 
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <p class="text-xs text-slate-500">Untuk edit teks user website, pakai menu baru: <strong>Teks Website</strong>.</p>
+                <p class="text-xs text-slate-500">Untuk mengedit teks situs pengguna, gunakan menu baru: <strong>Teks Website</strong>.</p>
                 <button type="submit" class="btn-primary inline-flex items-center justify-center rounded-xl px-6 py-2.5 text-sm font-semibold transition">
                     Simpan Konten
                 </button>

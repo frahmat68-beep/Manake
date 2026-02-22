@@ -8,7 +8,7 @@
     $canViewInvoice = static fn ($order) => ($order->status_pembayaran ?? 'pending') === 'paid' && ! $order->hasOutstandingDamageFee();
     $canRescheduleOrder = static fn ($order) => in_array((string) ($order->status_pesanan ?? ''), ['menunggu_pembayaran', 'diproses', 'lunas'], true);
     $bookingTitle = setting('copy.booking.title', __('ui.nav.my_orders'));
-    $bookingSubtitle = setting('copy.booking.subtitle', 'Semua order dan status pembayaran kamu.');
+    $bookingSubtitle = setting('copy.booking.subtitle', 'Semua pesanan dan status pembayaran kamu.');
     $bookingActiveTitle = setting('copy.booking.active_title', 'Rental Aktif');
     $bookingRecentTitle = setting('copy.booking.recent_title', 'Riwayat Terbaru');
     $bookingCtaText = setting('copy.booking.cta_text', __('ui.actions.explore_catalog'));
@@ -17,7 +17,7 @@
         return match ($status) {
             'paid' => ['label' => 'Lunas', 'badge' => 'bg-blue-100 text-blue-700'],
             'failed' => ['label' => 'Gagal', 'badge' => 'bg-rose-100 text-rose-700'],
-            default => ['label' => 'Pending', 'badge' => 'bg-amber-100 text-amber-700'],
+            default => ['label' => 'Menunggu', 'badge' => 'bg-amber-100 text-amber-700'],
         };
     };
 @endphp
@@ -100,7 +100,7 @@
                                     </a>
                                 @endif
                                 <a href="{{ route('account.orders.show', $order) }}" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:border-blue-200 hover:text-blue-600">
-                                    Detail & Reschedule
+                                    Detail & Ubah Jadwal
                                 </a>
                             </div>
                         </div>

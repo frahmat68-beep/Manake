@@ -1,24 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard User')
+@section('title', 'Dashboard Pengguna')
 
 @section('content')
     @php
         $stats = [
             [
-                'label' => 'Total Booking',
+                'label' => 'Total Riwayat',
                 'value' => 12,
                 'note' => '+2 minggu ini',
                 'accent' => 'text-slate-900',
             ],
             [
-                'label' => 'Active Rental',
+                'label' => 'Rental Aktif',
                 'value' => 2,
                 'note' => '2 alat sedang disewa',
                 'accent' => 'text-blue-600',
             ],
             [
-                'label' => 'Completed',
+                'label' => 'Selesai',
                 'value' => 10,
                 'note' => '3 selesai bulan ini',
                 'accent' => 'text-emerald-600',
@@ -81,7 +81,7 @@
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-widest text-blue-600">Dashboard</p>
-                    <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900">Dashboard User</h1>
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900">Dashboard Pengguna</h1>
                     <p class="text-sm text-slate-600">Ringkasan penyewaan alat produksi Anda.</p>
                 </div>
                 <a
@@ -107,11 +107,11 @@
                             </a>
                             <a href="/booking" class="flex items-center gap-3 rounded-xl px-3 py-2 text-slate-600 hover:bg-slate-50">
                                 <span class="h-2 w-2 rounded-full bg-slate-300"></span>
-                                My Booking
+                                Riwayat Saya
                             </a>
                             <a href="{{ route('profile.complete') }}" class="flex items-center gap-3 rounded-xl px-3 py-2 text-slate-600 hover:bg-slate-50">
                                 <span class="h-2 w-2 rounded-full bg-slate-300"></span>
-                                Profile
+                                Profil
                             </a>
                         </nav>
                     </div>
@@ -141,7 +141,7 @@
 
                     <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-lg font-semibold text-slate-900">Active Rental</h2>
+                            <h2 class="text-lg font-semibold text-slate-900">Rental Aktif</h2>
                             <a href="/booking" class="text-sm text-blue-600 hover:text-blue-700">Lihat semua</a>
                         </div>
 
@@ -181,7 +181,7 @@
                                                 href="/booking/pay/{{ $rent['id'] }}"
                                                 class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition"
                                             >
-                                                Pay
+                                                Bayar
                                             </a>
                                         </div>
                                     </div>
@@ -192,7 +192,7 @@
 
                     <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-lg font-semibold text-slate-900">Recent Booking</h2>
+                            <h2 class="text-lg font-semibold text-slate-900">Riwayat Terbaru</h2>
                             <a href="/booking/history" class="text-sm text-slate-500 hover:text-blue-600">Riwayat lengkap</a>
                         </div>
 

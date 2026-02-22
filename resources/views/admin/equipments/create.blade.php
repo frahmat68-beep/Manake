@@ -11,7 +11,7 @@
                     <h2 class="text-lg font-semibold text-slate-900">Form Tambah Alat</h2>
                     <p class="text-xs text-slate-500">Isi data utama alat sebelum dipublikasikan.</p>
                 </div>
-                <a href="{{ route('admin.equipments.index') }}" class="text-sm text-slate-600 hover:text-blue-600">← Kembali ke List</a>
+                <a href="{{ route('admin.equipments.index') }}" class="text-sm text-slate-600 hover:text-blue-600">← Kembali ke Daftar</a>
             </div>
 
             <form method="POST" action="{{ route('admin.equipments.store') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
@@ -93,9 +93,9 @@
                             required
                             class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                         >
-                            <option value="ready" {{ old('status', 'ready') === 'ready' ? 'selected' : '' }}>Ready</option>
-                            <option value="unavailable" {{ old('status') === 'unavailable' ? 'selected' : '' }}>Unavailable</option>
-                            <option value="maintenance" {{ old('status') === 'maintenance' ? 'selected' : '' }}>Maintenance</option>
+                            <option value="ready" {{ old('status', 'ready') === 'ready' ? 'selected' : '' }}>Siap</option>
+                            <option value="unavailable" {{ old('status') === 'unavailable' ? 'selected' : '' }}>Tidak Tersedia</option>
+                            <option value="maintenance" {{ old('status') === 'maintenance' ? 'selected' : '' }}>Perawatan</option>
                         </select>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <p class="text-xs text-slate-500">Data akan langsung tampil di katalog user.</p>
+                    <p class="text-xs text-slate-500">Data akan langsung tampil di katalog pengguna.</p>
                     <div class="flex gap-2">
                         <a href="{{ route('admin.equipments.index') }}" class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:border-blue-200 hover:text-blue-600 transition">Batal</a>
                         <button type="submit" class="rounded-xl bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition">Simpan Alat</button>

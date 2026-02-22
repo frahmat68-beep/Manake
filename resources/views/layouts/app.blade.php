@@ -121,7 +121,7 @@
     $notificationItems = collect($notificationItems ?? []);
 
     $searchQuery = trim((string) request('q', ''));
-    $displayName = auth('web')->user()->display_name ?? auth('web')->user()->name ?? 'User';
+    $displayName = auth('web')->user()->display_name ?? auth('web')->user()->name ?? 'Pengguna';
     $userInitial = strtoupper(substr($displayName, 0, 1));
 
     $authModalView = old('auth_modal');
@@ -215,7 +215,7 @@
     <div class="lg:pl-16">
         <header class="sticky top-0 z-30 border-b border-slate-200 bg-white">
             <div class="mx-auto flex w-full max-w-[1320px] flex-wrap items-center gap-2.5 px-4 py-3 sm:gap-3 sm:px-6 sm:py-4">
-                <button class="order-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm lg:hidden" type="button" @click="sidebarOpen = true" aria-label="Open menu">
+                <button class="order-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm lg:hidden" type="button" @click="sidebarOpen = true" aria-label="Buka menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="4" y1="7" x2="20" y2="7" />
                         <line x1="4" y1="12" x2="20" y2="12" />
@@ -630,7 +630,7 @@
 
             const image = document.createElement('img');
             image.src = item.image_url || '{{ asset('MANAKE-FAV-M.png') }}';
-            image.alt = item.name || 'Equipment';
+            image.alt = item.name || 'Alat';
             image.loading = 'lazy';
             image.className = 'h-12 w-12 rounded-lg border border-slate-200 bg-slate-50 object-cover';
             link.appendChild(image);
@@ -640,7 +640,7 @@
 
             const name = document.createElement('p');
             name.className = 'truncate text-sm font-semibold text-slate-900';
-            name.textContent = item.name || 'Equipment';
+            name.textContent = item.name || 'Alat';
             content.appendChild(name);
 
             const meta = document.createElement('p');

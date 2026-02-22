@@ -5,7 +5,7 @@
 
     {{-- HEADER --}}
     <div class="flex justify-between items-center mb-8">
-        <h1 class="text-2xl font-bold">Catalog Alat</h1>
+        <h1 class="text-2xl font-bold">Katalog Alat</h1>
 
         <input
             type="text"

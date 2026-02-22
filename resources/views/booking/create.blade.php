@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Booking | Manake Rental</title>
+    <title>Pemesanan | Manake Rental</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,7 +19,7 @@
         <a href="/">
             <img src="{{ asset('manake-logo-blue.png') }}" class="h-8">
         </a>
-        <span class="text-sm text-slate-500">Booking Alat</span>
+        <span class="text-sm text-slate-500">Pemesanan Alat</span>
     </div>
 </div>
 
@@ -62,7 +62,7 @@
     <div class="bg-white rounded-2xl shadow p-6 space-y-4">
 
         <h2 class="font-semibold">
-            Ringkasan Booking
+            Ringkasan Pemesanan
         </h2>
 
         <div class="flex justify-between text-sm">
@@ -90,7 +90,7 @@
         </button>
 
         <p class="text-xs text-center text-slate-500">
-            * Login diperlukan untuk melanjutkan booking
+            * Login diperlukan untuk melanjutkan pemesanan
         </p>
 
     </div>

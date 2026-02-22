@@ -12,7 +12,7 @@
                     <div class="p-6 sm:p-8">
                         <h2 class="text-2xl font-semibold text-slate-900">Verifikasi Email</h2>
                         <p class="mt-2 text-sm text-slate-600">
-                            Sebelum lanjut checkout, verifikasi dulu email kamu lewat link yang sudah dikirim.
+                            Sebelum lanjut pembayaran, verifikasi dulu email kamu lewat link yang sudah dikirim.
                         </p>
 
                         @if (session('status') === 'verification-link-sent')
@@ -25,14 +25,14 @@
                             <form method="POST" action="{{ route('verification.send') }}">
                                 @csrf
                                 <button class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
-                                    Resend Verification Email
+                                    Kirim Ulang Email Verifikasi
                                 </button>
                             </form>
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-blue-200 hover:text-blue-600">
-                                    Log Out
+                                    Keluar
                                 </button>
                             </form>
                         </div>
@@ -42,7 +42,7 @@
                         <img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" class="h-12 w-auto rounded-xl bg-white p-2">
                         <h3 class="mt-6 text-2xl font-semibold leading-tight">Cek email untuk aktivasi akun.</h3>
                         <p class="mt-3 text-sm text-blue-100">
-                            Setelah verifikasi selesai, kamu bisa lanjut isi profil, checkout, dan pantau progres pesanan secara realtime.
+                            Setelah verifikasi selesai, kamu bisa lanjut isi profil, pembayaran, dan pantau progres pesanan secara realtime.
                         </p>
                     </div>
                 </div>

@@ -8,19 +8,19 @@
         'home.hero_title' => __('app.landing.hero_title') . ' ' . __('app.landing.hero_highlight') . ' ' . __('app.landing.hero_suffix'),
         'home.hero_subtitle' => __('app.landing.hero_desc'),
         'hero_cta_text' => __('app.actions.see_catalog'),
-        'copy.landing.ready_panel_title' => 'Ready To Rent',
+        'copy.landing.ready_panel_title' => 'Siap Disewa',
         'copy.landing.ready_panel_subtitle' => 'Item live dari inventory yang tersedia hari ini.',
         'copy.landing.flow_kicker' => 'Alur Rental',
         'copy.landing.flow_title' => 'Biar proses sewa tidak ribet',
         'copy.landing.flow_catalog_link' => 'Lihat semua alat',
         'copy.landing.step_1_title' => 'Pilih Alat',
-        'copy.landing.step_1_desc' => 'Filter berdasarkan kategori, status ready, dan budget harian.',
+        'copy.landing.step_1_desc' => 'Filter berdasarkan kategori, status siap, dan budget harian.',
         'copy.landing.step_2_title' => 'Isi Profil',
-        'copy.landing.step_2_desc' => 'Data identitas dan kontak disimpan agar checkout berikutnya lebih cepat.',
+        'copy.landing.step_2_desc' => 'Data identitas dan kontak disimpan agar transaksi berikutnya lebih cepat.',
         'copy.landing.step_3_title' => 'Bayar via Midtrans',
         'copy.landing.step_3_desc' => 'Pilih metode pembayaran favorit tanpa pindah halaman berulang.',
-        'copy.landing.step_4_title' => 'Generate Resi',
-        'copy.landing.step_4_desc' => 'Setelah lunas, resi bisa dibuka dan dicetak langsung dari detail order.',
+        'copy.landing.step_4_title' => 'Buat Resi',
+        'copy.landing.step_4_desc' => 'Setelah lunas, resi bisa dibuka dan dicetak langsung dari detail pesanan.',
         'copy.landing.quick_category_kicker' => 'Kategori Cepat',
         'copy.landing.quick_category_title' => 'Akses langsung ke kebutuhan produksi',
         'copy.landing.quick_category_empty' => 'Belum ada kategori tersedia.',
@@ -95,15 +95,15 @@
         'copy.trans.ui.contact.map_title' => __('ui.contact.map_title'),
         'copy.trans.ui.contact.map_empty' => __('ui.contact.map_empty'),
         'copy.booking.title' => __('ui.nav.my_orders'),
-        'copy.booking.subtitle' => 'Semua order dan status pembayaran kamu.',
+        'copy.booking.subtitle' => 'Semua pesanan dan status pembayaran kamu.',
         'copy.booking.active_title' => 'Rental Aktif',
         'copy.booking.recent_title' => 'Riwayat Terbaru',
         'copy.booking.cta_text' => __('ui.actions.explore_catalog'),
         'copy.order_detail.title' => 'Detail Pesanan',
         'copy.order_detail.subtitle' => 'Pantau status pembayaran dan progres rental di sini.',
         'copy.order_detail.back_label' => 'Kembali ke Riwayat',
-        'copy.order_detail.order_number_label' => 'Nomor Order',
-        'copy.order_detail.progress_title' => 'Progress Pesanan',
+        'copy.order_detail.order_number_label' => 'Nomor Pesanan',
+        'copy.order_detail.progress_title' => 'Progres Pesanan',
         'copy.order_detail.items_title' => 'Item Disewa',
         'copy.order_detail.payment_title' => 'Pembayaran',
         'copy.trans.ui.orders.copy_receipt_button' => __('ui.orders.copy_receipt_button'),
@@ -124,7 +124,7 @@
         'copy.availability.monthly_title' => 'Jadwal Aktif Bulan Ini',
         'copy.availability.search_placeholder' => 'Cari nama alat...',
         'copy.availability.show_button' => 'Tampilkan',
-        'copy.availability.reset_button' => 'Reset Pencarian',
+        'copy.availability.reset_button' => 'Atur Ulang Pencarian',
         'copy.availability.drag_hint' => 'Tap tanggal untuk detail, drag untuk cek sewa rentang hari.',
         'copy.availability.metric_total' => 'Total Alat',
         'copy.availability.metric_busy' => 'Sedang Disewa',
@@ -138,7 +138,7 @@
         'copy.availability.modal_empty' => 'Tidak ada pesanan aktif pada tanggal ini.',
         'copy.availability.range_kicker' => 'Cek Rentang Sewa',
         'copy.availability.range_title' => 'Mau sewa di tanggal ini?',
-        'copy.availability.range_filter_label' => 'Filter Kategori Alat',
+        'copy.availability.range_filter_label' => 'Pilih Kategori Alat',
         'copy.availability.range_all_categories' => 'Semua kategori',
         'copy.availability.range_available_label' => 'Alat Tersedia',
         'copy.availability.range_continue' => 'Lanjut ke Keranjang',
@@ -150,31 +150,31 @@
         'copy.trans.ui.availability_board.count_schedules_suffix' => __('ui.availability_board.count_schedules_suffix'),
         'copy.trans.ui.availability_board.in_use_template' => __('ui.availability_board.in_use_template'),
         'copy.checkout.title' => 'Konfirmasi Sewa',
-        'copy.checkout.subtitle' => 'Review jadwal tiap alat sebelum pembayaran.',
-        'copy.checkout.back_to_cart' => 'Kembali ke Cart',
+        'copy.checkout.subtitle' => 'Tinjau jadwal tiap alat sebelum pembayaran.',
+        'copy.checkout.back_to_cart' => 'Kembali ke Keranjang',
         'copy.checkout.detail_title' => 'Detail Sewa',
-        'copy.checkout.empty_cart' => 'Cart kosong. Silakan tambahkan item sebelum checkout.',
+        'copy.checkout.empty_cart' => 'Keranjang kosong. Silakan tambahkan item sebelum pembayaran.',
         'copy.checkout.profile_title' => 'Data Diri',
-        'copy.checkout.profile_hint' => 'Data diambil dari profil. Update profil bila perlu.',
+        'copy.checkout.profile_hint' => 'Data diambil dari profil. Perbarui profil bila perlu.',
         'copy.checkout.confirm_profile' => 'Saya memastikan data diri di atas sudah benar.',
         'copy.checkout.submit_button' => 'Konfirmasi & Bayar',
         'copy.checkout.submit_processing' => 'Memproses...',
         'copy.checkout.payment_title' => 'Metode Pembayaran',
-        'copy.checkout.payment_note' => 'Pembayaran akan diproses melalui Midtrans Snap (sandbox) tanpa reload halaman.',
+        'copy.checkout.payment_note' => 'Pembayaran akan diproses melalui Midtrans Snap (sandbox) tanpa memuat ulang halaman.',
         'copy.checkout.summary_title' => 'Ringkasan',
         'copy.checkout.summary_subtotal' => 'Subtotal / hari',
         'copy.checkout.summary_estimate' => 'Total (estimasi)',
         'copy.checkout.summary_tax' => 'PPN 11%',
         'copy.checkout.summary_total' => 'Total Bayar',
-        'copy.checkout.no_items' => 'Tidak ada item di cart.',
+        'copy.checkout.no_items' => 'Tidak ada item di keranjang.',
         'copy.trans.ui.checkout.profile_update_link_label' => __('ui.checkout.profile_update_link_label'),
         'copy.trans.ui.checkout.invalid_date_note' => __('ui.checkout.invalid_date_note'),
         'copy.trans.ui.checkout.messages.checkout_failed' => __('ui.checkout.messages.checkout_failed'),
         'copy.trans.ui.checkout.messages.pay_failed' => __('ui.checkout.messages.pay_failed'),
         'copy.translation_overrides' => "ui.nav.my_orders = Riwayat Sewa\nui.cart.title = Keranjang Utama\napp.product.rental_date = Pilih Jadwal Sewa",
-        'copy.rules_page.kicker' => 'Rules Sewa',
+        'copy.rules_page.kicker' => 'Aturan Sewa',
         'copy.rules_page.title' => 'Panduan Sewa Manake Rental',
-        'copy.rules_page.subtitle' => 'Halaman ini merangkum aturan utama supaya proses sewa aman, jelas, dan adil untuk semua user. Aturan ini berlaku untuk booking website, reschedule, dan pengelolaan unit.',
+        'copy.rules_page.subtitle' => 'Halaman ini merangkum aturan utama supaya proses sewa aman, jelas, dan adil untuk semua pengguna. Aturan ini berlaku untuk pemesanan website, reschedule, dan pengelolaan unit.',
         'copy.rules_page.operational_title' => 'Catatan Operasional',
         'copy.rules_page.cta_primary' => 'Mulai Sewa dari Katalog',
         'copy.rules_page.cta_secondary' => 'Hubungi Tim Manake',
@@ -210,7 +210,7 @@
                 <div>
                     <h2 class="text-xl font-semibold text-slate-900">{{ $sectionMeta['label'] }}</h2>
                     <p class="mt-1 text-sm text-slate-600">{{ $sectionMeta['description'] }}</p>
-                    <p class="mt-1 text-xs text-slate-500">Semua field di halaman ini khusus edit teks user-facing. Field sudah dirapikan per kontainer tampilan supaya lebih mudah dikelola.</p>
+                    <p class="mt-1 text-xs text-slate-500">Semua field di halaman ini khusus edit teks yang tampil ke pengguna. Field sudah dirapikan per kontainer tampilan supaya lebih mudah dikelola.</p>
                 </div>
                 <a href="{{ route('admin.dashboard') }}" class="btn-secondary inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition">
                     Kembali ke Dashboard
@@ -220,7 +220,7 @@
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-[260px,1fr]">
             <aside class="card h-fit rounded-2xl p-4 shadow-sm">
-                <p class="px-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Halaman User</p>
+                <p class="px-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Halaman Pengguna</p>
                 <nav class="mt-3 space-y-1">
                     @foreach ($sections as $sectionKey => $meta)
                         <a
@@ -274,7 +274,7 @@
                         <article id="{{ $containerAnchors[$container] }}" class="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5 scroll-mt-28">
                             <div class="mb-4 flex items-center justify-between gap-3">
                                 <h3 class="text-sm font-semibold text-blue-700">{{ $container }}</h3>
-                                <span class="rounded-full bg-blue-100 px-2.5 py-1 text-[11px] font-semibold text-blue-700">{{ $containerFields->count() }} field</span>
+                                <span class="rounded-full bg-blue-100 px-2.5 py-1 text-[11px] font-semibold text-blue-700">{{ $containerFields->count() }} isian</span>
                             </div>
 
                             <div class="space-y-5">
@@ -333,7 +333,7 @@
                     @endforeach
 
                     <div class="flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                        <p class="text-xs text-slate-500">Perubahan langsung tampil di halaman user setelah disimpan.</p>
+                        <p class="text-xs text-slate-500">Perubahan langsung tampil di halaman pengguna setelah disimpan.</p>
                         <button type="submit" class="btn-primary inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition">
                             Simpan Teks Halaman
                         </button>

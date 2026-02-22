@@ -1,7 +1,7 @@
 @extends('layouts.admin', ['activePage' => 'website'])
 
-@section('title', 'Pengaturan Website')
-@section('page_title', 'Pengaturan Website')
+@section('title', 'Pengaturan Situs')
+@section('page_title', 'Pengaturan Situs')
 
 @php
     $logoPath = $settings['brand.logo_path'] ?? null;
@@ -28,20 +28,20 @@
             @endif
 
             <div class="card rounded-2xl p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-slate-900">Brand</h2>
+                <h2 class="text-lg font-semibold text-slate-900">Merek</h2>
                 <div class="mt-4 grid gap-4 sm:grid-cols-2">
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">Nama Brand</label>
+                        <label class="text-xs font-semibold text-slate-500">Nama Merek</label>
                         <input type="text" name="brand_name" value="{{ old('brand_name', $settings['brand.name'] ?? '') }}" class="input mt-2 w-full rounded-xl px-4 py-2 text-sm">
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">Tagline Brand</label>
+                        <label class="text-xs font-semibold text-slate-500">Tagline Merek</label>
                         <input type="text" name="brand_tagline" value="{{ old('brand_tagline', $settings['brand.tagline'] ?? '') }}" class="input mt-2 w-full rounded-xl px-4 py-2 text-sm">
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-slate-500">Logo</label>
                         <div class="mt-2 flex items-center gap-4">
-                            <img src="{{ $logoUrl }}" alt="Logo preview" class="h-12 w-12 rounded-xl border border-slate-200 object-cover bg-white">
+                            <img src="{{ $logoUrl }}" alt="Pratinjau logo" class="h-12 w-12 rounded-xl border border-slate-200 object-cover bg-white">
                             <input type="file" name="brand_logo" accept="image/*" class="text-sm text-slate-600">
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                         <label class="text-xs font-semibold text-slate-500">Favicon</label>
                         <div class="mt-2 flex items-center gap-4">
                             @if ($faviconUrl)
-                                <img src="{{ $faviconUrl }}" alt="Favicon preview" class="h-10 w-10 rounded-lg border border-slate-200 object-cover bg-white">
+                                <img src="{{ $faviconUrl }}" alt="Pratinjau favicon" class="h-10 w-10 rounded-lg border border-slate-200 object-cover bg-white">
                             @else
                                 <div class="h-10 w-10 rounded-lg border border-dashed border-slate-200 bg-slate-50"></div>
                             @endif
@@ -63,11 +63,11 @@
                 <h2 class="text-lg font-semibold text-slate-900">SEO</h2>
                 <div class="mt-4 grid gap-4">
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">Meta Title</label>
+                        <label class="text-xs font-semibold text-slate-500">Judul Meta</label>
                         <input type="text" name="seo_meta_title" value="{{ old('seo_meta_title', $settings['seo.meta_title'] ?? '') }}" class="input mt-2 w-full rounded-xl px-4 py-2 text-sm">
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">Meta Description</label>
+                        <label class="text-xs font-semibold text-slate-500">Deskripsi Meta</label>
                         <textarea name="seo_meta_description" rows="3" class="input mt-2 w-full rounded-xl px-4 py-2 text-sm">{{ old('seo_meta_description', $settings['seo.meta_description'] ?? '') }}</textarea>
                     </div>
                 </div>
@@ -92,15 +92,15 @@
             </div>
 
             <div class="card rounded-2xl p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-slate-900">Maintenance</h2>
+                <h2 class="text-lg font-semibold text-slate-900">Pemeliharaan</h2>
                 <label class="mt-3 flex items-center gap-3 text-sm text-slate-600">
                     <input type="checkbox" name="maintenance_enabled" value="1" class="h-4 w-4 rounded border-slate-300" {{ old('maintenance_enabled', $settings['site.maintenance_enabled'] ?? '') ? 'checked' : '' }}>
-                    Aktifkan mode maintenance
+                    Aktifkan mode pemeliharaan
                 </label>
             </div>
 
             <button class="btn-primary inline-flex items-center justify-center rounded-xl px-6 py-2.5 text-sm font-semibold transition">
-                Simpan Pengaturan Website
+                Simpan Pengaturan Situs
             </button>
         </form>
     </div>

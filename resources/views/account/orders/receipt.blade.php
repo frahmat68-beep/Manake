@@ -903,7 +903,7 @@
                             @endphp
                             <tr>
                                 <td>
-                                    <p class="item-title">{{ $item->equipment->name ?? 'Equipment' }}</p>
+                                    <p class="item-title">{{ $item->equipment->name ?? 'Alat' }}</p>
                                     <p class="item-sub">{{ $item->equipment->category->name ?? __('ui.cart.gear_generic') }}</p>
                                 </td>
                                 <td>

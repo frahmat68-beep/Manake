@@ -10,23 +10,23 @@
         $taxAmount = (int) ($taxAmount ?? 0);
         $estimatedTotal = (int) ($estimatedTotal ?? ($estimatedSubtotal + $taxAmount));
         $checkoutTitle = setting('copy.checkout.title', 'Konfirmasi Sewa');
-        $checkoutSubtitle = setting('copy.checkout.subtitle', 'Review jadwal tiap alat sebelum pembayaran.');
-        $checkoutBackToCart = setting('copy.checkout.back_to_cart', 'Kembali ke Cart');
+        $checkoutSubtitle = setting('copy.checkout.subtitle', 'Tinjau jadwal tiap alat sebelum pembayaran.');
+        $checkoutBackToCart = setting('copy.checkout.back_to_cart', 'Kembali ke Keranjang');
         $checkoutDetailTitle = setting('copy.checkout.detail_title', 'Detail Sewa');
-        $checkoutEmptyCart = setting('copy.checkout.empty_cart', 'Cart kosong. Silakan tambahkan item sebelum checkout.');
+        $checkoutEmptyCart = setting('copy.checkout.empty_cart', 'Keranjang kosong. Silakan tambahkan item sebelum pembayaran.');
         $checkoutProfileTitle = setting('copy.checkout.profile_title', 'Data Diri');
-        $checkoutProfileHint = setting('copy.checkout.profile_hint', 'Data diambil dari profil. Update profil bila perlu.');
+        $checkoutProfileHint = setting('copy.checkout.profile_hint', 'Data diambil dari profil. Perbarui profil bila perlu.');
         $checkoutConfirmProfile = setting('copy.checkout.confirm_profile', 'Saya memastikan data diri di atas sudah benar.');
         $checkoutSubmitButton = setting('copy.checkout.submit_button', 'Konfirmasi & Bayar');
         $checkoutSubmitProcessing = setting('copy.checkout.submit_processing', 'Memproses...');
         $checkoutPaymentTitle = setting('copy.checkout.payment_title', 'Metode Pembayaran');
-        $checkoutPaymentNote = setting('copy.checkout.payment_note', 'Pembayaran akan diproses melalui Midtrans Snap (sandbox) tanpa reload halaman.');
+        $checkoutPaymentNote = setting('copy.checkout.payment_note', 'Pembayaran akan diproses melalui Midtrans Snap (sandbox) tanpa memuat ulang halaman.');
         $checkoutSummaryTitle = setting('copy.checkout.summary_title', 'Ringkasan');
         $checkoutSummarySubtotal = setting('copy.checkout.summary_subtotal', 'Subtotal / hari');
         $checkoutSummaryEstimate = setting('copy.checkout.summary_estimate', 'Total (estimasi)');
         $checkoutSummaryTax = setting('copy.checkout.summary_tax', 'PPN 11%');
         $checkoutSummaryTotal = setting('copy.checkout.summary_total', 'Total Bayar');
-        $checkoutNoItems = setting('copy.checkout.no_items', 'Tidak ada item di cart.');
+        $checkoutNoItems = setting('copy.checkout.no_items', 'Tidak ada item di keranjang.');
         $checkoutQtyTemplate = __('ui.checkout.qty_template');
         $checkoutScheduleLabel = __('ui.checkout.schedule_label');
         $checkoutInvalidDateNote = __('ui.checkout.invalid_date_note');
@@ -315,7 +315,7 @@
                                     return;
                                 }
                             } catch (error) {
-                                // Lanjutkan fallback ke detail order jika sinkronisasi gagal.
+                                // Lanjutkan fallback ke detail pesanan jika sinkronisasi gagal.
                             }
 
                             window.location.href = data.redirect_url_to_order_detail;
@@ -330,7 +330,7 @@
                                     return;
                                 }
                             } catch (error) {
-                                // Fallback tetap ke detail order.
+                                // Fallback tetap ke detail pesanan.
                             }
 
                             window.location.href = data.redirect_url_to_order_detail;
