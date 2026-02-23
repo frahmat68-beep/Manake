@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -28,40 +27,26 @@ return new class extends Migration
             }
         });
 
-        $driver = DB::getDriverName();
-        if ($driver === 'sqlite') {
-            try {
-                DB::statement('CREATE INDEX IF NOT EXISTS payments_order_status_idx ON payments (order_id, status)');
-            } catch (\Throwable $exception) {
-                // Keep migration idempotent.
-            }
-            try {
-                DB::statement('CREATE INDEX IF NOT EXISTS payments_midtrans_order_id_idx ON payments (midtrans_order_id)');
-            } catch (\Throwable $exception) {
-                // Keep migration idempotent.
-            }
-            try {
-                DB::statement('CREATE UNIQUE INDEX IF NOT EXISTS payments_transaction_id_unique ON payments (transaction_id)');
-            } catch (\Throwable $exception) {
-                // Keep migration idempotent.
-            }
-            return;
-        }
-
         try {
-            DB::statement('ALTER TABLE payments ADD INDEX payments_order_status_idx (order_id, status)');
+            Schema::table('payments', function (Blueprint $table) {
+                $table->index(['order_id', 'status'], 'payments_order_status_idx');
+            });
         } catch (\Throwable $exception) {
             // Keep migration idempotent.
         }
 
         try {
-            DB::statement('ALTER TABLE payments ADD INDEX payments_midtrans_order_id_idx (midtrans_order_id)');
+            Schema::table('payments', function (Blueprint $table) {
+                $table->index('midtrans_order_id', 'payments_midtrans_order_id_idx');
+            });
         } catch (\Throwable $exception) {
             // Keep migration idempotent.
         }
 
         try {
-            DB::statement('ALTER TABLE payments ADD UNIQUE INDEX payments_transaction_id_unique (transaction_id)');
+            Schema::table('payments', function (Blueprint $table) {
+                $table->unique('transaction_id', 'payments_transaction_id_unique');
+            });
         } catch (\Throwable $exception) {
             // Keep migration idempotent.
         }

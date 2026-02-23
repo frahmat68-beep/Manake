@@ -8,7 +8,6 @@ services:
     image: manake-rental:latest
     container_name: manake-app
     depends_on:
-      - mysql
       - redis
     ports:
       - "8000:8000"
@@ -18,12 +17,6 @@ services:
       APP_ENV: local
       APP_DEBUG: "true"
       APP_URL: http://localhost:8000
-      DB_CONNECTION: mysql
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_DATABASE: manake_db
-      DB_USERNAME: manake
-      DB_PASSWORD: secret
       QUEUE_CONNECTION: database
       REDIS_HOST: redis
     volumes:
@@ -37,12 +30,6 @@ services:
     env_file:
       - .env
     environment:
-      DB_CONNECTION: mysql
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_DATABASE: manake_db
-      DB_USERNAME: manake
-      DB_PASSWORD: secret
       QUEUE_CONNECTION: database
     command: ["php", "artisan", "queue:work", "--queue=default", "--sleep=1", "--tries=3", "--timeout=120"]
     volumes:
@@ -56,12 +43,6 @@ services:
     env_file:
       - .env
     environment:
-      DB_CONNECTION: mysql
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_DATABASE: manake_db
-      DB_USERNAME: manake
-      DB_PASSWORD: secret
       QUEUE_CONNECTION: database
     command: ["php", "artisan", "schedule:work"]
     volumes:

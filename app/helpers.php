@@ -9,6 +9,25 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
+if (! function_exists('schema_table_exists_cached')) {
+    function schema_table_exists_cached(string $table): bool
+    {
+        static $tableExistsCache = [];
+
+        if (array_key_exists($table, $tableExistsCache)) {
+            return $tableExistsCache[$table];
+        }
+
+        try {
+            $tableExistsCache[$table] = Schema::hasTable($table);
+        } catch (\Throwable $exception) {
+            $tableExistsCache[$table] = false;
+        }
+
+        return $tableExistsCache[$table];
+    }
+}
+
 if (! function_exists('setting')) {
     function setting(string $key, $default = null)
     {
@@ -19,7 +38,7 @@ if (! function_exists('setting')) {
 if (! function_exists('site_setting')) {
     function site_setting(string $key, $default = null)
     {
-        if (! Schema::hasTable('site_settings')) {
+        if (! schema_table_exists_cached('site_settings')) {
             return $default;
         }
 
@@ -58,13 +77,22 @@ if (! function_exists('site_setting')) {
 if (! function_exists('site_setting_raw')) {
     function site_setting_raw(string $key)
     {
-        if (! Schema::hasTable('site_settings')) {
+        if (! schema_table_exists_cached('site_settings')) {
             return null;
         }
 
-        return Cache::remember("site_setting:{$key}", 3600, function () use ($key) {
-            return SiteSetting::query()->where('key', $key)->value('value');
+        $cached = Cache::remember("site_setting:{$key}", 3600, function () use ($key) {
+            return [
+                'resolved' => true,
+                'value' => SiteSetting::query()->where('key', $key)->value('value'),
+            ];
         });
+
+        if (is_array($cached) && array_key_exists('resolved', $cached)) {
+            return $cached['value'] ?? null;
+        }
+
+        return $cached;
     }
 }
 
@@ -128,7 +156,7 @@ if (! function_exists('site_content')) {
     function site_content(string $key, $default = null)
     {
         // Preferred source: site_settings.
-        if (Schema::hasTable('site_settings')) {
+        if (schema_table_exists_cached('site_settings')) {
             $fromSetting = site_setting($key);
             if ($fromSetting !== null) {
                 return $fromSetting;
@@ -136,7 +164,7 @@ if (! function_exists('site_content')) {
         }
 
         // Backward compatibility source: site_contents.
-        if (! Schema::hasTable('site_contents')) {
+        if (! schema_table_exists_cached('site_contents')) {
             return $default;
         }
 
@@ -169,7 +197,7 @@ if (! function_exists('site_media_url')) {
 
         $resolvedDisk = $disk ?: 'public';
         if ($resolvedDisk === 'public') {
-            return asset('storage/' . ltrim($path, '/'));
+            return asset('storage/'.ltrim($path, '/'));
         }
 
         return Storage::disk($resolvedDisk)->url($path);
@@ -179,7 +207,7 @@ if (! function_exists('site_media_url')) {
 if (! function_exists('admin_audit')) {
     function admin_audit(string $action, ?string $tableName = null, string|int|null $recordId = null, array $payload = [], ?int $adminId = null): void
     {
-        if (! Schema::hasTable('audit_logs')) {
+        if (! schema_table_exists_cached('audit_logs')) {
             return;
         }
 

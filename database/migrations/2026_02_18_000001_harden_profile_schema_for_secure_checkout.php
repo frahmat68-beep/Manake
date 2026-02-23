@@ -67,6 +67,7 @@ return new class extends Migration
             });
 
             $this->ensureProfileIndexes();
+
             return;
         }
 
@@ -152,25 +153,20 @@ return new class extends Migration
 
     private function ensureProfileIndexes(): void
     {
-        $driver = DB::getDriverName();
-
         try {
-            if ($driver === 'sqlite') {
-                DB::statement('CREATE UNIQUE INDEX IF NOT EXISTS profiles_nik_unique ON profiles (nik)');
-                DB::statement('CREATE INDEX IF NOT EXISTS profiles_phone_index ON profiles (phone)');
-            } else {
-                DB::statement('ALTER TABLE profiles ADD UNIQUE INDEX profiles_nik_unique (nik)');
-            }
+            Schema::table('profiles', function (Blueprint $table) {
+                $table->unique('nik', 'profiles_nik_unique');
+            });
         } catch (\Throwable $exception) {
             // Keep migration idempotent on existing environments.
         }
 
-        if ($driver !== 'sqlite') {
-            try {
-                DB::statement('ALTER TABLE profiles ADD INDEX profiles_phone_index (phone)');
-            } catch (\Throwable $exception) {
-                // Keep migration idempotent on existing environments.
-            }
+        try {
+            Schema::table('profiles', function (Blueprint $table) {
+                $table->index('phone', 'profiles_phone_index');
+            });
+        } catch (\Throwable $exception) {
+            // Keep migration idempotent on existing environments.
         }
     }
 };

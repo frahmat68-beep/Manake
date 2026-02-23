@@ -37,6 +37,12 @@ npm run dev
 php artisan serve
 ```
 
+## Setup Supabase
+
+Untuk backup/copy data MySQL ke Supabase dan switch koneksi aplikasi:
+
+- `docs/SETUP-SUPABASE.md`
+
 ## Super Admin Seeder
 
 Seeder `SuperAdminSeeder` membuat / update akun:

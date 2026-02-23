@@ -63,6 +63,26 @@ return [
             ]) : [],
         ],
 
+        'mysql_source' => [
+            'driver' => 'mysql',
+            'url' => env('MYSQL_SOURCE_DB_URL') ?: null,
+            'host' => env('MYSQL_SOURCE_DB_HOST') ?: '127.0.0.1',
+            'port' => env('MYSQL_SOURCE_DB_PORT') ?: '3306',
+            'database' => env('MYSQL_SOURCE_DB_DATABASE') ?: 'laravel',
+            'username' => env('MYSQL_SOURCE_DB_USERNAME') ?: 'root',
+            'password' => env('MYSQL_SOURCE_DB_PASSWORD', ''),
+            'unix_socket' => env('MYSQL_SOURCE_DB_SOCKET') ?: '',
+            'charset' => env('MYSQL_SOURCE_DB_CHARSET') ?: 'utf8mb4',
+            'collation' => env('MYSQL_SOURCE_DB_COLLATION') ?: 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                (PHP_VERSION_ID >= 80500 ? \Pdo\Mysql::ATTR_SSL_CA : \PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_SOURCE_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
@@ -96,6 +116,21 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+        ],
+
+        'supabase' => [
+            'driver' => 'pgsql',
+            'url' => env('SUPABASE_DB_URL') ?: null,
+            'host' => env('SUPABASE_DB_HOST') ?: '127.0.0.1',
+            'port' => env('SUPABASE_DB_PORT') ?: '5432',
+            'database' => env('SUPABASE_DB_DATABASE') ?: 'postgres',
+            'username' => env('SUPABASE_DB_USERNAME') ?: 'postgres',
+            'password' => env('SUPABASE_DB_PASSWORD', ''),
+            'charset' => env('SUPABASE_DB_CHARSET') ?: 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => env('SUPABASE_DB_SCHEMA') ?: 'public',
+            'sslmode' => env('SUPABASE_DB_SSLMODE') ?: 'require',
         ],
 
         'sqlsrv' => [

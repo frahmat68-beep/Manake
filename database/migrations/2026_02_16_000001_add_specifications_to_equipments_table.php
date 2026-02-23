@@ -20,7 +20,14 @@ return new class extends Migration
         });
 
         if (Schema::hasColumn('equipments', 'description') && Schema::hasColumn('equipments', 'specifications')) {
-            DB::statement('UPDATE equipments SET specifications = description WHERE (specifications IS NULL OR specifications = "") AND description IS NOT NULL AND description <> ""');
+            DB::table('equipments')
+                ->where(function ($query) {
+                    $query->whereNull('specifications')
+                        ->orWhere('specifications', '');
+                })
+                ->whereNotNull('description')
+                ->where('description', '<>', '')
+                ->update(['specifications' => DB::raw('description')]);
         }
     }
 

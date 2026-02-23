@@ -11,12 +11,16 @@ return new class extends Migration
     {
         if (Schema::hasTable('payments') && Schema::hasColumn('payments', 'booking_id')) {
             try {
-                if (DB::getDriverName() === 'sqlite') {
+                $driver = DB::getDriverName();
+
+                if ($driver === 'mysql' || $driver === 'mariadb') {
+                    DB::statement('ALTER TABLE payments MODIFY booking_id BIGINT UNSIGNED NULL');
+                } elseif ($driver === 'pgsql') {
+                    DB::statement('ALTER TABLE payments ALTER COLUMN booking_id DROP NOT NULL');
+                } else {
                     Schema::table('payments', function (Blueprint $table) {
                         $table->unsignedBigInteger('booking_id')->nullable()->change();
                     });
-                } else {
-                    DB::statement('ALTER TABLE payments MODIFY booking_id BIGINT UNSIGNED NULL');
                 }
             } catch (\Throwable $exception) {
                 // Ignore if the column cannot be altered.
