@@ -59,7 +59,7 @@ class UserController extends Controller
         ], auth('admin')->id());
 
         if ($status === Password::RESET_LINK_SENT) {
-            return back()->with('success', 'Link reset password berhasil dikirim ke email user.');
+            return back()->with('success', __('Link reset password berhasil dikirim ke email user.'));
         }
 
         // Fallback for environments without working outbound email.
@@ -74,7 +74,9 @@ class UserController extends Controller
             'status' => $status,
         ], auth('admin')->id());
 
-        return back()->with('success', 'Email reset tidak terkirim. Kirim tautan reset manual ke user: ' . $resetUrl);
+        return back()->with('success', __('Email reset tidak terkirim. Kirim tautan reset manual ke user: :url', [
+            'url' => $resetUrl,
+        ]));
     }
 
     public function setPassword(Request $request, User $user): RedirectResponse
@@ -82,9 +84,9 @@ class UserController extends Controller
         $data = $request->validate([
             'new_password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
-            'new_password.required' => 'Password baru wajib diisi.',
-            'new_password.confirmed' => 'Konfirmasi password tidak cocok.',
-            'new_password.min' => 'Password minimal 8 karakter.',
+            'new_password.required' => __('Password baru wajib diisi.'),
+            'new_password.confirmed' => __('Konfirmasi password tidak cocok.'),
+            'new_password.min' => __('Password minimal 8 karakter.'),
         ]);
 
         $user->forceFill([
@@ -95,6 +97,6 @@ class UserController extends Controller
             'email' => $user->email,
         ], auth('admin')->id());
 
-        return back()->with('success', 'Password user berhasil direset oleh admin.');
+        return back()->with('success', __('Password user berhasil direset oleh admin.'));
     }
 }

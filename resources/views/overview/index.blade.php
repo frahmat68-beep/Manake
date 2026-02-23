@@ -8,16 +8,16 @@
     $canViewInvoice = static fn ($order) => ($order->status_pembayaran ?? 'pending') === 'paid' && ! $order->hasOutstandingDamageFee();
     $canRescheduleOrder = static fn ($order) => in_array((string) ($order->status_pesanan ?? ''), ['menunggu_pembayaran', 'diproses', 'lunas'], true);
     $bookingTitle = setting('copy.booking.title', __('ui.nav.my_orders'));
-    $bookingSubtitle = setting('copy.booking.subtitle', 'Semua pesanan dan status pembayaran kamu.');
-    $bookingActiveTitle = setting('copy.booking.active_title', 'Rental Aktif');
-    $bookingRecentTitle = setting('copy.booking.recent_title', 'Riwayat Terbaru');
+    $bookingSubtitle = setting('copy.booking.subtitle', __('ui.overview.page_subtitle'));
+    $bookingActiveTitle = setting('copy.booking.active_title', __('ui.overview.active_rental'));
+    $bookingRecentTitle = setting('copy.booking.recent_title', __('ui.overview.recent_booking'));
     $bookingCtaText = setting('copy.booking.cta_text', __('ui.actions.explore_catalog'));
 
     $paymentMeta = function ($status) {
         return match ($status) {
-            'paid' => ['label' => 'Lunas', 'badge' => 'bg-blue-100 text-blue-700'],
-            'failed' => ['label' => 'Gagal', 'badge' => 'bg-rose-100 text-rose-700'],
-            default => ['label' => 'Menunggu', 'badge' => 'bg-amber-100 text-amber-700'],
+            'paid' => ['label' => __('ui.overview.payment_labels.paid'), 'badge' => 'bg-blue-100 text-blue-700'],
+            'failed' => ['label' => __('ui.overview.payment_labels.failed'), 'badge' => 'bg-rose-100 text-rose-700'],
+            default => ['label' => __('ui.overview.payment_labels.pending'), 'badge' => 'bg-amber-100 text-amber-700'],
         };
     };
 @endphp
@@ -82,12 +82,12 @@
                                 <p class="text-xs text-slate-500">
                                     {{ optional($order->rental_start_date)->format('d M Y') }} - {{ optional($order->rental_end_date)->format('d M Y') }}
                                 </p>
-                                <p class="mt-2 text-xs font-semibold text-slate-500">Total {{ $formatIdr($order->grand_total ?? $order->total_amount) }}</p>
+                                <p class="mt-2 text-xs font-semibold text-slate-500">{{ __('ui.overview.total') }} {{ $formatIdr($order->grand_total ?? $order->total_amount) }}</p>
                                 <p class="mt-1 text-xs text-slate-500">
-                                    {{ max((int) ($durationDays ?? 1), 1) }} hari • {{ max($itemUnits, 0) }} unit
+                                    {{ max((int) ($durationDays ?? 1), 1) }} {{ __('app.product.day_label') }} • {{ max($itemUnits, 0) }} {{ __('ui.overview.unit_label') }}
                                 </p>
                                 <p class="mt-1 text-[11px] text-slate-500">
-                                    {{ $canReschedule ? 'Bisa reschedule sebelum barang diambil.' : 'Reschedule ditutup karena barang sudah diambil.' }}
+                                    {{ $canReschedule ? __('ui.overview.reschedule_available') : __('ui.overview.reschedule_locked') }}
                                 </p>
                             </div>
                             <div class="flex flex-wrap items-center gap-2 sm:justify-end">
@@ -96,11 +96,11 @@
                                 </span>
                                 @if (($order->status_pembayaran ?? 'pending') !== 'paid')
                                     <a href="{{ route('booking.pay', $order) }}" class="rounded-xl bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700">
-                                        Bayar
+                                        {{ __('ui.actions.pay') }}
                                     </a>
                                 @endif
                                 <a href="{{ route('account.orders.show', $order) }}" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:border-blue-200 hover:text-blue-600">
-                                    Detail & Ubah Jadwal
+                                    {!! strip_tags((string) __('ui.overview.detail_reschedule')) !!}
                                 </a>
                             </div>
                         </div>
@@ -151,10 +151,10 @@
                                     data-order-number="{{ $orderNumber }}"
                                     class="text-xs font-semibold text-blue-600 hover:text-blue-700"
                                 >
-                                    Invoice
+                                    {{ __('ui.invoice.title') }}
                                 </button>
                             @else
-                                <span class="text-xs font-semibold text-slate-400">Invoice</span>
+                                <span class="text-xs font-semibold text-slate-400">{{ __('ui.invoice.title') }}</span>
                             @endif
                         </div>
                     </div>
@@ -186,14 +186,14 @@
             <div class="flex items-center justify-between bg-blue-600 px-4 py-3 text-white sm:px-5">
                 <div>
                     <h3 id="order-invoice-modal-title" class="text-base font-semibold sm:text-lg">
-                        Detail Invoice
+                        {{ __('ui.overview.invoice_detail_title') }}
                     </h3>
                 </div>
                 <button
                     type="button"
                     data-close-invoice-modal
                     class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-blue-300/80 bg-blue-500/60 p-0 text-white transition hover:bg-blue-500"
-                    aria-label="Tutup modal"
+                    aria-label="{{ __('ui.overview.close_modal') }}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <line x1="18" y1="6" x2="6" y2="18" />
@@ -205,7 +205,7 @@
             <div class="flex-1 bg-slate-100 p-2 sm:p-3">
                 <iframe
                     id="order-invoice-modal-frame"
-                    title="Invoice"
+                    title="{{ __('ui.invoice.title') }}"
                     loading="lazy"
                     class="h-full w-full rounded-xl border border-slate-200 bg-white"
                 ></iframe>
@@ -218,7 +218,7 @@
                         data-close-invoice-modal
                         class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600"
                     >
-                        Tutup
+                        {{ __('ui.overview.close_modal') }}
                     </button>
                 </div>
             </div>
@@ -234,7 +234,7 @@
             const title = document.getElementById('order-invoice-modal-title');
             const openButtons = document.querySelectorAll('[data-open-invoice-modal]');
             const closeButtons = modal?.querySelectorAll('[data-close-invoice-modal]');
-            const defaultTitle = 'Detail Invoice';
+            const defaultTitle = @js(__('ui.overview.invoice_detail_title'));
 
             if (!modal || !frame || openButtons.length === 0) {
                 return;

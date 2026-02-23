@@ -1,13 +1,13 @@
 @extends('layouts.admin', ['activePage' => 'content'])
 
-@section('title', 'Konten Lama & Media')
-@section('page_title', 'Konten Lama & Media')
+@section('title', __('Konten Lama & Media'))
+@section('page_title', __('Konten Lama & Media'))
 
 @php
     $groupLabels = [
-        'home' => 'Beranda',
-        'footer' => 'Footer',
-        'contact' => 'Kontak',
+        'home' => __('Beranda'),
+        'footer' => __('Footer'),
+        'contact' => __('Kontak'),
     ];
 
     $groupedSchema = collect($schema ?? [])->groupBy('group');
@@ -34,7 +34,7 @@
                 <section class="card rounded-2xl p-6 shadow-sm">
                     <div class="mb-4 flex flex-col gap-1">
                         <h2 class="text-lg font-semibold text-slate-900">{{ $groupLabels[$group] ?? ucfirst($group) }}</h2>
-                        <p class="text-xs text-slate-500">Ini halaman lama untuk konten campuran teks + media.</p>
+                        <p class="text-xs text-slate-500">{{ __('Ini halaman lama untuk konten campuran teks + media.') }}</p>
                     </div>
 
                     <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -63,7 +63,7 @@
                                             <img src="{{ $imageUrl }}" alt="{{ $altValue ?: $meta['label'] }}" class="h-32 w-full rounded-xl border border-slate-200 object-cover bg-white">
                                         @else
                                             <div class="flex h-32 items-center justify-center rounded-xl border border-slate-200 bg-white text-xs text-slate-400">
-                                                Belum ada gambar
+                                                {{ __('Belum ada gambar') }}
                                             </div>
                                         @endif
 
@@ -79,7 +79,7 @@
                                                 name="{{ $field }}_alt"
                                                 type="text"
                                                 value="{{ $altValue }}"
-                                                placeholder="Alt text gambar (opsional)"
+                                                placeholder="{{ __('Alt text gambar (opsional)') }}"
                                                 class="input w-full rounded-xl px-3 py-2 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                                             >
                                         </div>
@@ -104,9 +104,9 @@
             @endforeach
 
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <p class="text-xs text-slate-500">Untuk mengedit teks situs pengguna, gunakan menu baru: <strong>Teks Website</strong>.</p>
+                <p class="text-xs text-slate-500">{{ __('Untuk mengedit teks situs pengguna, gunakan menu baru:') }} <strong>{{ __('Teks Website') }}</strong>.</p>
                 <button type="submit" class="btn-primary inline-flex items-center justify-center rounded-xl px-6 py-2.5 text-sm font-semibold transition">
-                    Simpan Konten
+                    {{ __('Simpan Konten') }}
                 </button>
             </div>
         </form>

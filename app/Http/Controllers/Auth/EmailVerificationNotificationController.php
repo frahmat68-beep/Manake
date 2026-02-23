@@ -28,14 +28,14 @@ class EmailVerificationNotificationController extends Controller
         $hourlyKey = $baseKey . ':hourly';
         if (Cache::has($cooldownKey)) {
             return back()->withErrors([
-                'email' => 'Tunggu sebentar sebelum kirim ulang email verifikasi.',
+                'email' => __('Tunggu sebentar sebelum kirim ulang email verifikasi.'),
             ]);
         }
 
         $sentThisHour = (int) Cache::get($hourlyKey, 0);
         if ($sentThisHour >= $maxPerHour) {
             return back()->withErrors([
-                'email' => 'Batas kirim email verifikasi tercapai. Coba lagi dalam 1 jam.',
+                'email' => __('Batas kirim email verifikasi tercapai. Coba lagi dalam 1 jam.'),
             ]);
         }
 
@@ -56,7 +56,7 @@ class EmailVerificationNotificationController extends Controller
             ]);
 
             return back()->withErrors([
-                'email' => 'Gagal mengirim email verifikasi. Coba lagi beberapa saat.',
+                'email' => __('Gagal mengirim email verifikasi. Coba lagi beberapa saat.'),
             ]);
         }
 

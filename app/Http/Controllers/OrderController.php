@@ -75,7 +75,7 @@ class OrderController extends Controller
         if (! in_array((string) $order->status_pesanan, $allowedStatuses, true)) {
             return redirect()
                 ->route('account.orders.show', $order)
-                ->with('error', 'Reschedule hanya bisa dilakukan sebelum barang diambil.');
+                ->with('error', __('Reschedule hanya bisa dilakukan sebelum barang diambil.'));
         }
 
         $validated = $request->validate([
@@ -89,7 +89,7 @@ class OrderController extends Controller
         } catch (\Throwable $exception) {
             return redirect()
                 ->route('account.orders.show', $order)
-                ->with('error', 'Tanggal reschedule tidak valid.');
+                ->with('error', __('Tanggal reschedule tidak valid.'));
         }
 
         $currentDurationDays = $this->resolveOrderDurationDays($order);
@@ -97,7 +97,9 @@ class OrderController extends Controller
         if ($currentDurationDays > 0 && $newDurationDays !== $currentDurationDays) {
             return redirect()
                 ->route('account.orders.show', $order)
-                ->with('error', 'Durasi reschedule harus tetap ' . $currentDurationDays . ' hari agar nominal pembayaran tetap sinkron.');
+                ->with('error', __('Durasi reschedule harus tetap :days hari agar nominal pembayaran tetap sinkron.', [
+                    'days' => $currentDurationDays,
+                ]));
         }
 
         try {
@@ -105,7 +107,7 @@ class OrderController extends Controller
                 $order->load(['items.equipment', 'payment']);
 
                 if ($order->items->isEmpty()) {
-                    throw new \RuntimeException('Order tidak memiliki item untuk dijadwalkan ulang.', 422);
+                    throw new \RuntimeException(__('Order tidak memiliki item untuk dijadwalkan ulang.'), 422);
                 }
 
                 $equipmentIds = $order->items
@@ -115,7 +117,7 @@ class OrderController extends Controller
                     ->values();
 
                 if ($equipmentIds->isEmpty()) {
-                    throw new \RuntimeException('Order tidak memiliki item equipment yang valid.', 422);
+                    throw new \RuntimeException(__('Order tidak memiliki item equipment yang valid.'), 422);
                 }
 
                 $equipments = Equipment::query()
@@ -126,7 +128,7 @@ class OrderController extends Controller
 
                 $missingEquipmentIds = $equipmentIds->diff($equipments->keys());
                 if ($missingEquipmentIds->isNotEmpty()) {
-                    throw new \RuntimeException('Sebagian item sudah tidak tersedia untuk reschedule.', 422);
+                    throw new \RuntimeException(__('Sebagian item sudah tidak tersedia untuk reschedule.'), 422);
                 }
 
                 $requestedDailyByEquipment = [];
@@ -148,11 +150,11 @@ class OrderController extends Controller
                 foreach ($requestedDailyByEquipment as $equipmentId => $requestedDaily) {
                     $equipment = $equipments->get((int) $equipmentId);
                     if (! $equipment) {
-                        throw new \RuntimeException('Sebagian item sudah tidak tersedia untuk reschedule.', 422);
+                        throw new \RuntimeException(__('Sebagian item sudah tidak tersedia untuk reschedule.'), 422);
                     }
 
                     if (($equipment->status ?? 'ready') !== 'ready') {
-                        throw new \RuntimeException("{$equipment->name} sedang tidak bisa disewa.", 422);
+                        throw new \RuntimeException(__(':name sedang tidak bisa disewa.', ['name' => $equipment->name]), 422);
                     }
 
                     $reservedDaily = $availability->getDailyReservedUnits(
@@ -179,7 +181,13 @@ class OrderController extends Controller
                             $list .= ', ...';
                         }
 
-                        throw new \RuntimeException("{$equipment->name} sedang disewa pada tanggal: {$list}. Silakan pilih tanggal lain.", 422);
+                        throw new \RuntimeException(
+                            __(':name sedang disewa pada tanggal: :dates. Silakan pilih tanggal lain.', [
+                                'name' => $equipment->name,
+                                'dates' => $list,
+                            ]),
+                            422
+                        );
                     }
                 }
 
@@ -231,7 +239,7 @@ class OrderController extends Controller
                 }
             });
         } catch (\RuntimeException $exception) {
-            $message = $exception->getMessage() ?: 'Reschedule gagal diproses.';
+            $message = $exception->getMessage() ?: __('Reschedule gagal diproses.');
 
             return redirect()
                 ->route('account.orders.show', $order)
@@ -241,12 +249,12 @@ class OrderController extends Controller
 
             return redirect()
                 ->route('account.orders.show', $order)
-                ->with('error', 'Reschedule gagal diproses. Silakan coba lagi.');
+                ->with('error', __('Reschedule gagal diproses. Silakan coba lagi.'));
         }
 
         return redirect()
             ->route('account.orders.show', $order->fresh())
-            ->with('success', 'Jadwal sewa berhasil diubah.');
+            ->with('success', __('Jadwal sewa berhasil diubah.'));
     }
 
     public function receipt(Request $request, Order $order)
@@ -257,8 +265,8 @@ class OrderController extends Controller
 
         if (! $order->canAccessInvoice()) {
             $message = $order->hasOutstandingDamageFee()
-                ? 'Invoice tersedia setelah tagihan tambahan lunas.'
-                : 'Invoice hanya tersedia setelah pembayaran berhasil.';
+                ? __('Invoice tersedia setelah tagihan tambahan lunas.')
+                : __('Invoice hanya tersedia setelah pembayaran berhasil.');
 
             return redirect()
                 ->route('account.orders.show', $order)
@@ -281,8 +289,8 @@ class OrderController extends Controller
 
         if (! $order->canAccessInvoice()) {
             $message = $order->hasOutstandingDamageFee()
-                ? 'Invoice PDF tersedia setelah tagihan tambahan lunas.'
-                : 'Invoice PDF hanya tersedia setelah pembayaran berhasil.';
+                ? __('Invoice PDF tersedia setelah tagihan tambahan lunas.')
+                : __('Invoice PDF hanya tersedia setelah pembayaran berhasil.');
 
             return redirect()
                 ->route('account.orders.show', $order)

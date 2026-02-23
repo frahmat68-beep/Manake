@@ -100,7 +100,7 @@ class WebsiteSettingsController extends Controller
             'keys' => array_values($mapping),
         ], $adminId);
 
-        return back()->with('success', 'Website settings berhasil disimpan.');
+        return back()->with('success', __('Website settings berhasil disimpan.'));
     }
 
     private function storeFile($file, string $directory, string $settingKey): string

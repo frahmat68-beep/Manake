@@ -22,11 +22,29 @@ class CopywritingController extends Controller
         abort_unless(isset($sections[$section]), 404);
 
         $sectionMeta = $sections[$section];
+        $locale = (string) app()->getLocale();
+        $fallbackLocale = (string) config('app.fallback_locale', 'id');
         $settingKeys = collect($sectionMeta['fields'] ?? [])->pluck('key')->all();
-        $settings = SiteSetting::query()
-            ->whereIn('key', $settingKeys)
+        $localizedSettingKeys = collect($settingKeys)
+            ->map(fn (string $key) => $this->storedSettingKey($key, $locale, $fallbackLocale))
+            ->all();
+        $rawSettings = SiteSetting::query()
+            ->whereIn('key', array_values(array_unique(array_merge($settingKeys, $localizedSettingKeys))))
             ->pluck('value', 'key')
             ->toArray();
+        $settings = [];
+
+        foreach ($settingKeys as $baseKey) {
+            $storedKey = $this->storedSettingKey($baseKey, $locale, $fallbackLocale);
+            if (array_key_exists($storedKey, $rawSettings)) {
+                $settings[$baseKey] = $rawSettings[$storedKey];
+                continue;
+            }
+
+            $settings[$baseKey] = $locale === $fallbackLocale
+                ? ($rawSettings[$baseKey] ?? null)
+                : null;
+        }
 
         return view('admin.copy.edit', [
             'sections' => $sections,
@@ -43,6 +61,8 @@ class CopywritingController extends Controller
         abort_unless(isset($sections[$section]), 404);
 
         $sectionMeta = $sections[$section];
+        $locale = (string) app()->getLocale();
+        $fallbackLocale = (string) config('app.fallback_locale', 'id');
         $rules = [];
 
         foreach ($sectionMeta['fields'] as $fieldName => $meta) {
@@ -57,9 +77,10 @@ class CopywritingController extends Controller
         foreach ($sectionMeta['fields'] as $fieldName => $meta) {
             $value = trim((string) ($validated[$fieldName] ?? ''));
             $storedValue = $value !== '' ? $value : null;
+            $storedKey = $this->storedSettingKey((string) $meta['key'], $locale, $fallbackLocale);
 
             SiteSetting::updateOrCreate(
-                ['key' => $meta['key']],
+                ['key' => $storedKey],
                 [
                     'value' => $storedValue,
                     'type' => $meta['type'] ?? 'text',
@@ -68,8 +89,13 @@ class CopywritingController extends Controller
                 ]
             );
 
-            $changedKeys[] = $meta['key'];
-            site_setting_forget($meta['key']);
+            $changedKeys[] = $storedKey;
+            site_setting_forget([
+                $storedKey,
+                (string) $meta['key'],
+                (string) $meta['key'] . '.id',
+                (string) $meta['key'] . '.en',
+            ]);
         }
 
         admin_audit('copy.update', 'site_settings', null, [
@@ -77,11 +103,20 @@ class CopywritingController extends Controller
             'keys' => $changedKeys,
         ], $adminId);
 
-        Cache::forget('copy.translation_overrides.lines');
+        Cache::forget('copy.translation_overrides.scoped');
 
         return redirect()
             ->route('admin.copy.edit', $section)
-            ->with('success', 'Teks untuk halaman ini berhasil disimpan.');
+            ->with('success', __('Teks untuk halaman ini berhasil disimpan.'));
+    }
+
+    private function storedSettingKey(string $baseKey, string $locale, string $fallbackLocale): string
+    {
+        if ($locale === '' || $locale === $fallbackLocale) {
+            return $baseKey;
+        }
+
+        return "{$baseKey}.{$locale}";
     }
 
     private function sections(): array

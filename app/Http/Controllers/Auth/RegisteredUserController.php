@@ -119,7 +119,7 @@ class RegisteredUserController extends Controller
 
             return redirect()
                 ->route('otp.form')
-                ->with('status', 'Kode OTP sudah dikirim ke email kamu.');
+                ->with('status', __('Kode OTP sudah dikirim ke email kamu.'));
         }
 
         $request->session()->put('otp_verified', true);

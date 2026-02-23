@@ -7,14 +7,14 @@
 
         <!-- Alamat Email -->
         <div>
-            <x-input-label for="email" value="Email" />
+            <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Kata Sandi -->
         <div class="mt-4">
-            <x-input-label for="password" value="Kata Sandi" />
+            <x-input-label for="password" :value="__('Kata Sandi')" />
             <x-password-input
                 id="password"
                 name="password"
@@ -29,7 +29,7 @@
 
         <!-- Konfirmasi Kata Sandi -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" value="Konfirmasi Kata Sandi" />
+            <x-input-label for="password_confirmation" :value="__('Konfirmasi Kata Sandi')" />
             <x-password-input
                 id="password_confirmation"
                 name="password_confirmation"
@@ -45,7 +45,7 @@
 
         <div class="flex items-center justify-end mt-4">
             <x-primary-button>
-                Atur Ulang Kata Sandi
+                {{ __('Atur Ulang Kata Sandi') }}
             </x-primary-button>
         </div>
     </form>

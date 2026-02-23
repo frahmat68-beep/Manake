@@ -1,7 +1,7 @@
 @extends('layouts.admin', ['activePage' => 'db'])
 
-@section('title', 'Ubah Data')
-@section('page_title', 'Data Database')
+@section('title', __('Ubah Data'))
+@section('page_title', __('Data Database'))
 
 @section('content')
     @php
@@ -30,10 +30,10 @@
     <div class="max-w-5xl mx-auto space-y-6">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-                <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">Ubah Data</p>
+                <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">{{ __('Ubah Data') }}</p>
                 <h2 class="text-xl font-semibold text-slate-900 dark:text-white">{{ $table }} #{{ data_get($record, $primaryKey) }}</h2>
             </div>
-            <a href="{{ route('admin.db.show', [$table, data_get($record, $primaryKey)]) }}" class="text-sm text-slate-500 hover:text-blue-600 dark:text-slate-300">← Batal Ubah</a>
+            <a href="{{ route('admin.db.show', [$table, data_get($record, $primaryKey)]) }}" class="text-sm text-slate-500 hover:text-blue-600 dark:text-slate-300">{{ __('← Batal Ubah') }}</a>
         </div>
 
         @if ($errors->any())
@@ -83,11 +83,11 @@
 
             <label class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-300">
                 <input type="checkbox" name="confirm_update" class="mt-1 rounded border-slate-300 text-blue-600 focus:ring-blue-500" required>
-                <span>Saya memahami perubahan ini akan langsung mengubah database.</span>
+                <span>{{ __('Saya memahami perubahan ini akan langsung mengubah database.') }}</span>
             </label>
 
             <button class="w-full rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition">
-                Simpan Data
+                {{ __('Simpan Data') }}
             </button>
         </form>
     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', setting('copy.checkout.title', 'Konfirmasi Sewa'))
+@section('title', setting('copy.checkout.title', __('ui.checkout.title')))
 
 @section('content')
     @php
@@ -9,24 +9,24 @@
         $estimatedSubtotal = (int) ($estimatedSubtotal ?? 0);
         $taxAmount = (int) ($taxAmount ?? 0);
         $estimatedTotal = (int) ($estimatedTotal ?? ($estimatedSubtotal + $taxAmount));
-        $checkoutTitle = setting('copy.checkout.title', 'Konfirmasi Sewa');
-        $checkoutSubtitle = setting('copy.checkout.subtitle', 'Tinjau jadwal tiap alat sebelum pembayaran.');
-        $checkoutBackToCart = setting('copy.checkout.back_to_cart', 'Kembali ke Keranjang');
-        $checkoutDetailTitle = setting('copy.checkout.detail_title', 'Detail Sewa');
-        $checkoutEmptyCart = setting('copy.checkout.empty_cart', 'Keranjang kosong. Silakan tambahkan item sebelum pembayaran.');
-        $checkoutProfileTitle = setting('copy.checkout.profile_title', 'Data Diri');
-        $checkoutProfileHint = setting('copy.checkout.profile_hint', 'Data diambil dari profil. Perbarui profil bila perlu.');
-        $checkoutConfirmProfile = setting('copy.checkout.confirm_profile', 'Saya memastikan data diri di atas sudah benar.');
-        $checkoutSubmitButton = setting('copy.checkout.submit_button', 'Konfirmasi & Bayar');
-        $checkoutSubmitProcessing = setting('copy.checkout.submit_processing', 'Memproses...');
-        $checkoutPaymentTitle = setting('copy.checkout.payment_title', 'Metode Pembayaran');
-        $checkoutPaymentNote = setting('copy.checkout.payment_note', 'Pembayaran akan diproses melalui Midtrans Snap (sandbox) tanpa memuat ulang halaman.');
-        $checkoutSummaryTitle = setting('copy.checkout.summary_title', 'Ringkasan');
-        $checkoutSummarySubtotal = setting('copy.checkout.summary_subtotal', 'Subtotal / hari');
-        $checkoutSummaryEstimate = setting('copy.checkout.summary_estimate', 'Total (estimasi)');
-        $checkoutSummaryTax = setting('copy.checkout.summary_tax', 'PPN 11%');
-        $checkoutSummaryTotal = setting('copy.checkout.summary_total', 'Total Bayar');
-        $checkoutNoItems = setting('copy.checkout.no_items', 'Tidak ada item di keranjang.');
+        $checkoutTitle = setting('copy.checkout.title', __('ui.checkout.title'));
+        $checkoutSubtitle = setting('copy.checkout.subtitle', __('ui.checkout.subtitle'));
+        $checkoutBackToCart = setting('copy.checkout.back_to_cart', __('ui.checkout.back_to_cart'));
+        $checkoutDetailTitle = setting('copy.checkout.detail_title', __('ui.checkout.detail_title'));
+        $checkoutEmptyCart = setting('copy.checkout.empty_cart', __('ui.checkout.empty_cart'));
+        $checkoutProfileTitle = setting('copy.checkout.profile_title', __('ui.checkout.profile_title'));
+        $checkoutProfileHint = setting('copy.checkout.profile_hint', __('ui.checkout.profile_hint'));
+        $checkoutConfirmProfile = setting('copy.checkout.confirm_profile', __('ui.checkout.confirm_profile'));
+        $checkoutSubmitButton = setting('copy.checkout.submit_button', __('ui.checkout.submit_button'));
+        $checkoutSubmitProcessing = setting('copy.checkout.submit_processing', __('ui.checkout.submit_processing'));
+        $checkoutPaymentTitle = setting('copy.checkout.payment_title', __('ui.checkout.payment_title'));
+        $checkoutPaymentNote = setting('copy.checkout.payment_note', __('ui.checkout.payment_note'));
+        $checkoutSummaryTitle = setting('copy.checkout.summary_title', __('ui.checkout.summary_title'));
+        $checkoutSummarySubtotal = setting('copy.checkout.summary_subtotal', __('ui.checkout.summary_subtotal'));
+        $checkoutSummaryEstimate = setting('copy.checkout.summary_estimate', __('ui.checkout.summary_estimate'));
+        $checkoutSummaryTax = setting('copy.checkout.summary_tax', __('ui.checkout.summary_tax'));
+        $checkoutSummaryTotal = setting('copy.checkout.summary_total', __('ui.checkout.summary_total'));
+        $checkoutNoItems = setting('copy.checkout.no_items', __('ui.checkout.no_items'));
         $checkoutQtyTemplate = __('ui.checkout.qty_template');
         $checkoutScheduleLabel = __('ui.checkout.schedule_label');
         $checkoutInvalidDateNote = __('ui.checkout.invalid_date_note');
@@ -95,7 +95,7 @@
                                     @if ($startDate && $endDate)
                                         <p class="mt-2 text-xs text-blue-700">
                                             {{ $checkoutScheduleLabel }}: {{ $startDate->translatedFormat('d M Y') }} - {{ $endDate->translatedFormat('d M Y') }}
-                                            ({{ max((int) ($item['rental_days'] ?? 1), 1) }} hari)
+                                            ({{ max((int) ($item['rental_days'] ?? 1), 1) }} {{ __('app.product.day_label') }})
                                         </p>
                                     @else
                                         <p class="mt-2 text-xs text-rose-600">{{ $checkoutInvalidDateNote }}</p>

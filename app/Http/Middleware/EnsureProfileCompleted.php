@@ -23,19 +23,19 @@ class EnsureProfileCompleted
         if (! Schema::hasTable('profiles')) {
             return redirect()
                 ->route('profile.complete')
-                ->with('error', 'Profil belum siap, jalankan migrasi terlebih dahulu.');
+                ->with('error', __('Profil belum siap, jalankan migrasi terlebih dahulu.'));
         }
 
         $user->load('profile');
 
         if (! $user->profileIsComplete()) {
             return redirect()->guest(route('profile.complete'))
-                ->with('error', 'Lengkapi profil dulu sebelum checkout.');
+                ->with('error', __('Lengkapi profil dulu sebelum checkout.'));
         }
 
         if (! $user->hasVerifiedPhone()) {
             return redirect()->guest(route('phone.verify'))
-                ->with('error', 'Verifikasi nomor telepon dulu sebelum checkout.');
+                ->with('error', __('Verifikasi nomor telepon dulu sebelum checkout.'));
         }
 
         return $next($request);

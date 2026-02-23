@@ -107,7 +107,7 @@ class ContentController extends Controller
             'keys' => $changedKeys,
         ], $adminId);
 
-        return back()->with('success', 'Konten berhasil disimpan.');
+        return back()->with('success', __('Konten berhasil disimpan.'));
     }
 
     private function schema(): array

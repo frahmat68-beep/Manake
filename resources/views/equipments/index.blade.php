@@ -42,8 +42,11 @@
         $catalogTitle = setting('copy.catalog.title', __('app.catalog.title'));
         $catalogSubtitle = setting('copy.catalog.subtitle', __('app.catalog.subtitle'));
         $categoryLabel = setting('copy.catalog.category_label', __('app.catalog.filter_category'));
-        $emptyTitle = setting('copy.catalog.empty_title', 'Belum ada alat tersedia.');
-        $emptySubtitle = setting('copy.catalog.empty_subtitle', 'Tambahkan alat baru dari admin agar katalog terisi.');
+        $emptyTitle = setting('copy.catalog.empty_title', __('ui.catalog.empty_title'));
+        $emptySubtitle = setting('copy.catalog.empty_subtitle', __('ui.catalog.empty_subtitle'));
+        $intlLocale = app()->getLocale() === 'en' ? 'en-US' : 'id-ID';
+        $currencyPrefix = app()->getLocale() === 'en' ? 'IDR' : 'Rp';
+        $dayLabel = __('app.product.day_label');
         $catalogResetSearchLabel = __('ui.catalog.reset_search_label');
         $catalogAllCategoriesLabel = __('ui.catalog.all_categories_label');
         $catalogSearchResultPrefix = __('ui.catalog.search_result_prefix');
@@ -205,7 +208,7 @@
                                         return days > 0 ? days * {{ (int) $item->price_per_day }} * this.quickQty : 0;
                                     },
                                     formatIdr(value) {
-                                        return new Intl.NumberFormat('id-ID').format(value);
+                                        return new Intl.NumberFormat(@js($intlLocale)).format(value);
                                     }
                                 }"
                                 class="card group flex h-full flex-col overflow-hidden rounded-2xl shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
@@ -228,7 +231,7 @@
                                 <div class="flex flex-1 flex-col p-5">
                                     <h3 class="min-h-[3.4rem] text-lg font-semibold leading-snug text-slate-900">{{ $item->name }}</h3>
                                     <p class="mt-2 text-xs text-slate-500">{{ __('app.product.price_per_day') }}</p>
-                                    <p class="text-lg font-semibold text-slate-900">Rp {{ number_format($item->price_per_day, 0, ',', '.') }}</p>
+                                    <p class="text-lg font-semibold text-slate-900">{{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}</p>
 
                                     <div class="mt-4 grid grid-cols-3 gap-2 text-center">
                                         <div class="rounded-lg bg-slate-50 px-2 py-2">
@@ -369,11 +372,11 @@
                                                         <div class="grid grid-cols-2 gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm text-slate-600">
                                                             <div>
                                                                 <p class="text-[11px] uppercase tracking-wide text-slate-500">{{ $catalogQuickDurationLabel }}</p>
-                                                                <p class="font-semibold text-slate-900" x-text="calcDays() > 0 ? `${calcDays()} hari` : '-'"></p>
+                                                                <p class="font-semibold text-slate-900" x-text="calcDays() > 0 ? `${calcDays()} {{ $dayLabel }}` : '-'"></p>
                                                             </div>
                                                             <div class="text-right">
                                                                 <p class="text-[11px] uppercase tracking-wide text-slate-500">{{ $catalogQuickEstimateLabel }}</p>
-                                                                <p class="font-semibold text-slate-900" x-text="calcTotal() > 0 ? `Rp ${formatIdr(calcTotal())}` : 'Rp -'"></p>
+                                                                <p class="font-semibold text-slate-900" x-text="calcTotal() > 0 ? `{{ $currencyPrefix }} ${formatIdr(calcTotal())}` : '{{ $currencyPrefix }} -'"></p>
                                                             </div>
                                                         </div>
 

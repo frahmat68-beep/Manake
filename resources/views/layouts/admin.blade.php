@@ -109,7 +109,7 @@
         $activePage = $activePage ?? '';
         $brandName = site_setting('brand.name', 'Manake');
         $logoUrl = $assetWithVersion('MANAKE-FAV-M.png');
-        $adminName = auth('admin')->user()->name ?? 'Admin';
+        $adminName = auth('admin')->user()->name ?? __('Admin');
         $adminRole = auth('admin')->user()->role ?? 'admin';
         $isSuperAdmin = auth('admin')->check() && $adminRole === 'super_admin';
         $locale = app()->getLocale();
@@ -135,7 +135,7 @@
             <header class="sticky top-0 z-30 border-b border-slate-200 bg-white">
                 <div class="mx-auto flex h-16 w-full max-w-[1320px] items-center justify-between gap-3 px-4 sm:px-6">
                     <div class="flex min-w-0 items-center gap-3">
-                        <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 lg:hidden" @click="sidebarOpen = true" aria-label="Buka sidebar">
+                        <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 lg:hidden" @click="sidebarOpen = true" aria-label="{{ __('Buka sidebar') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <line x1="4" y1="7" x2="20" y2="7"></line>
                                 <line x1="4" y1="12" x2="20" y2="12"></line>

@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         if (! Auth::attempt($credentials)) {
             return back()->withErrors([
-                'email' => 'Email atau password salah',
+                'email' => __('Email atau password salah'),
             ])->withInput($request->only('email', 'auth_modal'));
         }
 
@@ -46,7 +46,7 @@ class AuthenticatedSessionController extends Controller
             Auth::logout();
 
             return back()->withErrors([
-                'email' => 'Akun ini tidak memiliki akses admin.',
+                'email' => __('Akun ini tidak memiliki akses admin.'),
             ])->withInput($request->only('email', 'auth_modal'));
         }
 
@@ -55,7 +55,7 @@ class AuthenticatedSessionController extends Controller
                 $admin = Admin::updateOrCreate(
                     ['email' => $user->email],
                     [
-                        'name' => $user->name ?: 'Admin',
+                        'name' => $user->name ?: __('Admin'),
                         'password' => $user->password,
                         'role' => $role,
                         'email_verified_at' => $user->email_verified_at ?: now(),

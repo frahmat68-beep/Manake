@@ -80,7 +80,7 @@ class PaymentController extends Controller
         $damageFeeAmount = $order->resolvePenaltyAmount();
         if ($damageFeeAmount <= 0) {
             return response()->json([
-                'message' => 'Tagihan tambahan belum tersedia.',
+                'message' => __('Tagihan tambahan belum tersedia.'),
             ], 422);
         }
 
@@ -93,13 +93,13 @@ class PaymentController extends Controller
 
         if (! in_array((string) $order->status_pesanan, $damageEligibleStatuses, true)) {
             return response()->json([
-                'message' => 'Tagihan tambahan belum dapat diproses pada status order saat ini.',
+                'message' => __('Tagihan tambahan belum dapat diproses pada status order saat ini.'),
             ], 422);
         }
 
         if (($order->status_pembayaran ?? Order::PAYMENT_PENDING) !== Order::PAYMENT_PAID) {
             return response()->json([
-                'message' => 'Tagihan tambahan baru bisa dibayar setelah pembayaran sewa lunas.',
+                'message' => __('Tagihan tambahan baru bisa dibayar setelah pembayaran sewa lunas.'),
             ], 422);
         }
 
@@ -111,7 +111,7 @@ class PaymentController extends Controller
 
         if (($latestDamagePayment->status ?? null) === Order::PAYMENT_PAID) {
             return response()->json([
-                'message' => 'Tagihan tambahan sudah lunas.',
+                'message' => __('Tagihan tambahan sudah lunas.'),
             ], 422);
         }
 
@@ -161,11 +161,11 @@ class PaymentController extends Controller
         $payload = $request->all();
 
         if (! $this->isValidNotificationPayload($payload)) {
-            return response()->json(['message' => 'Invalid payload'], 400);
+            return response()->json(['message' => __('Invalid payload')], 400);
         }
 
         if (! $this->isValidNotificationSignature($payload)) {
-            return response()->json(['message' => 'Invalid signature'], 403);
+            return response()->json(['message' => __('Invalid signature')], 403);
         }
 
         $orderId = (string) ($payload['order_id'] ?? '');
@@ -178,11 +178,11 @@ class PaymentController extends Controller
                 'payload' => $payload,
             ]);
 
-            return response()->json(['message' => 'Order not found'], 404);
+            return response()->json(['message' => __('Order not found')], 404);
         }
 
         if (! $this->reserveWebhookEvent($payload, $order->id)) {
-            return response()->json(['status' => 'ok', 'message' => 'duplicate']);
+            return response()->json(['status' => 'ok', 'message' => __('duplicate')]);
         }
 
         $this->syncOrderPaymentStatus($order, $payload, $targetPayment);
@@ -198,7 +198,7 @@ class PaymentController extends Controller
 
         if (! $order->midtrans_order_id) {
             return response()->json([
-                'message' => 'Order belum memiliki Midtrans ID.',
+                'message' => __('Order belum memiliki Midtrans ID.'),
             ], 422);
         }
 
@@ -236,7 +236,7 @@ class PaymentController extends Controller
             report($exception);
 
             return response()->json([
-                'message' => 'Gagal menyinkronkan status pembayaran. Coba lagi beberapa saat.',
+                'message' => __('Gagal menyinkronkan status pembayaran. Coba lagi beberapa saat.'),
             ], 500);
         }
     }
@@ -255,7 +255,7 @@ class PaymentController extends Controller
 
         if (! $payment || ! $payment->midtrans_order_id) {
             return response()->json([
-                'message' => 'Tagihan tambahan belum memiliki sesi pembayaran Midtrans.',
+                'message' => __('Tagihan tambahan belum memiliki sesi pembayaran Midtrans.'),
             ], 422);
         }
 
@@ -283,7 +283,7 @@ class PaymentController extends Controller
             report($exception);
 
             return response()->json([
-                'message' => 'Gagal menyinkronkan status tagihan tambahan.',
+                'message' => __('Gagal menyinkronkan status tagihan tambahan.'),
             ], 500);
         }
     }
@@ -372,11 +372,13 @@ class PaymentController extends Controller
             return;
         }
 
-        $title = 'Update pembayaran ' . ($order->order_number ?: ('ORD-' . $order->id));
-        $message = 'Status pembayaran kamu sekarang: ' . $this->paymentStatusLabel($order->status_pembayaran) . '.';
+        $title = __('Update pembayaran') . ' ' . ($order->order_number ?: ('ORD-' . $order->id));
+        $message = __('Status pembayaran kamu sekarang: :status.', [
+            'status' => $this->paymentStatusLabel($order->status_pembayaran),
+        ]);
 
         if ($order->status_pembayaran === 'paid') {
-            $message .= ' Invoice sudah tersedia.';
+            $message .= ' ' . __('Invoice sudah tersedia.');
         }
 
         OrderNotification::create([
@@ -401,17 +403,21 @@ class PaymentController extends Controller
         $damageFeeAmount = max((int) ($payment->gross_amount ?? $order->resolvePenaltyAmount()), 0);
 
         $message = match ($paymentStatus) {
-            Order::PAYMENT_PAID => 'Tagihan tambahan kerusakan sebesar Rp ' . number_format($damageFeeAmount, 0, ',', '.') . ' sudah lunas.',
-            Order::PAYMENT_EXPIRED => 'Tagihan tambahan kerusakan kadaluwarsa. Silakan buat sesi pembayaran baru dari detail order.',
-            Order::PAYMENT_FAILED => 'Pembayaran tagihan tambahan gagal. Silakan coba lagi.',
-            default => 'Tagihan tambahan kerusakan berstatus ' . $this->paymentStatusLabel($paymentStatus) . '.',
+            Order::PAYMENT_PAID => __('Tagihan tambahan kerusakan sebesar Rp :amount sudah lunas.', [
+                'amount' => number_format($damageFeeAmount, 0, ',', '.'),
+            ]),
+            Order::PAYMENT_EXPIRED => __('Tagihan tambahan kerusakan kadaluwarsa. Silakan buat sesi pembayaran baru dari detail order.'),
+            Order::PAYMENT_FAILED => __('Pembayaran tagihan tambahan gagal. Silakan coba lagi.'),
+            default => __('Tagihan tambahan kerusakan berstatus :status.', [
+                'status' => $this->paymentStatusLabel($paymentStatus),
+            ]),
         };
 
         OrderNotification::create([
             'user_id' => $order->user_id,
             'order_id' => $order->id,
             'type' => 'damage_fee_update',
-            'title' => 'Tagihan tambahan ' . ($order->order_number ?: ('ORD-' . $order->id)),
+            'title' => __('Tagihan tambahan') . ' ' . ($order->order_number ?: ('ORD-' . $order->id)),
             'message' => $message,
         ]);
     }
@@ -580,11 +586,11 @@ class PaymentController extends Controller
     private function paymentStatusLabel(?string $status): string
     {
         return match ($status) {
-            'paid' => 'Lunas',
-            'failed' => 'Gagal',
-            'expired' => 'Expired',
-            'refunded' => 'Refund',
-            default => 'Pending',
+            'paid' => __('Lunas'),
+            'failed' => __('Gagal'),
+            'expired' => __('Kedaluwarsa'),
+            'refunded' => __('Refund'),
+            default => __('Menunggu'),
         };
     }
 

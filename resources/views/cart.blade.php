@@ -83,8 +83,8 @@
                                 <p class="text-xs text-slate-500">{{ $item['category'] ?? '-' }}</p>
                                 @if ($startDate && $endDate)
                                     <p class="mt-1 text-xs text-blue-700">
-                                        Sewa: {{ $startDate->translatedFormat('d M Y') }} - {{ $endDate->translatedFormat('d M Y') }}
-                                        ({{ $durationDays }} hari)
+                                        {{ __('Sewa:') }} {{ $startDate->translatedFormat('d M Y') }} - {{ $endDate->translatedFormat('d M Y') }}
+                                        ({{ $durationDays }} {{ __('hari') }})
                                     </p>
                                 @else
                                     <p class="mt-1 text-xs text-amber-600">{{ __('ui.cart.missing_dates_note') }}</p>
@@ -117,7 +117,7 @@
                                 <p class="text-lg font-semibold text-slate-900">
                                     {{ $formatIdr(($item['price'] ?? 0) * ($item['qty'] ?? 1)) }}
                                 </p>
-                                <p class="mt-1 text-xs text-slate-500">Estimasi item: {{ $formatIdr($lineEstimate) }}</p>
+                                <p class="mt-1 text-xs text-slate-500">{{ __('Estimasi item:') }} {{ $formatIdr($lineEstimate) }}</p>
                                 @if (! empty($item['slug']))
                                     <a href="{{ route('product.show', $item['slug']) }}" class="mt-2 inline-block text-xs text-blue-600 hover:text-blue-700">{{ __('ui.actions.detail') }}</a>
                                 @endif

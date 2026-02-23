@@ -1,7 +1,7 @@
 @extends('layouts.admin', ['activePage' => 'copy'])
 
-@section('title', 'Editor Teks Website')
-@section('page_title', 'Editor Teks Website')
+@section('title', __('Editor Teks Website'))
+@section('page_title', __('Editor Teks Website'))
 
 @php
     $fallbacks = [
@@ -208,26 +208,26 @@
         <section class="card rounded-2xl p-6 shadow-sm">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                    <h2 class="text-xl font-semibold text-slate-900">{{ $sectionMeta['label'] }}</h2>
-                    <p class="mt-1 text-sm text-slate-600">{{ $sectionMeta['description'] }}</p>
-                    <p class="mt-1 text-xs text-slate-500">Semua field di halaman ini khusus edit teks yang tampil ke pengguna. Field sudah dirapikan per kontainer tampilan supaya lebih mudah dikelola.</p>
+                    <h2 class="text-xl font-semibold text-slate-900">{{ __($sectionMeta['label']) }}</h2>
+                    <p class="mt-1 text-sm text-slate-600">{{ __($sectionMeta['description']) }}</p>
+                    <p class="mt-1 text-xs text-slate-500">{{ __('Semua field di halaman ini khusus edit teks yang tampil ke pengguna. Field sudah dirapikan per kontainer tampilan supaya lebih mudah dikelola.') }}</p>
                 </div>
                 <a href="{{ route('admin.dashboard') }}" class="btn-secondary inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition">
-                    Kembali ke Dashboard
+                    {{ __('Kembali ke Dashboard') }}
                 </a>
             </div>
         </section>
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-[260px,1fr]">
             <aside class="card h-fit rounded-2xl p-4 shadow-sm">
-                <p class="px-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Halaman Pengguna</p>
+                <p class="px-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{{ __('Halaman Pengguna') }}</p>
                 <nav class="mt-3 space-y-1">
                     @foreach ($sections as $sectionKey => $meta)
                         <a
                             href="{{ route('admin.copy.edit', $sectionKey) }}"
                             class="block rounded-xl px-3 py-2 text-sm font-semibold transition {{ $currentSection === $sectionKey ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}"
                         >
-                            {{ $meta['label'] }}
+                            {{ __($meta['label']) }}
                         </a>
                     @endforeach
                 </nav>
@@ -259,11 +259,11 @@
 
                     @if ($fieldsByContainer->count() > 1)
                         <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Navigasi Kontainer</p>
+                            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{{ __('Navigasi Kontainer') }}</p>
                             <div class="mt-2 flex flex-wrap gap-2">
                                 @foreach ($containerAnchors as $container => $anchorId)
                                     <a href="#{{ $anchorId }}" class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
-                                        {{ $container }}
+                                        {{ __($container) }}
                                     </a>
                                 @endforeach
                             </div>
@@ -273,8 +273,8 @@
                     @foreach ($fieldsByContainer as $container => $containerFields)
                         <article id="{{ $containerAnchors[$container] }}" class="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5 scroll-mt-28">
                             <div class="mb-4 flex items-center justify-between gap-3">
-                                <h3 class="text-sm font-semibold text-blue-700">{{ $container }}</h3>
-                                <span class="rounded-full bg-blue-100 px-2.5 py-1 text-[11px] font-semibold text-blue-700">{{ $containerFields->count() }} isian</span>
+                                <h3 class="text-sm font-semibold text-blue-700">{{ __($container) }}</h3>
+                                <span class="rounded-full bg-blue-100 px-2.5 py-1 text-[11px] font-semibold text-blue-700">{{ $containerFields->count() }} {{ __('isian') }}</span>
                             </div>
 
                             <div class="space-y-5">
@@ -290,14 +290,14 @@
                                     <div>
                                         <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                                             <div>
-                                                <label for="{{ $fieldName }}" class="text-sm font-semibold text-slate-900">{{ $meta['label'] }}</label>
+                                                <label for="{{ $fieldName }}" class="text-sm font-semibold text-slate-900">{{ __($meta['label']) }}</label>
                                                 @if (!empty($meta['location']))
-                                                    <p class="text-xs text-slate-500">Lokasi tampil: {{ $meta['location'] }}</p>
+                                                    <p class="text-xs text-slate-500">{{ __('Lokasi tampil:') }} {{ __($meta['location']) }}</p>
                                                 @endif
                                             </div>
                                             @if ($usingFallback)
                                                 <span class="inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold text-amber-700">
-                                                    Sedang pakai teks default
+                                                    {{ __('Sedang pakai teks default') }}
                                                 </span>
                                             @endif
                                         </div>
@@ -321,10 +321,10 @@
 
                                         @if ($isTranslationMap)
                                             <p class="mt-1 text-[11px] text-slate-500">
-                                                Format: <code>translation.key = Teks Baru</code>. Satu baris satu key. Contoh: <code>ui.nav.my_orders = Riwayat Sewa</code>.
+                                                {!! __('Format: <code>translation.key = Teks Baru</code>. Satu baris satu key. Contoh: <code>ui.nav.my_orders = Riwayat Sewa</code>.') !!}
                                             </p>
                                         @else
-                                            <p class="mt-1 text-[11px] text-slate-400">Kosongkan field jika mau balik ke teks default bawaan sistem.</p>
+                                            <p class="mt-1 text-[11px] text-slate-400">{{ __('Kosongkan field jika mau balik ke teks default bawaan sistem.') }}</p>
                                         @endif
                                     </div>
                                 @endforeach
@@ -333,9 +333,9 @@
                     @endforeach
 
                     <div class="flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                        <p class="text-xs text-slate-500">Perubahan langsung tampil di halaman pengguna setelah disimpan.</p>
+                        <p class="text-xs text-slate-500">{{ __('Perubahan langsung tampil di halaman pengguna setelah disimpan.') }}</p>
                         <button type="submit" class="btn-primary inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition">
-                            Simpan Teks Halaman
+                            {{ __('Simpan Teks Halaman') }}
                         </button>
                     </div>
                 </form>

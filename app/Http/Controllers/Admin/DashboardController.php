@@ -73,14 +73,14 @@ class DashboardController extends Controller
         $prevStatus = (string) $order->status_pesanan;
 
         if (($order->status_pembayaran ?? 'pending') !== 'paid') {
-            return back()->with('error', 'Order belum lunas, status operasional belum bisa diubah.');
+            return back()->with('error', __('Order belum lunas, status operasional belum bisa diubah.'));
         }
 
         if ($nextStatus === 'barang_diambil') {
             $rentalStart = $order->rental_start_date ? $order->rental_start_date->copy()->startOfDay() : null;
             $pickupConfirmationOpenAt = $rentalStart?->copy()->subDay();
             if (! $rentalStart || ! $pickupConfirmationOpenAt || now()->lt($pickupConfirmationOpenAt)) {
-                return back()->with('error', 'Konfirmasi barang diambil hanya bisa dilakukan mulai H-1 sebelum tanggal sewa.');
+                return back()->with('error', __('Konfirmasi barang diambil hanya bisa dilakukan mulai H-1 sebelum tanggal sewa.'));
             }
         }
 
@@ -91,11 +91,11 @@ class DashboardController extends Controller
         };
 
         if (! in_array($nextStatus, $allowedTransitions, true)) {
-            return back()->with('error', 'Perubahan status tidak valid untuk kondisi order saat ini.');
+            return back()->with('error', __('Perubahan status tidak valid untuk kondisi order saat ini.'));
         }
 
         if ($prevStatus === $nextStatus) {
-            return back()->with('success', 'Status operasional sudah sesuai.');
+            return back()->with('success', __('Status operasional sudah sesuai.'));
         }
 
         $order->status_pesanan = $nextStatus;
@@ -119,8 +119,11 @@ class DashboardController extends Controller
                 'user_id' => $order->user_id,
                 'order_id' => $order->id,
                 'type' => 'order_update',
-                'title' => 'Update operasional ' . ($order->order_number ?: ('ORD-' . $order->id)),
-                'message' => 'Status rental diperbarui: ' . $this->statusLabel($prevStatus) . ' → ' . $this->statusLabel($nextStatus) . '.',
+                'title' => __('Update operasional') . ' ' . ($order->order_number ?: ('ORD-' . $order->id)),
+                'message' => __('Status rental diperbarui: :before → :after.', [
+                    'before' => $this->statusLabel($prevStatus),
+                    'after' => $this->statusLabel($nextStatus),
+                ]),
             ]);
         }
 
@@ -129,24 +132,24 @@ class DashboardController extends Controller
             'after' => $nextStatus,
         ], auth('admin')->id());
 
-        return back()->with('success', 'Status operasional berhasil diperbarui dan notifikasi user terkirim.');
+        return back()->with('success', __('Status operasional berhasil diperbarui dan notifikasi user terkirim.'));
     }
 
     private function statusLabel(?string $status): string
     {
         return match ($status) {
-            'menunggu_pembayaran' => 'Menunggu Pembayaran',
-            'diproses' => 'Diproses Admin',
-            'lunas' => 'Siap Diambil',
-            'barang_diambil' => 'Barang Diambil',
-            'barang_kembali' => 'Barang Dikembalikan',
-            'barang_rusak' => 'Barang Rusak',
-            'barang_hilang' => 'Barang Hilang',
-            'overdue_denda' => 'Denda Overdue',
-            'selesai' => 'Selesai',
-            'expired' => 'Expired',
-            'dibatalkan' => 'Dibatalkan',
-            'refund' => 'Refund',
+            'menunggu_pembayaran' => __('Menunggu Pembayaran'),
+            'diproses' => __('Diproses Admin'),
+            'lunas' => __('Siap Diambil'),
+            'barang_diambil' => __('Barang Diambil'),
+            'barang_kembali' => __('Barang Dikembalikan'),
+            'barang_rusak' => __('Barang Rusak'),
+            'barang_hilang' => __('Barang Hilang'),
+            'overdue_denda' => __('Denda Overdue'),
+            'selesai' => __('Selesai'),
+            'expired' => __('Kedaluwarsa'),
+            'dibatalkan' => __('Dibatalkan'),
+            'refund' => __('Refund'),
             default => strtoupper((string) $status),
         };
     }

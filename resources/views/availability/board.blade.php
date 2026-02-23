@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', setting('copy.availability.title', 'Pusat Cek Ketersediaan Alat'))
-@section('meta_description', setting('copy.availability.subtitle', 'Pantau ketersediaan alat rental per tanggal dengan kalender interaktif dan ringkasan pemakaian.'))
+@section('title', setting('copy.availability.title', __('ui.availability_board.title')))
+@section('meta_description', setting('copy.availability.subtitle', __('ui.availability_board.subtitle')))
 
 @php
     $monthValue = $monthDate->format('Y-m');
@@ -10,42 +10,46 @@
     $selectedDateLabel = $selectedDate->translatedFormat('d M Y');
     $prevMonth = $monthDate->copy()->subMonth()->format('Y-m');
     $nextMonth = $monthDate->copy()->addMonth()->format('Y-m');
-    $weekdayLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+    $weekdayLabels = trans('ui.availability_board.weekdays');
+    if (! is_array($weekdayLabels) || count($weekdayLabels) !== 7) {
+        $weekdayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    }
+    $intlLocale = app()->getLocale() === 'en' ? 'en-US' : 'id-ID';
     $toneClasses = [
         'calm' => 'border-slate-200 bg-white text-slate-700',
         'busy' => 'border-amber-200 bg-amber-50 text-amber-800',
         'critical' => 'border-rose-200 bg-rose-50 text-rose-800',
     ];
-    $availabilityTitle = setting('copy.availability.title', 'Pusat Cek Ketersediaan Alat');
-    $availabilitySubtitle = setting('copy.availability.subtitle', 'Klik tanggal di kalender untuk melihat pesanan aktif, atau drag beberapa hari sekaligus untuk cek rentang sewa.');
-    $availabilityCalendarTitle = setting('copy.availability.calendar_title', 'Kalender Pemakaian');
-    $availabilitySelectedTitle = setting('copy.availability.selected_title', 'Tanggal Dipilih');
-    $availabilityReadyTitle = setting('copy.availability.ready_title', 'Alat Paling Siap Dipakai');
-    $availabilityBusyTitle = setting('copy.availability.busy_title', 'Alat Terpakai');
-    $availabilityMonthlyTitle = setting('copy.availability.monthly_title', 'Jadwal Aktif Bulan Ini');
-    $availabilitySearchPlaceholder = setting('copy.availability.search_placeholder', 'Cari nama alat...');
-    $availabilityShowButton = setting('copy.availability.show_button', 'Tampilkan');
-    $availabilityResetButton = setting('copy.availability.reset_button', 'Atur Ulang Pencarian');
-    $availabilityDragHint = setting('copy.availability.drag_hint', 'Tap tanggal untuk detail, drag untuk cek sewa rentang hari.');
-    $availabilityMetricTotal = setting('copy.availability.metric_total', 'Total Alat');
-    $availabilityMetricBusy = setting('copy.availability.metric_busy', 'Sedang Disewa');
-    $availabilityMetricAvailable = setting('copy.availability.metric_available', 'Masih Kosong');
-    $availabilityMetricUnits = setting('copy.availability.metric_units', 'Unit Dipakai');
-    $availabilityReadyEmpty = setting('copy.availability.ready_empty', 'Tidak ada alat yang kosong pada tanggal ini.');
-    $availabilityBusyEmpty = setting('copy.availability.busy_empty', 'Tidak ada alat yang sedang dipakai pada tanggal ini.');
-    $availabilityMonthlyEmpty = setting('copy.availability.monthly_empty', 'Belum ada jadwal aktif pada rentang bulan ini.');
-    $availabilityModalDateTitle = setting('copy.availability.modal_date_title', 'Detail Tanggal');
-    $availabilityModalClose = setting('copy.availability.modal_close', 'Tutup');
-    $availabilityModalEmpty = setting('copy.availability.modal_empty', 'Tidak ada pesanan aktif pada tanggal ini.');
-    $availabilityRangeKicker = setting('copy.availability.range_kicker', 'Cek Rentang Sewa');
-    $availabilityRangeTitle = setting('copy.availability.range_title', 'Mau sewa di tanggal ini?');
-    $availabilityRangeFilterLabel = setting('copy.availability.range_filter_label', 'Pilih Kategori Alat');
-    $availabilityRangeAllCategories = setting('copy.availability.range_all_categories', 'Semua kategori');
-    $availabilityRangeAvailableLabel = setting('copy.availability.range_available_label', 'Alat Tersedia');
-    $availabilityRangeContinue = setting('copy.availability.range_continue', 'Lanjut ke Keranjang');
-    $availabilityRangeEmpty = setting('copy.availability.range_empty', 'Tidak ada alat tersedia penuh di rentang tanggal ini. Coba kategori lain atau ubah rentang drag.');
-    $availabilityRangePick = setting('copy.availability.range_pick', 'Pilih & Sewa');
-    $availabilityRangePrefillNote = setting('copy.availability.range_prefill_note', 'Tanggal sewa akan terisi otomatis di detail alat.');
+    $availabilityTitle = setting('copy.availability.title', __('ui.availability_board.title'));
+    $availabilitySubtitle = setting('copy.availability.subtitle', __('ui.availability_board.subtitle'));
+    $availabilityCalendarTitle = setting('copy.availability.calendar_title', __('ui.availability_board.calendar_title'));
+    $availabilitySelectedTitle = setting('copy.availability.selected_title', __('ui.availability_board.selected_title'));
+    $availabilityReadyTitle = setting('copy.availability.ready_title', __('ui.availability_board.ready_title'));
+    $availabilityBusyTitle = setting('copy.availability.busy_title', __('ui.availability_board.busy_title'));
+    $availabilityMonthlyTitle = setting('copy.availability.monthly_title', __('ui.availability_board.monthly_title'));
+    $availabilitySearchPlaceholder = setting('copy.availability.search_placeholder', __('ui.availability_board.search_placeholder'));
+    $availabilityShowButton = setting('copy.availability.show_button', __('ui.availability_board.show_button'));
+    $availabilityResetButton = setting('copy.availability.reset_button', __('ui.availability_board.reset_button'));
+    $availabilityDragHint = setting('copy.availability.drag_hint', __('ui.availability_board.drag_hint'));
+    $availabilityMetricTotal = setting('copy.availability.metric_total', __('ui.availability_board.metric_total'));
+    $availabilityMetricBusy = setting('copy.availability.metric_busy', __('ui.availability_board.metric_busy'));
+    $availabilityMetricAvailable = setting('copy.availability.metric_available', __('ui.availability_board.metric_available'));
+    $availabilityMetricUnits = setting('copy.availability.metric_units', __('ui.availability_board.metric_units'));
+    $availabilityReadyEmpty = setting('copy.availability.ready_empty', __('ui.availability_board.ready_empty'));
+    $availabilityBusyEmpty = setting('copy.availability.busy_empty', __('ui.availability_board.busy_empty'));
+    $availabilityMonthlyEmpty = setting('copy.availability.monthly_empty', __('ui.availability_board.monthly_empty'));
+    $availabilityModalDateTitle = setting('copy.availability.modal_date_title', __('ui.availability_board.modal_date_title'));
+    $availabilityModalClose = setting('copy.availability.modal_close', __('ui.availability_board.modal_close'));
+    $availabilityModalEmpty = setting('copy.availability.modal_empty', __('ui.availability_board.modal_empty'));
+    $availabilityRangeKicker = setting('copy.availability.range_kicker', __('ui.availability_board.range_kicker'));
+    $availabilityRangeTitle = setting('copy.availability.range_title', __('ui.availability_board.range_title'));
+    $availabilityRangeFilterLabel = setting('copy.availability.range_filter_label', __('ui.availability_board.range_filter_label'));
+    $availabilityRangeAllCategories = setting('copy.availability.range_all_categories', __('ui.availability_board.range_all_categories'));
+    $availabilityRangeAvailableLabel = setting('copy.availability.range_available_label', __('ui.availability_board.range_available_label'));
+    $availabilityRangeContinue = setting('copy.availability.range_continue', __('ui.availability_board.range_continue'));
+    $availabilityRangeEmpty = setting('copy.availability.range_empty', __('ui.availability_board.range_empty'));
+    $availabilityRangePick = setting('copy.availability.range_pick', __('ui.availability_board.range_pick'));
+    $availabilityRangePrefillNote = setting('copy.availability.range_prefill_note', __('ui.availability_board.range_prefill_note'));
     $availabilityCountEmptySuffix = __('ui.availability_board.count_empty_suffix');
     $availabilityCountToolsSuffix = __('ui.availability_board.count_tools_suffix');
     $availabilityCountSchedulesSuffix = __('ui.availability_board.count_schedules_suffix');
@@ -53,6 +57,8 @@
     $availabilityPeriodLabel = __('ui.availability_board.period_label');
     $availabilityFromPriceLabel = __('ui.availability_board.from_price_label');
     $availabilityMinLeftTemplate = __('ui.availability_board.min_left_template');
+    $availabilityDayLabel = __('app.product.day_label');
+    $currencyPrefix = app()->getLocale() === 'en' ? 'IDR' : 'Rp';
 
     $equipmentClientRows = $equipmentRows
         ->map(function (array $row) {
@@ -66,9 +72,9 @@
 
             return [
                 'id' => (int) data_get($row, 'id', 0),
-                'name' => (string) data_get($row, 'name', 'Alat'),
+                'name' => (string) data_get($row, 'name', __('app.product.generic')),
                 'slug' => (string) data_get($row, 'slug', ''),
-                'category' => (string) data_get($row, 'category', 'Lainnya'),
+                'category' => (string) data_get($row, 'category', app()->isLocale('en') ? 'Other' : 'Lainnya'),
                 'category_id' => (int) data_get($row, 'category_id', 0),
                 'price_per_day' => (int) data_get($row, 'price_per_day', 0),
                 'image_url' => (string) data_get($row, 'image_url', asset('MANAKE-FAV-M.png')),
@@ -183,6 +189,7 @@
             rangeCategoryOptions: [],
             selectedRangeCategoryId: 'all',
             rangeAvailableRows: [],
+            dayLabel: @js($availabilityDayLabel),
             initBoard() {
                 this.selectedRangeDates = [];
             },
@@ -198,7 +205,7 @@
                 if (!parsed) {
                     return value || '-';
                 }
-                return new Intl.DateTimeFormat('id-ID', {
+                return new Intl.DateTimeFormat(@js($intlLocale), {
                     day: '2-digit',
                     month: 'short',
                     year: 'numeric',
@@ -310,7 +317,7 @@
                 if (days <= 0) {
                     return '-';
                 }
-                return `${days} hari`;
+                return `${days} ${this.dayLabel}`;
             },
             computeRangeAvailability() {
                 if (!this.selectedRangeDates.length) {
@@ -531,7 +538,7 @@
                                             'board-cell--range-dragging': isSelectingRange && isDateInSelection('{{ $day['date'] }}')
                                         }"
                                         aria-haspopup="dialog"
-                                        aria-label="Lihat detail tanggal {{ \Carbon\Carbon::parse($day['date'])->translatedFormat('d F Y') }}"
+                                        aria-label="{{ __('ui.actions.detail') }} {{ \Carbon\Carbon::parse($day['date'])->translatedFormat('d F Y') }}"
                                     >
                                         <div class="flex items-center justify-between gap-2">
                                             <p class="text-[11px] font-semibold sm:text-xs {{ $todayClass }}">{{ $day['day'] }}</p>
@@ -543,13 +550,13 @@
                                         @if ($hasUsage)
                                             <div class="mt-auto">
                                                 <p class="text-[10px] font-semibold leading-tight sm:hidden">
-                                                    {{ $day['busy_equipments'] }} alat
+                                                    {{ $day['busy_equipments'] }} {{ $availabilityCountToolsSuffix }}
                                                 </p>
                                                 <p class="hidden text-[11px] font-semibold leading-tight sm:block">
-                                                    {{ $day['busy_equipments'] }} alat terpakai
+                                                    {{ $day['busy_equipments'] }} {{ $availabilityCountToolsSuffix }}
                                                 </p>
                                                 <p class="mt-0.5 hidden text-[10px] leading-tight sm:block">
-                                                    {{ $day['reserved_units'] }} unit dipakai
+                                                    {{ strtr($availabilityInUseTemplate, [':qty' => (string) $day['reserved_units']]) }}
                                                 </p>
                                             </div>
                                         @endif
@@ -599,7 +606,7 @@
                                 <div class="flex items-center justify-between gap-3">
                                     <p class="text-sm font-semibold text-slate-900">{{ $row['name'] }}</p>
                                     <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
-                                        sisa {{ $row['selected_available'] }}
+                                        {{ strtr($availabilityMinLeftTemplate, [':qty' => (string) $row['selected_available']]) }}
                                     </span>
                                 </div>
                                 <p class="mt-1 text-xs italic text-slate-500">{{ $row['category'] }}</p>
@@ -816,7 +823,7 @@
                                         <p class="text-sm font-semibold text-slate-900" x-text="item.name"></p>
                                         <p class="mt-0.5 text-xs italic text-slate-500" x-text="item.category"></p>
                                         <p class="mt-1 text-[11px] font-medium text-blue-700">
-                                            {{ $availabilityFromPriceLabel }} <span x-text="`Rp ${Number(item.price_per_day || 0).toLocaleString('id-ID')}`"></span> / hari
+                                            {{ $availabilityFromPriceLabel }} <span x-text="`{{ $currencyPrefix }} ${Number(item.price_per_day || 0).toLocaleString(@js($intlLocale))}`"></span> {{ __('app.product.per_day') }}
                                         </p>
                                     </div>
                                     <span class="shrink-0 rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-semibold text-emerald-700" x-text="@js($availabilityMinLeftTemplate).replace(':qty', item.min_available)"></span>

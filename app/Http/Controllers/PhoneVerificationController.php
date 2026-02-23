@@ -37,14 +37,14 @@ class PhoneVerificationController extends Controller
     public function requestOtp(Request $request, PhoneOtpService $otpService): RedirectResponse
     {
         if (! Schema::hasTable('profiles') || ! Schema::hasTable('phone_verifications')) {
-            return back()->withErrors(['phone' => 'Fitur verifikasi nomor belum siap. Jalankan migrasi dulu.']);
+            return back()->withErrors(['phone' => __('Fitur verifikasi nomor belum siap. Jalankan migrasi dulu.')]);
         }
 
         $data = $request->validate([
             'phone' => ['required', 'regex:/^(\+62|62|0)8[0-9]{8,13}$/'],
         ], [
-            'phone.required' => 'Nomor telepon wajib diisi.',
-            'phone.regex' => 'Format nomor telepon tidak valid.',
+            'phone.required' => __('Nomor telepon wajib diisi.'),
+            'phone.regex' => __('Format nomor telepon tidak valid.'),
         ]);
 
         $user = $request->user();
@@ -58,12 +58,12 @@ class PhoneVerificationController extends Controller
         $cooldownKey = $baseKey . ':cooldown';
         $hourlyKey = $baseKey . ':hourly';
         if (Cache::has($cooldownKey)) {
-            return back()->withErrors(['phone' => 'Tunggu sebentar sebelum meminta OTP lagi.']);
+            return back()->withErrors(['phone' => __('Tunggu sebentar sebelum meminta OTP lagi.')]);
         }
 
         $sentThisHour = (int) Cache::get($hourlyKey, 0);
         if ($sentThisHour >= $maxPerHour) {
-            return back()->withErrors(['phone' => 'Batas kirim OTP tercapai. Coba lagi dalam 1 jam.']);
+            return back()->withErrors(['phone' => __('Batas kirim OTP tercapai. Coba lagi dalam 1 jam.')]);
         }
 
         $normalizedPhone = $this->normalizePhone($data['phone']);
@@ -104,23 +104,25 @@ class PhoneVerificationController extends Controller
                 'error' => $exception->getMessage(),
             ]);
 
-            return back()->withErrors(['phone' => 'Gagal mengirim OTP. Silakan coba lagi beberapa saat.']);
+            return back()->withErrors(['phone' => __('Gagal mengirim OTP. Silakan coba lagi beberapa saat.')]);
         }
 
-        return back()->with('status', 'OTP dikirim ke nomor ' . $normalizedPhone . '. (Mode dev: cek laravel.log)');
+        return back()->with('status', __('OTP dikirim ke nomor :phone. (Mode dev: cek laravel.log)', [
+            'phone' => $normalizedPhone,
+        ]));
     }
 
     public function verifyOtp(Request $request): RedirectResponse
     {
         if (! Schema::hasTable('profiles') || ! Schema::hasTable('phone_verifications')) {
-            return back()->withErrors(['otp' => 'Fitur verifikasi nomor belum siap. Jalankan migrasi dulu.']);
+            return back()->withErrors(['otp' => __('Fitur verifikasi nomor belum siap. Jalankan migrasi dulu.')]);
         }
 
         $data = $request->validate([
             'otp' => ['required', 'digits:6'],
         ], [
-            'otp.required' => 'Kode OTP wajib diisi.',
-            'otp.digits' => 'Kode OTP harus 6 digit.',
+            'otp.required' => __('Kode OTP wajib diisi.'),
+            'otp.digits' => __('Kode OTP harus 6 digit.'),
         ]);
 
         $user = $request->user();
@@ -133,21 +135,21 @@ class PhoneVerificationController extends Controller
             ->first();
 
         if (! $verification) {
-            return back()->withErrors(['otp' => 'OTP belum diminta. Silakan request OTP terlebih dulu.']);
+            return back()->withErrors(['otp' => __('OTP belum diminta. Silakan request OTP terlebih dulu.')]);
         }
 
         if (now()->greaterThan($verification->otp_expires_at)) {
-            return back()->withErrors(['otp' => 'OTP sudah kedaluwarsa. Silakan kirim ulang OTP.']);
+            return back()->withErrors(['otp' => __('OTP sudah kedaluwarsa. Silakan kirim ulang OTP.')]);
         }
 
         $maxAttempts = max((int) config('security.phone_otp_max_attempts', 5), 1);
         if ($verification->otp_attempts >= $maxAttempts) {
-            return back()->withErrors(['otp' => 'Percobaan OTP terlalu banyak. Silakan request OTP baru.']);
+            return back()->withErrors(['otp' => __('Percobaan OTP terlalu banyak. Silakan request OTP baru.')]);
         }
 
         if (! Hash::check($data['otp'], $verification->otp_hash)) {
             $verification->increment('otp_attempts');
-            return back()->withErrors(['otp' => 'Kode OTP salah.']);
+            return back()->withErrors(['otp' => __('Kode OTP salah.')]);
         }
 
         $profile->phone_verified_at = now();
@@ -161,7 +163,7 @@ class PhoneVerificationController extends Controller
         $verification->delete();
 
         return redirect()->intended(route('profile.complete'))
-            ->with('success', 'Nomor telepon berhasil diverifikasi.');
+            ->with('success', __('Nomor telepon berhasil diverifikasi.'));
     }
 
     private function normalizePhone(string $phone): string

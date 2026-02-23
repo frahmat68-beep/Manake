@@ -91,7 +91,7 @@ class EquipmentController extends Controller
 
         return redirect()
             ->route('admin.equipments.index')
-            ->with('success', 'Equipment berhasil ditambahkan.');
+            ->with('success', __('Equipment berhasil ditambahkan.'));
     }
 
     public function edit(Request $request, string $slug)
@@ -135,7 +135,7 @@ class EquipmentController extends Controller
 
         return redirect()
             ->route('admin.equipments.index')
-            ->with('success', 'Equipment berhasil diperbarui.');
+            ->with('success', __('Equipment berhasil diperbarui.'));
     }
 
     public function destroy(string $slug)
@@ -152,7 +152,7 @@ class EquipmentController extends Controller
 
         return redirect()
             ->route('admin.equipments.index')
-            ->with('success', 'Equipment berhasil dihapus.');
+            ->with('success', __('Equipment berhasil dihapus.'));
     }
 
     private function generateUniqueSlug(?string $slug, string $name, ?int $ignoreId = null): string
@@ -247,7 +247,7 @@ class EquipmentController extends Controller
 
             $events[] = [
                 'order_number' => $order->order_number ?: $order->midtrans_order_id,
-                'customer' => $order->user?->display_name ?: $order->user?->name ?: 'User',
+                'customer' => $order->user?->display_name ?: $order->user?->name ?: __('Pengguna'),
                 'start_date' => $startDate->toDateString(),
                 'end_date' => $endDate->toDateString(),
                 'qty' => (int) $item->qty,

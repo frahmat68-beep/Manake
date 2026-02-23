@@ -1,7 +1,7 @@
 @extends('layouts.admin', ['activePage' => 'orders'])
 
-@section('title', 'Daftar Pesanan')
-@section('page_title', 'Daftar Pesanan')
+@section('title', __('Daftar Pesanan'))
+@section('page_title', __('Daftar Pesanan'))
 
 @section('content')
     <div class="mx-auto max-w-7xl space-y-6">
@@ -14,8 +14,8 @@
         <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <h2 class="text-lg font-semibold text-blue-700">Daftar Pesanan</h2>
-                    <p class="text-xs text-slate-500">Pantau transaksi, pembayaran, dan status pesanan.</p>
+                    <h2 class="text-lg font-semibold text-blue-700">{{ __('Daftar Pesanan') }}</h2>
+                    <p class="text-xs text-slate-500">{{ __('Pantau transaksi, pembayaran, dan status pesanan.') }}</p>
                 </div>
             </div>
 
@@ -24,16 +24,16 @@
                     type="text"
                     name="q"
                     value="{{ $search ?? '' }}"
-                    placeholder="Cari pesanan / email pengguna..."
+                    placeholder="{{ __('Cari pesanan / email pengguna...') }}"
                     class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                 >
                 <select name="status" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
-                    <option value="">Semua Status Pembayaran</option>
-                    <option value="pending" {{ ($status ?? '') === 'pending' ? 'selected' : '' }}>Menunggu</option>
-                    <option value="paid" {{ ($status ?? '') === 'paid' ? 'selected' : '' }}>Lunas</option>
-                    <option value="failed" {{ ($status ?? '') === 'failed' ? 'selected' : '' }}>Gagal</option>
+                    <option value="">{{ __('Semua Status Pembayaran') }}</option>
+                    <option value="pending" {{ ($status ?? '') === 'pending' ? 'selected' : '' }}>{{ __('Menunggu') }}</option>
+                    <option value="paid" {{ ($status ?? '') === 'paid' ? 'selected' : '' }}>{{ __('Lunas') }}</option>
+                    <option value="failed" {{ ($status ?? '') === 'failed' ? 'selected' : '' }}>{{ __('Gagal') }}</option>
                 </select>
-                <button class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Terapkan</button>
+                <button class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">{{ __('Terapkan') }}</button>
             </form>
         </section>
 
@@ -42,12 +42,12 @@
                 <table class="min-w-[860px] w-full text-sm">
                     <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                         <tr>
-                            <th class="px-5 py-3">Pesanan</th>
-                            <th class="px-5 py-3">Pengguna</th>
-                            <th class="px-5 py-3">Total</th>
-                            <th class="px-5 py-3">Status Bayar</th>
-                            <th class="px-5 py-3">Status Pesanan</th>
-                            <th class="px-5 py-3 text-right">Aksi</th>
+                            <th class="px-5 py-3">{{ __('Pesanan') }}</th>
+                            <th class="px-5 py-3">{{ __('Pengguna') }}</th>
+                            <th class="px-5 py-3">{{ __('Total') }}</th>
+                            <th class="px-5 py-3">{{ __('Status Bayar') }}</th>
+                            <th class="px-5 py-3">{{ __('Status Pesanan') }}</th>
+                            <th class="px-5 py-3 text-right">{{ __('Aksi') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -59,20 +59,20 @@
                                     default => 'status-chip-warning',
                                 };
                                 $paymentStatusLabel = match($order->status_pembayaran) {
-                                    'paid' => 'LUNAS',
-                                    'failed' => 'GAGAL',
-                                    default => 'MENUNGGU',
+                                    'paid' => __('LUNAS'),
+                                    'failed' => __('GAGAL'),
+                                    default => __('MENUNGGU'),
                                 };
                                 $orderStatusLabel = match($order->status_pesanan) {
-                                    'menunggu_pembayaran' => 'Menunggu Bayar',
-                                    'diproses' => 'Diproses',
-                                    'lunas' => 'Siap Diambil',
-                                    'barang_diambil' => 'Barang Diambil',
-                                    'barang_kembali' => 'Barang Kembali',
-                                    'barang_rusak' => 'Barang Rusak',
-                                    'selesai' => 'Selesai',
-                                    'dibatalkan' => 'Dibatalkan',
-                                    'refund' => 'Pengembalian Dana',
+                                    'menunggu_pembayaran' => __('Menunggu Bayar'),
+                                    'diproses' => __('Diproses'),
+                                    'lunas' => __('Siap Diambil'),
+                                    'barang_diambil' => __('Barang Diambil'),
+                                    'barang_kembali' => __('Barang Kembali'),
+                                    'barang_rusak' => __('Barang Rusak'),
+                                    'selesai' => __('Selesai'),
+                                    'dibatalkan' => __('Dibatalkan'),
+                                    'refund' => __('Pengembalian Dana'),
                                     default => strtoupper((string) ($order->status_pesanan ?? '-')),
                                 };
                             @endphp
@@ -85,7 +85,7 @@
                                     <p class="font-semibold text-slate-800">{{ $order->user?->name ?? '-' }}</p>
                                     <p class="text-sm text-slate-600">{{ $order->user?->email ?? '-' }}</p>
                                 </td>
-                                <td class="px-5 py-4 font-semibold text-slate-800">Rp {{ number_format((int) ($order->grand_total ?? $order->total_amount), 0, ',', '.') }}</td>
+                                <td class="px-5 py-4 font-semibold text-slate-800">{{ __('Rp') }} {{ number_format((int) ($order->grand_total ?? $order->total_amount), 0, ',', '.') }}</td>
                                 <td class="px-5 py-4">
                                     <span class="status-chip {{ $paymentBadge }}">
                                         {{ $paymentStatusLabel }}
@@ -94,13 +94,13 @@
                                 <td class="px-5 py-4 text-slate-600">{{ $orderStatusLabel }}</td>
                                 <td class="px-5 py-4 text-right">
                                     <a href="{{ route('admin.orders.show', $order) }}" class="inline-flex rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:text-blue-600">
-                                        Detail
+                                        {{ __('Detail') }}
                                     </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-5 py-10 text-center text-sm text-slate-500">Belum ada pesanan.</td>
+                                <td colspan="6" class="px-5 py-10 text-center text-sm text-slate-500">{{ __('Belum ada pesanan.') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

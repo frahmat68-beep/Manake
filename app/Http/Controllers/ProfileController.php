@@ -51,7 +51,7 @@ class ProfileController extends Controller
         if (! Schema::hasTable('profiles')) {
             return redirect()
                 ->route('profile.complete')
-                ->with('error', 'Profil belum siap, jalankan migrasi terlebih dahulu.');
+                ->with('error', __('Profil belum siap, jalankan migrasi terlebih dahulu.'));
         }
 
         $user = $request->user();
@@ -76,11 +76,11 @@ class ProfileController extends Controller
             'emergency_relation' => ['required', 'string', 'max:80'],
             'emergency_phone' => ['required', 'regex:/^(\+62|62|0)8[0-9]{8,13}$/', 'max:25'],
         ], [
-            'nik.regex' => 'NIK harus 16 digit angka.',
-            'nik.unique' => 'NIK sudah terdaftar.',
-            'phone.regex' => 'Format nomor telepon tidak valid.',
-            'emergency_phone.regex' => 'Format nomor kontak darurat tidak valid.',
-            'maps_url.url' => 'Link Google Maps tidak valid.',
+            'nik.regex' => __('NIK harus 16 digit angka.'),
+            'nik.unique' => __('NIK sudah terdaftar.'),
+            'phone.regex' => __('Format nomor telepon tidak valid.'),
+            'emergency_phone.regex' => __('Format nomor kontak darurat tidak valid.'),
+            'maps_url.url' => __('Link Google Maps tidak valid.'),
         ]);
 
         $normalizedPhone = $this->normalizePhone($data['phone']);
@@ -125,7 +125,7 @@ class ProfileController extends Controller
         if (! $user->hasVerifiedPhone()) {
             return redirect()
                 ->route('phone.verify')
-                ->with('status', 'Profil tersimpan. Lanjut verifikasi nomor telepon untuk aktivasi checkout.');
+                ->with('status', __('Profil tersimpan. Lanjut verifikasi nomor telepon untuk aktivasi checkout.'));
         }
 
         return redirect()

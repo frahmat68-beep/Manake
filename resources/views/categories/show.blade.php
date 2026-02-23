@@ -5,11 +5,11 @@
 @section('content')
     @php
         $categoryName = $category->name ?? __('app.category.title');
-        $categoryDescription = $category->description ?: setting('copy.category.subtitle', 'Daftar alat pada kategori ini.');
-        $totalLabel = setting('copy.category.total_label', 'Total alat');
+        $categoryDescription = $category->description ?: setting('copy.category.subtitle', __('app.category.all_subtitle'));
+        $totalLabel = setting('copy.category.total_label', __('ui.category.total_label'));
         $readyLabel = __('ui.category.ready_label');
-        $emptyTitle = setting('copy.category.empty_title', 'Belum ada alat di kategori ini.');
-        $emptySubtitle = setting('copy.category.empty_subtitle', 'Silakan cek kategori lain atau hubungi admin.');
+        $emptyTitle = setting('copy.category.empty_title', __('ui.categories.empty_title'));
+        $emptySubtitle = setting('copy.category.empty_subtitle', __('ui.categories.empty_subtitle'));
         $availabilityLineTemplate = __('ui.category.available_line');
         $availabilityNote = __('ui.category.availability_note');
         $items = collect($products ?? [])->values();

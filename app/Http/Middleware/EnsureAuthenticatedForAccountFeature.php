@@ -15,6 +15,6 @@ class EnsureAuthenticatedForAccountFeature
 
         return redirect()
             ->guest(route('login'))
-            ->with('error', 'Login dulu untuk akses fitur ini.');
+            ->with('error', __('Login dulu untuk akses fitur ini.'));
     }
 }

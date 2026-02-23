@@ -89,7 +89,7 @@ class OrderController extends Controller
         ];
 
         if ($order->status_pesanan !== $data['status_pesanan'] && ! $order->canTransitionToOrderStatus($data['status_pesanan'])) {
-            return back()->with('error', 'Transisi status pesanan tidak valid dari status saat ini.');
+            return back()->with('error', __('Transisi status pesanan tidak valid dari status saat ini.'));
         }
 
         $order->status_pembayaran = $data['status_pembayaran'];
@@ -133,7 +133,7 @@ class OrderController extends Controller
                 'user_id' => $order->user_id,
                 'order_id' => $order->id,
                 'type' => 'order_update',
-                'title' => 'Update pesanan ' . ($order->order_number ?: ('ORD-' . $order->id)),
+                'title' => __('Update pesanan') . ' ' . ($order->order_number ?: ('ORD-' . $order->id)),
                 'message' => implode(' ', $changes),
             ]);
         }
@@ -147,7 +147,7 @@ class OrderController extends Controller
             'admin_note' => $order->admin_note,
         ], auth('admin')->id());
 
-        return back()->with('success', 'Status order, biaya tambahan, dan notifikasi user berhasil diperbarui.');
+        return back()->with('success', __('Status order, biaya tambahan, dan notifikasi user berhasil diperbarui.'));
     }
 
     private function buildUserNotificationChanges(array $before, Order $order): array
@@ -155,26 +155,38 @@ class OrderController extends Controller
         $messages = [];
 
         if ($before['status_pembayaran'] !== $order->status_pembayaran) {
-            $messages[] = 'Status pembayaran: ' . $this->paymentStatusLabel($before['status_pembayaran']) . ' → ' . $this->paymentStatusLabel($order->status_pembayaran) . '.';
+            $messages[] = __('Status pembayaran: :before → :after.', [
+                'before' => $this->paymentStatusLabel($before['status_pembayaran']),
+                'after' => $this->paymentStatusLabel($order->status_pembayaran),
+            ]);
         }
 
         if ($before['status_pesanan'] !== $order->status_pesanan) {
-            $messages[] = 'Status rental: ' . $this->orderStatusLabel($before['status_pesanan']) . ' → ' . $this->orderStatusLabel($order->status_pesanan) . '.';
+            $messages[] = __('Status rental: :before → :after.', [
+                'before' => $this->orderStatusLabel($before['status_pesanan']),
+                'after' => $this->orderStatusLabel($order->status_pesanan),
+            ]);
         }
 
         if ((int) $before['additional_fee'] !== (int) ($order->additional_fee ?? 0)) {
-            $messages[] = 'Biaya tambahan diperbarui menjadi Rp ' . number_format((int) $order->additional_fee, 0, ',', '.') . '.';
+            $messages[] = __('Biaya tambahan diperbarui menjadi Rp :amount.', [
+                'amount' => number_format((int) $order->additional_fee, 0, ',', '.'),
+            ]);
         }
 
         if ($before['additional_fee_note'] !== (string) ($order->additional_fee_note ?? '')) {
             if (! empty($order->additional_fee_note)) {
-                $messages[] = 'Catatan biaya: ' . $order->additional_fee_note . '.';
+                $messages[] = __('Catatan biaya: :note.', [
+                    'note' => $order->additional_fee_note,
+                ]);
             }
         }
 
         if ($before['admin_note'] !== (string) ($order->admin_note ?? '')) {
             if (! empty($order->admin_note)) {
-                $messages[] = 'Catatan admin: ' . $order->admin_note . '.';
+                $messages[] = __('Catatan admin: :note.', [
+                    'note' => $order->admin_note,
+                ]);
             }
         }
 
@@ -184,29 +196,29 @@ class OrderController extends Controller
     private function paymentStatusLabel(?string $status): string
     {
         return match ($status) {
-            'paid' => 'Lunas',
-            'failed' => 'Gagal',
-            'expired' => 'Expired',
-            'refunded' => 'Refund',
-            default => 'Pending',
+            'paid' => __('Lunas'),
+            'failed' => __('Gagal'),
+            'expired' => __('Kedaluwarsa'),
+            'refunded' => __('Refund'),
+            default => __('Menunggu'),
         };
     }
 
     private function orderStatusLabel(?string $status): string
     {
         return match ($status) {
-            'menunggu_pembayaran' => 'Menunggu Pembayaran',
-            'diproses' => 'Diproses Admin',
-            'lunas' => 'Siap Diambil',
-            'barang_diambil' => 'Barang Diambil',
-            'barang_kembali' => 'Barang Dikembalikan',
-            'barang_rusak' => 'Barang Rusak',
-            'barang_hilang' => 'Barang Hilang',
-            'overdue_denda' => 'Denda Overdue',
-            'expired' => 'Expired',
-            'selesai' => 'Selesai',
-            'dibatalkan' => 'Dibatalkan',
-            'refund' => 'Refund',
+            'menunggu_pembayaran' => __('Menunggu Pembayaran'),
+            'diproses' => __('Diproses Admin'),
+            'lunas' => __('Siap Diambil'),
+            'barang_diambil' => __('Barang Diambil'),
+            'barang_kembali' => __('Barang Dikembalikan'),
+            'barang_rusak' => __('Barang Rusak'),
+            'barang_hilang' => __('Barang Hilang'),
+            'overdue_denda' => __('Denda Overdue'),
+            'expired' => __('Kedaluwarsa'),
+            'selesai' => __('Selesai'),
+            'dibatalkan' => __('Dibatalkan'),
+            'refund' => __('Refund'),
             default => strtoupper((string) $status),
         };
     }

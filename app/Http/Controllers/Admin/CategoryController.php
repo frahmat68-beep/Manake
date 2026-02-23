@@ -55,7 +55,7 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('admin.categories.index')
-            ->with('success', 'Category berhasil ditambahkan.');
+            ->with('success', __('Category berhasil ditambahkan.'));
     }
 
     public function edit(string $slug)
@@ -79,7 +79,7 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('admin.categories.index')
-            ->with('success', 'Category berhasil diperbarui.');
+            ->with('success', __('Category berhasil diperbarui.'));
     }
 
     public function destroy(string $slug)
@@ -91,7 +91,7 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('admin.categories.index')
-            ->with('success', 'Category berhasil dihapus.');
+            ->with('success', __('Category berhasil dihapus.'));
     }
 
     private function generateUniqueSlug(?string $slug, string $name, ?int $ignoreId = null): string

@@ -1,15 +1,15 @@
 @extends('layouts.admin', ['activePage' => 'dashboard'])
 
-@section('title', 'Dashboard Admin')
-@section('page_title', 'Dashboard Operasional')
+@section('title', __('Dashboard Admin'))
+@section('page_title', __('Dashboard Operasional'))
 
 @section('content')
     @php
         $statusBadge = fn (?string $status) => match ($status) {
-            'lunas' => ['label' => 'Siap Diambil', 'class' => 'status-chip-info'],
-            'barang_diambil' => ['label' => 'Sedang Disewa', 'class' => 'status-chip-warning'],
-            'barang_kembali' => ['label' => 'Sudah Kembali', 'class' => 'status-chip-success'],
-            'barang_rusak' => ['label' => 'Barang Rusak', 'class' => 'status-chip-danger'],
+            'lunas' => ['label' => __('Siap Diambil'), 'class' => 'status-chip-info'],
+            'barang_diambil' => ['label' => __('Sedang Disewa'), 'class' => 'status-chip-warning'],
+            'barang_kembali' => ['label' => __('Sudah Kembali'), 'class' => 'status-chip-success'],
+            'barang_rusak' => ['label' => __('Barang Rusak'), 'class' => 'status-chip-danger'],
             default => ['label' => strtoupper((string) $status), 'class' => 'status-chip-muted'],
         };
         $rentalCalendar = $rentalCalendar ?? [];
@@ -43,34 +43,34 @@
 
         <section class="grid grid-cols-2 gap-4 lg:grid-cols-[repeat(4,minmax(0,1fr))_minmax(0,1.2fr)]">
             <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Siap Diambil</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ __('Siap Diambil') }}</p>
                 <p class="mt-2 text-3xl font-semibold text-blue-600">{{ (int) ($summary['ready_pickup'] ?? 0) }}</p>
             </article>
             <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Sedang Disewa</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ __('Sedang Disewa') }}</p>
                 <p class="mt-2 text-3xl font-semibold text-amber-600">{{ (int) ($summary['on_rent'] ?? 0) }}</p>
             </article>
             <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Sudah Kembali</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ __('Sudah Kembali') }}</p>
                 <p class="mt-2 text-3xl font-semibold text-emerald-600">{{ (int) ($summary['returned'] ?? 0) }}</p>
             </article>
             <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Kasus Rusak</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ __('Kasus Rusak') }}</p>
                 <p class="mt-2 text-3xl font-semibold text-rose-600">{{ (int) ($summary['damaged'] ?? 0) }}</p>
             </article>
             <article class="col-span-2 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:col-span-1">
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Prioritas Hari Ini</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ __('Prioritas Hari Ini') }}</p>
                 <p class="mt-2 text-3xl font-semibold text-slate-900">{{ $actionableCount }}</p>
-                <p class="mt-1 text-xs text-slate-500">Pesanan yang butuh konfirmasi diambil/dikembalikan.</p>
+                <p class="mt-1 text-xs text-slate-500">{{ __('Pesanan yang butuh konfirmasi diambil/dikembalikan.') }}</p>
                 <div class="mt-4 flex flex-wrap gap-2">
                     <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-blue-700">
-                        Buka Semua Pesanan
+                        {{ __('Buka Semua Pesanan') }}
                     </a>
                     <a href="{{ route('admin.equipments.index') }}" class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600">
-                        Cek Stok Alat
+                        {{ __('Cek Stok Alat') }}
                     </a>
                     <a href="{{ route('availability.board') }}" class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600">
-                        Kalender Ketersediaan
+                        {{ __('Kalender Ketersediaan') }}
                     </a>
                 </div>
             </article>
@@ -78,24 +78,24 @@
 
         <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Uang Masuk</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ __('Uang Masuk') }}</p>
                 <p class="mt-2 text-2xl font-semibold text-slate-900">{{ $formatIdr($financialSummary['cash_in'] ?? 0) }}</p>
-                <p class="mt-1 text-xs text-slate-500">Total pembayaran sukses (termasuk fee tambahan).</p>
+                <p class="mt-1 text-xs text-slate-500">{{ __('Total pembayaran sukses (termasuk fee tambahan).') }}</p>
             </article>
             <article class="rounded-2xl border border-blue-100 bg-blue-50 p-5 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-wide text-blue-500">Pendapatan Sewa</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-blue-500">{{ __('Pendapatan Sewa') }}</p>
                 <p class="mt-2 text-2xl font-semibold text-blue-700">{{ $formatIdr($financialSummary['revenue'] ?? 0) }}</p>
-                <p class="mt-1 text-xs text-blue-600">Akumulasi subtotal pesanan lunas.</p>
+                <p class="mt-1 text-xs text-blue-600">{{ __('Akumulasi subtotal pesanan lunas.') }}</p>
             </article>
             <article class="rounded-2xl border border-amber-100 bg-amber-50 p-5 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-wide text-amber-600">Pajak Terkumpul</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-amber-600">{{ __('Pajak Terkumpul') }}</p>
                 <p class="mt-2 text-2xl font-semibold text-amber-700">{{ $formatIdr($financialSummary['tax'] ?? 0) }}</p>
-                <p class="mt-1 text-xs text-amber-700">Estimasi PPN 11% dari pendapatan sewa.</p>
+                <p class="mt-1 text-xs text-amber-700">{{ __('Estimasi PPN 11% dari pendapatan sewa.') }}</p>
             </article>
             <article class="rounded-2xl border border-rose-100 bg-rose-50 p-5 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-wide text-rose-500">Fee Kerusakan</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-rose-500">{{ __('Fee Kerusakan') }}</p>
                 <p class="mt-2 text-2xl font-semibold text-rose-700">{{ $formatIdr($financialSummary['damage_fee'] ?? 0) }}</p>
-                <p class="mt-1 text-xs text-rose-600">Biaya tambahan yang sudah berhasil dibayar.</p>
+                <p class="mt-1 text-xs text-rose-600">{{ __('Biaya tambahan yang sudah berhasil dibayar.') }}</p>
             </article>
         </section>
 
@@ -103,17 +103,17 @@
             <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
                 <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
                     <div>
-                        <h2 class="text-lg font-semibold text-blue-700">Pesanan Perlu Tindakan</h2>
-                        <p class="text-xs text-slate-500">Fokus ke aksi inti: konfirmasi diambil, dikembalikan, atau rusak.</p>
+                        <h2 class="text-lg font-semibold text-blue-700">{{ __('Pesanan Perlu Tindakan') }}</h2>
+                        <p class="text-xs text-slate-500">{{ __('Fokus ke aksi inti: konfirmasi diambil, dikembalikan, atau rusak.') }}</p>
                     </div>
                     <a href="{{ route('admin.orders.index') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-700">
-                        Kelola di halaman Pesanan →
+                        {{ __('Kelola di halaman Pesanan →') }}
                     </a>
                 </div>
 
                 @if ($ordersCollection->isEmpty())
                     <div class="px-5 py-8 text-sm text-slate-500">
-                        Tidak ada pesanan operasional untuk ditindaklanjuti saat ini.
+                        {{ __('Tidak ada pesanan operasional untuk ditindaklanjuti saat ini.') }}
                     </div>
                 @else
                     <div class="divide-y divide-slate-100">
@@ -141,7 +141,7 @@
                                         </p>
                                         @if ($itemsLabel !== '')
                                             <p class="mt-1 text-xs text-slate-500">
-                                                Alat: {{ $itemsLabel }}@if($order->items->count() > 2) +{{ $order->items->count() - 2 }} lainnya @endif
+                                                {{ __('Alat:') }} {{ $itemsLabel }}@if($order->items->count() > 2) +{{ $order->items->count() - 2 }} {{ __('lainnya') }} @endif
                                             </p>
                                         @endif
                                     </div>
@@ -153,15 +153,15 @@
                                                 @method('PATCH')
                                                 <input type="hidden" name="status_pesanan" value="barang_diambil">
                                                 <button class="w-full rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100">
-                                                    Konfirmasi Diambil
+                                                    {{ __('Konfirmasi Diambil') }}
                                                 </button>
                                             </form>
                                         @else
                                             <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-slate-400">
                                                 @if ($isOnRent || $isClosed)
-                                                    Sudah Diambil
+                                                    {{ __('Sudah Diambil') }}
                                                 @else
-                                                    Menunggu Jadwal
+                                                    {{ __('Menunggu Jadwal') }}
                                                 @endif
                                             </div>
                                         @endif
@@ -172,17 +172,17 @@
                                                 @method('PATCH')
                                                 <input type="hidden" name="status_pesanan" value="barang_kembali">
                                                 <button class="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-100">
-                                                    Konfirmasi Kembali
+                                                    {{ __('Konfirmasi Kembali') }}
                                                 </button>
                                             </form>
                                         @else
                                             <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-slate-400">
                                                 @if ($order->status_pesanan === 'barang_kembali')
-                                                    Sudah Kembali
+                                                    {{ __('Sudah Kembali') }}
                                                 @elseif ($order->status_pesanan === 'barang_rusak')
-                                                    Ditandai Rusak
+                                                    {{ __('Ditandai Rusak') }}
                                                 @else
-                                                    Menunggu Diambil
+                                                    {{ __('Menunggu Diambil') }}
                                                 @endif
                                             </div>
                                         @endif
@@ -193,15 +193,15 @@
                                                 @method('PATCH')
                                                 <input type="hidden" name="status_pesanan" value="barang_rusak">
                                                 <button class="w-full rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100">
-                                                    Tandai Rusak
+                                                    {{ __('Tandai Rusak') }}
                                                 </button>
                                             </form>
                                         @else
                                             <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-slate-400">
                                                 @if ($order->status_pesanan === 'barang_rusak')
-                                                    Sudah Ditandai
+                                                    {{ __('Sudah Ditandai') }}
                                                 @else
-                                                    Menunggu Diambil
+                                                    {{ __('Menunggu Diambil') }}
                                                 @endif
                                             </div>
                                         @endif
@@ -210,11 +210,11 @@
 
                                 <div class="mt-3 flex flex-wrap items-center gap-2">
                                     <a href="{{ route('admin.orders.show', $order) }}" class="inline-flex rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600">
-                                        Detail Pesanan
+                                        {{ __('Detail Pesanan') }}
                                     </a>
                                     @if ($isReadyPickup && ! $canConfirmPickupNow && $pickupOpenAt)
                                         <p class="rounded-xl border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs text-amber-700">
-                                            Tombol "Diambil" aktif mulai {{ $pickupOpenAt->format('d M Y') }} (H-1).
+                                            {{ __('Tombol "Diambil" aktif mulai') }} {{ $pickupOpenAt->format('d M Y') }} (H-1).
                                         </p>
                                     @endif
                                 </div>
@@ -226,17 +226,17 @@
 
             <div class="space-y-4">
                 <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <h3 class="text-base font-semibold text-blue-700">Alur Operasional Singkat</h3>
+                    <h3 class="text-base font-semibold text-blue-700">{{ __('Alur Operasional Singkat') }}</h3>
                     <ul class="mt-3 space-y-2 text-sm text-slate-600">
-                        <li>1. Status <span class="font-semibold">Siap Diambil</span> bisa dikonfirmasi mulai H-1.</li>
-                        <li>2. Setelah diambil, ubah ke <span class="font-semibold">Konfirmasi Kembali</span> saat unit kembali.</li>
-                        <li>3. Gunakan <span class="font-semibold">Tandai Rusak</span> jika ada kerusakan saat pengembalian.</li>
+                        <li>{{ __('1. Status') }} <span class="font-semibold">{{ __('Siap Diambil') }}</span> {{ __('bisa dikonfirmasi mulai H-1.') }}</li>
+                        <li>{{ __('2. Setelah diambil, ubah ke') }} <span class="font-semibold">{{ __('Konfirmasi Kembali') }}</span> {{ __('saat unit kembali.') }}</li>
+                        <li>{{ __('3. Gunakan') }} <span class="font-semibold">{{ __('Tandai Rusak') }}</span> {{ __('jika ada kerusakan saat pengembalian.') }}</li>
                     </ul>
                 </section>
 
                 <details class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                     <summary class="cursor-pointer text-base font-semibold text-blue-700">
-                        Kalender Unit Disewa (Opsional)
+                        {{ __('Kalender Unit Disewa (Opsional)') }}
                     </summary>
                     <div class="mt-4">
                         <div class="flex flex-wrap items-center justify-between gap-3">
@@ -244,7 +244,7 @@
                                 <a
                                     href="{{ route('admin.dashboard', array_merge($calendarBaseQuery, ['calendar_month' => $rentalCalendar['previous_month'] ?? now()->subMonth()->format('Y-m')])) }}"
                                     class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
-                                    aria-label="Bulan sebelumnya"
+                                    aria-label="{{ __('Bulan sebelumnya') }}"
                                 >
                                     ←
                                 </a>
@@ -252,21 +252,21 @@
                                 <a
                                     href="{{ route('admin.dashboard', array_merge($calendarBaseQuery, ['calendar_month' => $rentalCalendar['next_month'] ?? now()->addMonth()->format('Y-m')])) }}"
                                     class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
-                                    aria-label="Bulan berikutnya"
+                                    aria-label="{{ __('Bulan berikutnya') }}"
                                 >
                                     →
                                 </a>
                             </div>
                             <div class="flex flex-wrap items-center gap-2 text-xs">
-                                <span class="rounded-full bg-slate-100 px-2.5 py-1 font-semibold text-slate-700">Unit-hari: {{ (int) ($rentalCalendar['total_unit_days'] ?? 0) }}</span>
-                                <span class="rounded-full bg-blue-100 px-2.5 py-1 font-semibold text-blue-700">Puncak: {{ (int) ($rentalCalendar['max_daily_units'] ?? 0) }}</span>
+                                <span class="rounded-full bg-slate-100 px-2.5 py-1 font-semibold text-slate-700">{{ __('Unit-hari:') }} {{ (int) ($rentalCalendar['total_unit_days'] ?? 0) }}</span>
+                                <span class="rounded-full bg-blue-100 px-2.5 py-1 font-semibold text-blue-700">{{ __('Puncak:') }} {{ (int) ($rentalCalendar['max_daily_units'] ?? 0) }}</span>
                             </div>
                         </div>
 
                         <div class="mt-4 -mx-1 overflow-x-auto px-1 pb-1 sm:mx-0 sm:overflow-visible sm:px-0">
                             <div class="min-w-[640px]">
                                 <div class="grid grid-cols-7 gap-2">
-                                    @foreach (['SEN', 'SEL', 'RAB', 'KAM', 'JUM', 'SAB', 'MIN'] as $weekday)
+                                    @foreach ((array) __('ui.availability_board.weekdays') as $weekday)
                                         <p class="text-center text-[11px] font-semibold uppercase tracking-widest text-slate-400">{{ $weekday }}</p>
                                     @endforeach
                                 </div>
@@ -278,7 +278,7 @@
                                         <div class="rounded-xl border px-2 py-2 {{ ($day['in_month'] ?? false) ? 'border-slate-200 bg-white' : 'border-slate-100 bg-slate-50 text-slate-300' }}">
                                             <p class="text-xs font-semibold">{{ $day['day'] }}</p>
                                             <p class="mt-1 text-xs {{ $hasRental ? 'font-semibold text-blue-600' : 'text-slate-400' }}">
-                                                {{ $hasRental ? ($day['total_qty'] . ' unit') : '-' }}
+                                                {{ $hasRental ? ($day['total_qty'] . ' ' . __('unit')) : '-' }}
                                             </p>
                                         </div>
                                     @endforeach

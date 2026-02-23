@@ -87,14 +87,14 @@ class CartController extends Controller
         if ($equipmentId <= 0) {
             return redirect()
                 ->route('cart')
-                ->with('error', 'Item cart tidak valid. Pilih alat dari katalog.');
+                ->with('error', __('Item cart tidak valid. Pilih alat dari katalog.'));
         }
 
         $equipment = Equipment::query()->with('category')->find($equipmentId);
         if (! $equipment) {
             return redirect()
                 ->route('cart')
-                ->with('error', 'Alat tidak ditemukan. Silakan refresh katalog.');
+                ->with('error', __('Alat tidak ditemukan. Silakan refresh katalog.'));
         }
 
         $qty = max(1, min((int) ($data['qty'] ?? 1), 99));
@@ -248,7 +248,7 @@ class CartController extends Controller
 
         $missingIds = $equipmentIds->diff($equipments->keys());
         if ($missingIds->isNotEmpty()) {
-            return 'Beberapa alat sudah tidak tersedia. Silakan refresh keranjang.';
+            return __('Beberapa alat sudah tidak tersedia. Silakan refresh keranjang.');
         }
 
         $demandByEquipment = [];
@@ -262,13 +262,13 @@ class CartController extends Controller
             $qty = max((int) ($item['qty'] ?? 1), 1);
             $stock = max((int) ($equipment->stock ?? 0), 0);
             if (($equipment->status ?? 'ready') !== 'ready') {
-                return "{$equipment->name} sedang tidak bisa disewa.";
+                return __(':name sedang tidak bisa disewa.', ['name' => $equipment->name]);
             }
             if ($stock < 1) {
-                return "{$equipment->name} sedang tidak tersedia.";
+                return __(':name sedang tidak tersedia.', ['name' => $equipment->name]);
             }
             if ($qty > $stock) {
-                return "Stok {$equipment->name} tersedia {$stock} unit.";
+                return __('Stok :name tersedia :stock unit.', ['name' => $equipment->name, 'stock' => $stock]);
             }
 
             $startDate = $this->normalizeDateString($item['rental_start_date'] ?? null);
@@ -301,7 +301,7 @@ class CartController extends Controller
             $stock = max((int) ($equipment->stock ?? 0), 0);
             $withoutDates = (int) ($demand['without_dates'] ?? 0);
             if ($withoutDates > $stock) {
-                return "Stok {$equipment->name} tersedia {$stock} unit.";
+                return __('Stok :name tersedia :stock unit.', ['name' => $equipment->name, 'stock' => $stock]);
             }
 
             $dailyDemand = $demand['daily'] ?? [];
@@ -332,9 +332,9 @@ class CartController extends Controller
                 ->values();
 
             if ($conflictDates->isNotEmpty()) {
-                return "{$equipment->name} tidak tersedia untuk jumlah ini.\n"
-                    . 'Tanggal bentrok: ' . $this->formatConflictDateList($conflictDates) . ".\n"
-                    . 'Silakan kurangi jumlah atau pilih tanggal lain.';
+                return __(':name tidak tersedia untuk jumlah ini.', ['name' => $equipment->name]) . "\n"
+                    . __('Tanggal bentrok: :dates.', ['dates' => $this->formatConflictDateList($conflictDates)]) . "\n"
+                    . __('Silakan kurangi jumlah atau pilih tanggal lain.');
             }
         }
 
@@ -399,7 +399,7 @@ class CartController extends Controller
 
         $result = $visibleDates->implode(', ');
         if ($remainingCount > 0) {
-            $result .= ", dan {$remainingCount} tanggal lain";
+            $result .= __(', dan :count tanggal lain', ['count' => $remainingCount]);
         }
 
         return $result;

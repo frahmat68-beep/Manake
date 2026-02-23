@@ -27,6 +27,6 @@ class BookingController extends Controller
         ]);
 
         return redirect()->route('dashboard')
-            ->with('success', 'Booking created. Please proceed to payment.');
+            ->with('success', __('Booking created. Please proceed to payment.'));
     }
 }

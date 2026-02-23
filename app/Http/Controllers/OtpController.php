@@ -42,14 +42,14 @@ class OtpController extends Controller
         }
 
         if (! $user->otp_code || ! $user->otp_expires_at) {
-            return back()->withErrors(['otp' => 'Kode OTP belum tersedia. Silakan kirim ulang OTP.']);
+            return back()->withErrors(['otp' => __('Kode OTP belum tersedia. Silakan kirim ulang OTP.')]);
         }
 
         $maxAttempts = max((int) config('security.otp_resend_max_per_hour', 5), 1);
         $attemptKey = 'otp:verify:attempts:user:' . $user->id;
         $attempts = (int) Cache::get($attemptKey, 0);
         if ($attempts >= $maxAttempts) {
-            return back()->withErrors(['otp' => 'Percobaan OTP terlalu banyak. Silakan kirim ulang OTP baru.']);
+            return back()->withErrors(['otp' => __('Percobaan OTP terlalu banyak. Silakan kirim ulang OTP baru.')]);
         }
 
         if (
@@ -57,14 +57,14 @@ class OtpController extends Controller
             now()->greaterThan($user->otp_expires_at)
         ) {
             Cache::put($attemptKey, $attempts + 1, now()->addHour());
-            return back()->withErrors(['otp' => 'OTP salah atau sudah kedaluwarsa.']);
+            return back()->withErrors(['otp' => __('OTP salah atau sudah kedaluwarsa.')]);
         }
 
         $user->clearOtp();
         Cache::forget($attemptKey);
         $request->session()->put('otp_verified', true);
 
-        return redirect()->route('profile.complete')->with('status', 'OTP berhasil diverifikasi.');
+        return redirect()->route('profile.complete')->with('status', __('OTP berhasil diverifikasi.'));
     }
 
     public function resend(Request $request)
@@ -85,12 +85,12 @@ class OtpController extends Controller
         $hourlyKey = $baseKey . ':hourly';
 
         if (Cache::has($cooldownKey)) {
-            return back()->withErrors(['otp' => 'Tunggu sebentar sebelum meminta OTP lagi.']);
+            return back()->withErrors(['otp' => __('Tunggu sebentar sebelum meminta OTP lagi.')]);
         }
 
         $sentThisHour = (int) Cache::get($hourlyKey, 0);
         if ($sentThisHour >= $maxPerHour) {
-            return back()->withErrors(['otp' => 'Batas kirim OTP tercapai. Coba lagi dalam 1 jam.']);
+            return back()->withErrors(['otp' => __('Batas kirim OTP tercapai. Coba lagi dalam 1 jam.')]);
         }
 
         Cache::put($cooldownKey, true, now()->addSeconds($cooldownSeconds));
@@ -110,11 +110,11 @@ class OtpController extends Controller
                 'error' => $exception->getMessage(),
             ]);
 
-            return back()->withErrors(['otp' => 'Gagal mengirim OTP. Silakan coba lagi beberapa saat.']);
+            return back()->withErrors(['otp' => __('Gagal mengirim OTP. Silakan coba lagi beberapa saat.')]);
         }
 
         $request->session()->put('otp_verified', false);
 
-        return back()->with('status', 'OTP baru sudah dikirim ke email kamu.');
+        return back()->with('status', __('OTP baru sudah dikirim ke email kamu.'));
     }
 }

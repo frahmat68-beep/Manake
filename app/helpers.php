@@ -23,11 +23,104 @@ if (! function_exists('site_setting')) {
             return $default;
         }
 
-        $value = Cache::remember("site_setting:{$key}", 3600, function () use ($key) {
+        $locale = app()->bound('translator')
+            ? (string) app()->getLocale()
+            : (string) config('app.locale', 'id');
+        $fallbackLocale = (string) config('app.fallback_locale', 'id');
+
+        if ($locale !== '') {
+            $localizedValue = site_setting_raw("{$key}.{$locale}");
+            if ($localizedValue !== null) {
+                return $localizedValue;
+            }
+        }
+
+        $baseValue = site_setting_raw($key);
+        if ($baseValue !== null) {
+            if ($locale !== '' && $locale !== $fallbackLocale && site_setting_is_translatable_key($key)) {
+                return $default;
+            }
+
+            return $baseValue;
+        }
+
+        if ($locale !== '' && $locale !== $fallbackLocale) {
+            $fallbackLocalizedValue = site_setting_raw("{$key}.{$fallbackLocale}");
+            if ($fallbackLocalizedValue !== null && ! site_setting_is_translatable_key($key)) {
+                return $fallbackLocalizedValue;
+            }
+        }
+
+        return $default;
+    }
+}
+
+if (! function_exists('site_setting_raw')) {
+    function site_setting_raw(string $key)
+    {
+        if (! Schema::hasTable('site_settings')) {
+            return null;
+        }
+
+        return Cache::remember("site_setting:{$key}", 3600, function () use ($key) {
             return SiteSetting::query()->where('key', $key)->value('value');
         });
+    }
+}
 
-        return $value ?? $default;
+if (! function_exists('site_setting_is_translatable_key')) {
+    function site_setting_is_translatable_key(string $key): bool
+    {
+        if (str_starts_with($key, 'copy.')) {
+            return true;
+        }
+
+        $exactKeys = [
+            'hero_title',
+            'hero_subtitle',
+            'hero_cta_text',
+            'home.hero_title',
+            'home.hero_subtitle',
+            'home.overview_headline',
+            'site_name',
+            'site_tagline',
+            'meta_title',
+            'meta_description',
+            'seo.meta_title',
+            'seo.meta_description',
+            'footer_description',
+            'footer.about',
+            'footer.rules_title',
+            'footer.rules_link',
+            'footer.rules_note',
+            'footer_copyright',
+            'contact.title',
+            'contact.subtitle',
+            'contact.info_title',
+            'contact.map_title',
+            'contact.map_empty',
+            'contact.form_receiver_email',
+            'brand.tagline',
+        ];
+
+        if (in_array($key, $exactKeys, true)) {
+            return true;
+        }
+
+        $prefixes = [
+            'home.',
+            'footer.',
+            'contact.',
+            'seo.',
+        ];
+
+        foreach ($prefixes as $prefix) {
+            if (str_starts_with($key, $prefix)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

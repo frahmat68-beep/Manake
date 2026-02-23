@@ -121,7 +121,7 @@
     $notificationItems = collect($notificationItems ?? []);
 
     $searchQuery = trim((string) request('q', ''));
-    $displayName = auth('web')->user()->display_name ?? auth('web')->user()->name ?? 'Pengguna';
+    $displayName = auth('web')->user()->display_name ?? auth('web')->user()->name ?? __('app.user.generic');
     $userInitial = strtoupper(substr($displayName, 0, 1));
 
     $authModalView = old('auth_modal');
@@ -215,7 +215,7 @@
     <div class="lg:pl-16">
         <header class="sticky top-0 z-30 border-b border-slate-200 bg-white">
             <div class="mx-auto flex w-full max-w-[1320px] flex-wrap items-center gap-2.5 px-4 py-3 sm:gap-3 sm:px-6 sm:py-4">
-                <button class="order-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm lg:hidden" type="button" @click="sidebarOpen = true" aria-label="Buka menu">
+                <button class="order-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm lg:hidden" type="button" @click="sidebarOpen = true" aria-label="{{ __('ui.nav.toggle_menu') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="4" y1="7" x2="20" y2="7" />
                         <line x1="4" y1="12" x2="20" y2="12" />
@@ -605,6 +605,13 @@
         }
 
         const endpoint = form.dataset.searchSuggestUrl || '';
+        const locale = @json(app()->getLocale());
+        const currencyPrefix = locale === 'en' ? 'IDR' : 'Rp';
+        const genericItemLabel = @json(__('ui.nav.search_generic_item'));
+        const perDaySuffix = @json(__('ui.nav.search_per_day_suffix'));
+        const stockLeftTemplate = @json(__('ui.nav.search_stock_left_template'));
+        const noResultsTemplate = @json(__('ui.nav.search_no_results'));
+        const browseResultsTemplate = @json(__('ui.nav.search_browse_results'));
         const minimumQueryLength = 2;
         let debounceTimer = null;
         let activeAbortController = null;
@@ -612,7 +619,14 @@
 
         const formatRupiah = (value) => {
             const amount = Number(value || 0);
-            return `Rp ${amount.toLocaleString('id-ID')}`;
+            const localeTag = locale === 'en' ? 'en-US' : 'id-ID';
+            return `${currencyPrefix} ${amount.toLocaleString(localeTag)}`;
+        };
+
+        const applyTemplate = (template, params = {}) => {
+            return Object.entries(params).reduce((result, [key, value]) => {
+                return result.replaceAll(`:${key}`, String(value));
+            }, template);
         };
 
         const hideDropdown = () => {
@@ -630,7 +644,7 @@
 
             const image = document.createElement('img');
             image.src = item.image_url || '{{ asset('MANAKE-FAV-M.png') }}';
-            image.alt = item.name || 'Alat';
+            image.alt = item.name || genericItemLabel;
             image.loading = 'lazy';
             image.className = 'h-12 w-12 rounded-lg border border-slate-200 bg-slate-50 object-cover';
             link.appendChild(image);
@@ -640,7 +654,7 @@
 
             const name = document.createElement('p');
             name.className = 'truncate text-sm font-semibold text-slate-900';
-            name.textContent = item.name || 'Alat';
+            name.textContent = item.name || genericItemLabel;
             content.appendChild(name);
 
             const meta = document.createElement('p');
@@ -650,14 +664,16 @@
 
             const pricing = document.createElement('p');
             pricing.className = 'mt-0.5 text-[11px] font-medium text-blue-700';
-            pricing.textContent = `${formatRupiah(item.price_per_day)} / hari`;
+            pricing.textContent = `${formatRupiah(item.price_per_day)} ${perDaySuffix}`;
             content.appendChild(pricing);
 
             link.appendChild(content);
 
             const stockBadge = document.createElement('span');
             stockBadge.className = 'rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700';
-            stockBadge.textContent = `sisa ${Math.max(Number(item.available_units || 0), 0)}`;
+            stockBadge.textContent = applyTemplate(stockLeftTemplate, {
+                qty: Math.max(Number(item.available_units || 0), 0),
+            });
             link.appendChild(stockBadge);
 
             return link;
@@ -673,7 +689,7 @@
             if (!items.length) {
                 const emptyState = document.createElement('p');
                 emptyState.className = 'px-3 py-3 text-xs text-slate-500';
-                emptyState.textContent = `Tidak ada hasil untuk "${query}".`;
+                emptyState.textContent = applyTemplate(noResultsTemplate, { query });
                 list.appendChild(emptyState);
             } else {
                 items.forEach((item) => {
@@ -686,7 +702,7 @@
             const footer = document.createElement('a');
             footer.href = `{{ route('catalog') }}?q=${encodeURIComponent(query)}`;
             footer.className = 'block border-t border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-50';
-            footer.textContent = `Telusuri hasil "${query}"`;
+            footer.textContent = applyTemplate(browseResultsTemplate, { query });
             dropdown.appendChild(footer);
 
             showDropdown();

@@ -104,29 +104,18 @@ class AppServiceProvider extends ServiceProvider
             return;
         }
 
-        $overrides = Cache::remember('copy.translation_overrides.lines', 600, function () {
-            $explicitOverrides = SiteSetting::query()
-                ->where('key', 'like', 'copy.trans.%')
-                ->whereNotNull('value')
-                ->pluck('value', 'key')
-                ->all();
+        $overridesByLocale = Cache::remember('copy.translation_overrides.scoped', 600, function () {
+            $lines = [
+                '*' => [],
+                'id' => [],
+                'en' => [],
+            ];
 
-            $lines = [];
-
-            foreach ($explicitOverrides as $settingKey => $value) {
-                $translationKey = Str::after((string) $settingKey, 'copy.trans.');
-                $translationKey = trim($translationKey);
-                $translationValue = trim((string) $value);
-
-                if ($translationKey === '' || $translationValue === '' || ! str_contains($translationKey, '.')) {
-                    continue;
+            $parseLines = static function (?string $rawMap, array &$bucket): void {
+                if (! is_string($rawMap) || trim($rawMap) === '') {
+                    return;
                 }
 
-                $lines[$translationKey] = $translationValue;
-            }
-
-            $rawMap = SiteSetting::query()->where('key', 'copy.translation_overrides')->value('value');
-            if (is_string($rawMap) && trim($rawMap) !== '') {
                 foreach (preg_split('/\r\n|\r|\n/', $rawMap) as $line) {
                     $rawLine = trim((string) $line);
                     if ($rawLine === '' || str_starts_with($rawLine, '#') || str_starts_with($rawLine, '//')) {
@@ -146,27 +135,75 @@ class AppServiceProvider extends ServiceProvider
                         continue;
                     }
 
-                    $lines[$translationKey] = $translationValue;
+                    $bucket[$translationKey] = $translationValue;
                 }
+            };
+
+            $explicitOverrides = SiteSetting::query()
+                ->where('key', 'like', 'copy.trans.%')
+                ->whereNotNull('value')
+                ->pluck('value', 'key')
+                ->all();
+
+            foreach ($explicitOverrides as $settingKey => $value) {
+                $settingKey = trim((string) $settingKey);
+                $translationValue = trim((string) $value);
+
+                if ($settingKey === '' || $translationValue === '') {
+                    continue;
+                }
+
+                if (preg_match('/^copy\.trans\.(.+)\.(id|en)$/', $settingKey, $matches) === 1) {
+                    $translationKey = trim((string) ($matches[1] ?? ''));
+                    $locale = trim((string) ($matches[2] ?? ''));
+                    if ($translationKey !== '' && str_contains($translationKey, '.') && isset($lines[$locale])) {
+                        $lines[$locale][$translationKey] = $translationValue;
+                    }
+                    continue;
+                }
+
+                $translationKey = trim(Str::after($settingKey, 'copy.trans.'));
+                if ($translationKey === '' || ! str_contains($translationKey, '.')) {
+                    continue;
+                }
+
+                $lines['*'][$translationKey] = $translationValue;
             }
+
+            $parseLines(SiteSetting::query()->where('key', 'copy.translation_overrides')->value('value'), $lines['*']);
+            $parseLines(SiteSetting::query()->where('key', 'copy.translation_overrides.id')->value('value'), $lines['id']);
+            $parseLines(SiteSetting::query()->where('key', 'copy.translation_overrides.en')->value('value'), $lines['en']);
 
             return $lines;
         });
 
-        if (! is_array($overrides) || $overrides === []) {
+        if (! is_array($overridesByLocale)) {
             return;
         }
 
+        $fallbackLocale = (string) config('app.fallback_locale', 'id');
         $locales = array_values(array_unique(array_filter([
             app()->getLocale(),
             (string) config('app.locale'),
-            (string) config('app.fallback_locale'),
+            $fallbackLocale,
             'id',
             'en',
         ])));
 
         foreach ($locales as $locale) {
-            app('translator')->addLines($overrides, $locale);
+            $localeOverrides = [];
+
+            if ($locale === $fallbackLocale && isset($overridesByLocale['*']) && is_array($overridesByLocale['*'])) {
+                $localeOverrides = $overridesByLocale['*'];
+            }
+
+            if (isset($overridesByLocale[$locale]) && is_array($overridesByLocale[$locale])) {
+                $localeOverrides = array_merge($localeOverrides, $overridesByLocale[$locale]);
+            }
+
+            if ($localeOverrides !== []) {
+                app('translator')->addLines($localeOverrides, $locale);
+            }
         }
     }
 }

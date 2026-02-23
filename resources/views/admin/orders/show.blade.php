@@ -1,32 +1,32 @@
 @extends('layouts.admin', ['activePage' => 'orders'])
 
-@section('title', 'Detail Pesanan')
-@section('page_title', 'Detail Pesanan')
+@section('title', __('Detail Pesanan'))
+@section('page_title', __('Detail Pesanan'))
 
 @section('content')
     @php
-        $formatIdr = fn ($value) => 'Rp ' . number_format((int) $value, 0, ',', '.');
+        $formatIdr = fn ($value) => __('Rp') . ' ' . number_format((int) $value, 0, ',', '.');
 
         $statusLabel = function (?string $status) {
             return match ($status) {
-                'menunggu_pembayaran' => 'Menunggu Pembayaran',
-                'diproses' => 'Diproses',
-                'lunas' => 'Siap Diambil',
-                'barang_diambil' => 'Barang Diambil',
-                'barang_kembali' => 'Barang Dikembalikan',
-                'barang_rusak' => 'Barang Rusak',
-                'selesai' => 'Selesai',
-                'dibatalkan' => 'Dibatalkan',
-                'refund' => 'Pengembalian Dana',
+                'menunggu_pembayaran' => __('Menunggu Pembayaran'),
+                'diproses' => __('Diproses'),
+                'lunas' => __('Siap Diambil'),
+                'barang_diambil' => __('Barang Diambil'),
+                'barang_kembali' => __('Barang Dikembalikan'),
+                'barang_rusak' => __('Barang Rusak'),
+                'selesai' => __('Selesai'),
+                'dibatalkan' => __('Dibatalkan'),
+                'refund' => __('Pengembalian Dana'),
                 default => strtoupper((string) $status),
             };
         };
         $paymentLabel = function (?string $status) {
             return match ((string) $status) {
-                'paid' => 'Lunas',
-                'failed' => 'Gagal',
-                'expired' => 'Kedaluwarsa',
-                default => 'Menunggu',
+                'paid' => __('Lunas'),
+                'failed' => __('Gagal'),
+                'expired' => __('Kedaluwarsa'),
+                default => __('Menunggu'),
             };
         };
     @endphp
@@ -46,58 +46,58 @@
 
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Pesanan</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">{{ __('Pesanan') }}</p>
                 <h2 class="text-2xl font-semibold text-slate-900">{{ $order->order_number ?? ('ORD-' . $order->id) }}</h2>
             </div>
-            <a href="{{ route('admin.orders.index') }}" class="text-sm font-semibold text-slate-600 hover:text-blue-600">← Kembali ke Daftar Pesanan</a>
+            <a href="{{ route('admin.orders.index') }}" class="text-sm font-semibold text-slate-600 hover:text-blue-600">{{ __('← Kembali ke Daftar Pesanan') }}</a>
         </div>
 
         <section class="grid grid-cols-1 gap-6 lg:grid-cols-[1.2fr,0.8fr]">
             <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h3 class="text-lg font-semibold text-slate-900">Item Pesanan</h3>
+                <h3 class="text-lg font-semibold text-slate-900">{{ __('Item Pesanan') }}</h3>
                 <div class="mt-4 space-y-3">
                     @forelse ($order->items as $item)
                         <div class="rounded-xl border border-slate-200 p-4">
                             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
-                                    <p class="font-semibold text-slate-900">{{ $item->equipment?->name ?? 'Alat' }}</p>
-                                    <p class="text-xs text-slate-500">Qty {{ $item->qty }} x {{ $formatIdr($item->price) }}</p>
+                                    <p class="font-semibold text-slate-900">{{ $item->equipment?->name ?? __('Alat') }}</p>
+                                    <p class="text-xs text-slate-500">{{ __('Qty') }} {{ $item->qty }} x {{ $formatIdr($item->price) }}</p>
                                 </div>
                                 <p class="font-semibold text-slate-800">{{ $formatIdr($item->subtotal) }}</p>
                             </div>
                         </div>
                     @empty
-                        <p class="text-sm text-slate-500">Tidak ada item di pesanan ini.</p>
+                        <p class="text-sm text-slate-500">{{ __('Tidak ada item di pesanan ini.') }}</p>
                     @endforelse
                 </div>
 
                 <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <div class="rounded-xl bg-slate-50 p-3 text-sm text-slate-600">
-                        <p><span class="font-semibold text-slate-800">Pembayaran:</span> {{ $paymentLabel($order->status_pembayaran) }}</p>
-                        <p class="mt-1"><span class="font-semibold text-slate-800">Status Sewa:</span> {{ $statusLabel($order->status_pesanan) }}</p>
+                        <p><span class="font-semibold text-slate-800">{{ __('Pembayaran:') }}</span> {{ $paymentLabel($order->status_pembayaran) }}</p>
+                        <p class="mt-1"><span class="font-semibold text-slate-800">{{ __('Status Sewa:') }}</span> {{ $statusLabel($order->status_pesanan) }}</p>
                     </div>
                     <div class="rounded-xl bg-slate-50 p-3 text-sm text-slate-600">
-                        <p><span class="font-semibold text-slate-800">Subtotal:</span> {{ $formatIdr($order->total_amount) }}</p>
-                        <p class="mt-1"><span class="font-semibold text-slate-800">Biaya Tambahan:</span> {{ $formatIdr($order->additional_fee ?? 0) }}</p>
-                        <p class="mt-1"><span class="font-semibold text-slate-800">Total Akhir:</span> {{ $formatIdr($order->grand_total) }}</p>
+                        <p><span class="font-semibold text-slate-800">{{ __('Subtotal:') }}</span> {{ $formatIdr($order->total_amount) }}</p>
+                        <p class="mt-1"><span class="font-semibold text-slate-800">{{ __('Biaya Tambahan:') }}</span> {{ $formatIdr($order->additional_fee ?? 0) }}</p>
+                        <p class="mt-1"><span class="font-semibold text-slate-800">{{ __('Total Akhir:') }}</span> {{ $formatIdr($order->grand_total) }}</p>
                     </div>
                 </div>
             </article>
 
             <aside class="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h3 class="text-lg font-semibold text-slate-900">Kontrol Status</h3>
+                <h3 class="text-lg font-semibold text-slate-900">{{ __('Kontrol Status') }}</h3>
                 <div class="space-y-2 text-sm text-slate-600">
-                    <p><span class="font-semibold text-slate-800">Pengguna:</span> {{ $order->user?->name ?? '-' }}</p>
-                    <p><span class="font-semibold text-slate-800">Email:</span> {{ $order->user?->email ?? '-' }}</p>
-                    <p><span class="font-semibold text-slate-800">Periode:</span> {{ optional($order->rental_start_date)->format('d M Y') }} - {{ optional($order->rental_end_date)->format('d M Y') }}</p>
+                    <p><span class="font-semibold text-slate-800">{{ __('Pengguna:') }}</span> {{ $order->user?->name ?? '-' }}</p>
+                    <p><span class="font-semibold text-slate-800">{{ __('Email:') }}</span> {{ $order->user?->email ?? '-' }}</p>
+                    <p><span class="font-semibold text-slate-800">{{ __('Periode:') }}</span> {{ optional($order->rental_start_date)->format('d M Y') }} - {{ optional($order->rental_end_date)->format('d M Y') }}</p>
                     @if ($order->picked_up_at)
-                        <p><span class="font-semibold text-slate-800">Diambil:</span> {{ $order->picked_up_at->format('d M Y H:i') }}</p>
+                        <p><span class="font-semibold text-slate-800">{{ __('Diambil:') }}</span> {{ $order->picked_up_at->format('d M Y H:i') }}</p>
                     @endif
                     @if ($order->returned_at)
-                        <p><span class="font-semibold text-slate-800">Dikembalikan:</span> {{ $order->returned_at->format('d M Y H:i') }}</p>
+                        <p><span class="font-semibold text-slate-800">{{ __('Dikembalikan:') }}</span> {{ $order->returned_at->format('d M Y H:i') }}</p>
                     @endif
                     @if ($order->damaged_at)
-                        <p><span class="font-semibold text-slate-800">Rusak Dilaporkan:</span> {{ $order->damaged_at->format('d M Y H:i') }}</p>
+                        <p><span class="font-semibold text-slate-800">{{ __('Rusak Dilaporkan:') }}</span> {{ $order->damaged_at->format('d M Y H:i') }}</p>
                     @endif
                 </div>
 
@@ -106,14 +106,14 @@
                     @method('PUT')
 
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">Status Pembayaran</label>
+                        <label class="text-xs font-semibold text-slate-500">{{ __('Status Pembayaran') }}</label>
                         <select name="status_pembayaran" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                             @foreach (['pending', 'paid', 'failed'] as $paymentStatus)
                                 @php
                                     $paymentStatusText = match ($paymentStatus) {
-                                        'paid' => 'Lunas',
-                                        'failed' => 'Gagal',
-                                        default => 'Menunggu',
+                                        'paid' => __('Lunas'),
+                                        'failed' => __('Gagal'),
+                                        default => __('Menunggu'),
                                     };
                                 @endphp
                                 <option value="{{ $paymentStatus }}" {{ $order->status_pembayaran === $paymentStatus ? 'selected' : '' }}>
@@ -124,7 +124,7 @@
                     </div>
 
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">Status Pesanan</label>
+                        <label class="text-xs font-semibold text-slate-500">{{ __('Status Pesanan') }}</label>
                         <select name="status_pesanan" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                             @foreach ($statusPesananOptions as $orderStatus)
                                 <option value="{{ $orderStatus }}" {{ $order->status_pesanan === $orderStatus ? 'selected' : '' }}>
@@ -135,7 +135,7 @@
                     </div>
 
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">Biaya Tambahan</label>
+                        <label class="text-xs font-semibold text-slate-500">{{ __('Biaya Tambahan') }}</label>
                         <input
                             type="number"
                             min="0"
@@ -147,30 +147,30 @@
                     </div>
 
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">Keterangan Biaya Tambahan</label>
+                        <label class="text-xs font-semibold text-slate-500">{{ __('Keterangan Biaya Tambahan') }}</label>
                         <input
                             type="text"
                             name="additional_fee_note"
                             value="{{ old('additional_fee_note', $order->additional_fee_note) }}"
-                            placeholder="Contoh: Denda keterlambatan 1 hari"
+                            placeholder="{{ __('Contoh: Denda keterlambatan 1 hari') }}"
                             class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
                         >
                     </div>
 
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">Catatan Admin ke Pengguna</label>
+                        <label class="text-xs font-semibold text-slate-500">{{ __('Catatan Admin ke Pengguna') }}</label>
                         <textarea
                             name="admin_note"
                             rows="3"
-                            placeholder="Contoh: Barang ditemukan rusak pada bagian tombol record"
+                            placeholder="{{ __('Contoh: Barang ditemukan rusak pada bagian tombol record') }}"
                             class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
                         >{{ old('admin_note', $order->admin_note) }}</textarea>
                     </div>
 
-                    <p class="text-xs text-slate-500">Setiap perubahan status/biaya/catatan otomatis dikirim ke notifikasi pengguna.</p>
+                    <p class="text-xs text-slate-500">{{ __('Setiap perubahan status/biaya/catatan otomatis dikirim ke notifikasi pengguna.') }}</p>
 
                     <button class="inline-flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
-                        Simpan & Kirim Notifikasi
+                        {{ __('Simpan & Kirim Notifikasi') }}
                     </button>
                 </form>
             </aside>

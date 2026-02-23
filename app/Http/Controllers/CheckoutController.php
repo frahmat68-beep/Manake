@@ -42,7 +42,7 @@ class CheckoutController extends Controller
 
         if (empty($cartItems)) {
             return response()->json([
-                'message' => 'Cart masih kosong. Tambahkan item terlebih dahulu.',
+                'message' => __('Cart masih kosong. Tambahkan item terlebih dahulu.'),
             ], 422);
         }
 
@@ -50,13 +50,13 @@ class CheckoutController extends Controller
 
         if (! $user->profileIsComplete()) {
             return response()->json([
-                'message' => 'Profil belum lengkap. Silakan lengkapi data diri.',
+                'message' => __('Profil belum lengkap. Silakan lengkapi data diri.'),
             ], 422);
         }
 
         if (! $user->hasVerifiedPhone()) {
             return response()->json([
-                'message' => 'Nomor telepon belum terverifikasi. Silakan verifikasi OTP dulu.',
+                'message' => __('Nomor telepon belum terverifikasi. Silakan verifikasi OTP dulu.'),
             ], 422);
         }
 
@@ -113,7 +113,9 @@ class CheckoutController extends Controller
 
         if ($itemsWithoutDates->isNotEmpty()) {
             return response()->json([
-                'message' => 'Tanggal sewa belum diisi untuk: ' . $itemsWithoutDates->implode(', ') . '. Update tanggal di katalog/detail lalu tambahkan ulang ke keranjang.',
+                'message' => __('Tanggal sewa belum diisi untuk: :items. Update tanggal di katalog/detail lalu tambahkan ulang ke keranjang.', [
+                    'items' => $itemsWithoutDates->implode(', '),
+                ]),
             ], 422);
         }
 
@@ -125,7 +127,7 @@ class CheckoutController extends Controller
 
         if ($equipmentIds->isEmpty()) {
             return response()->json([
-                'message' => 'Item di cart tidak valid. Silakan ulangi pilihan alat.',
+                'message' => __('Item di cart tidak valid. Silakan ulangi pilihan alat.'),
             ], 422);
         }
 
@@ -150,7 +152,7 @@ class CheckoutController extends Controller
 
                 $missingEquipmentIds = $equipmentIds->diff($equipments->keys());
                 if ($missingEquipmentIds->isNotEmpty()) {
-                    throw new \RuntimeException('Beberapa alat tidak tersedia. Silakan perbarui cart.', 422);
+                    throw new \RuntimeException(__('Beberapa alat tidak tersedia. Silakan perbarui cart.'), 422);
                 }
 
                 $itemsByEquipment = collect($cartItems)->groupBy(fn ($item) => (int) $item['equipment_id']);
@@ -159,11 +161,11 @@ class CheckoutController extends Controller
                 foreach ($itemsByEquipment as $equipmentId => $requestedItems) {
                     $equipment = $equipments->get((int) $equipmentId);
                     if (! $equipment) {
-                        throw new \RuntimeException('Beberapa alat tidak tersedia. Silakan perbarui cart.', 422);
+                        throw new \RuntimeException(__('Beberapa alat tidak tersedia. Silakan perbarui cart.'), 422);
                     }
 
                     if (($equipment->status ?? 'ready') !== 'ready') {
-                        throw new \RuntimeException("{$equipment->name} sedang tidak bisa disewa.", 422);
+                        throw new \RuntimeException(__(':name sedang tidak bisa disewa.', ['name' => $equipment->name]), 422);
                     }
 
                     $reservedDaily = $availability->getDailyReservedUnits($equipment, $startDate, $endDate);
@@ -186,7 +188,10 @@ class CheckoutController extends Controller
                             $list .= ', ...';
                         }
 
-                        throw new \RuntimeException("{$equipment->name} tidak tersedia pada tanggal: {$list}.", 422);
+                        throw new \RuntimeException(__(':name tidak tersedia pada tanggal: :dates.', [
+                            'name' => $equipment->name,
+                            'dates' => $list,
+                        ]), 422);
                     }
                 }
 
@@ -271,13 +276,13 @@ class CheckoutController extends Controller
             $status = $exception->getCode() === 422 ? 422 : 500;
 
             return response()->json([
-                'message' => $exception->getMessage() ?: 'Checkout gagal diproses.',
+                'message' => $exception->getMessage() ?: __('Checkout gagal diproses.'),
             ], $status);
         } catch (\Throwable $exception) {
             report($exception);
 
             return response()->json([
-                'message' => 'Checkout gagal diproses. Silakan coba lagi.',
+                'message' => __('Checkout gagal diproses. Silakan coba lagi.'),
             ], 500);
         }
 
@@ -312,7 +317,7 @@ class CheckoutController extends Controller
             report($exception);
 
             $fallbackToOrderDetail = true;
-            $checkoutMessage = 'Pesanan berhasil dibuat, tapi sesi pembayaran sedang bermasalah. Buka detail order untuk lanjut bayar.';
+            $checkoutMessage = __('Pesanan berhasil dibuat, tapi sesi pembayaran sedang bermasalah. Buka detail order untuk lanjut bayar.');
         }
 
         $cart->clear();

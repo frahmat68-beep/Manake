@@ -1,19 +1,19 @@
 @extends('layouts.admin', ['activePage' => 'db'])
 
-@section('title', 'Detail Data')
-@section('page_title', 'Data Database')
+@section('title', __('Detail Data'))
+@section('page_title', __('Data Database'))
 
 @section('content')
     <div class="max-w-5xl mx-auto space-y-6">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-                <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">Data Baris</p>
+                <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">{{ __('Data Baris') }}</p>
                 <h2 class="text-xl font-semibold text-slate-900 dark:text-white">{{ $table }} #{{ data_get($record, $primaryKey) }}</h2>
             </div>
             <div class="flex items-center gap-3">
-                <a href="{{ route('admin.db.table', $table) }}" class="text-sm text-slate-500 hover:text-blue-600 dark:text-slate-300">← Kembali ke Tabel</a>
+                <a href="{{ route('admin.db.table', $table) }}" class="text-sm text-slate-500 hover:text-blue-600 dark:text-slate-300">{{ __('← Kembali ke Tabel') }}</a>
                 @if ($canEdit)
-                    <a href="{{ route('admin.db.edit', [$table, data_get($record, $primaryKey)]) }}" class="text-sm font-semibold text-amber-600 hover:text-amber-700">Ubah Data</a>
+                    <a href="{{ route('admin.db.edit', [$table, data_get($record, $primaryKey)]) }}" class="text-sm font-semibold text-amber-600 hover:text-amber-700">{{ __('Ubah Data') }}</a>
                 @endif
             </div>
         </div>

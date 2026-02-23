@@ -2,13 +2,14 @@
     'logoUrl' => null,
     'brandName' => 'Manake',
     'categories' => collect(),
-    'displayName' => 'Pengguna',
+    'displayName' => null,
     'userInitial' => 'U',
     'isAuthenticated' => false,
 ])
 
 @php
     $categories = collect($categories ?? []);
+    $displayName = $displayName ?: __('app.user.generic');
     $locale = app()->getLocale();
     $currentTheme = $themePreference ?? request()->attributes->get('theme_preference', 'light');
     if (! in_array($currentTheme, ['system', 'dark', 'light'], true)) {

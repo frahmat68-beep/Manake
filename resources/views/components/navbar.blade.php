@@ -11,10 +11,10 @@
             <!-- MENU -->
             <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
                 <a href="/equipments" class="hover:text-blue-600 transition">
-                    Katalog
+                    {{ __('ui.nav.catalog') }}
                 </a>
                 <a href="/overview" class="hover:text-blue-600 transition">
-                    Riwayat
+                    {{ __('ui.nav.my_orders') }}
                 </a>
             </div>
         </div>
@@ -26,7 +26,7 @@
             <div class="hidden md:block relative">
                 <input
                     type="text"
-                    placeholder="Cari kamera, lighting, drone..."
+                    placeholder="{{ __('ui.nav.search_placeholder') }}"
                     class="pl-10 pr-4 py-2 rounded-xl border border-slate-300
                            focus:ring-2 focus:ring-blue-500 focus:outline-none
                            text-sm w-64">
@@ -39,7 +39,7 @@
             <a href="/login"
                class="px-5 py-2 rounded-xl text-sm font-semibold
                       bg-blue-600 text-white hover:bg-blue-700 transition">
-                Login
+                {{ __('ui.nav.login') }}
             </a>
         </div>
 

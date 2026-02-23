@@ -70,22 +70,22 @@
             ]))
             : null;
         $quickCategories = collect($navCategories ?? [])->take(4);
-        $readyPanelTitle = setting('copy.landing.ready_panel_title', 'Siap Disewa');
-        $readyPanelSubtitle = setting('copy.landing.ready_panel_subtitle', 'Item live dari inventory yang tersedia hari ini.');
-        $flowKicker = setting('copy.landing.flow_kicker', 'Alur Rental');
-        $flowTitle = setting('copy.landing.flow_title', 'Biar proses sewa tidak ribet');
-        $flowCatalogLink = setting('copy.landing.flow_catalog_link', 'Lihat semua alat');
-        $quickCategoryKicker = setting('copy.landing.quick_category_kicker', 'Kategori Cepat');
-        $quickCategoryTitle = setting('copy.landing.quick_category_title', 'Akses langsung ke kebutuhan produksi');
-        $quickCategoryEmpty = setting('copy.landing.quick_category_empty', 'Belum ada kategori tersedia.');
-        $step1Title = setting('copy.landing.step_1_title', 'Pilih Alat');
-        $step1Desc = setting('copy.landing.step_1_desc', 'Filter berdasarkan kategori, status siap, dan budget harian.');
-        $step2Title = setting('copy.landing.step_2_title', 'Isi Profil');
-        $step2Desc = setting('copy.landing.step_2_desc', 'Data identitas dan kontak disimpan agar transaksi berikutnya lebih cepat.');
-        $step3Title = setting('copy.landing.step_3_title', 'Bayar via Midtrans');
-        $step3Desc = setting('copy.landing.step_3_desc', 'Pilih metode pembayaran favorit tanpa pindah halaman berulang.');
-        $step4Title = setting('copy.landing.step_4_title', 'Generate Resi');
-        $step4Desc = setting('copy.landing.step_4_desc', 'Setelah lunas, resi bisa dibuka dan dicetak langsung dari detail pesanan.');
+        $readyPanelTitle = setting('copy.landing.ready_panel_title', __('app.landing.ready_items'));
+        $readyPanelSubtitle = setting('copy.landing.ready_panel_subtitle', __('app.landing.ready_panel_subtitle'));
+        $flowKicker = setting('copy.landing.flow_kicker', __('app.landing.flow_kicker'));
+        $flowTitle = setting('copy.landing.flow_title', __('app.landing.flow_title'));
+        $flowCatalogLink = setting('copy.landing.flow_catalog_link', __('app.landing.flow_catalog_link'));
+        $quickCategoryKicker = setting('copy.landing.quick_category_kicker', __('app.landing.quick_category_kicker'));
+        $quickCategoryTitle = setting('copy.landing.quick_category_title', __('app.landing.quick_category_title'));
+        $quickCategoryEmpty = setting('copy.landing.quick_category_empty', __('app.landing.quick_category_empty'));
+        $step1Title = setting('copy.landing.step_1_title', __('app.landing.step_1_title'));
+        $step1Desc = setting('copy.landing.step_1_desc', __('app.landing.step_1_desc'));
+        $step2Title = setting('copy.landing.step_2_title', __('app.landing.step_2_title'));
+        $step2Desc = setting('copy.landing.step_2_desc', __('app.landing.step_2_desc'));
+        $step3Title = setting('copy.landing.step_3_title', __('app.landing.step_3_title'));
+        $step3Desc = setting('copy.landing.step_3_desc', __('app.landing.step_3_desc'));
+        $step4Title = setting('copy.landing.step_4_title', __('app.landing.step_4_title'));
+        $step4Desc = setting('copy.landing.step_4_desc', __('app.landing.step_4_desc'));
     @endphp
 
     <section class="bg-slate-50">
@@ -107,8 +107,8 @@
 
                     <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
                         <div class="flex items-center justify-between gap-2">
-                            <h2 class="text-sm font-semibold text-slate-900">Ringkasan Alat Disewa</h2>
-                            <span class="text-xs font-semibold text-slate-500">Live</span>
+                            <h2 class="text-sm font-semibold text-slate-900">{{ __('app.landing.snapshot_title') }}</h2>
+                            <span class="text-xs font-semibold text-slate-500">{{ __('app.landing.snapshot_live') }}</span>
                         </div>
                         <div class="mt-3 space-y-2.5">
                             @forelse ($guestRentalSnapshot as $rental)
@@ -118,12 +118,12 @@
                                         <span class="rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-semibold text-blue-700">x{{ $rental['qty'] }}</span>
                                     </div>
                                     <p class="mt-1 text-xs text-slate-600">
-                                        Tanggal sewa: {{ $formatLandingDate($rental['start_date']) }} - {{ $formatLandingDate($rental['end_date']) }}
+                                        {{ __('app.landing.snapshot_rental_date') }}: {{ $formatLandingDate($rental['start_date']) }} - {{ $formatLandingDate($rental['end_date']) }}
                                     </p>
                                 </article>
                             @empty
                                 <div class="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-3 text-xs text-slate-500">
-                                    Belum ada jadwal alat yang sedang disewa.
+                                    {{ __('app.landing.snapshot_empty') }}
                                 </div>
                             @endforelse
                         </div>
@@ -132,11 +132,11 @@
                     @if ($isLoggedIn && $damageAlertOrder)
                         <a href="{{ route('account.orders.show', $damageAlertOrder) }}" class="mt-4 block rounded-2xl border-2 border-rose-300 bg-rose-50 p-4 shadow-sm transition hover:border-rose-400">
                             <div class="flex flex-wrap items-start justify-between gap-3">
-                                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">Perhatian Tagihan Tambahan</p>
-                                <span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-semibold text-rose-700">Belum Lunas</span>
+                                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">{{ __('app.landing.damage_alert_title') }}</p>
+                                <span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-semibold text-rose-700">{{ __('app.landing.damage_alert_unpaid') }}</span>
                             </div>
-                            <p class="mt-1 text-sm font-semibold text-rose-800">Status barang: {{ $damageStatusLabel }} • Biaya tambahan {{ 'Rp ' . number_format($damageFeeAmount, 0, ',', '.') }}</p>
-                            <p class="mt-1 text-xs text-rose-700">Tagihan ini wajib dibayar via Midtrans dan tidak dikenakan PPN.</p>
+                            <p class="mt-1 text-sm font-semibold text-rose-800">{{ __('app.landing.damage_alert_status') }}: {{ $damageStatusLabel }} • {{ __('app.landing.damage_alert_fee') }} {{ 'Rp ' . number_format($damageFeeAmount, 0, ',', '.') }}</p>
+                            <p class="mt-1 text-xs text-rose-700">{{ __('app.landing.damage_alert_payment_note') }}</p>
                             @if (!empty($damageAlertOrder->additional_fee_note))
                                 <p class="mt-2 rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs text-rose-700">{{ $damageAlertOrder->additional_fee_note }}</p>
                             @endif
@@ -197,10 +197,10 @@
                             </div>
 
                             <div class="mt-4 flex items-center justify-end gap-2 sm:justify-between">
-                                <button class="btn-secondary ready-prev inline-flex h-10 w-10 items-center justify-center rounded-full transition" aria-label="Previous">
+                                <button class="btn-secondary ready-prev inline-flex h-10 w-10 items-center justify-center rounded-full transition" aria-label="{{ __('app.actions.previous') }}">
                                     ‹
                                 </button>
-                                <button class="btn-secondary ready-next inline-flex h-10 w-10 items-center justify-center rounded-full transition" aria-label="Next">
+                                <button class="btn-secondary ready-next inline-flex h-10 w-10 items-center justify-center rounded-full transition" aria-label="{{ __('app.actions.next') }}">
                                     ›
                                 </button>
                             </div>
@@ -217,27 +217,27 @@
             $landingPaymentStatus = $latestOrder->status_pembayaran ?? 'pending';
             $landingTimeline = [
                 [
-                    'title' => 'Menunggu Pembayaran',
+                    'title' => __('ui.orders.timeline.waiting_payment'),
                     'done' => $landingPaymentStatus !== 'pending',
                     'active' => $landingPaymentStatus === 'pending',
                 ],
                 [
-                    'title' => 'Pembayaran Terkonfirmasi',
+                    'title' => __('ui.orders.timeline.payment_confirmed'),
                     'done' => $landingPaymentStatus === 'paid',
                     'active' => $landingPaymentStatus === 'paid' && $landingOrderStatus === 'lunas',
                 ],
                 [
-                    'title' => 'Pesanan Diproses',
+                    'title' => __('ui.orders.timeline.order_processed'),
                     'done' => in_array($landingOrderStatus, ['diproses', 'lunas', 'barang_diambil', 'barang_kembali', 'barang_rusak', 'selesai'], true),
                     'active' => in_array($landingOrderStatus, ['diproses', 'lunas'], true),
                 ],
                 [
-                    'title' => 'Barang Diambil',
+                    'title' => __('ui.orders.timeline.picked_up'),
                     'done' => in_array($landingOrderStatus, ['barang_diambil', 'barang_kembali', 'barang_rusak', 'selesai'], true),
                     'active' => $landingOrderStatus === 'barang_diambil',
                 ],
                 [
-                    'title' => 'Barang Dikembalikan',
+                    'title' => __('ui.orders.timeline.returned'),
                     'done' => in_array($landingOrderStatus, ['barang_kembali', 'barang_rusak', 'selesai'], true),
                     'active' => in_array($landingOrderStatus, ['barang_kembali', 'barang_rusak'], true),
                 ],
@@ -257,14 +257,14 @@
                         <div class="w-full max-w-lg rounded-2xl border border-rose-200 bg-white p-5 shadow-2xl sm:p-6">
                             <div class="flex items-start justify-between gap-3">
                                 <div>
-                                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">Tagihan Tambahan Baru</p>
-                                    <h2 id="damage-fee-popup-title" class="mt-1 text-xl font-semibold text-slate-900">Segera lunasi biaya tambahan</h2>
+                                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">{{ __('app.landing.damage_popup_kicker') }}</p>
+                                    <h2 id="damage-fee-popup-title" class="mt-1 text-xl font-semibold text-slate-900">{{ __('app.landing.damage_popup_title') }}</h2>
                                 </div>
                                 <button
                                     type="button"
                                     data-damage-popup-close
                                     class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:border-rose-200 hover:text-rose-600"
-                                    aria-label="Tutup popup"
+                                    aria-label="{{ __('app.landing.damage_popup_close') }}"
                                 >
                                     ✕
                                 </button>
@@ -272,15 +272,15 @@
 
                             <div class="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
                                 <p class="font-semibold">{{ $damageOrderNumber }}</p>
-                                <p class="mt-1">Status barang: {{ $damageStatusLabel }}</p>
-                                <p class="mt-1">Biaya tambahan: <span class="font-semibold">Rp {{ number_format($damageFeeAmount, 0, ',', '.') }}</span> (tanpa PPN)</p>
+                                <p class="mt-1">{{ __('app.landing.damage_popup_status') }}: {{ $damageStatusLabel }}</p>
+                                <p class="mt-1">{{ __('app.landing.damage_popup_fee') }}: <span class="font-semibold">Rp {{ number_format($damageFeeAmount, 0, ',', '.') }}</span> ({{ __('app.landing.damage_popup_tax_note') }})</p>
                             </div>
 
                             @if (!empty($damageAlertOrder->additional_fee_note))
                                 <p class="mt-3 rounded-xl border border-rose-200 bg-white px-3 py-2 text-xs text-rose-700">{{ $damageAlertOrder->additional_fee_note }}</p>
                             @endif
 
-                            <p class="mt-3 text-sm text-slate-600">Pembayaran dilakukan melalui Midtrans pada detail pesanan.</p>
+                            <p class="mt-3 text-sm text-slate-600">{{ __('app.landing.damage_popup_payment_note') }}</p>
 
                             <div class="mt-5 grid gap-2 sm:grid-cols-2">
                                 <button
@@ -288,14 +288,14 @@
                                     data-damage-popup-close
                                     class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-slate-300 hover:text-slate-800"
                                 >
-                                    Nanti
+                                    {{ __('app.landing.damage_popup_later') }}
                                 </button>
                                 <a
                                     href="{{ route('account.orders.show', $damageAlertOrder) }}"
                                     data-damage-popup-pay
                                     class="inline-flex items-center justify-center rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700"
                                 >
-                                    Lihat Detail & Bayar
+                                    {{ __('app.landing.damage_popup_pay') }}
                                 </a>
                             </div>
                         </div>
@@ -305,8 +305,8 @@
                 <div class="grid gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
                     <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
                         <div class="mb-3 flex items-center justify-between gap-3">
-                            <h3 class="text-sm font-semibold text-slate-900">Progress Pesanan Terbaru</h3>
-                            <a href="{{ route('booking.history') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-700">Lihat Riwayat →</a>
+                            <h3 class="text-sm font-semibold text-slate-900">{{ __('app.landing.latest_progress_title') }}</h3>
+                            <a href="{{ route('booking.history') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-700">{{ __('app.landing.latest_progress_link') }} →</a>
                         </div>
                         <a href="{{ route('account.orders.show', $latestOrder) }}" class="block rounded-xl border border-slate-100 px-3 py-3 hover:border-blue-200">
                             <div class="flex items-center justify-between gap-3">
@@ -343,8 +343,8 @@
                                         : 'TAGIHAN TAMBAHAN';
                                 @endphp
                                 <div class="mt-3 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-700">
-                                    <p class="font-semibold">Status: {{ $latestLabel }}.</p>
-                                    <p class="mt-1">Biaya tambahan: Rp {{ number_format($latestPenalty, 0, ',', '.') }} (tanpa PPN).</p>
+                                    <p class="font-semibold">{{ __('app.landing.latest_extra_status') }}: {{ $latestLabel }}.</p>
+                                    <p class="mt-1">{{ __('app.landing.latest_extra_fee') }}: Rp {{ number_format($latestPenalty, 0, ',', '.') }} ({{ __('app.landing.damage_popup_tax_note') }}).</p>
                                 </div>
                             @endif
                         </a>
@@ -352,8 +352,8 @@
 
                     <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
                         <div class="mb-3 flex items-center justify-between gap-2">
-                            <h3 class="text-sm font-semibold text-slate-900">Pesanan Lainnya</h3>
-                            <a href="{{ route('booking.history') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-700">Semua</a>
+                            <h3 class="text-sm font-semibold text-slate-900">{{ __('app.landing.other_orders_title') }}</h3>
+                            <a href="{{ route('booking.history') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-700">{{ __('app.landing.other_orders_all') }}</a>
                         </div>
                         <div class="space-y-2">
                             @forelse ($recentUserOrders->slice(1, 3) as $order)
@@ -361,14 +361,14 @@
                                     $smallExtraFee = (int) ($order->resolvePenaltyAmount() ?? 0);
                                     $smallDamagePaid = (string) ($order->damagePayment?->status ?? '') === 'paid';
                                     if ($smallExtraFee > 0 && ! $smallDamagePaid && in_array((string) $order->status_pesanan, ['barang_kembali', 'barang_rusak', 'barang_hilang', 'overdue_denda'], true)) {
-                                        $smallStatus = ['label' => 'TAGIHAN', 'class' => 'bg-rose-100 text-rose-700'];
+                                        $smallStatus = ['label' => __('app.landing.status_billing'), 'class' => 'bg-rose-100 text-rose-700'];
                                     } else {
                                         $smallStatus = match($order->status_pesanan) {
-                                            'lunas' => ['label' => 'SIAP DIAMBIL', 'class' => 'bg-indigo-100 text-indigo-700'],
-                                            'barang_diambil' => ['label' => 'DISEWA', 'class' => 'bg-amber-100 text-amber-700'],
-                                            'barang_kembali', 'selesai' => ['label' => 'KEMBALI', 'class' => 'bg-emerald-100 text-emerald-700'],
-                                            'barang_rusak' => ['label' => 'RUSAK', 'class' => 'bg-rose-100 text-rose-700'],
-                                            'barang_hilang', 'overdue_denda' => ['label' => 'TAGIHAN', 'class' => 'bg-rose-100 text-rose-700'],
+                                            'lunas' => ['label' => __('app.landing.status_ready_pickup'), 'class' => 'bg-indigo-100 text-indigo-700'],
+                                            'barang_diambil' => ['label' => __('app.landing.status_rented'), 'class' => 'bg-amber-100 text-amber-700'],
+                                            'barang_kembali', 'selesai' => ['label' => __('app.landing.status_returned'), 'class' => 'bg-emerald-100 text-emerald-700'],
+                                            'barang_rusak' => ['label' => __('app.landing.status_damaged'), 'class' => 'bg-rose-100 text-rose-700'],
+                                            'barang_hilang', 'overdue_denda' => ['label' => __('app.landing.status_billing'), 'class' => 'bg-rose-100 text-rose-700'],
                                             default => ['label' => strtoupper((string) $order->status_pesanan), 'class' => 'bg-slate-100 text-slate-700'],
                                         };
                                     }
@@ -382,7 +382,7 @@
                                 </a>
                             @empty
                                 <div class="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-4 text-center text-xs text-slate-500">
-                                    Belum ada pesanan lain.
+                                    {{ __('app.landing.other_orders_empty') }}
                                 </div>
                             @endforelse
                         </div>
@@ -438,7 +438,7 @@
                 <div class="card rounded-2xl p-6 text-center">
                     <p class="text-sm text-slate-500">{{ $quickCategoryEmpty }}</p>
                     <a href="{{ route('categories.index') }}" class="btn-secondary mt-4 inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition">
-                        Lihat Semua Kategori
+                        {{ __('app.landing.quick_category_cta') }}
                     </a>
                 </div>
             @else

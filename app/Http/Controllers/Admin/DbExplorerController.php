@@ -145,7 +145,7 @@ class DbExplorerController extends Controller
 
         if (empty($payload)) {
             return redirect()->route('admin.db.show', [$table, $recordId])
-                ->with('status', 'Tidak ada perubahan yang disimpan.');
+                ->with('status', __('Tidak ada perubahan yang disimpan.'));
         }
 
         DB::table($table)->where($primaryKey, $recordId)->update($payload);
@@ -159,7 +159,7 @@ class DbExplorerController extends Controller
         ]);
 
         return redirect()->route('admin.db.show', [$table, $recordId])
-            ->with('status', 'Perubahan berhasil disimpan.');
+            ->with('status', __('Perubahan berhasil disimpan.'));
     }
 
     private function getTables(): array
@@ -255,7 +255,7 @@ class DbExplorerController extends Controller
                 }
 
                 if (! is_numeric($value)) {
-                    abort(422, "Kolom {$field} harus berupa angka.");
+                    abort(422, __('Kolom :field harus berupa angka.', ['field' => $field]));
                 }
 
                 $payload[$field] = (int) $value;
@@ -264,7 +264,7 @@ class DbExplorerController extends Controller
 
             if (str_contains($type, 'decimal') || str_contains($type, 'float') || str_contains($type, 'double')) {
                 if (! is_numeric($value)) {
-                    abort(422, "Kolom {$field} harus berupa angka.");
+                    abort(422, __('Kolom :field harus berupa angka.', ['field' => $field]));
                 }
 
                 $payload[$field] = (float) $value;
@@ -279,7 +279,7 @@ class DbExplorerController extends Controller
 
                 $decoded = json_decode($value, true);
                 if (json_last_error() !== JSON_ERROR_NONE) {
-                    abort(422, "Kolom {$field} harus berformat JSON valid.");
+                    abort(422, __('Kolom :field harus berformat JSON valid.', ['field' => $field]));
                 }
 
                 $payload[$field] = json_encode($decoded, JSON_UNESCAPED_UNICODE);
@@ -299,7 +299,7 @@ class DbExplorerController extends Controller
                         $payload[$field] = Carbon::parse($value)->toDateTimeString();
                     }
                 } catch (\Throwable $e) {
-                    abort(422, "Kolom {$field} harus berupa tanggal yang valid.");
+                    abort(422, __('Kolom :field harus berupa tanggal yang valid.', ['field' => $field]));
                 }
 
                 continue;

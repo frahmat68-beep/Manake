@@ -46,7 +46,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password admin salah',
+            'email' => __('Email atau password admin salah'),
         ])->onlyInput('email');
     }
 
@@ -73,7 +73,7 @@ class AuthController extends Controller
 
         if (! $admin) {
             return back()->withErrors([
-                'email' => 'Sesi admin tidak valid. Coba login ulang.',
+                'email' => __('Sesi admin tidak valid. Coba login ulang.'),
             ])->onlyInput('email');
         }
 
@@ -81,7 +81,7 @@ class AuthController extends Controller
             Auth::guard('admin')->logout();
 
             return back()->withErrors([
-                'email' => 'Akun tidak memiliki akses admin.',
+                'email' => __('Akun tidak memiliki akses admin.'),
             ])->onlyInput('email');
         }
 

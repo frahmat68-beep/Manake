@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +36,8 @@ class SetLocale
         }
 
         app()->setLocale($locale);
+        Carbon::setLocale($locale);
+        CarbonImmutable::setLocale($locale);
 
         return $next($request);
     }
