@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Profile;
-use App\Models\Order;
-use App\Models\OrderNotification;
-use App\Models\PhoneVerification;
 use Illuminate\Support\Facades\Schema;
 use Throwable;
 
@@ -70,22 +68,22 @@ class User extends Authenticatable implements MustVerifyEmail
         ]);
     }
 
-    public function profile()
+    public function profile(): HasOne
     {
         return $this->hasOne(Profile::class);
     }
 
-    public function orders()
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
 
-    public function orderNotifications()
+    public function orderNotifications(): HasMany
     {
         return $this->hasMany(OrderNotification::class);
     }
 
-    public function phoneVerification()
+    public function phoneVerification(): HasOne
     {
         return $this->hasOne(PhoneVerification::class);
     }
@@ -154,5 +152,4 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $this->email ?? 'User';
     }
-
 }

@@ -15,10 +15,10 @@ jobs:
             APP_LOCALE: id
             APP_FALLBACK_LOCALE: id
             DB_CONNECTION: sqlite
-            DB_DATABASE: ':memory:'
+            DB_DATABASE: database/database.sqlite
             CACHE_STORE: array
             SESSION_DRIVER: array
-            QUEUE_CONNECTION: sync
+            QUEUE_CONNECTION: database
             MAIL_MAILER: array
 
         steps:
@@ -62,16 +62,32 @@ jobs:
             - name: Prepare Environment
               run: |
                   cp .env.example .env
+                  touch database/database.sqlite
                   php artisan key:generate --force
+                  php artisan migrate --force
 
             - name: Lint
               run: npm run lint
+
+            - name: PHP Formatting (Pint)
+              run: composer lint:php
+
+            - name: PHP Static Analysis (Larastan)
+              run: composer analyse
 
             - name: Test (script)
               run: npm run test
 
             - name: Test (Laravel)
               run: php artisan test
+
+            - name: Queue Worker Smoke Test
+              run: php artisan queue:work --once --stop-when-empty --tries=1 --sleep=1 --timeout=30
+
+            - name: Scheduler Registration Check
+              run: |
+                  php artisan schedule:list
+                  php artisan schedule:run
 
             - name: Build
               run: npm run build
@@ -82,3 +98,66 @@ jobs:
               with:
                   name: frontend-build
                   path: public/build
+
+    predeploy-doctor:
+        name: Pre-Deploy Doctor Gate
+        runs-on: ubuntu-latest
+        needs: quality
+        env:
+            APP_ENV: testing
+            APP_KEY: base64:Q2hhbmdlTWVJbkNJJTJGQXBwS2V5SW5Mb2NhbA==
+            APP_LOCALE: id
+            APP_FALLBACK_LOCALE: id
+            DB_CONNECTION: sqlite
+            DB_DATABASE: database/database.sqlite
+            CACHE_STORE: array
+            SESSION_DRIVER: array
+            QUEUE_CONNECTION: database
+            MAIL_MAILER: array
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  extensions: mbstring, pdo, pdo_sqlite, sqlite3, dom, fileinfo
+                  coverage: none
+
+            - name: Cache Composer
+              uses: actions/cache@v4
+              with:
+                  path: ~/.composer/cache
+                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-composer-
+
+            - name: Install PHP Dependencies
+              run: composer install --no-interaction --prefer-dist --no-progress
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: Cache npm
+              uses: actions/cache@v4
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-npm-
+
+            - name: Install Node Dependencies
+              run: npm ci
+
+            - name: Prepare Environment
+              run: |
+                  cp .env.example .env
+                  touch database/database.sqlite
+                  php artisan key:generate --force
+
+            - name: Doctor Pre-Deployment Check
+              run: bash scripts/doctor.sh

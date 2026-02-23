@@ -1,0 +1,17 @@
+[Unit]
+Description=Manake Rental Queue Worker
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/manake-rental
+ExecStart=/usr/bin/php artisan queue:work --queue=default --sleep=1 --tries=3 --timeout=120 --memory=256
+Restart=always
+RestartSec=5
+Environment=APP_ENV=production
+Environment=APP_DEBUG=false
+
+[Install]
+WantedBy=multi-user.target

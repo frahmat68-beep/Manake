@@ -43,5 +43,12 @@ return [
         'is_3ds' => true,
     ],
 
+    'sentry' => [
+        'dsn' => env('SENTRY_LARAVEL_DSN'),
+    ],
+
+    'bugsnag' => [
+        'api_key' => env('BUGSNAG_API_KEY'),
+    ],
 
 ];

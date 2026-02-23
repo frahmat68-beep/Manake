@@ -127,9 +127,9 @@ class AuthController extends Controller
 
     private function syncAdminFromEnv(string $email, string $password): ?Admin
     {
-        $superAdminEmail = env('SUPERADMIN_EMAIL', env('SUPER_ADMIN_EMAIL'));
-        $superAdminPassword = env('SUPERADMIN_PASSWORD', env('SUPER_ADMIN_PASSWORD'));
-        $superAdminName = 'Fikri Rachmat';
+        $superAdminEmail = (string) config('admin.super_admin_email');
+        $superAdminPassword = (string) config('admin.super_admin_password');
+        $superAdminName = (string) config('admin.super_admin_name', 'Fikri Rachmat');
 
         if (! $superAdminEmail || ! $superAdminPassword) {
             return null;

@@ -1,0 +1,12 @@
+[Unit]
+Description=Manake Rental Scheduler Runner
+After=network.target
+
+[Service]
+Type=oneshot
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/manake-rental
+ExecStart=/usr/bin/php artisan schedule:run
+Environment=APP_ENV=production
+Environment=APP_DEBUG=false

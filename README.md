@@ -40,14 +40,16 @@ php artisan serve
 ## Super Admin Seeder
 
 Seeder `SuperAdminSeeder` membuat / update akun:
-- Email: `frahmat68@gmail.com`
-- Nama: `Fikri Rahmat`
+- Email diambil dari env `SUPER_ADMIN_EMAIL`
+- Nama diambil dari env `SUPER_ADMIN_NAME`
 - Role: `super_admin`
 - Password diambil dari env `SUPERADMIN_PASSWORD` (fallback `SUPER_ADMIN_PASSWORD`)
 
 Contoh:
 
 ```env
+SUPER_ADMIN_EMAIL=frahmat68@gmail.com
+SUPER_ADMIN_NAME=Fikri Rachmat
 SUPERADMIN_PASSWORD=ChangeMe123!
 ```
 
@@ -76,6 +78,19 @@ Opsional skip build frontend:
 ```bash
 SKIP_FRONTEND_BUILD=1 bash scripts/doctor.sh
 ```
+
+## CI/CD
+
+Workflow GitHub Actions ada di `.github/workflows/ci.yml` dengan alur:
+- Install dependency PHP dan Node
+- Lint frontend (`npm run lint`)
+- Lint PHP (`composer lint:php`)
+- Static analysis PHP (`composer analyse`, Larastan/PHPStan)
+- Test (`npm run test`, `php artisan test`)
+- Queue/scheduler smoke-check (`php artisan queue:work --once`, `php artisan schedule:run`)
+- Build frontend (`npm run build`)
+- Upload artifact `public/build`
+- Jalankan `bash scripts/doctor.sh` sebagai **pre-deploy gate**
 
 ## Deployment Checklist
 
@@ -122,10 +137,65 @@ Keterangan OTP:
 - `OTP_REQUIRED=false`: alur user tetap seperti sekarang (tanpa wajib OTP).
 - `OTP_REQUIRED=true`: user baru/login yang belum verifikasi akan diarahkan ke halaman OTP email.
 
+## Script Deployment Otomatis
+
+Gunakan script berikut di server produksi:
+
+```bash
+bash scripts/deploy-production.sh
+```
+
+Script ini menjalankan:
+- Validasi `APP_ENV=production` dan `APP_DEBUG=false`
+- `composer install --no-dev`
+- `php artisan migrate --force`
+- `php artisan config:cache`, `route:cache`, `view:cache`
+- `npm ci && npm run build` (jika npm tersedia)
+- `php artisan queue:restart`
+
+Untuk validasi saja (tanpa deployment penuh), gunakan:
+
+```bash
+bash scripts/deploy-check.sh
+```
+
+## Queue & Scheduler Runtime
+
+Template operasional sudah disediakan:
+- Supervisor:
+  - `deploy/supervisor/manake-queue-worker.conf`
+  - `deploy/supervisor/manake-scheduler.conf`
+- systemd:
+  - `deploy/systemd/manake-queue-worker.service`
+  - `deploy/systemd/manake-scheduler.service`
+  - `deploy/systemd/manake-scheduler.timer`
+
+## Docker (Opsional)
+
+Untuk environment konsisten lokal/CI:
+
+```bash
+docker compose up --build
+```
+
+File yang disediakan:
+- `Dockerfile` (multi-stage build: Composer + Node + runtime)
+- `docker-compose.yml` (app, queue, scheduler, mysql, redis)
+- `.dockerignore`
+
+## Security & Audit
+
 ## Testing
 
 ```bash
+npm run lint
+composer lint:php
+composer analyse
+npm run test
 php artisan test
 ```
+
+Audit log admin sudah aktif via tabel `audit_logs` untuk perubahan penting (order/content/category/equipment/DB explorer).
+Monitoring error (Sentry/Bugsnag) disiapkan melalui env di `.env.example` agar mudah diaktifkan saat production hardening.
 
 Target release: seluruh test harus green sebelum deploy.

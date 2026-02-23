@@ -10,7 +10,9 @@
         "test:frontend": "if [ -f ./node_modules/vitest/package.json ]; then npx vitest run; else echo 'Vitest not installed, skipping frontend tests.'; fi",
         "lint": "npm run lint:eslint && npm run lint:prettier",
         "lint:eslint": "eslint resources/js --max-warnings=0",
-        "lint:prettier": "prettier --check \"resources/js/**/*.js\" \"resources/css/**/*.css\" \"eslint.config.js\" \"vite.config.js\" \"tailwind.config.js\" \"postcss.config.js\" \"package.json\" \".github/workflows/**/*.yml\""
+        "lint:prettier": "prettier --check \"resources/js/**/*.js\" \"resources/css/**/*.css\" \"eslint.config.js\" \"vite.config.js\" \"tailwind.config.js\" \"postcss.config.js\" \"package.json\" \".github/workflows/**/*.yml\"",
+        "doctor": "bash scripts/doctor.sh",
+        "deploy:check": "bash scripts/deploy-check.sh"
     },
     "devDependencies": {
         "@eslint/js": "^9.0.0",

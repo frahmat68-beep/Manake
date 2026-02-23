@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
@@ -136,36 +139,36 @@ class Order extends Model
         'shipping_amount' => 'integer',
     ];
 
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
-    public function payment()
+    public function payment(): HasOne
     {
         return $this->hasOne(Payment::class)
             ->where('provider', Payment::PROVIDER_MIDTRANS_RENTAL)
             ->latestOfMany();
     }
 
-    public function damagePayment()
+    public function damagePayment(): HasOne
     {
         return $this->hasOne(Payment::class)
             ->where('provider', Payment::PROVIDER_MIDTRANS_DAMAGE)
             ->latestOfMany();
     }
 
-    public function payments()
+    public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function notifications()
+    public function notifications(): HasMany
     {
         return $this->hasMany(OrderNotification::class);
     }

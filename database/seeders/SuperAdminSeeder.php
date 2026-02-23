@@ -10,8 +10,8 @@ class SuperAdminSeeder extends Seeder
 {
     public function run(): void
     {
-        $email = 'frahmat68@gmail.com';
-        $name = 'Fikri Rachmat';
+        $email = env('SUPER_ADMIN_EMAIL', 'frahmat68@gmail.com');
+        $name = env('SUPER_ADMIN_NAME', 'Fikri Rachmat');
         $password = env('SUPERADMIN_PASSWORD', env('SUPER_ADMIN_PASSWORD', 'ChangeMe123!'));
 
         Admin::updateOrCreate(

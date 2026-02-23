@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Order;
-use App\Models\EquipmentMaintenanceWindow;
 
 class Equipment extends Model
 {
@@ -32,22 +32,22 @@ class Equipment extends Model
         'stock' => 'integer',
     ];
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function maintenanceWindows()
+    public function maintenanceWindows(): HasMany
     {
         return $this->hasMany(EquipmentMaintenanceWindow::class);
     }
 
-    public function activeOrderItems()
+    public function activeOrderItems(): HasMany
     {
         $today = now()->toDateString();
 
         return $this->hasMany(OrderItem::class, 'equipment_id')
-            ->whereHas('order', function ($query) use ($today) {
+            ->whereHas('order', function ($query) {
                 $query->whereIn('status_pesanan', Order::ACTIVE_RENTAL_STATUSES);
             })
             ->where(function ($query) use ($today) {
