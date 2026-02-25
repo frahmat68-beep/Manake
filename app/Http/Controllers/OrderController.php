@@ -44,7 +44,7 @@ class OrderController extends Controller
         $this->markOrderNotificationsAsRead($request, $order);
 
         $relations = ['items.equipment', 'payment', 'damagePayment'];
-        if (Schema::hasTable('order_notifications')) {
+        if (schema_table_exists_cached('order_notifications')) {
             $relations['notifications'] = fn ($query) => $query->latest()->limit(8);
         }
 
@@ -192,9 +192,9 @@ class OrderController extends Controller
                 }
 
                 $subtotal = 0;
-                $hasItemRentalDates = Schema::hasColumn('order_items', 'rental_start_date')
-                    && Schema::hasColumn('order_items', 'rental_end_date');
-                $hasItemRentalDays = Schema::hasColumn('order_items', 'rental_days');
+                $hasItemRentalDates = schema_column_exists_cached('order_items', 'rental_start_date')
+                    && schema_column_exists_cached('order_items', 'rental_end_date');
+                $hasItemRentalDays = schema_column_exists_cached('order_items', 'rental_days');
 
                 foreach ($order->items as $item) {
                     $qty = max((int) ($item->qty ?? 0), 1);
@@ -315,6 +315,10 @@ class OrderController extends Controller
 
         $filename = 'Invoice-' . ($order->order_number ?: ('ORD-' . $order->id)) . '.pdf';
 
+        if ($request->boolean('inline')) {
+            return $pdf->stream($filename);
+        }
+
         return $pdf->download($filename);
     }
 
@@ -327,7 +331,7 @@ class OrderController extends Controller
 
     private function markOrderNotificationsAsRead(Request $request, Order $order): void
     {
-        if (! Schema::hasTable('order_notifications')) {
+        if (! schema_table_exists_cached('order_notifications')) {
             return;
         }
 

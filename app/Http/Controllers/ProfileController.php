@@ -19,7 +19,7 @@ class ProfileController extends Controller
     {
         $nameLocked = false;
 
-        if (Schema::hasTable('profiles') && $request->user()) {
+        if (schema_table_exists_cached('profiles') && $request->user()) {
             $lockedName = trim((string) ($request->user()->profile()->value('full_name') ?? ''));
             $nameLocked = $lockedName !== '';
         }
@@ -36,7 +36,7 @@ class ProfileController extends Controller
     public function complete(Request $request): View
     {
         $profile = null;
-        $profilesTableMissing = ! Schema::hasTable('profiles');
+        $profilesTableMissing = ! schema_table_exists_cached('profiles');
 
         if (! $profilesTableMissing && $request->user()) {
             $profile = $request->user()->profile()->firstOrCreate([], [
@@ -56,7 +56,7 @@ class ProfileController extends Controller
      */
     public function storeCompletion(Request $request): RedirectResponse
     {
-        if (! Schema::hasTable('profiles')) {
+        if (! schema_table_exists_cached('profiles')) {
             return redirect()
                 ->route('profile.complete')
                 ->with('error', __('Profil belum siap, jalankan migrasi terlebih dahulu.'));
@@ -183,7 +183,7 @@ class ProfileController extends Controller
     {
         $validated = $request->validated();
 
-        if (Schema::hasTable('profiles')) {
+        if (schema_table_exists_cached('profiles')) {
             $profile = $request->user()->profile()->first();
             $lockedName = trim((string) ($profile?->full_name ?? ''));
 

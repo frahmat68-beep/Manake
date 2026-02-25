@@ -501,6 +501,11 @@
             display: none;
         }
 
+        html.invoice-embedded .pickup-guide-overlay,
+        html.invoice-embedded .toast {
+            display: none !important;
+        }
+
         .action-btn {
             border: 1px solid var(--invoice-border);
             background: var(--invoice-surface);
@@ -1133,9 +1138,9 @@
     </div>
 
     <div class="actions" aria-label="Invoice Actions">
+        <a href="{{ route('booking.history') }}" class="action-btn">{{ __('ui.orders.back_to_history') }}</a>
         <a href="{{ $signedPdfUrl ?: '#' }}" class="action-btn" @if (! $signedPdfUrl) aria-disabled="true" @endif>{{ __('ui.invoice.actions.download_pdf') }}</a>
         <button type="button" class="action-btn" id="share-invoice-btn">{{ __('ui.invoice.actions.share') }}</button>
-        <button type="button" class="action-btn primary" id="print-invoice-btn">{{ __('ui.invoice.actions.print') }}</button>
     </div>
 
     <div class="toast" id="invoice-toast"></div>
@@ -1144,45 +1149,8 @@
         (function () {
             const toast = document.getElementById('invoice-toast');
             const shareButton = document.getElementById('share-invoice-btn');
-            const printButton = document.getElementById('print-invoice-btn');
             const pickupGuideModal = document.getElementById('pickup-guide-modal');
             const invoiceId = @json($invoiceId);
-            const printStyleId = 'receipt-print-style';
-            const allowedPapers = new Set(['auto', 'a3', 'a4', 'a5', 'letter', 'legal']);
-            const allowedOrientations = new Set(['portrait', 'landscape']);
-
-            const ensurePrintStyleNode = () => {
-                let styleNode = document.getElementById(printStyleId);
-                if (styleNode) {
-                    return styleNode;
-                }
-
-                styleNode = document.createElement('style');
-                styleNode.id = printStyleId;
-                document.head.appendChild(styleNode);
-
-                return styleNode;
-            };
-
-            const applyPrintPreset = (paper = 'auto', orientation = 'portrait') => {
-                const resolvedPaper = allowedPapers.has(String(paper).toLowerCase())
-                    ? String(paper).toLowerCase()
-                    : 'auto';
-                const resolvedOrientation = allowedOrientations.has(String(orientation).toLowerCase())
-                    ? String(orientation).toLowerCase()
-                    : 'portrait';
-
-                const pageSize = resolvedPaper === 'auto'
-                    ? 'auto'
-                    : `${resolvedPaper.toUpperCase()} ${resolvedOrientation}`;
-
-                ensurePrintStyleNode().textContent = `@media print{@page{size:${pageSize};margin:10mm;}body.invoice-page{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}`;
-            };
-
-            const printInvoice = (paper = 'auto', orientation = 'portrait') => {
-                applyPrintPreset(paper, orientation);
-                window.setTimeout(() => window.print(), 80);
-            };
 
             const showToast = (message) => {
                 if (!toast) return;
@@ -1210,13 +1178,6 @@
                 } catch (error) {
                     showToast(@json(__('ui.invoice.toast.failed')));
                 }
-            });
-
-            printButton?.addEventListener('click', () => {
-                const params = new URLSearchParams(window.location.search);
-                const paper = params.get('paper') || 'auto';
-                const orientation = params.get('orientation') || 'portrait';
-                printInvoice(paper, orientation);
             });
 
             if (pickupGuideModal) {
@@ -1273,15 +1234,6 @@
                 });
             }
 
-            window.addEventListener('message', (event) => {
-                if (!event || !event.data || event.data.type !== 'manake-print-receipt') {
-                    return;
-                }
-
-                const paper = typeof event.data.paper === 'string' ? event.data.paper : 'auto';
-                const orientation = typeof event.data.orientation === 'string' ? event.data.orientation : 'portrait';
-                printInvoice(paper, orientation);
-            });
         })();
     </script>
 </body>

@@ -73,7 +73,7 @@ class Equipment extends Model
             return (int) $this->attributes['reserved_units'];
         }
 
-        if (! Schema::hasTable('order_items') || ! Schema::hasTable('orders')) {
+        if (! schema_table_exists_cached('order_items') || ! schema_table_exists_cached('orders')) {
             return 0;
         }
 

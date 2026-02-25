@@ -12,7 +12,7 @@ class OrderPaymentLifecycleService
 {
     public function expirePendingPayments(int $minutes = 60): int
     {
-        if (! Schema::hasTable('orders')) {
+        if (! schema_table_exists_cached('orders')) {
             return 0;
         }
 
@@ -60,7 +60,7 @@ class OrderPaymentLifecycleService
                                 'updated_at' => now(),
                             ]);
 
-                        if (Schema::hasTable('order_notifications') && (int) $lockedOrder->user_id > 0) {
+                        if (schema_table_exists_cached('order_notifications') && (int) $lockedOrder->user_id > 0) {
                             OrderNotification::query()->create([
                                 'user_id' => $lockedOrder->user_id,
                                 'order_id' => $lockedOrder->id,

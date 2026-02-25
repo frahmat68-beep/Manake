@@ -17,7 +17,7 @@ class LocaleController extends Controller
 
         $request->session()->put('locale', $locale);
 
-        if ($request->user() && Schema::hasColumn('users', 'preferred_locale')) {
+        if ($request->user() && schema_column_exists_cached('users', 'preferred_locale')) {
             $request->user()->forceFill([
                 'preferred_locale' => $locale,
             ])->save();

@@ -22,7 +22,7 @@ class CartController extends Controller
         $cartDateRange = $this->resolveCartDateLockRange($cartItems);
         $suggestedEquipments = collect();
 
-        if (Schema::hasTable('equipments')) {
+        if (schema_table_exists_cached('equipments')) {
             $cartEquipmentIds = collect($cartItems)
                 ->map(fn (array $item) => (int) ($item['equipment_id'] ?? $item['product_id'] ?? 0))
                 ->filter(fn (int $equipmentId) => $equipmentId > 0)
@@ -35,7 +35,7 @@ class CartController extends Controller
                 ->orderByDesc('updated_at')
                 ->orderBy('name');
 
-            if (Schema::hasColumn('equipments', 'status')) {
+            if (schema_column_exists_cached('equipments', 'status')) {
                 $suggestionQuery->where('status', 'ready');
             }
 
@@ -43,7 +43,7 @@ class CartController extends Controller
                 $suggestionQuery->whereNotIn('id', $cartEquipmentIds);
             }
 
-            if (Schema::hasTable('order_items') && Schema::hasTable('orders')) {
+            if (schema_table_exists_cached('order_items') && schema_table_exists_cached('orders')) {
                 $suggestionQuery->withSum('activeOrderItems as reserved_units', 'qty');
             }
 

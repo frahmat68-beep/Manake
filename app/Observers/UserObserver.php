@@ -10,7 +10,7 @@ class UserObserver
 {
     public function created(User $user): void
     {
-        if (! Schema::hasTable('profiles')) {
+        if (! schema_table_exists_cached('profiles')) {
             return;
         }
 

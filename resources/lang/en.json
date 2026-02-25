@@ -472,6 +472,7 @@
     "Tanggal Lengkap:": "Full Date:",
     "Tanggal reschedule tidak valid.": "The reschedule date is invalid.",
     "Tanggal sewa belum diisi untuk: :items. Update tanggal di katalog/detail lalu tambahkan ulang ke keranjang.": "Rental date has not been entered for: :items. Update the date in the catalog/details then re-add to basket.",
+    "Tanggal sewa maksimal 3 bulan dari hari ini.": "The rental date can be at most 3 months from today.",
     "Tarik & lepas file": "Drag & drop files",
     "Tautan verifikasi baru telah dikirim ke email Anda.": "A new verification link has been sent to your email.",
     "Teks CTA Hero": "Hero CTA text",

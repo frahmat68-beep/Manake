@@ -16,7 +16,7 @@ class SetTheme
         $theme = null;
 
         $user = Auth::guard('web')->user();
-        if ($user && Schema::hasColumn('users', 'preferred_theme')) {
+        if ($user && schema_column_exists_cached('users', 'preferred_theme')) {
             $userTheme = $user->preferred_theme;
             if (in_array($userTheme, $allowed, true)) {
                 $theme = $userTheme;

@@ -121,7 +121,7 @@ class AvailabilityService
             }
         }
 
-        if (Schema::hasTable('equipment_maintenance_windows')) {
+        if (schema_table_exists_cached('equipment_maintenance_windows')) {
             $maintenanceWindows = EquipmentMaintenanceWindow::query()
                 ->where('equipment_id', $equipment->id)
                 ->whereDate('start_date', '<=', $end->toDateString())
@@ -221,7 +221,7 @@ class AvailabilityService
             }
         }
 
-        if (Schema::hasTable('equipment_maintenance_windows')) {
+        if (schema_table_exists_cached('equipment_maintenance_windows')) {
             $maintenanceWindows = EquipmentMaintenanceWindow::query()
                 ->where('equipment_id', $equipment->id)
                 ->whereDate('start_date', '<=', $end->toDateString())
@@ -262,7 +262,7 @@ class AvailabilityService
         Carbon $windowEnd,
         ?int $ignoreOrderId = null
     ): Collection {
-        if (! Schema::hasTable('order_items') || ! Schema::hasTable('orders')) {
+        if (! schema_table_exists_cached('order_items') || ! schema_table_exists_cached('orders')) {
             return collect();
         }
 

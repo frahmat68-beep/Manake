@@ -20,7 +20,7 @@ class EnsureProfileCompleted
             return redirect()->route('verification.notice');
         }
 
-        if (! Schema::hasTable('profiles')) {
+        if (! schema_table_exists_cached('profiles')) {
             return redirect()
                 ->route('profile.complete')
                 ->with('error', __('Profil belum siap, jalankan migrasi terlebih dahulu.'));

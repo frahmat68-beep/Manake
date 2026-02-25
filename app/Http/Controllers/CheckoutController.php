@@ -227,9 +227,9 @@ class CheckoutController extends Controller
                 ]);
 
                 $subtotal = 0;
-                $hasItemRentalDates = Schema::hasColumn('order_items', 'rental_start_date')
-                    && Schema::hasColumn('order_items', 'rental_end_date');
-                $hasItemRentalDays = Schema::hasColumn('order_items', 'rental_days');
+                $hasItemRentalDates = schema_column_exists_cached('order_items', 'rental_start_date')
+                    && schema_column_exists_cached('order_items', 'rental_end_date');
+                $hasItemRentalDays = schema_column_exists_cached('order_items', 'rental_days');
 
                 foreach ($cartItems as $item) {
                     $equipmentId = (int) ($item['equipment_id'] ?? $item['product_id'] ?? 0);

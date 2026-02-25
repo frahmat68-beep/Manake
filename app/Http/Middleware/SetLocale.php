@@ -16,7 +16,7 @@ class SetLocale
         $locale = null;
 
         $user = Auth::guard('web')->user();
-        if ($user && Schema::hasColumn('users', 'preferred_locale')) {
+        if ($user && schema_column_exists_cached('users', 'preferred_locale')) {
             $userLocale = $user->preferred_locale;
             if (in_array($userLocale, ['id', 'en'], true)) {
                 $locale = $userLocale;

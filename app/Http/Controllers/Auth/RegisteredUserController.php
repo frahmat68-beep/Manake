@@ -45,27 +45,27 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ];
 
-        if (Schema::hasColumn('users', 'role')) {
+        if (schema_column_exists_cached('users', 'role')) {
             $data['role'] = 'user';
         }
 
-        if (Schema::hasColumn('users', 'name')) {
+        if (schema_column_exists_cached('users', 'name')) {
             $data['name'] = Str::before($request->email, '@');
         }
 
-        if (Schema::hasColumn('users', 'nik')) {
+        if (schema_column_exists_cached('users', 'nik')) {
             $data['nik'] = null;
         }
 
-        if (Schema::hasColumn('users', 'phone')) {
+        if (schema_column_exists_cached('users', 'phone')) {
             $data['phone'] = null;
         }
 
-        if (Schema::hasColumn('users', 'address')) {
+        if (schema_column_exists_cached('users', 'address')) {
             $data['address'] = null;
         }
 
-        if (Schema::hasColumn('users', 'is_otp_verified')) {
+        if (schema_column_exists_cached('users', 'is_otp_verified')) {
             $data['is_otp_verified'] = ! config('security.otp_required');
         }
 
@@ -74,7 +74,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        if (Schema::hasTable('profiles')) {
+        if (schema_table_exists_cached('profiles')) {
             $user->profile()->create([
                 'full_name' => null,
                 'nik' => null,
@@ -100,7 +100,7 @@ class RegisteredUserController extends Controller
             ]);
         }
 
-        if (config('security.otp_required') && Schema::hasColumn('users', 'is_otp_verified')) {
+        if (config('security.otp_required') && schema_column_exists_cached('users', 'is_otp_verified')) {
             try {
                 $otp = $user->generateOtp();
                 Mail::to($user->email)->send(new OtpMail($otp));

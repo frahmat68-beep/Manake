@@ -14,14 +14,14 @@ class SettingsController extends Controller
         $locale = app()->getLocale();
         $theme = $request->attributes->get('theme_preference', 'dark');
 
-        if ($request->user() && Schema::hasColumn('users', 'preferred_locale')) {
+        if ($request->user() && schema_column_exists_cached('users', 'preferred_locale')) {
             $userLocale = $request->user()->preferred_locale;
             if (in_array($userLocale, ['id', 'en'], true)) {
                 $locale = $userLocale;
             }
         }
 
-        if ($request->user() && Schema::hasColumn('users', 'preferred_theme')) {
+        if ($request->user() && schema_column_exists_cached('users', 'preferred_theme')) {
             $userTheme = $request->user()->preferred_theme;
             if (in_array($userTheme, ['system', 'dark', 'light'], true)) {
                 $theme = $userTheme;
@@ -46,10 +46,10 @@ class SettingsController extends Controller
 
         if ($request->user()) {
             $update = [];
-            if (Schema::hasColumn('users', 'preferred_locale')) {
+            if (schema_column_exists_cached('users', 'preferred_locale')) {
                 $update['preferred_locale'] = $data['locale'];
             }
-            if (Schema::hasColumn('users', 'preferred_theme')) {
+            if (schema_column_exists_cached('users', 'preferred_theme')) {
                 $update['preferred_theme'] = $data['theme'];
             }
             if ($update !== []) {

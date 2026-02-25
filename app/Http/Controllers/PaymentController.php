@@ -231,6 +231,9 @@ class PaymentController extends Controller
             $signedInvoicePdfUrl = $canViewInvoice
                 ? URL::temporarySignedRoute('account.orders.receipt.pdf', now()->addMinutes(30), ['order' => $orderRouteKey])
                 : null;
+            $signedInvoicePdfPreviewUrl = $canViewInvoice
+                ? URL::temporarySignedRoute('account.orders.receipt.pdf', now()->addMinutes(30), ['order' => $orderRouteKey, 'inline' => 1])
+                : null;
 
             return response()->json([
                 'status' => 'ok',
@@ -243,6 +246,7 @@ class PaymentController extends Controller
                 'has_damage_fee_outstanding' => $hasOutstandingDamageFee,
                 'invoice_url' => $signedInvoiceUrl,
                 'invoice_pdf_url' => $signedInvoicePdfUrl,
+                'invoice_pdf_preview_url' => $signedInvoicePdfPreviewUrl,
                 'receipt_number' => $order->order_number,
             ]);
         } catch (\Throwable $exception) {
@@ -373,7 +377,7 @@ class PaymentController extends Controller
 
     private function sendPaymentSyncNotification(Order $order, ?string $beforePaymentStatus, ?string $beforeOrderStatus): void
     {
-        if (! Schema::hasTable('order_notifications')) {
+        if (! schema_table_exists_cached('order_notifications')) {
             return;
         }
 
@@ -405,7 +409,7 @@ class PaymentController extends Controller
 
     private function sendDamageFeeNotification(Order $order, string $paymentStatus, Payment $payment): void
     {
-        if (! Schema::hasTable('order_notifications')) {
+        if (! schema_table_exists_cached('order_notifications')) {
             return;
         }
 
@@ -609,7 +613,7 @@ class PaymentController extends Controller
 
     private function reserveWebhookEvent(array $payload, ?int $orderId = null): bool
     {
-        if (! Schema::hasTable('payment_webhook_events')) {
+        if (! schema_table_exists_cached('payment_webhook_events')) {
             return true;
         }
 

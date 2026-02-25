@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
             if ($navCategoriesCache === null) {
                 $navCategoriesCache = collect();
 
-                if (Schema::hasTable('categories')) {
+                if (schema_table_exists_cached('categories')) {
                     $navCategoriesCache = Category::query()
                         ->select(['name', 'slug'])
                         ->orderBy('name')
@@ -56,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
-            if (Auth::guard('web')->check() && Schema::hasTable('order_notifications')) {
+            if (Auth::guard('web')->check() && schema_table_exists_cached('order_notifications')) {
                 $webUserId = (int) Auth::guard('web')->id();
                 $reminderSyncKey = 'order_reminder_sync:' . $webUserId . ':' . now()->format('YmdH') . floor(now()->minute / 15);
                 if (Cache::add($reminderSyncKey, 1, now()->addMinutes(15))) {
@@ -133,7 +133,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function loadRuntimeTranslationOverrides(): void
     {
-        if (! Schema::hasTable('site_settings')) {
+        if (! schema_table_exists_cached('site_settings')) {
             return;
         }
 

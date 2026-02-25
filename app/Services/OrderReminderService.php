@@ -11,7 +11,7 @@ class OrderReminderService
 {
     public function dispatchDueReturnReminders(?int $userId = null): int
     {
-        if (! Schema::hasTable('orders') || ! Schema::hasTable('order_notifications')) {
+        if (! schema_table_exists_cached('orders') || ! schema_table_exists_cached('order_notifications')) {
             return 0;
         }
 

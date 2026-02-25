@@ -132,6 +132,9 @@
                         $signedInvoiceUrl = ($canOpenInvoice && $orderRouteKey !== '')
                             ? \Illuminate\Support\Facades\URL::temporarySignedRoute('account.orders.receipt', now()->addMinutes(30), ['order' => $orderRouteKey])
                             : null;
+                        $signedInvoicePdfPreviewUrl = ($canOpenInvoice && $orderRouteKey !== '')
+                            ? \Illuminate\Support\Facades\URL::temporarySignedRoute('account.orders.receipt.pdf', now()->addMinutes(30), ['order' => $orderRouteKey, 'inline' => 1])
+                            : null;
                     @endphp
                     <div class="py-4">
                         <div class="flex items-start justify-between gap-3">
@@ -152,6 +155,7 @@
                                     type="button"
                                     data-open-invoice-modal
                                     data-invoice-url="{{ $signedInvoiceUrl }}"
+                                    data-invoice-preview-url="{{ $signedInvoicePdfPreviewUrl }}"
                                     data-order-number="{{ $orderNumber }}"
                                     class="text-xs font-semibold text-blue-600 hover:text-blue-700"
                                 >
@@ -244,12 +248,13 @@
                 return;
             }
 
-            const openModal = (invoiceUrl, orderNumber) => {
-                if (!invoiceUrl) {
+            const openModal = (invoiceUrl, previewUrl, orderNumber) => {
+                const resolvedPreviewUrl = previewUrl || (invoiceUrl ? `${invoiceUrl}#embedded` : '');
+                if (!resolvedPreviewUrl) {
                     return;
                 }
 
-                frame.src = invoiceUrl;
+                frame.src = resolvedPreviewUrl;
                 title.textContent = orderNumber ? `Invoice ${orderNumber}` : defaultTitle;
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
@@ -267,7 +272,7 @@
             openButtons.forEach((button) => {
                 button.addEventListener('click', (event) => {
                     event.preventDefault();
-                    openModal(button.dataset.invoiceUrl, button.dataset.orderNumber);
+                    openModal(button.dataset.invoiceUrl, button.dataset.invoicePreviewUrl, button.dataset.orderNumber);
                 });
             });
 

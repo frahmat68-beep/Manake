@@ -185,6 +185,32 @@ class OrderReceiptTest extends TestCase
         $response->assertHeader('content-type', 'application/pdf');
     }
 
+    public function test_receipt_pdf_route_streams_inline_when_requested(): void
+    {
+        $user = User::factory()->create();
+
+        $order = Order::create([
+            'user_id' => $user->id,
+            'order_number' => 'ORD-PDF-INLINE-1',
+            'status_pembayaran' => 'paid',
+            'status_pesanan' => 'selesai',
+            'status' => 'paid',
+            'total_amount' => 420000,
+            'rental_start_date' => now()->subDays(2)->toDateString(),
+            'rental_end_date' => now()->toDateString(),
+            'midtrans_order_id' => 'MNK-PDF-INLINE-1',
+            'paid_at' => now()->subHour(),
+        ]);
+
+        $response = $this->actingAs($user)->get($this->signedReceiptPdfUrl($order, ['inline' => 1]));
+
+        $response->assertOk();
+        $response->assertHeader('content-type', 'application/pdf');
+        $contentDisposition = (string) $response->headers->get('content-disposition');
+        $this->assertStringContainsString('inline', strtolower($contentDisposition));
+        $this->assertStringContainsString('Invoice-ORD-PDF-INLINE-1.pdf', $contentDisposition);
+    }
+
     public function test_receipt_view_deduplicates_order_id_and_hides_zero_optional_totals(): void
     {
         $user = User::factory()->create();
@@ -221,12 +247,13 @@ class OrderReceiptTest extends TestCase
         ]);
     }
 
-    private function signedReceiptPdfUrl(Order $order): string
+    private function signedReceiptPdfUrl(Order $order, array $query = []): string
     {
         $orderRouteKey = (string) ($order->order_number ?: $order->midtrans_order_id ?: $order->id);
 
         return URL::temporarySignedRoute('account.orders.receipt.pdf', now()->addMinutes(30), [
             'order' => $orderRouteKey,
+            ...$query,
         ]);
     }
 }

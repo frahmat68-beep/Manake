@@ -17,7 +17,7 @@ class EnsureOtpVerified
             return $next($request);
         }
 
-        if (! Schema::hasColumn('users', 'is_otp_verified')) {
+        if (! schema_column_exists_cached('users', 'is_otp_verified')) {
             return $next($request);
         }
 

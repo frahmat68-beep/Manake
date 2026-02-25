@@ -37,7 +37,7 @@ class OtpController extends Controller
             return redirect()->route('login');
         }
 
-        if (! Schema::hasColumn('users', 'is_otp_verified')) {
+        if (! schema_column_exists_cached('users', 'is_otp_verified')) {
             return redirect()->route('dashboard');
         }
 

@@ -18,7 +18,7 @@ class DashboardController extends Controller
     {
         $calendarMonth = (string) $request->query('calendar_month', '');
 
-        if (! Schema::hasTable('orders')) {
+        if (! schema_table_exists_cached('orders')) {
             return view('admin.dashboard', [
                 'operationalOrders' => collect(),
                 'summary' => [
@@ -114,7 +114,7 @@ class DashboardController extends Controller
 
         $order->save();
 
-        if (Schema::hasTable('order_notifications')) {
+        if (schema_table_exists_cached('order_notifications')) {
             OrderNotification::create([
                 'user_id' => $order->user_id,
                 'order_id' => $order->id,
@@ -166,7 +166,7 @@ class DashboardController extends Controller
         $events = collect();
         $activeOrderIds = [];
 
-        if (Schema::hasTable('order_items') && Schema::hasTable('orders')) {
+        if (schema_table_exists_cached('order_items') && schema_table_exists_cached('orders')) {
             $activeStatuses = [
                 Order::STATUS_PROCESSING,
                 Order::STATUS_READY_PICKUP,
@@ -267,7 +267,7 @@ class DashboardController extends Controller
             'paid_orders' => 0,
         ];
 
-        if (Schema::hasTable('orders')) {
+        if (schema_table_exists_cached('orders')) {
             $paidOrdersQuery = $basePaidOrders
                 ? (clone $basePaidOrders)
                 : Order::query()->where('status_pembayaran', Order::PAYMENT_PAID);
@@ -280,7 +280,7 @@ class DashboardController extends Controller
             $summary['tax'] = (int) $paidOrders->sum(fn (Order $order) => (int) round(((int) ($order->total_amount ?? 0)) * 0.11));
         }
 
-        if (Schema::hasTable('payments')) {
+        if (schema_table_exists_cached('payments')) {
             $summary['cash_in'] = (int) Payment::query()
                 ->where('status', Order::PAYMENT_PAID)
                 ->sum('gross_amount');

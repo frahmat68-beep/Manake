@@ -14,17 +14,79 @@ if (! function_exists('schema_table_exists_cached')) {
     {
         static $tableExistsCache = [];
 
-        if (array_key_exists($table, $tableExistsCache)) {
-            return $tableExistsCache[$table];
+        if (app()->runningUnitTests()) {
+            try {
+                return Schema::hasTable($table);
+            } catch (\Throwable $exception) {
+                return false;
+            }
+        }
+
+        $cacheKey = schema_exists_cache_key('table', $table);
+
+        if (array_key_exists($cacheKey, $tableExistsCache)) {
+            return $tableExistsCache[$cacheKey];
         }
 
         try {
-            $tableExistsCache[$table] = Schema::hasTable($table);
+            $tableExistsCache[$cacheKey] = (bool) Cache::remember(
+                $cacheKey,
+                now()->addMinutes(10),
+                fn () => Schema::hasTable($table)
+            );
         } catch (\Throwable $exception) {
-            $tableExistsCache[$table] = false;
+            $tableExistsCache[$cacheKey] = false;
         }
 
-        return $tableExistsCache[$table];
+        return $tableExistsCache[$cacheKey];
+    }
+}
+
+if (! function_exists('schema_column_exists_cached')) {
+    function schema_column_exists_cached(string $table, string $column): bool
+    {
+        static $columnExistsCache = [];
+
+        if (! schema_table_exists_cached($table)) {
+            return false;
+        }
+
+        if (app()->runningUnitTests()) {
+            try {
+                return Schema::hasColumn($table, $column);
+            } catch (\Throwable $exception) {
+                return false;
+            }
+        }
+
+        $cacheKey = schema_exists_cache_key('column', $table, $column);
+
+        if (array_key_exists($cacheKey, $columnExistsCache)) {
+            return $columnExistsCache[$cacheKey];
+        }
+
+        try {
+            $columnExistsCache[$cacheKey] = (bool) Cache::remember(
+                $cacheKey,
+                now()->addMinutes(10),
+                fn () => Schema::hasColumn($table, $column)
+            );
+        } catch (\Throwable $exception) {
+            $columnExistsCache[$cacheKey] = false;
+        }
+
+        return $columnExistsCache[$cacheKey];
+    }
+}
+
+if (! function_exists('schema_exists_cache_key')) {
+    function schema_exists_cache_key(string $type, string $table, ?string $column = null): string
+    {
+        $connection = (string) config('database.default', 'default');
+        $database = (string) config("database.connections.{$connection}.database", 'default');
+        $signature = $connection . '|' . $database . '|' . $table . '|' . ((string) $column);
+
+        return 'schema_exists:' . $type . ':' . sha1($signature);
     }
 }
 

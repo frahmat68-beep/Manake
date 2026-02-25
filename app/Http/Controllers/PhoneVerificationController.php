@@ -18,7 +18,7 @@ class PhoneVerificationController extends Controller
     public function show(Request $request): View
     {
         $profile = null;
-        if (Schema::hasTable('profiles')) {
+        if (schema_table_exists_cached('profiles')) {
             $profile = $request->user()->profile()->firstOrCreate([], [
                 'is_completed' => false,
             ]);
@@ -36,7 +36,7 @@ class PhoneVerificationController extends Controller
 
     public function requestOtp(Request $request, PhoneOtpService $otpService): RedirectResponse
     {
-        if (! Schema::hasTable('profiles') || ! Schema::hasTable('phone_verifications')) {
+        if (! schema_table_exists_cached('profiles') || ! schema_table_exists_cached('phone_verifications')) {
             return back()->withErrors(['phone' => __('Fitur verifikasi nomor belum siap. Jalankan migrasi dulu.')]);
         }
 
@@ -114,7 +114,7 @@ class PhoneVerificationController extends Controller
 
     public function verifyOtp(Request $request): RedirectResponse
     {
-        if (! Schema::hasTable('profiles') || ! Schema::hasTable('phone_verifications')) {
+        if (! schema_table_exists_cached('profiles') || ! schema_table_exists_cached('phone_verifications')) {
             return back()->withErrors(['otp' => __('Fitur verifikasi nomor belum siap. Jalankan migrasi dulu.')]);
         }
 

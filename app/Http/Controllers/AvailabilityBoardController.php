@@ -33,7 +33,7 @@ class AvailabilityBoardController extends Controller
         );
         $search = trim((string) $request->query('q', ''));
 
-        if (! Schema::hasTable('equipments')) {
+        if (! schema_table_exists_cached('equipments')) {
             return view('availability.board', [
                 'search' => $search,
                 'monthDate' => $monthDate,
@@ -264,8 +264,8 @@ class AvailabilityBoardController extends Controller
     {
         if (
             $equipmentIds->isEmpty()
-            || ! Schema::hasTable('order_items')
-            || ! Schema::hasTable('orders')
+            || ! schema_table_exists_cached('order_items')
+            || ! schema_table_exists_cached('orders')
         ) {
             return collect();
         }

@@ -18,10 +18,10 @@ class EquipmentController extends Controller
         $activeCategory = null;
         $activeCategorySlug = $request->string('category')->trim()->value();
         $search = $request->string('q')->trim()->value();
-        $hasCategoriesTable = Schema::hasTable('categories');
+        $hasCategoriesTable = schema_table_exists_cached('categories');
         $hasDescriptionColumn = false;
 
-        if (! Schema::hasTable('equipments')) {
+        if (! schema_table_exists_cached('equipments')) {
             return view('equipments.index', [
                 'groupedEquipments' => collect(),
                 'categories' => $categories,
@@ -37,13 +37,13 @@ class EquipmentController extends Controller
                 ->orderBy('name')
                 ->get();
         }
-        $hasDescriptionColumn = Schema::hasColumn('equipments', 'description');
+        $hasDescriptionColumn = schema_column_exists_cached('equipments', 'description');
 
         $query = Equipment::query()
             ->with('category')
             ->orderByDesc('updated_at')
             ->orderBy('name');
-        if (Schema::hasTable('order_items') && Schema::hasTable('orders')) {
+        if (schema_table_exists_cached('order_items') && schema_table_exists_cached('orders')) {
             $query->withSum('activeOrderItems as reserved_units', 'qty');
         }
 
@@ -124,14 +124,14 @@ class EquipmentController extends Controller
 
     public function show(string $slug, AvailabilityService $availabilityService)
     {
-        if (! Schema::hasTable('equipments')) {
+        if (! schema_table_exists_cached('equipments')) {
             abort(404);
         }
 
         $equipmentQuery = Equipment::query()
             ->with('category')
             ->where('slug', $slug);
-        if (Schema::hasTable('order_items') && Schema::hasTable('orders')) {
+        if (schema_table_exists_cached('order_items') && schema_table_exists_cached('orders')) {
             $equipmentQuery->withSum('activeOrderItems as reserved_units', 'qty');
         }
         $equipment = $equipmentQuery->firstOrFail();
@@ -147,16 +147,16 @@ class EquipmentController extends Controller
     {
         $query = trim((string) $request->query('q', ''));
 
-        if (mb_strlen($query) < 2 || ! Schema::hasTable('equipments')) {
+        if (mb_strlen($query) < 2 || ! schema_table_exists_cached('equipments')) {
             return response()->json(['data' => []]);
         }
 
         $builder = Equipment::query()
             ->with('category')
             ->orderBy('name');
-        $hasDescriptionColumn = Schema::hasColumn('equipments', 'description');
+        $hasDescriptionColumn = schema_column_exists_cached('equipments', 'description');
 
-        if (Schema::hasTable('order_items') && Schema::hasTable('orders')) {
+        if (schema_table_exists_cached('order_items') && schema_table_exists_cached('orders')) {
             $builder->withSum('activeOrderItems as reserved_units', 'qty');
         }
 
@@ -201,7 +201,7 @@ class EquipmentController extends Controller
 
     public function availability(Request $request, string $slug, AvailabilityService $availabilityService)
     {
-        if (! Schema::hasTable('equipments')) {
+        if (! schema_table_exists_cached('equipments')) {
             return response()->json([
                 'ok' => false,
                 'message' => __('ui.availability.not_available'),

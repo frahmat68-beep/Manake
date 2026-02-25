@@ -98,7 +98,7 @@ class AuthController extends Controller
 
     private function syncAdminFromUser(string $email, string $password): ?Admin
     {
-        if (! Schema::hasTable('users')) {
+        if (! schema_table_exists_cached('users')) {
             return null;
         }
 
@@ -152,7 +152,7 @@ class AuthController extends Controller
 
     private function storeAudit(string $action, ?int $adminId, Request $request): void
     {
-        if (! Schema::hasTable('audit_logs')) {
+        if (! schema_table_exists_cached('audit_logs')) {
             return;
         }
 

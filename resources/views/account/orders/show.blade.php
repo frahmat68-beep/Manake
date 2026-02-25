@@ -21,6 +21,9 @@
     $signedInvoicePdfUrl = ($canAccessInvoice && $orderRouteKey !== '')
         ? \Illuminate\Support\Facades\URL::temporarySignedRoute('account.orders.receipt.pdf', now()->addMinutes(30), ['order' => $orderRouteKey])
         : null;
+    $signedInvoicePdfPreviewUrl = ($canAccessInvoice && $orderRouteKey !== '')
+        ? \Illuminate\Support\Facades\URL::temporarySignedRoute('account.orders.receipt.pdf', now()->addMinutes(30), ['order' => $orderRouteKey, 'inline' => 1])
+        : null;
     $isDamageFeePaid = $additionalFee > 0 && $damagePaymentStatus === 'paid';
     $loadSnapPaymentScript = $isPrimaryPayable || $hasDamageFeeOutstanding;
     $baseTotal = (int) ($order->total_amount ?? 0);
@@ -492,6 +495,7 @@
                                 data-open-invoice-modal
                                 data-invoice-url="{{ $signedInvoiceUrl }}"
                                 data-invoice-pdf-url="{{ $signedInvoicePdfUrl }}"
+                                data-invoice-preview-url="{{ $signedInvoicePdfPreviewUrl }}"
                                 data-order-number="{{ $order->order_number ?? ('ORD-' . $order->id) }}"
                                 class="inline-flex w-full items-center justify-center rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-blue-200 hover:text-blue-600"
                             >
@@ -550,28 +554,7 @@
                 </div>
 
                 <div class="border-t border-slate-200 bg-white px-4 py-3">
-                    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                        <div class="grid grid-cols-2 gap-2 sm:w-auto">
-                            <label class="text-xs font-semibold text-slate-500">
-                                {{ __('Ukuran Kertas') }}
-                                <select id="invoice-print-paper" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-700">
-                                    <option value="auto">{{ __('Auto') }}</option>
-                                    <option value="a4">A4</option>
-                                    <option value="a5">A5</option>
-                                    <option value="a3">A3</option>
-                                    <option value="letter">Letter</option>
-                                    <option value="legal">Legal</option>
-                                </select>
-                            </label>
-                            <label class="text-xs font-semibold text-slate-500">
-                                {{ __('Orientasi') }}
-                                <select id="invoice-print-orientation" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-700">
-                                    <option value="portrait">{{ __('Portrait') }}</option>
-                                    <option value="landscape">{{ __('Landscape') }}</option>
-                                </select>
-                            </label>
-                        </div>
-
+                    <div class="flex justify-end">
                         <div class="flex flex-wrap items-center justify-end gap-2">
                             <a
                                 id="order-detail-invoice-download"
@@ -580,13 +563,6 @@
                             >
                                 {{ $orderDownloadPdfButton }}
                             </a>
-                            <button
-                                type="button"
-                                id="order-detail-invoice-print"
-                                class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
-                            >
-                                {{ __('Print') }}
-                            </button>
                             <button
                                 type="button"
                                 data-close-invoice-modal
@@ -705,9 +681,6 @@
             const title = document.getElementById('order-detail-invoice-title');
             const openButtons = document.querySelectorAll('[data-open-invoice-modal]');
             const closeButtons = modal?.querySelectorAll('[data-close-invoice-modal]');
-            const paperSelect = document.getElementById('invoice-print-paper');
-            const orientationSelect = document.getElementById('invoice-print-orientation');
-            const printButton = document.getElementById('order-detail-invoice-print');
             const downloadButton = document.getElementById('order-detail-invoice-download');
             const defaultTitle = @json(__('ui.overview.invoice_detail_title'));
             let activePdfBaseUrl = '';
@@ -737,13 +710,19 @@
                 }
             };
 
-            const openModal = (invoiceUrl, pdfUrl, orderNumber = '') => {
-                if (!invoiceUrl) {
+            const openModal = (invoiceUrl, previewUrl, downloadUrl, orderNumber = '') => {
+                const resolvedPreviewUrl = typeof previewUrl === 'string' && previewUrl !== ''
+                    ? previewUrl
+                    : (typeof invoiceUrl === 'string' && invoiceUrl !== ''
+                        ? `${invoiceUrl}#embedded`
+                        : '');
+
+                if (!resolvedPreviewUrl) {
                     return;
                 }
 
-                frame.src = invoiceUrl;
-                activePdfBaseUrl = typeof pdfUrl === 'string' ? pdfUrl : '';
+                frame.src = resolvedPreviewUrl;
+                activePdfBaseUrl = typeof downloadUrl === 'string' ? downloadUrl : '';
                 syncDownloadUrl();
                 title.textContent = orderNumber ? `Invoice ${orderNumber}` : defaultTitle;
                 modal.classList.remove('hidden');
@@ -761,35 +740,24 @@
                 syncDownloadUrl();
             };
 
-            window.openOrderInvoiceModal = ({ invoiceUrl = '', pdfUrl = '', orderNumber = '' } = {}) => {
-                openModal(invoiceUrl, pdfUrl, orderNumber);
+            window.openOrderInvoiceModal = ({ invoiceUrl = '', previewUrl = '', pdfUrl = '', orderNumber = '' } = {}) => {
+                openModal(invoiceUrl, previewUrl, pdfUrl, orderNumber);
             };
 
             openButtons.forEach((button) => {
                 button.addEventListener('click', (event) => {
                     event.preventDefault();
-                    openModal(button.dataset.invoiceUrl, button.dataset.invoicePdfUrl, button.dataset.orderNumber || '');
+                    openModal(
+                        button.dataset.invoiceUrl,
+                        button.dataset.invoicePreviewUrl || '',
+                        button.dataset.invoicePdfUrl || '',
+                        button.dataset.orderNumber || ''
+                    );
                 });
             });
 
             closeButtons?.forEach((button) => {
                 button.addEventListener('click', closeModal);
-            });
-
-            paperSelect?.addEventListener('change', syncDownloadUrl);
-            orientationSelect?.addEventListener('change', syncDownloadUrl);
-
-            printButton?.addEventListener('click', () => {
-                const paper = paperSelect?.value || 'auto';
-                const orientation = orientationSelect?.value || 'portrait';
-
-                if (frame.contentWindow) {
-                    frame.contentWindow.postMessage({
-                        type: 'manake-print-receipt',
-                        paper,
-                        orientation,
-                    }, '*');
-                }
             });
 
             document.addEventListener('keydown', (event) => {
@@ -847,6 +815,7 @@
                             if (typeof window.openOrderInvoiceModal === 'function') {
                                 window.openOrderInvoiceModal({
                                     invoiceUrl: data.invoice_url,
+                                    previewUrl: data.invoice_pdf_preview_url || '',
                                     pdfUrl: data.invoice_pdf_url || '',
                                     orderNumber: data.receipt_number || '',
                                 });

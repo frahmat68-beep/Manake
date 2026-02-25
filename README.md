@@ -43,6 +43,10 @@ Untuk backup/copy data MySQL ke Supabase dan switch koneksi aplikasi:
 
 - `docs/SETUP-SUPABASE.md`
 
+## Quick Context (Untuk Dev/GPT Baru)
+
+- `docs/PROJECT-ARCHITECTURE.md`
+
 ## Super Admin Seeder
 
 Seeder `SuperAdminSeeder` membuat / update akun:

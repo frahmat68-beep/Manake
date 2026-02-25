@@ -136,7 +136,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getDisplayNameAttribute(): string
     {
-        if (Schema::hasTable('profiles')) {
+        if (schema_table_exists_cached('profiles')) {
             try {
                 if ($this->profile && $this->profile->full_name) {
                     return $this->profile->full_name;

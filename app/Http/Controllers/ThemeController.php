@@ -17,7 +17,7 @@ class ThemeController extends Controller
 
         $request->session()->put('theme', $theme);
 
-        if ($request->user() && Schema::hasColumn('users', 'preferred_theme')) {
+        if ($request->user() && schema_column_exists_cached('users', 'preferred_theme')) {
             $request->user()->forceFill([
                 'preferred_theme' => $theme,
             ])->save();

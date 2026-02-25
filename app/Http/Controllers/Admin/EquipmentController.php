@@ -26,7 +26,7 @@ class EquipmentController extends Controller
         $query = Equipment::query()
             ->with('category')
             ->orderByDesc('updated_at');
-        if (Schema::hasTable('order_items') && Schema::hasTable('orders')) {
+        if (schema_table_exists_cached('order_items') && schema_table_exists_cached('orders')) {
             $query->withSum('activeOrderItems as reserved_units', 'qty');
         }
 
@@ -99,7 +99,7 @@ class EquipmentController extends Controller
         $equipmentQuery = Equipment::query()
             ->where('slug', $slug)
             ->with('category');
-        if (Schema::hasTable('order_items') && Schema::hasTable('orders')) {
+        if (schema_table_exists_cached('order_items') && schema_table_exists_cached('orders')) {
             $equipmentQuery->withSum('activeOrderItems as reserved_units', 'qty');
         }
         $equipment = $equipmentQuery->firstOrFail();
@@ -207,7 +207,7 @@ class EquipmentController extends Controller
         $calendarEnd = $monthEnd->copy()->endOfWeek(Carbon::SUNDAY);
 
         $bookings = collect();
-        if (Schema::hasTable('order_items') && Schema::hasTable('orders')) {
+        if (schema_table_exists_cached('order_items') && schema_table_exists_cached('orders')) {
             $bookings = OrderItem::query()
                 ->with(['order.user'])
                 ->where('equipment_id', $equipmentId)

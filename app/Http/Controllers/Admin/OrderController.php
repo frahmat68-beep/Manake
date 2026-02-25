@@ -128,7 +128,7 @@ class OrderController extends Controller
         $order->save();
 
         $changes = $this->buildUserNotificationChanges($before, $order);
-        if ($changes !== [] && Schema::hasTable('order_notifications')) {
+        if ($changes !== [] && schema_table_exists_cached('order_notifications')) {
             OrderNotification::create([
                 'user_id' => $order->user_id,
                 'order_id' => $order->id,

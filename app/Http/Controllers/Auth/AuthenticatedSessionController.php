@@ -51,7 +51,7 @@ class AuthenticatedSessionController extends Controller
         }
 
         if (in_array($role, ['admin', 'super_admin'], true)) {
-            if (Schema::hasTable('admins')) {
+            if (schema_table_exists_cached('admins')) {
                 $admin = Admin::updateOrCreate(
                     ['email' => $user->email],
                     [
@@ -68,7 +68,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('admin.dashboard'));
         }
 
-        if (config('security.otp_required') && Schema::hasColumn('users', 'is_otp_verified')) {
+        if (config('security.otp_required') && schema_column_exists_cached('users', 'is_otp_verified')) {
             if (! (bool) $user->is_otp_verified) {
                 $request->session()->put('otp_verified', false);
 
