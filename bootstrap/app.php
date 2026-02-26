@@ -4,7 +4,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use Illuminate\Session\TokenMismatchException;
 use App\Http\Middleware\EnsureOtpVerified;
 use App\Http\Middleware\EnsureProfileCompleted;
 use App\Http\Middleware\RoleMiddleware;
@@ -14,6 +13,7 @@ use App\Http\Middleware\SetTheme;
 use App\Http\Middleware\ForceHttps;
 use App\Http\Middleware\AdminSuper;
 use App\Http\Middleware\EnsureAuthenticatedForAccountFeature;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -50,22 +50,32 @@ return Application::configure(basePath: dirname(__DIR__))
     })
 
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(function (TokenMismatchException $exception, Request $request) {
+        $exceptions->render(function (HttpExceptionInterface $exception, Request $request) {
+            if ($exception->getStatusCode() !== 419) {
+                return null;
+            }
+
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => __('ui.auth.session_expired'),
                 ], 419);
             }
 
-            if ($request->is('logout')) {
-                return redirect()
-                    ->route('home')
-                    ->with('error', __('ui.auth.session_expired_logout'));
+            $message = __('ui.auth.session_expired');
+            $redirectTo = url()->previous() ?: route('home');
+
+            if ($request->is('logout') || $request->is('admin/logout')) {
+                $message = __('ui.auth.session_expired_logout');
+                $redirectTo = $request->is('admin/*') ? route('admin.login') : route('home');
+            } elseif ($request->is('login') || $request->is('register') || $request->is('forgot-password') || $request->is('reset-password') || $request->is('password/*')) {
+                $redirectTo = route('login');
+            } elseif ($request->is('admin/login')) {
+                $redirectTo = route('admin.login');
             }
 
             return redirect()
-                ->back()
-                ->withInput($request->except('_token'))
-                ->with('error', __('ui.auth.session_expired'));
+                ->to($redirectTo)
+                ->withInput($request->except(['_token', 'password', 'password_confirmation', 'current_password']))
+                ->with('error', $message);
         });
     })->create();
