@@ -33,6 +33,15 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin.super' => AdminSuper::class,
         ]);
 
+        // Laravel 11/12 CSRF exceptions are configured here (not in app/Http/Middleware/VerifyCsrfToken.php).
+        $middleware->validateCsrfTokens(except: [
+            'logout',
+            'admin/logout',
+            'payment/callback',
+            'midtrans/callback',
+            'api/midtrans/callback',
+        ]);
+
         $middleware->web(append: [
             ForceHttps::class,
             SetTheme::class,
