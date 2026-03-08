@@ -5,7 +5,7 @@ This roadmap is a lightweight checklist for the next sprint. It outlines the min
 ## 1) OTP Email Verification (Register)
 - Add `email_otps` table:
   - `id`, `user_id`, `code_hash`, `expires_at`, `consumed_at`, `created_at`
-- Service: `EmailOtpService`
+- Service layer for email OTP
   - Generate OTP, hash code, store with 5-minute expiry
   - Send email with OTP
   - Verify OTP, mark consumed, activate account
