@@ -19,19 +19,20 @@
             font-family: DejaVu Sans, sans-serif;
             font-size: 10.8px;
             line-height: 1.45;
-            background: #fff;
+            background: #f4f7ff;
         }
 
         .sheet {
-            border: 1px solid #d6deed;
-            border-radius: 16px;
-            overflow: hidden;
+            width: 100%;
+            margin: 0 auto;
         }
 
-        .header {
+        .invoice-header {
             padding: 16px 18px;
-            border-bottom: 1px solid #334987;
+            border: 1px solid #d8e2f0;
+            border-radius: 18px;
             background: linear-gradient(135deg, #061338 0%, #264bbf 54%, #10295f 100%);
+            color: #f8fbff;
         }
 
         .layout {
@@ -73,10 +74,10 @@
             font-size: 10.4px;
         }
 
-        .summary-panel {
-            border: 1px solid rgba(255, 255, 255, 0.28);
+        .header-right {
+            border: 1px solid rgba(255, 255, 255, 0.22);
             border-radius: 12px;
-            background: rgba(5, 16, 44, 0.32);
+            background: #1f336e;
             padding: 11px 12px;
         }
 
@@ -128,23 +129,23 @@
         }
 
         .cards {
-            padding: 12px 18px 4px;
+            margin-top: 12px;
         }
 
         .cards-grid {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 8px;
-            margin: -8px;
+            border-spacing: 10px;
+            margin: -10px;
         }
 
         .cards-grid td {
             width: 50%;
-            border: 1px solid #d8e2f0;
-            border-radius: 12px;
-            padding: 10px;
+            border: 1px solid #d4def1;
+            border-radius: 14px;
+            padding: 12px;
             vertical-align: top;
-            background: #fff;
+            background: #fcfdff;
         }
 
         .card-title {
@@ -197,7 +198,11 @@
         }
 
         .items {
-            padding: 8px 18px 8px;
+            margin-top: 14px;
+            border: 1px solid #d8e2f0;
+            border-radius: 14px;
+            background: #fcfdff;
+            padding: 14px 16px;
         }
 
         .section-head {
@@ -236,6 +241,7 @@
             border: 1px solid #d8e2f0;
             border-radius: 10px;
             overflow: hidden;
+            background: #f8fbff;
         }
 
         .items-table thead {
@@ -270,7 +276,7 @@
         }
 
         .items-table tbody tr:nth-child(even) {
-            background: #f8fbff;
+            background: #eef4ff;
         }
 
         .items-table th:nth-child(1),
@@ -317,7 +323,7 @@
             border-radius: 10px;
             overflow: hidden;
             page-break-inside: avoid;
-            background: #fff;
+            background: #fcfdff;
         }
 
         .totals-table {
@@ -354,10 +360,11 @@
         }
 
         .terms {
-            border-top: 1px solid #d8e2f0;
-            margin-top: 8px;
-            padding: 10px 18px 12px;
-            background: #f9fbff;
+            margin-top: 14px;
+            border: 1px solid #d8e2f0;
+            border-radius: 14px;
+            padding: 12px 16px;
+            background: #f8fbff;
         }
 
         .terms-title {
@@ -381,9 +388,9 @@
         }
 
         .footer-mini {
-            margin-top: 8px;
-            border-top: 1px dashed #d8e2f0;
-            padding-top: 6px;
+            margin-top: 10px;
+            border-top: 1px solid #d8e2f0;
+            padding-top: 8px;
             color: #64748b;
             font-size: 9.4px;
             line-height: 1.4;
@@ -517,8 +524,8 @@
         ->value();
 @endphp
 
-<div class="sheet">
-    <div class="header">
+<main class="sheet">
+    <header class="invoice-header">
         <table class="layout">
             <tr>
                 <td style="width: 64%; padding-right: 10px;">
@@ -529,7 +536,7 @@
                     <p class="invoice-subtitle">{{ __('ui.invoice.subtitle') }}</p>
                 </td>
                 <td style="width: 36%;">
-                    <div class="summary-panel">
+                    <div class="header-right">
                         <span class="status-badge {{ $statusConfig['class'] }}">{{ $statusConfig['label'] }}</span>
                         <p class="summary-label">{{ __('ui.invoice.header_total') }}</p>
                         <p class="summary-amount">{{ $formatCurrency($grandTotal) }}</p>
@@ -537,7 +544,7 @@
                 </td>
             </tr>
         </table>
-    </div>
+    </header>
 
     <div class="cards">
         <table class="cards-grid">
@@ -690,6 +697,6 @@
             {{ __('ui.invoice.auto_note') }}
         </p>
     </div>
-</div>
+</main>
 </body>
 </html>
