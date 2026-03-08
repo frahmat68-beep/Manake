@@ -32,7 +32,7 @@
             --invoice-shadow: 0 20px 40px rgba(15, 23, 42, 0.08), 0 8px 18px rgba(15, 23, 42, 0.05);
             --invoice-radius-xl: 18px;
             --invoice-radius-lg: 14px;
-            --invoice-brand-gradient: linear-gradient(135deg, #061338 0%, #264bbf 54%, #10295f 100%);
+            --invoice-brand-gradient: linear-gradient(135deg, #1f409f 0%, #345fd5 54%, #1b367f 100%);
         }
 
         html[data-theme-resolved='dark'],
@@ -54,7 +54,7 @@
             --invoice-danger-bg: rgba(220, 38, 38, 0.22);
             --invoice-danger-text: #fda4af;
             --invoice-shadow: 0 22px 48px rgba(2, 6, 23, 0.45), 0 12px 24px rgba(2, 6, 23, 0.32);
-            --invoice-brand-gradient: linear-gradient(135deg, #030818 0%, #173485 54%, #0c1f4e 100%);
+            --invoice-brand-gradient: linear-gradient(135deg, #0f245f 0%, #2546a9 54%, #0f2d73 100%);
         }
 
         * {
@@ -93,8 +93,8 @@
             align-items: center;
             justify-content: center;
             border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid #bfd0ff;
+            background: #ffffff;
             padding: 10px 14px;
             margin-bottom: 10px;
             box-shadow: 0 8px 18px rgba(3, 10, 32, 0.24);
@@ -118,14 +118,14 @@
             margin: 8px 0 0;
             font-size: 14px;
             line-height: 1.55;
-            color: rgba(232, 240, 255, 0.9);
+            color: #dbe7ff;
         }
 
         .header-right {
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid #4363c8;
             border-radius: 14px;
             padding: 14px;
-            background: rgba(5, 16, 44, 0.28);
+            background: #1a2f74;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -161,8 +161,8 @@
         }
 
         .status-damage {
-            background: rgba(236, 72, 153, 0.2);
-            color: #fbcfe8;
+            background: #fce7f3;
+            color: #9d174d;
         }
 
         .header-total-label {
@@ -171,7 +171,7 @@
             font-weight: 700;
             letter-spacing: .12em;
             text-transform: uppercase;
-            color: rgba(232, 240, 255, 0.78);
+            color: #dbe7ff;
         }
 
         .header-total-amount {

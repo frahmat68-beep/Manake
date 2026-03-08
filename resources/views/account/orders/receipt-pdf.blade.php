@@ -31,7 +31,8 @@
             padding: 16px 18px;
             border: 1px solid #d8e2f0;
             border-radius: 18px;
-            background: linear-gradient(135deg, #061338 0%, #264bbf 54%, #10295f 100%);
+            background-color: #1f409f;
+            background-image: linear-gradient(135deg, #1f409f 0%, #345fd5 54%, #1b367f 100%);
             color: #f8fbff;
         }
 
@@ -46,9 +47,9 @@
 
         .brand-logo-wrap {
             display: inline-block;
-            border: 1px solid rgba(255, 255, 255, 0.52);
+            border: 1px solid #bfd0ff;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.97);
+            background: #ffffff;
             padding: 7px 11px;
             margin-bottom: 10px;
         }
@@ -63,21 +64,21 @@
         .invoice-title {
             margin: 4px 0 0;
             font-size: 29px;
-            color: #fff;
+            color: #f8fbff;
             line-height: 1.1;
             font-weight: 700;
         }
 
         .invoice-subtitle {
             margin: 8px 0 0;
-            color: rgba(232, 240, 255, 0.9);
+            color: #dbe7ff;
             font-size: 10.4px;
         }
 
         .header-right {
-            border: 1px solid rgba(255, 255, 255, 0.22);
+            border: 1px solid #4363c8;
             border-radius: 12px;
-            background: #1f336e;
+            background: #1a2f74;
             padding: 11px 12px;
         }
 
@@ -107,8 +108,8 @@
         }
 
         .status-damage {
-            background: rgba(236, 72, 153, 0.2);
-            color: #fbcfe8;
+            background: #fce7f3;
+            color: #9d174d;
         }
 
         .summary-label {
@@ -116,7 +117,7 @@
             font-size: 8.3px;
             text-transform: uppercase;
             letter-spacing: .12em;
-            color: rgba(232, 240, 255, 0.82);
+            color: #dbe7ff;
             font-weight: 700;
         }
 
