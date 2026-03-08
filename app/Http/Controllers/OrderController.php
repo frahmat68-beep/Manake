@@ -314,12 +314,15 @@ class OrderController extends Controller
         ])->setPaper($paper, $orientation);
 
         $filename = 'Invoice-' . ($order->order_number ?: ('ORD-' . $order->id)) . '.pdf';
+        $response = $request->boolean('inline')
+            ? $pdf->stream($filename)
+            : $pdf->download($filename);
 
-        if ($request->boolean('inline')) {
-            return $pdf->stream($filename);
-        }
+        $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        $response->headers->set('Pragma', 'no-cache');
+        $response->headers->set('Expires', '0');
 
-        return $pdf->download($filename);
+        return $response;
     }
 
     private function ensureOwnedOrder(Request $request, Order $order): void
