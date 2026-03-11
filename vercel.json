@@ -1,0 +1,28 @@
+{
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "framework": null,
+    "outputDirectory": "public/build",
+    "functions": {
+        "api/index.php": {
+            "runtime": "vercel-php@0.5.2"
+        }
+    },
+    "routes": [
+        {
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
+        },
+        {
+            "src": "/storage/(.*)",
+            "dest": "/storage/app/public/$1"
+        },
+        {
+            "src": "/(favicon\\.ico|robots\\.txt|MANAKE-FAV-M\\.png|MANAKE-FAV-M-white\\.png|manake-logo-blue\\.png|manake-logo-white\\.png)",
+            "dest": "/public/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
+    ]
+}
