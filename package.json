@@ -3,7 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "build": "vite build && node scripts/vercel-sync-dist.mjs",
         "dev": "vite",
         "test": "npm run test:php && npm run test:frontend",
         "test:php": "php artisan test",
