@@ -17,10 +17,50 @@ use App\Http\Middleware\AdminSuper;
 use App\Http\Middleware\EnsureAuthenticatedForAccountFeature;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
+$isValidAppKey = static function (?string $value): bool {
+    $key = trim((string) $value);
+    if ($key === '') {
+        return false;
+    }
+
+    if (str_starts_with($key, 'base64:')) {
+        $decoded = base64_decode(substr($key, 7), true);
+
+        return is_string($decoded) && strlen($decoded) === 32;
+    }
+
+    return strlen($key) === 32;
+};
+
+$setRuntimeEnv = static function (string $key, string $value): void {
+    putenv($key . '=' . $value);
+    $_ENV[$key] = $value;
+    $_SERVER[$key] = $value;
+};
+
 $isVercelRuntime = getenv('VERCEL') !== false;
 $vercelStoragePath = null;
 
 if ($isVercelRuntime) {
+    $appUrl = getenv('APP_URL');
+    $vercelUrl = getenv('VERCEL_URL');
+    if ((! is_string($appUrl) || trim($appUrl) === '') && is_string($vercelUrl) && trim($vercelUrl) !== '') {
+        $setRuntimeEnv('APP_URL', 'https://' . trim($vercelUrl));
+    }
+
+    $appKey = getenv('APP_KEY');
+    if (! $isValidAppKey(is_string($appKey) ? $appKey : null)) {
+        $seed = implode('|', array_filter([
+            getenv('VERCEL_PROJECT_ID') ?: null,
+            getenv('VERCEL_ENV') ?: null,
+            getenv('VERCEL_URL') ?: null,
+            'manake',
+        ]));
+
+        $fallbackAppKey = 'base64:' . base64_encode(hash('sha256', 'manake-app-key|' . $seed, true));
+        $setRuntimeEnv('APP_KEY', $fallbackAppKey);
+    }
+
     $vercelStoragePath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'manake-storage';
 
     foreach ([
