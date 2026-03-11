@@ -429,7 +429,7 @@
                     modalName.textContent = name;
                     modalCategory.textContent = category;
                     modalPrice.textContent = price;
-                    modalImage.src = image || '{{ asset('MANAKE-FAV-M.png') }}';
+                    modalImage.src = image || '{{ site_asset('MANAKE-FAV-M.png') }}';
 
                     if (startDate && endDate) {
                         modalDates.textContent = lockedDatesTemplate

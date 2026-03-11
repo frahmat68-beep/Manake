@@ -64,12 +64,15 @@
 
     <section class="bg-slate-50">
         <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900">{{ $equipment->name }}</h1>
-                    <p class="text-sm text-slate-600">{{ $equipment->category?->name ?? __('app.category.title') }}</p>
+            <div class="catalog-hero rounded-[2rem] p-5 sm:p-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <p class="section-kicker">{{ $equipment->category?->name ?? __('app.category.title') }}</p>
+                        <h1 class="mt-2 text-2xl sm:text-3xl font-semibold text-slate-900">{{ $equipment->name }}</h1>
+                        <p class="text-sm text-slate-600">{{ __('app.product.meta') }}</p>
+                    </div>
+                    <a href="{{ route('catalog') }}" class="text-sm font-semibold text-slate-600 hover:text-blue-600">← {{ __('app.actions.back_to_catalog') }}</a>
                 </div>
-                <a href="{{ route('catalog') }}" class="text-sm text-slate-600 hover:text-blue-600">← {{ __('app.actions.back_to_catalog') }}</a>
             </div>
         </div>
     </section>
@@ -77,7 +80,7 @@
     <section class="bg-slate-100">
         <div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pb-14 sm:px-6 lg:grid-cols-[1.05fr,0.95fr] lg:gap-8">
             <div class="space-y-4">
-                <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="media-stage rounded-[1.75rem] p-6 shadow-sm">
                     <img
                         src="{{ $mainImage }}"
                         alt="{{ $equipment->name }}"
@@ -101,7 +104,7 @@
                     </div>
                 @endif
 
-                <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="surface-band rounded-2xl p-6 shadow-sm">
                     <h3 class="text-lg font-semibold text-slate-900">{{ __('app.product.specs') }}</h3>
                     @if ($specifications->isEmpty())
                         <ul class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-600">
@@ -124,7 +127,7 @@
             </div>
 
             <div class="space-y-6">
-                <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="card rounded-[1.75rem] p-6 shadow-sm">
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div>
                             <h2 class="text-2xl font-semibold text-slate-900">{{ $equipment->name }}</h2>
@@ -141,21 +144,21 @@
                     </p>
 
                     <div class="mt-4 grid grid-cols-3 gap-2 text-center">
-                        <div class="rounded-lg bg-slate-50 px-2 py-2">
+                        <div class="surface-band rounded-lg px-2 py-2">
                             <p class="text-[10px] uppercase tracking-wide text-slate-500">{{ __('app.product.total_stock') }}</p>
                             <p class="mt-1 text-base font-semibold text-slate-900">{{ $equipment->stock }}</p>
                         </div>
-                        <div class="rounded-lg bg-slate-50 px-2 py-2">
+                        <div class="surface-band rounded-lg px-2 py-2">
                             <p class="text-[10px] uppercase tracking-wide text-slate-500">{{ __('app.product.in_use') }}</p>
                             <p class="mt-1 text-base font-semibold text-amber-600">{{ $reservedUnits }}</p>
                         </div>
-                        <div class="rounded-lg bg-slate-50 px-2 py-2">
+                        <div class="surface-band rounded-lg px-2 py-2">
                             <p class="text-[10px] uppercase tracking-wide text-slate-500">{{ __('app.product.available_stock') }}</p>
                             <p class="mt-1 text-base font-semibold {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}">{{ $availableUnits }}</p>
                         </div>
                     </div>
 
-                    <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <div class="surface-band mt-4 rounded-xl p-4">
                         <p class="text-xs font-semibold uppercase tracking-widest text-slate-500">{{ __('app.product.schedule_title') }}</p>
                         @if ($bookingRanges->isEmpty())
                             <p class="mt-2 text-sm text-slate-600">{{ __('app.product.no_active_schedule') }}</p>
@@ -206,7 +209,7 @@
                 </div>
 
                 <div
-                    class="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                    class="card space-y-4 rounded-[1.75rem] p-6 shadow-sm"
                     id="rental-summary"
                     data-price="{{ $equipment->price_per_day }}"
                     data-availability-url="{{ $availabilityEndpoint }}"

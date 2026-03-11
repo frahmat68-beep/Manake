@@ -91,57 +91,60 @@
     >
         <section class="bg-slate-50">
             <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-                <div class="flex flex-col gap-3">
-                    <div>
-                        <h1 class="text-2xl font-extrabold text-blue-700 sm:text-3xl">{{ $catalogTitle }}</h1>
-                        <p class="text-sm italic text-slate-600">{{ $catalogSubtitle }}</p>
+                <div class="catalog-hero rounded-[2rem] p-5 sm:p-6">
+                    <div class="flex flex-col gap-3">
+                        <div class="max-w-3xl">
+                            <p class="section-kicker">{{ __('ui.nav.catalog') }}</p>
+                            <h1 class="mt-2 text-2xl font-extrabold text-blue-700 sm:text-3xl">{{ $catalogTitle }}</h1>
+                            <p class="mt-2 text-sm text-slate-600 sm:text-base">{{ $catalogSubtitle }}</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
-                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <p class="text-xs font-semibold text-slate-500">{{ $categoryLabel }}</p>
-                        @if ($search !== '')
-                            <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:text-blue-600">
-                                {{ $catalogResetSearchLabel }}
-                            </a>
-                        @endif
-                    </div>
-                    <div class="mt-3 flex flex-wrap gap-2">
-                        <a
-                            href="{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}"
-                            class="rounded-full border px-3 py-1.5 text-xs font-semibold transition {{ $activeCategorySlug === '' ? 'border-blue-200 bg-blue-50 text-blue-700' : 'border-slate-200 text-slate-600 hover:border-blue-200 hover:text-blue-600' }}"
-                        >
-                            {{ $catalogAllCategoriesLabel }}
-                        </a>
-                        @foreach ($categories as $category)
-                            @php
-                                $categoryParams = ['category' => $category->slug];
-                                if ($search !== '') {
-                                    $categoryParams['q'] = $search;
-                                }
-                            @endphp
+                    <div class="surface-band mt-5 rounded-2xl p-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                            <p class="text-xs font-semibold text-slate-500">{{ $categoryLabel }}</p>
+                            @if ($search !== '')
+                                <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="btn-secondary inline-flex items-center justify-center rounded-xl px-3 py-1.5 text-xs font-semibold transition">
+                                    {{ $catalogResetSearchLabel }}
+                                </a>
+                            @endif
+                        </div>
+                        <div class="mt-3 flex flex-wrap gap-2">
                             <a
-                                href="{{ route('catalog', $categoryParams) }}"
-                                class="relative rounded-full border px-3 py-1.5 text-xs font-semibold transition {{ $activeCategorySlug === $category->slug ? 'border-blue-200 bg-blue-50 text-blue-700' : 'border-slate-200 text-slate-600 hover:border-blue-200 hover:text-blue-600' }}"
-                                :class="showGuide && activeGuideIndex === {{ $loop->iteration }} ? 'pr-8 border-blue-300 text-blue-700 shadow-sm' : ''"
+                                href="{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}"
+                                class="catalog-filter-chip rounded-full border px-3 py-1.5 text-xs font-semibold transition {{ $activeCategorySlug === '' ? 'border-blue-200 bg-blue-50 text-blue-700' : 'border-slate-200 text-slate-600 hover:border-blue-200 hover:text-blue-600' }}"
                             >
-                                {{ $category->name }}
-                                <span
-                                    x-cloak
-                                    x-show="showGuide && activeGuideIndex === {{ $loop->iteration }}"
-                                    x-transition.opacity.duration.200ms
-                                    class="idle-hamburger-indicator pointer-events-none absolute right-2 top-1/2 text-blue-600"
-                                    aria-hidden="true"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                                        <line x1="5" y1="7" x2="19" y2="7"></line>
-                                        <line x1="8" y1="12" x2="16" y2="12"></line>
-                                        <line x1="10" y1="17" x2="14" y2="17"></line>
-                                    </svg>
-                                </span>
+                                {{ $catalogAllCategoriesLabel }}
                             </a>
-                        @endforeach
+                            @foreach ($categories as $category)
+                                @php
+                                    $categoryParams = ['category' => $category->slug];
+                                    if ($search !== '') {
+                                        $categoryParams['q'] = $search;
+                                    }
+                                @endphp
+                                <a
+                                    href="{{ route('catalog', $categoryParams) }}"
+                                    class="catalog-filter-chip relative rounded-full border px-3 py-1.5 text-xs font-semibold transition {{ $activeCategorySlug === $category->slug ? 'border-blue-200 bg-blue-50 text-blue-700' : 'border-slate-200 text-slate-600 hover:border-blue-200 hover:text-blue-600' }}"
+                                    :class="showGuide && activeGuideIndex === {{ $loop->iteration }} ? 'pr-8 border-blue-300 text-blue-700 shadow-sm' : ''"
+                                >
+                                    {{ $category->name }}
+                                    <span
+                                        x-cloak
+                                        x-show="showGuide && activeGuideIndex === {{ $loop->iteration }}"
+                                        x-transition.opacity.duration.200ms
+                                        class="idle-hamburger-indicator pointer-events-none absolute right-2 top-1/2 text-blue-600"
+                                        aria-hidden="true"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                            <line x1="5" y1="7" x2="19" y2="7"></line>
+                                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            <line x1="10" y1="17" x2="14" y2="17"></line>
+                                        </svg>
+                                    </span>
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 
@@ -214,9 +217,9 @@
                                         return new Intl.NumberFormat(@js($intlLocale)).format(value);
                                     }
                                 }"
-                                class="card group flex h-full flex-col overflow-hidden rounded-2xl shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+                                class="card group flex h-full flex-col overflow-hidden rounded-[1.6rem] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
                             >
-                                <div class="relative flex h-56 items-center justify-center bg-slate-50 p-4 sm:h-60">
+                                <div class="media-stage relative flex h-56 items-center justify-center p-4 sm:h-60">
                                     <img
                                         src="{{ $image }}"
                                         alt="{{ $item->name }}"
@@ -238,15 +241,15 @@
                                     <p class="text-lg font-semibold text-slate-900">{{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}</p>
 
                                     <div class="mt-4 grid grid-cols-3 gap-2 text-center">
-                                        <div class="rounded-lg bg-slate-50 px-2 py-2">
+                                        <div class="surface-band rounded-lg px-2 py-2">
                                             <p class="text-[10px] uppercase tracking-wide text-slate-500">{{ $catalogStockLabel }}</p>
                                             <p class="mt-1 text-sm font-semibold text-slate-900">{{ $item->stock }}</p>
                                         </div>
-                                        <div class="rounded-lg bg-slate-50 px-2 py-2">
+                                        <div class="surface-band rounded-lg px-2 py-2">
                                             <p class="text-[10px] uppercase tracking-wide text-slate-500">{{ $catalogInUseLabel }}</p>
                                             <p class="mt-1 text-sm font-semibold text-amber-600">{{ $reservedUnits }}</p>
                                         </div>
-                                        <div class="rounded-lg bg-slate-50 px-2 py-2">
+                                        <div class="surface-band rounded-lg px-2 py-2">
                                             <p class="text-[10px] uppercase tracking-wide text-slate-500">{{ $catalogAvailableLabel }}</p>
                                             <p class="mt-1 text-sm font-semibold {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}">{{ $availableUnits }}</p>
                                         </div>

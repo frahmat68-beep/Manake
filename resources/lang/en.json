@@ -478,6 +478,8 @@
     "Tanggal lahir": "Date of Birth",
     "Tanggal reschedule tidak valid.": "The reschedule date is invalid.",
     "Tanggal sewa belum diisi untuk: :items. Update tanggal di katalog/detail lalu tambahkan ulang ke keranjang.": "Rental date has not been entered for: :items. Update the date in the catalog/details then re-add to basket.",
+    "Tanggal sewa dikunci mengikuti pesanan di cart. Untuk ubah tanggal, edit dulu item di cart.": "Rental dates are locked to match the item already in cart. Edit the cart item first to change the dates.",
+    "Tanggal sewa hanya bisa dipilih dari hari ini sampai 3 bulan ke depan.": "Rental dates can only be selected from today up to the next 3 months.",
     "Tanggal sewa maksimal 3 bulan dari hari ini.": "The rental date can be at most 3 months from today.",
     "Tarik & lepas file": "Drag & drop files",
     "Tautan verifikasi baru telah dikirim ke email Anda.": "A new verification link has been sent to your email.",

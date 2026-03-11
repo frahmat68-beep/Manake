@@ -9,6 +9,7 @@ use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class HomeHeroCarouselTest extends TestCase
@@ -75,6 +76,32 @@ class HomeHeroCarouselTest extends TestCase
         $response->assertSee('object-contain', false);
         $response->assertSee('watchOverflow: true', false);
         $response->assertDontSee('cloneNode(true)', false);
+    }
+
+    public function test_home_uses_relative_storage_urls_for_ready_item_images(): void
+    {
+        $camera = Category::create([
+            'name' => 'Camera',
+            'slug' => 'camera',
+        ]);
+
+        Storage::disk('public')->put('equipments/home-relative-path.png', 'fake-image');
+
+        Equipment::create([
+            'name' => 'Relative Path Camera',
+            'slug' => 'relative-path-camera',
+            'category_id' => $camera->id,
+            'price_per_day' => 320000,
+            'stock' => 1,
+            'status' => 'ready',
+            'image_path' => 'equipments/home-relative-path.png',
+        ]);
+
+        $response = $this->get(route('home'));
+
+        $response->assertOk();
+        $response->assertSee('/storage/equipments/home-relative-path.png', false);
+        $response->assertDontSee('http://127.0.0.1:8000/storage/equipments/home-relative-path.png', false);
     }
 
     public function test_home_shows_damage_fee_alert_and_popup_when_additional_fee_is_outstanding(): void

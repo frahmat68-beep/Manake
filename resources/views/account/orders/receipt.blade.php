@@ -916,7 +916,7 @@
         <header class="invoice-header" aria-label="Invoice Header">
             <div>
                 <span class="brand-logo-wrap">
-                    <img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" class="brand-logo">
+                    <img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake" class="brand-logo">
                 </span>
                 <h1 class="invoice-title">{{ __('ui.invoice.title') }}</h1>
                 <p class="invoice-subtitle">{{ __('ui.invoice.subtitle') }}</p>

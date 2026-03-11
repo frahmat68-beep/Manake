@@ -72,6 +72,10 @@
             : null;
         $readyPanelTitle = setting('copy.landing.ready_panel_title', __('app.landing.ready_items'));
         $readyPanelSubtitle = setting('copy.landing.ready_panel_subtitle', __('app.landing.ready_panel_subtitle'));
+        $catalogCategoryCount = collect($navCategories ?? [])->count();
+        $heroPrimaryLink = route('catalog');
+        $heroSecondaryLink = route('availability.board');
+        $heroTertiaryLink = $isLoggedIn ? route('booking.history') : route('catalog');
         $flowKicker = setting('copy.landing.flow_kicker', __('app.landing.flow_kicker'));
         $flowTitle = setting('copy.landing.flow_title', __('app.landing.flow_title'));
         $flowCatalogLink = setting('copy.landing.flow_catalog_link', __('app.landing.flow_catalog_link'));
@@ -91,9 +95,11 @@
 
     <section class="bg-slate-50">
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:py-12">
-            <div class="grid items-start gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-8">
-                <div class="min-w-0">
-                    <h1 class="max-w-3xl text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl lg:text-[2.75rem]">
+            <div class="spotlight-shell rounded-[2rem] p-5 sm:p-7 lg:p-8">
+                <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-8">
+                    <div class="min-w-0">
+                        <span class="spotlight-kicker">{{ __('ui.nav.catalog') }} · {{ __('app.landing.snapshot_live') }}</span>
+                        <h1 class="mt-5 max-w-3xl text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl lg:text-[2.95rem]">
                         @if ($heroTitle)
                             {{ $heroTitle }}
                         @else
@@ -102,62 +108,89 @@
                             {{ __('app.landing.hero_suffix') }}
                         @endif
                     </h1>
-                    <p class="mt-3 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-                        {{ $heroSubtitle ?: __('app.landing.hero_desc') }}
-                    </p>
+                        <p class="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+                            {{ $heroSubtitle ?: __('app.landing.hero_desc') }}
+                        </p>
 
-                    <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-                        <div class="flex items-center justify-between gap-2">
-                            <h2 class="text-sm font-semibold text-slate-900">{{ __('app.landing.snapshot_title') }}</h2>
-                            <span class="text-xs font-semibold text-slate-500">{{ __('app.landing.snapshot_live') }}</span>
+                        <div class="mt-5 flex flex-wrap gap-3">
+                            <a href="{{ $heroPrimaryLink }}" class="btn-primary inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold">
+                                {{ __('ui.nav.catalog') }}
+                            </a>
+                            <a href="{{ $heroSecondaryLink }}" class="btn-secondary inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold">
+                                {{ __('ui.nav.check_availability') }}
+                            </a>
+                            <a href="{{ $heroTertiaryLink }}" class="inline-flex items-center justify-center rounded-xl border border-transparent px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:text-blue-600">
+                                {{ $isLoggedIn ? __('app.landing.latest_progress_link') : __('app.landing.flow_catalog_link') }} →
+                            </a>
                         </div>
-                        <div class="mt-3 space-y-2.5">
-                            @forelse ($guestRentalSnapshot as $rental)
-                                <article class="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5">
-                                    <div class="flex items-start justify-between gap-2">
-                                        <p class="text-sm font-semibold text-slate-900">{{ $rental['name'] }}</p>
-                                        <span class="rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-semibold text-blue-700">x{{ $rental['qty'] }}</span>
+
+                        <div class="spotlight-grid mt-5">
+                            <article class="spotlight-metric">
+                                <strong>{{ max($productsReady->count(), 1) }}</strong>
+                                <span>{{ __('app.landing.ready_items') }}</span>
+                            </article>
+                            <article class="spotlight-metric">
+                                <strong>{{ max($catalogCategoryCount, 1) }}</strong>
+                                <span>{{ __('ui.nav.category') }}</span>
+                            </article>
+                            <article class="spotlight-metric">
+                                <strong>{{ max($guestRentalSnapshot->count(), 1) }}</strong>
+                                <span>{{ __('app.landing.snapshot_title') }}</span>
+                            </article>
+                        </div>
+
+                        <div class="surface-band mt-6 rounded-2xl p-4 sm:p-5">
+                            <div class="flex items-center justify-between gap-2">
+                                <h2 class="text-sm font-semibold text-slate-900">{{ __('app.landing.snapshot_title') }}</h2>
+                                <span class="text-xs font-semibold text-slate-500">{{ __('app.landing.snapshot_live') }}</span>
+                            </div>
+                            <div class="mt-3 space-y-2.5">
+                                @forelse ($guestRentalSnapshot as $rental)
+                                    <article class="rounded-xl border border-slate-100 bg-white/80 px-3 py-2.5">
+                                        <div class="flex items-start justify-between gap-2">
+                                            <p class="text-sm font-semibold text-slate-900">{{ $rental['name'] }}</p>
+                                            <span class="rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-semibold text-blue-700">x{{ $rental['qty'] }}</span>
+                                        </div>
+                                        <p class="mt-1 text-xs text-slate-600">
+                                            {{ __('app.landing.snapshot_rental_date') }}: {{ $formatLandingDate($rental['start_date']) }} - {{ $formatLandingDate($rental['end_date']) }}
+                                        </p>
+                                    </article>
+                                @empty
+                                    <div class="rounded-xl border border-dashed border-slate-200 bg-white/75 px-3 py-3 text-xs text-slate-500">
+                                        {{ __('app.landing.snapshot_empty') }}
                                     </div>
-                                    <p class="mt-1 text-xs text-slate-600">
-                                        {{ __('app.landing.snapshot_rental_date') }}: {{ $formatLandingDate($rental['start_date']) }} - {{ $formatLandingDate($rental['end_date']) }}
-                                    </p>
-                                </article>
-                            @empty
-                                <div class="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-3 text-xs text-slate-500">
-                                    {{ __('app.landing.snapshot_empty') }}
-                                </div>
-                            @endforelse
+                                @endforelse
+                            </div>
                         </div>
+
+                        @if ($isLoggedIn && $damageAlertOrder)
+                            <a href="{{ route('account.orders.show', $damageAlertOrder) }}" class="mt-4 block rounded-2xl border-2 border-rose-300 bg-rose-50 p-4 shadow-sm transition hover:border-rose-400">
+                                <div class="flex flex-wrap items-start justify-between gap-3">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">{{ __('app.landing.damage_alert_title') }}</p>
+                                    <span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-semibold text-rose-700">{{ __('app.landing.damage_alert_unpaid') }}</span>
+                                </div>
+                                <p class="mt-1 text-sm font-semibold text-rose-800">{{ __('app.landing.damage_alert_status') }}: {{ $damageStatusLabel }} • {{ __('app.landing.damage_alert_fee') }} {{ 'Rp ' . number_format($damageFeeAmount, 0, ',', '.') }}</p>
+                                <p class="mt-1 text-xs text-rose-700">{{ __('app.landing.damage_alert_payment_note') }}</p>
+                                @if (!empty($damageAlertOrder->additional_fee_note))
+                                    <p class="mt-2 rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs text-rose-700">{{ $damageAlertOrder->additional_fee_note }}</p>
+                                @endif
+                            </a>
+                        @endif
                     </div>
 
-                    @if ($isLoggedIn && $damageAlertOrder)
-                        <a href="{{ route('account.orders.show', $damageAlertOrder) }}" class="mt-4 block rounded-2xl border-2 border-rose-300 bg-rose-50 p-4 shadow-sm transition hover:border-rose-400">
-                            <div class="flex flex-wrap items-start justify-between gap-3">
-                                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">{{ __('app.landing.damage_alert_title') }}</p>
-                                <span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-semibold text-rose-700">{{ __('app.landing.damage_alert_unpaid') }}</span>
+                    <div class="min-w-0 w-full lg:max-w-[43rem] lg:justify-self-end">
+                        @if ($heroImage)
+                            <div class="media-stage mb-4 overflow-hidden rounded-[1.75rem] p-2 shadow-sm">
+                                <img src="{{ $heroImage }}" alt="{{ $heroImageAlt }}" class="h-36 w-full rounded-[1.2rem] object-cover sm:h-52 lg:h-56">
                             </div>
-                            <p class="mt-1 text-sm font-semibold text-rose-800">{{ __('app.landing.damage_alert_status') }}: {{ $damageStatusLabel }} • {{ __('app.landing.damage_alert_fee') }} {{ 'Rp ' . number_format($damageFeeAmount, 0, ',', '.') }}</p>
-                            <p class="mt-1 text-xs text-rose-700">{{ __('app.landing.damage_alert_payment_note') }}</p>
-                            @if (!empty($damageAlertOrder->additional_fee_note))
-                                <p class="mt-2 rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs text-rose-700">{{ $damageAlertOrder->additional_fee_note }}</p>
-                            @endif
-                        </a>
-                    @endif
-                </div>
-
-                <div class="min-w-0 w-full lg:max-w-[43rem] lg:justify-self-end">
-                    @if ($heroImage)
-                        <div class="card mb-4 overflow-hidden rounded-2xl shadow-sm">
-                            <img src="{{ $heroImage }}" alt="{{ $heroImageAlt }}" class="h-36 w-full object-cover sm:h-52 lg:h-56">
-                        </div>
-                    @endif
-                    <div class="card w-full overflow-hidden rounded-2xl shadow-sm">
-                        <div class="border-b border-slate-100 bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-3.5 text-white sm:px-5 sm:py-4">
-                            <p class="text-xs font-semibold uppercase tracking-[0.18em]">{{ $readyPanelTitle }}</p>
-                            <p class="mt-1 text-sm text-blue-100">{{ $readyPanelSubtitle }}</p>
-                        </div>
-                        <div class="p-4 sm:p-5">
-                            <div class="swiper ready-carousel" data-slide-count="{{ max($productsReady->count(), 1) }}">
+                        @endif
+                        <div class="card w-full overflow-hidden rounded-[1.8rem] shadow-sm">
+                            <div class="border-b border-slate-100 bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-3.5 text-white sm:px-5 sm:py-4">
+                                <p class="text-xs font-semibold uppercase tracking-[0.18em]">{{ $readyPanelTitle }}</p>
+                                <p class="mt-1 text-sm text-blue-100">{{ $readyPanelSubtitle }}</p>
+                            </div>
+                            <div class="p-4 sm:p-5">
+                                <div class="swiper ready-carousel" data-slide-count="{{ max($productsReady->count(), 1) }}">
                                 <div class="swiper-wrapper">
                                     @forelse ($productsReady as $product)
                                         @php
@@ -168,8 +201,8 @@
                                             $price = data_get($product, 'price_per_day', data_get($product, 'price', 0));
                                         @endphp
                                         <div class="swiper-slide">
-                                            <article class="card flex h-full flex-col overflow-hidden rounded-2xl bg-slate-50">
-                                                <div class="flex h-40 w-full items-center justify-center bg-slate-100/60 p-3 sm:h-52 lg:h-56">
+                                            <article class="surface-band flex h-full flex-col overflow-hidden rounded-2xl">
+                                                <div class="media-stage flex h-40 w-full items-center justify-center p-3 sm:h-52 lg:h-56">
                                                     <img src="{{ $image }}" alt="{{ $name }}" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ $productFallbackImage }}';">
                                                 </div>
                                                 <div class="p-4">
@@ -187,21 +220,22 @@
                                         </div>
                                     @empty
                                         <div class="swiper-slide">
-                                            <div class="card rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500">
+                                            <div class="surface-band rounded-2xl p-6 text-center text-sm text-slate-500">
                                                 {{ __('app.empty.ready_title') }}
                                             </div>
                                         </div>
                                     @endforelse
                                 </div>
-                            </div>
+                                </div>
 
-                            <div class="mt-4 flex items-center justify-end gap-2 sm:justify-between">
-                                <button class="btn-secondary ready-prev inline-flex h-10 w-10 items-center justify-center rounded-full transition" aria-label="{{ __('app.actions.previous') }}">
-                                    ‹
-                                </button>
-                                <button class="btn-secondary ready-next inline-flex h-10 w-10 items-center justify-center rounded-full transition" aria-label="{{ __('app.actions.next') }}">
-                                    ›
-                                </button>
+                                <div class="mt-4 flex items-center justify-end gap-2 sm:justify-between">
+                                    <button class="btn-secondary ready-prev inline-flex h-10 w-10 items-center justify-center rounded-full transition" aria-label="{{ __('app.actions.previous') }}">
+                                        ‹
+                                    </button>
+                                    <button class="btn-secondary ready-next inline-flex h-10 w-10 items-center justify-center rounded-full transition" aria-label="{{ __('app.actions.next') }}">
+                                        ›
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

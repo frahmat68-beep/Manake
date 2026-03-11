@@ -441,7 +441,7 @@
     $logoPath = public_path('manake-logo-blue.png');
     $logoUrl = file_exists($logoPath)
         ? ('data:image/png;base64,' . base64_encode(file_get_contents($logoPath)))
-        : asset('manake-logo-blue.png');
+        : site_asset('manake-logo-blue.png');
 
     $paymentPayload = [];
     if (! empty($order->payment?->payload_json)) {

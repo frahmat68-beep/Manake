@@ -83,7 +83,7 @@
                 'category' => (string) data_get($row, 'category', app()->isLocale('en') ? 'Other' : 'Lainnya'),
                 'category_id' => (int) data_get($row, 'category_id', 0),
                 'price_per_day' => (int) data_get($row, 'price_per_day', 0),
-                'image_url' => (string) data_get($row, 'image_url', asset('MANAKE-FAV-M.png')),
+                'image_url' => (string) data_get($row, 'image_url', site_asset('MANAKE-FAV-M.png')),
                 'status' => (string) data_get($row, 'status', 'ready'),
                 'stock' => (int) data_get($row, 'stock', 0),
                 'day_cells' => $dayCells,

@@ -66,9 +66,7 @@
     }
 
     $assetWithVersion = static function (string $file): string {
-        $path = public_path($file);
-        $version = file_exists($path) ? (string) filemtime($path) : '1';
-        return asset($file) . '?v=' . $version;
+        return site_asset($file);
     };
     $expandedLogoFallbackUrl = $assetWithVersion('manake-logo-blue.png');
     $expandedLogoUrl = $logoUrl ?: $expandedLogoFallbackUrl;

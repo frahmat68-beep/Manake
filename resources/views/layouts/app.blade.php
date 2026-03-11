@@ -8,9 +8,7 @@
     <title>@yield('title', site_setting('seo.meta_title', setting('meta_title', setting('site_name', 'Manake.Id'))))</title>
     @php
         $assetWithVersion = static function (string $file): string {
-            $path = public_path($file);
-            $version = file_exists($path) ? (string) filemtime($path) : '1';
-            return asset($file) . '?v=' . $version;
+            return site_asset($file);
         };
         $faviconLightUrl = $assetWithVersion('MANAKE-FAV-M.png');
         $faviconDarkUrl = $assetWithVersion('MANAKE-FAV-M-white.png');
@@ -31,6 +29,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
     @include('partials.theme-init')
     <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/theme.css'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @stack('head')
     @php
@@ -236,7 +235,7 @@
                     method="GET"
                     action="{{ route('catalog') }}"
                     data-search-suggest-url="{{ route('search.suggestions') }}"
-                    class="relative order-3 w-full sm:order-2 sm:flex-1 sm:max-w-2xl"
+                    class="command-surface relative order-3 w-full rounded-2xl sm:order-2 sm:flex-1 sm:max-w-2xl"
                 >
                     <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -250,7 +249,7 @@
                         value="{{ $searchQuery }}"
                         placeholder="{{ __('ui.nav.search_placeholder') }}"
                         autocomplete="off"
-                        class="w-full rounded-xl border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                        class="w-full rounded-2xl border-0 bg-transparent py-3 pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-transparent focus:outline-none focus:ring-0"
                     >
                     <div
                         id="global-catalog-search-dropdown"
@@ -370,7 +369,7 @@
                         </button>
                         <button
                             type="button"
-                            class="hidden rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 sm:inline"
+                            class="btn-primary hidden rounded-xl px-3 py-2 text-sm font-semibold transition sm:inline"
                             @click="openAuthModal('register')"
                         >
                             {{ __('ui.nav.register') }}
@@ -564,7 +563,7 @@
                 <div class="relative hidden overflow-hidden bg-gradient-to-br from-slate-950 via-blue-900 to-slate-900 p-8 text-white lg:block lg:p-10">
                     <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top,_white,_transparent_60%)]"></div>
                     <div class="relative z-10">
-                        <img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" class="h-12 w-auto rounded-xl bg-white p-2">
+                        <img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake" class="h-12 w-auto rounded-xl bg-white p-2">
                         <h1 class="mt-6 text-3xl font-semibold leading-tight">{{ __('app.auth.login_heading') }}</h1>
                         <p class="mt-4 text-sm leading-relaxed text-blue-100">
                             {{ __('app.auth.login_note') }}
@@ -651,7 +650,7 @@
             link.className = 'flex items-center gap-3 border-b border-slate-100 px-3 py-2.5 transition hover:bg-blue-50';
 
             const image = document.createElement('img');
-            image.src = item.image_url || '{{ asset('MANAKE-FAV-M.png') }}';
+            image.src = item.image_url || '{{ site_asset('MANAKE-FAV-M.png') }}';
             image.alt = item.name || genericItemLabel;
             image.loading = 'lazy';
             image.className = 'h-12 w-12 rounded-lg border border-slate-200 bg-slate-50 object-cover';

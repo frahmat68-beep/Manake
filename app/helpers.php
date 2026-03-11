@@ -322,6 +322,23 @@ if (! function_exists('site_setting_forget')) {
     }
 }
 
+if (! function_exists('site_asset')) {
+    function site_asset(string $path, bool $withVersion = true): string
+    {
+        $normalizedPath = ltrim($path, '/');
+        $relativePath = '/' . $normalizedPath;
+
+        if (! $withVersion) {
+            return $relativePath;
+        }
+
+        $publicPath = public_path($normalizedPath);
+        $version = file_exists($publicPath) ? (string) filemtime($publicPath) : '1';
+
+        return $relativePath . '?v=' . $version;
+    }
+}
+
 if (! function_exists('site_media_url')) {
     function site_media_url(?string $path, ?string $disk = 'public'): ?string
     {
@@ -342,7 +359,7 @@ if (! function_exists('site_media_url')) {
                     return null;
                 }
 
-                return asset('storage/'.$normalizedPath);
+                return '/' . ltrim('storage/' . $normalizedPath, '/');
             }
 
             $resolvedStorage = Storage::disk($resolvedDisk);

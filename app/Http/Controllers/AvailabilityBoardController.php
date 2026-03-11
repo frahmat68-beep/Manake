@@ -504,7 +504,7 @@ class AvailabilityBoardController extends Controller
             }
         }
 
-        return asset('MANAKE-FAV-M.png');
+        return site_asset('MANAKE-FAV-M.png');
     }
 
     private function resolveSourceLabel(string $type): string

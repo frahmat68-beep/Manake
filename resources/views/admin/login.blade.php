@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Admin | Manake</title>
-    <link rel="icon" type="image/png" href="{{ asset('MANAKE-FAV-M.png') }}">
+    <link rel="icon" type="image/png" href="{{ site_asset('MANAKE-FAV-M.png') }}">
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/theme.css'])
 
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -16,7 +17,7 @@
 
 <div class="w-full max-w-md rounded-2xl bg-slate-800 p-8 shadow-xl">
     <div class="text-center mb-6">
-        <img src="{{ asset('manake-logo-blue.png') }}" class="mx-auto h-12 mb-4">
+        <img src="{{ site_asset('manake-logo-blue.png') }}" class="mx-auto h-12 mb-4">
         <h2 class="text-xl font-semibold text-white">Login Admin</h2>
     </div>
 

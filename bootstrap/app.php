@@ -13,6 +13,7 @@ use App\Http\Middleware\SetTheme;
 use App\Http\Middleware\ForceHttps;
 use App\Http\Middleware\DisableAuthenticatedCache;
 use App\Http\Middleware\SecurityHeaders;
+use App\Http\Middleware\ResolveRuntimeUrls;
 use App\Http\Middleware\AdminSuper;
 use App\Http\Middleware\EnsureAuthenticatedForAccountFeature;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -122,6 +123,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->web(append: [
+            ResolveRuntimeUrls::class,
             ForceHttps::class,
             SecurityHeaders::class,
             DisableAuthenticatedCache::class,

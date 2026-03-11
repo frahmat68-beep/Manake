@@ -177,7 +177,7 @@ class EquipmentController extends Controller
 
         $data = $items->map(function (Equipment $equipment) {
             $imagePath = (string) ($equipment->image_path ?? $equipment->image ?? '');
-            $imageUrl = site_media_url($imagePath) ?: asset('MANAKE-FAV-M.png');
+            $imageUrl = site_media_url($imagePath) ?: site_asset('MANAKE-FAV-M.png');
 
             return [
                 'name' => (string) $equipment->name,

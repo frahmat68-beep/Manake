@@ -182,7 +182,7 @@
                             <p class="text-xs text-slate-500">{{ __('Format JPG/PNG/WEBP. Max 2MB.') }}</p>
                             @php
                                 $imagePath = $equipment->image_path ?? $equipment->image;
-                                $imageUrl = $imagePath ? (str_starts_with($imagePath, 'http') ? $imagePath : asset('storage/' . $imagePath)) : null;
+                                $imageUrl = $imagePath ? site_media_url($imagePath) : null;
                             @endphp
                             @if ($imageUrl)
                                 <img src="{{ $imageUrl }}" alt="{{ __('Foto saat ini') }}" class="mt-3 h-24 w-24 rounded-xl object-contain border border-slate-200 bg-white p-1">

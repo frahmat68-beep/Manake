@@ -5,7 +5,7 @@
         <div class="flex items-center gap-8">
             <!-- LOGO -->
             <a href="/" class="flex items-center gap-3">
-                <img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" class="h-8">
+                <img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake" class="h-8">
             </a>
 
             <!-- MENU -->

@@ -8,9 +8,7 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
         @php
             $assetWithVersion = static function (string $file): string {
-                $path = public_path($file);
-                $version = file_exists($path) ? (string) filemtime($path) : '1';
-                return asset($file) . '?v=' . $version;
+                return site_asset($file);
             };
             $faviconLightUrl = $assetWithVersion('MANAKE-FAV-M.png');
             $faviconDarkUrl = $assetWithVersion('MANAKE-FAV-M-white.png');
@@ -29,7 +27,7 @@
         @include('partials.theme-init')
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/css/theme.css', 'resources/js/app.js'])
         @php
             $resolveHexColor = static function ($value, string $fallback): string {
                 $resolved = trim((string) $value);

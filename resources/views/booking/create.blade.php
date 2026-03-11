@@ -6,6 +6,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/theme.css'])
 
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -17,7 +18,7 @@
 <div class="bg-white border-b sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-4">
         <a href="/">
-            <img src="{{ asset('manake-logo-blue.png') }}" class="h-8">
+            <img src="{{ site_asset('manake-logo-blue.png') }}" class="h-8">
         </a>
         <span class="text-sm text-slate-500">Pemesanan Alat</span>
     </div>

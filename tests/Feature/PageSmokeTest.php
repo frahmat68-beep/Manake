@@ -41,6 +41,16 @@ class PageSmokeTest extends TestCase
         }
     }
 
+    public function test_login_page_uses_relative_logo_assets(): void
+    {
+        $response = $this->get(route('login'));
+
+        $response->assertOk();
+        $response->assertSee('/manake-logo-blue.png?v=', false);
+        $response->assertSee('/MANAKE-FAV-M.png?v=', false);
+        $response->assertDontSee('http://127.0.0.1:8000/manake-logo-blue.png', false);
+    }
+
     public function test_admin_pages_render_without_exception_for_authenticated_admin(): void
     {
         $admin = $this->createAdmin();

@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ __('ui.auth.forgot_title') }} | Manake.Id</title>
-    <link rel="icon" type="image/png" href="{{ asset('MANAKE-FAV-M.png') }}">
+    <link rel="icon" type="image/png" href="{{ site_asset('MANAKE-FAV-M.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
     @include('partials.theme-init')
     <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/theme.css'])
     <style>
         [x-cloak] { display: none !important; }
         body { font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif; }
@@ -20,7 +21,7 @@
             <div class="relative p-8 md:p-10 bg-gradient-to-br from-slate-900 via-blue-900 to-blue-700 text-white">
                 <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_white,_transparent_60%)]"></div>
                 <div class="relative z-10">
-                    <img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" class="h-12 w-auto bg-white rounded-xl p-2">
+                    <img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake" class="h-12 w-auto bg-white rounded-xl p-2">
                     <h1 class="mt-6 text-2xl md:text-3xl font-semibold leading-tight">
                         {{ __('ui.auth.forgot_heading') }}
                     </h1>

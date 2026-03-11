@@ -7,9 +7,7 @@
     <title>@yield('title', __('ui.admin.panel_title') . ' | Manake')</title>
     @php
         $assetWithVersion = static function (string $file): string {
-            $path = public_path($file);
-            $version = file_exists($path) ? (string) filemtime($path) : '1';
-            return asset($file) . '?v=' . $version;
+            return site_asset($file);
         };
         $faviconLightUrl = $assetWithVersion('MANAKE-FAV-M.png');
         $faviconDarkUrl = $assetWithVersion('MANAKE-FAV-M-white.png');
@@ -25,6 +23,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
     @include('partials.theme-init')
     <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/theme.css'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @stack('head')
     @php

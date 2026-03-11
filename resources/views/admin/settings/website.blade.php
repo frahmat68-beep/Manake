@@ -5,9 +5,9 @@
 
 @php
     $logoPath = $settings['brand.logo_path'] ?? null;
-    $logoUrl = $logoPath ? asset('storage/' . $logoPath) : asset('manake-logo-blue.png');
+    $logoUrl = $logoPath ? site_media_url($logoPath) : site_asset('manake-logo-blue.png');
     $faviconPath = $settings['brand.favicon_path'] ?? null;
-    $faviconUrl = $faviconPath ? asset('storage/' . $faviconPath) : null;
+    $faviconUrl = $faviconPath ? site_media_url($faviconPath) : null;
 @endphp
 
 @section('content')

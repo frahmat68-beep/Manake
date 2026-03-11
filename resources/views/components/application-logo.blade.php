@@ -1,1 +1,1 @@
-<img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" {{ $attributes }}>
+<img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake" {{ $attributes }}>

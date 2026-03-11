@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ __('app.auth.register_page_title') }}</title>
-    <link rel="icon" type="image/png" href="{{ asset('MANAKE-FAV-M.png') }}">
+    <link rel="icon" type="image/png" href="{{ site_asset('MANAKE-FAV-M.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
     @include('partials.theme-init')
     <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/theme.css'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body { font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif; }
@@ -81,7 +82,7 @@
             <div class="relative hidden p-8 text-white lg:block lg:p-10 bg-gradient-to-br from-slate-900 via-blue-900 to-blue-700">
                 <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top,_white,_transparent_60%)]"></div>
                 <div class="relative z-10">
-                    <img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" class="h-12 w-auto bg-white rounded-xl p-2">
+                    <img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake" class="h-12 w-auto bg-white rounded-xl p-2">
                     <h1 class="mt-6 text-2xl md:text-3xl font-semibold leading-tight">
                         {{ __('app.auth.register_heading') }}
                     </h1>
