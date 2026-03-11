@@ -76,6 +76,15 @@ if ($isVercelRuntime) {
             @mkdir($directory, 0775, true);
         }
     }
+
+    // Ensure storage-dependent config values resolve to writable runtime paths on Vercel.
+    $setRuntimeEnv('LARAVEL_STORAGE_PATH', $vercelStoragePath);
+    $setRuntimeEnv('VIEW_COMPILED_PATH', $vercelStoragePath . '/framework/views');
+    $setRuntimeEnv('APP_SERVICES_CACHE', $vercelStoragePath . '/framework/cache/services.php');
+    $setRuntimeEnv('APP_PACKAGES_CACHE', $vercelStoragePath . '/framework/cache/packages.php');
+    $setRuntimeEnv('APP_CONFIG_CACHE', $vercelStoragePath . '/framework/cache/config.php');
+    $setRuntimeEnv('APP_ROUTES_CACHE', $vercelStoragePath . '/framework/cache/routes-v7.php');
+    $setRuntimeEnv('APP_EVENTS_CACHE', $vercelStoragePath . '/framework/cache/events.php');
 }
 
 $app = Application::configure(basePath: dirname(__DIR__))
@@ -141,9 +150,5 @@ $app = Application::configure(basePath: dirname(__DIR__))
                 ->with('error', $message);
         });
     })->create();
-
-if ($vercelStoragePath !== null) {
-    $app->useStoragePath($vercelStoragePath);
-}
 
 return $app;
