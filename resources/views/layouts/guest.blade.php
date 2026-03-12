@@ -28,7 +28,7 @@
         <link rel="icon" type="image/png" href="{{ $faviconUrl }}">
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
         @include('partials.theme-init')
-        @vite(['resources/css/app.css', 'resources/css/theme.css', 'resources/js/app.js'])
+        @include('partials.runtime-ui-assets')
         <style>
             [x-cloak] { display: none !important; }
             body { font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif; }

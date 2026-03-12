@@ -59,7 +59,8 @@ class PageSmokeTest extends TestCase
 
             $response->assertOk();
             $response->assertDontSee('https://cdn.tailwindcss.com', false);
-            $response->assertDontSee('https://cdn.jsdelivr.net/npm/alpinejs', false);
+            $response->assertDontSee('/build/assets/', false);
+            $response->assertSee('manake-inline-app-css', false);
         }
     }
 

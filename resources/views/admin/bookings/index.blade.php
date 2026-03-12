@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin – Daftar Pemesanan</title>
-    @vite(['resources/css/app.css', 'resources/css/theme.css', 'resources/js/app.js'])
-    @vite(['resources/css/theme.css'])
+    @include('partials.theme-init')
+    @include('partials.runtime-ui-assets')
 </head>
 <body class="bg-slate-100 p-8">
 
