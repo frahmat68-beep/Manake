@@ -111,7 +111,8 @@
         }
     </style>
 </head>
-<body class="min-h-screen" data-admin-panel="true">
+<body class="min-h-screen" data-admin-panel="true" data-manake-shell="admin">
+    @include('partials.page-loader')
     @php
         $activePage = $activePage ?? '';
         $brandName = site_setting('brand.name', 'Manake');
@@ -140,7 +141,7 @@
         />
 
         <div class="lg:pl-72">
-            <header class="sticky top-0 z-30 border-b border-slate-200 bg-white">
+            <header class="manake-topbar-shell sticky top-0 z-30 border-b border-slate-200 bg-white" data-manake-topbar="admin">
                 <div class="mx-auto flex h-16 w-full max-w-[1320px] items-center justify-between gap-3 px-4 sm:px-6">
                     <div class="flex min-w-0 items-center gap-3">
                         <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 lg:hidden" @click="sidebarOpen = true" aria-label="{{ __('Buka sidebar') }}">
@@ -204,7 +205,7 @@
                 </div>
             </header>
 
-            <main class="px-4 py-6 sm:px-6 sm:py-8">
+            <main class="manake-main-stage px-4 py-6 sm:px-6 sm:py-8">
                 <div class="mx-auto w-full max-w-[1320px]">
                     @yield('content')
                 </div>

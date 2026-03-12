@@ -996,3 +996,376 @@ html[data-theme-resolved='dark'] .footer-rules-card {
         animation: none !important;
     }
 }
+
+:root {
+    --shell-edge: rgba(255, 255, 255, 0.66);
+    --shell-panel: rgba(255, 255, 255, 0.82);
+    --shell-panel-strong: rgba(255, 255, 255, 0.92);
+    --shell-grid: rgba(71, 99, 180, 0.08);
+    --shell-shadow: 0 22px 44px rgba(15, 28, 61, 0.12);
+    --brand-aurora: linear-gradient(140deg, #071327 0%, #10306e 42%, #2d5fff 100%);
+}
+
+html[data-theme-resolved='dark'] {
+    --shell-edge: rgba(148, 163, 184, 0.15);
+    --shell-panel: rgba(10, 18, 35, 0.72);
+    --shell-panel-strong: rgba(15, 23, 42, 0.86);
+    --shell-grid: rgba(96, 165, 250, 0.08);
+    --shell-shadow: 0 24px 56px rgba(2, 6, 23, 0.46);
+}
+
+body[data-manake-shell] {
+    position: relative;
+    min-height: 100vh;
+    isolation: isolate;
+}
+
+body[data-manake-shell]::before,
+body[data-manake-shell]::after {
+    content: '';
+    position: fixed;
+    inset: auto;
+    pointer-events: none;
+    z-index: -1;
+    border-radius: 999px;
+    filter: blur(42px);
+    opacity: 0.9;
+}
+
+body[data-manake-shell]::before {
+    top: -80px;
+    right: -120px;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(60, 115, 255, 0.24) 0%, transparent 68%);
+}
+
+body[data-manake-shell]::after {
+    bottom: -140px;
+    left: -120px;
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, rgba(79, 70, 229, 0.18) 0%, transparent 72%);
+}
+
+.manake-topbar-shell {
+    backdrop-filter: blur(20px);
+    background: color-mix(in oklab, var(--shell-panel) 88%, transparent) !important;
+    border-color: color-mix(in oklab, var(--primary) 12%, var(--border)) !important;
+    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.06);
+}
+
+.manake-main-stage {
+    animation: manake-fade-up 420ms ease both;
+}
+
+[data-manake-sidebar='app'],
+[data-manake-sidebar='admin'] {
+    position: relative;
+    overflow: hidden;
+    border-right-color: color-mix(in oklab, var(--primary) 10%, var(--border)) !important;
+    background:
+        linear-gradient(180deg, color-mix(in oklab, var(--shell-panel-strong) 90%, transparent) 0%, color-mix(in oklab, var(--shell-panel) 92%, transparent) 100%) !important;
+    box-shadow: var(--shell-shadow) !important;
+    backdrop-filter: blur(18px);
+}
+
+[data-manake-sidebar='app']::before,
+[data-manake-sidebar='admin']::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(rgba(120, 145, 210, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120, 145, 210, 0.08) 1px, transparent 1px),
+        radial-gradient(320px 180px at 20% 0%, rgba(42, 86, 232, 0.14), transparent 72%);
+    background-size: 26px 26px, 26px 26px, auto;
+    mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 96%);
+    pointer-events: none;
+}
+
+[data-manake-sidebar='app'] > *,
+[data-manake-sidebar='admin'] > * {
+    position: relative;
+    z-index: 1;
+}
+
+[data-manake-sidebar='app'] nav a,
+[data-manake-sidebar='admin'] nav a {
+    border-radius: 18px !important;
+}
+
+[data-manake-sidebar='app'] nav a:hover,
+[data-manake-sidebar='admin'] nav a:hover {
+    transform: translateX(2px);
+}
+
+.manake-brand-pill {
+    border: 1px solid color-mix(in oklab, var(--primary) 16%, var(--border));
+    background: color-mix(in oklab, var(--surface) 92%, white);
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+}
+
+.manake-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--primary) 16%, var(--border));
+    background: color-mix(in oklab, var(--primary) 8%, var(--surface));
+    color: var(--primary-strong);
+    padding: 0.55rem 0.9rem;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.manake-kicker::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: currentColor;
+    box-shadow: 0 0 0 6px color-mix(in oklab, currentColor 12%, transparent);
+}
+
+.manake-kicker-inverse {
+    border-color: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(239, 246, 255, 0.94);
+}
+
+.manake-auth-shell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.manake-auth-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(540px 260px at 18% 14%, rgba(37, 99, 235, 0.16), transparent 72%),
+        radial-gradient(600px 280px at 100% 0%, rgba(79, 70, 229, 0.18), transparent 70%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(231, 238, 248, 0.9) 100%);
+    pointer-events: none;
+}
+
+.manake-auth-card {
+    position: relative;
+    border: 1px solid color-mix(in oklab, var(--primary) 12%, var(--border));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.84) 0%, rgba(246, 249, 255, 0.94) 100%);
+    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.14);
+    backdrop-filter: blur(24px);
+}
+
+.manake-auth-panel {
+    background:
+        radial-gradient(320px 160px at -10% 0%, rgba(42, 86, 232, 0.08), transparent 70%),
+        color-mix(in oklab, var(--surface) 94%, white);
+}
+
+.manake-auth-showcase {
+    position: relative;
+    overflow: hidden;
+    background: var(--brand-aurora);
+}
+
+.manake-auth-showcase::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.24), transparent 96%);
+    pointer-events: none;
+}
+
+.manake-auth-showcase > * {
+    position: relative;
+    z-index: 1;
+}
+
+html[data-theme-resolved='dark'] .manake-auth-shell::before {
+    background:
+        radial-gradient(540px 260px at 18% 14%, rgba(42, 86, 232, 0.12), transparent 72%),
+        radial-gradient(600px 280px at 100% 0%, rgba(79, 70, 229, 0.16), transparent 70%),
+        linear-gradient(180deg, rgba(5, 10, 22, 0.4) 0%, rgba(10, 18, 34, 0.92) 100%);
+}
+
+html[data-theme-resolved='dark'] .manake-auth-card {
+    background: linear-gradient(180deg, rgba(8, 15, 28, 0.82) 0%, rgba(15, 23, 42, 0.92) 100%);
+    box-shadow: 0 32px 82px rgba(2, 6, 23, 0.5);
+}
+
+html[data-theme-resolved='dark'] .manake-auth-panel {
+    background:
+        radial-gradient(320px 160px at -10% 0%, rgba(42, 86, 232, 0.16), transparent 70%),
+        color-mix(in oklab, var(--surface) 92%, #060b16);
+}
+
+html[data-theme-resolved='dark'] .manake-brand-pill {
+    background: color-mix(in oklab, var(--surface) 92%, #08101f);
+}
+
+.manake-auth-matrix {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.manake-auth-chip,
+.manake-auth-note {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+}
+
+.manake-auth-chip {
+    border-radius: 1.3rem;
+    padding: 0.9rem;
+}
+
+.manake-auth-chip span {
+    display: block;
+    color: rgba(219, 234, 254, 0.7);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.manake-auth-chip strong {
+    display: block;
+    margin-top: 0.55rem;
+    color: #f8fbff;
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+.manake-page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 160;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(260px 160px at 50% 50%, rgba(42, 86, 232, 0.12), transparent 72%),
+        rgba(238, 243, 251, 0.78);
+    backdrop-filter: blur(16px);
+    transition:
+        opacity 260ms ease,
+        visibility 260ms ease,
+        transform 260ms ease;
+}
+
+html[data-theme-resolved='dark'] .manake-page-loader {
+    background:
+        radial-gradient(260px 160px at 50% 50%, rgba(91, 132, 255, 0.12), transparent 72%),
+        rgba(10, 18, 34, 0.78);
+}
+
+.manake-page-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.manake-page-loader__inner {
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+}
+
+.manake-loader-core {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.95rem 1.15rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border));
+    background: color-mix(in oklab, var(--shell-panel-strong) 90%, transparent);
+    box-shadow: var(--shell-shadow);
+}
+
+.manake-loader-orb {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, #ffffff 0%, #6ea2ff 22%, #2a56e8 68%, #10203b 100%);
+    animation: manake-loader-pulse 1.4s ease-in-out infinite;
+}
+
+.manake-loader-label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+}
+
+.manake-loader-bar {
+    width: min(220px, 46vw);
+    height: 4px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--primary) 10%, var(--surface));
+}
+
+.manake-loader-bar span {
+    display: block;
+    height: 100%;
+    width: 42%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, transparent 0%, var(--primary) 42%, #93c5fd 100%);
+    animation: manake-loader-slide 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.manake-loader-caption {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+}
+
+@keyframes manake-loader-slide {
+    0% {
+        transform: translateX(-120%);
+    }
+    100% {
+        transform: translateX(260%);
+    }
+}
+
+@keyframes manake-loader-pulse {
+    0%, 100% {
+        transform: scale(0.92);
+        box-shadow: 0 0 0 0 rgba(42, 86, 232, 0.18);
+    }
+    50% {
+        transform: scale(1.04);
+        box-shadow: 0 0 0 12px rgba(42, 86, 232, 0);
+    }
+}
+
+@media (max-width: 1024px) {
+    .manake-auth-matrix {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .manake-loader-core {
+        padding: 0.8rem 1rem;
+    }
+
+    .manake-loader-label {
+        font-size: 0.88rem;
+    }
+}

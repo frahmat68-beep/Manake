@@ -63,10 +63,8 @@
         return site_asset($file);
     };
 
-    $compactLogoUrl = $assetWithVersion('MANAKE-FAV-M.png');
-    $compactLogoUrlDark = $assetWithVersion('MANAKE-FAV-M-white.png');
-    $expandedLogoUrl = $assetWithVersion('manake-logo-blue.png');
-    $expandedLogoUrlDark = $assetWithVersion('manake-logo-white.png');
+    $logoFallbackUrl = $assetWithVersion('manake-logo-blue.png');
+    $resolvedLogoUrl = $logoUrl ?: $logoFallbackUrl;
     $activeCategorySlug = (string) request()->query('category', request()->route('slug', ''));
     $submenuEnabledRaw = strtolower(trim((string) setting('catalog.sidebar_submenu_enabled', '1')));
     $submenuEnabled = ! in_array($submenuEnabledRaw, ['0', 'false', 'off', 'no', 'tidak'], true);
@@ -92,6 +90,7 @@
             this.catalogSubmenuOpen = false;
         }
     }"
+    data-manake-sidebar="app"
     class="group/sidebar fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col overflow-visible border-r border-slate-200 bg-white px-2 py-5 shadow-sm transition-[width,transform,box-shadow] duration-200 ease-out lg:w-16 lg:translate-x-0 lg:hover:w-72 lg:focus-within:w-72 lg:hover:shadow-2xl lg:focus-within:shadow-2xl"
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
 >
@@ -102,24 +101,12 @@
             aria-label="{{ $brandName }}"
             class="flex min-w-0 items-center gap-3 rounded-xl px-1 py-1 text-slate-900 lg:justify-center lg:gap-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:gap-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:gap-3"
         >
-            <div class="hidden lg:block lg:group-hover/sidebar:hidden lg:group-focus-within/sidebar:hidden">
-                <img
-                    src="{{ $compactLogoUrl }}"
-                    x-bind:src="(document.documentElement.dataset.themeResolved === 'dark') ? '{{ $compactLogoUrlDark }}' : '{{ $compactLogoUrl }}'"
-                    alt="{{ $brandName }}"
-                    class="h-9 w-9 shrink-0 rounded-xl object-contain"
-                    onerror="this.onerror=null;this.src='{{ $compactLogoUrl }}';"
-                >
-            </div>
-            <div class="lg:hidden lg:group-hover/sidebar:block lg:group-focus-within/sidebar:block">
-                <img
-                    src="{{ $expandedLogoUrl }}"
-                    x-bind:src="(document.documentElement.dataset.themeResolved === 'dark') ? '{{ $expandedLogoUrlDark }}' : '{{ $expandedLogoUrl }}'"
-                    alt="{{ $brandName }}"
-                    class="h-auto w-40 shrink-0 object-contain object-left"
-                    onerror="this.onerror=null;this.src='{{ $expandedLogoUrl }}';"
-                >
-            </div>
+            <img
+                src="{{ $resolvedLogoUrl }}"
+                alt="{{ $brandName }}"
+                class="h-10 w-10 shrink-0 rounded-2xl object-contain object-left transition-all duration-300 lg:w-10 lg:group-hover/sidebar:w-36 lg:group-focus-within/sidebar:w-36"
+                onerror="this.onerror=null;this.src='{{ $logoFallbackUrl }}';"
+            >
         </a>
         <button class="rounded-lg border border-slate-200 p-1.5 text-slate-500 lg:hidden" type="button" @click="sidebarOpen = false; guestPrefsOpen = false" aria-label="{{ __('ui.actions.close') }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

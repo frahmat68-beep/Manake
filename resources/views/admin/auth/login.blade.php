@@ -33,43 +33,45 @@
         body { font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif; }
     </style>
 </head>
-<body class="min-h-screen">
-    <div class="min-h-screen flex items-center justify-center px-4 py-8 sm:px-6 sm:py-10">
-        <div class="card w-full max-w-4xl overflow-hidden rounded-3xl shadow-2xl lg:grid lg:grid-cols-2">
-            <div class="p-6 text-slate-800 sm:p-8 lg:p-10">
-                <div>
-                    <a href="/" class="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
+<body class="min-h-screen" data-manake-shell="auth">
+    @include('partials.page-loader')
+    <div class="manake-auth-shell min-h-screen px-4 py-8 sm:px-6 sm:py-10">
+        <div class="manake-auth-card mx-auto w-full max-w-5xl overflow-hidden rounded-[2rem] lg:grid lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
+            <div class="manake-auth-panel p-6 text-slate-800 sm:p-8 lg:p-10">
+                <div class="space-y-5">
+                    <a href="/" class="manake-brand-pill inline-flex items-center rounded-2xl px-4 py-3 shadow-sm" data-skip-loader="true">
                         <img src="{{ $logoUrlLight }}" alt="Manake" class="h-10 w-auto" onerror="this.onerror=null;this.src='{{ $logoFallbackLight }}';">
                     </a>
-                    <div>
-                        <h2 class="text-2xl font-semibold text-blue-700">{{ __('ui.admin.admin_login') }}</h2>
-                        <p class="mt-2 text-sm text-slate-500">{{ __('ui.admin.login_intro') }}</p>
+                    <div class="space-y-2">
+                        <span class="manake-kicker">{{ __('ui.admin.panel_title') }}</span>
+                        <h2 class="text-3xl font-semibold tracking-[-0.03em] text-slate-950">{{ __('ui.admin.admin_login') }}</h2>
+                        <p class="max-w-md text-sm leading-6 text-slate-500">{{ __('ui.admin.login_intro') }}</p>
                     </div>
                 </div>
 
                 @if ($errors->any())
-                    <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                    <div class="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
                         {{ $errors->first() }}
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('admin.login.store') }}" class="mt-6 space-y-4">
+                <form method="POST" action="{{ route('admin.login.store') }}" class="mt-8 space-y-5">
                     @csrf
 
                     <div>
-                        <label class="text-xs font-semibold text-slate-500">{{ __('ui.admin.email') }}</label>
+                        <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.admin.email') }}</label>
                         <input
                             type="email"
                             name="email"
                             value="{{ old('email') }}"
                             required
-                            class="input mt-2 w-full rounded-xl px-4 py-2.5 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                            class="input mt-2 w-full rounded-2xl px-4 py-3 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                             placeholder="admin@manake.id"
                         >
                     </div>
 
                     <div class="relative">
-                        <label class="text-xs font-semibold text-slate-500">{{ __('ui.admin.password') }}</label>
+                        <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.admin.password') }}</label>
                         <x-password-input
                             id="admin-auth-password"
                             name="password"
@@ -77,27 +79,43 @@
                             placeholder="••••••••"
                             autocomplete="current-password"
                             wrapper-class="mt-2"
-                            input-class="input w-full rounded-xl px-4 py-2.5 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                            input-class="input w-full rounded-2xl px-4 py-3 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                         />
                     </div>
 
-                    <button class="btn-primary w-full rounded-xl px-4 py-2.5 text-sm font-semibold transition">
+                    <button class="btn-primary w-full rounded-2xl px-4 py-3 text-sm font-semibold transition">
                         {{ __('ui.admin.login_button') }}
                     </button>
                 </form>
             </div>
-            <div class="hidden p-8 text-slate-100 lg:block lg:p-10 bg-gradient-to-br from-slate-950 via-blue-900 to-slate-900">
-                <img src="{{ $logoUrlLight }}" alt="Manake" class="h-12 w-auto rounded-xl bg-white p-2" onerror="this.onerror=null;this.src='{{ $logoFallbackLight }}';">
-                <h1 class="mt-6 text-2xl md:text-3xl font-semibold leading-tight">
+            <div class="manake-auth-showcase hidden p-8 text-slate-100 lg:block lg:p-10">
+                <span class="manake-kicker manake-kicker-inverse">Private workspace</span>
+                <h1 class="mt-6 text-3xl font-semibold leading-tight tracking-[-0.04em] md:text-4xl">
                     {{ __('ui.admin.login_heading') }}
                 </h1>
-                <p class="mt-3 text-sm text-slate-300 leading-relaxed">
+                <p class="mt-4 max-w-md text-sm leading-7 text-blue-100/82">
                     {{ __('ui.admin.login_subheading') }}
                 </p>
-                <div class="mt-6 rounded-2xl border border-white/20 bg-white/10 p-4 text-sm text-slate-200">
+
+                <div class="manake-auth-matrix mt-8">
+                    <article class="manake-auth-chip">
+                        <span>Catalog</span>
+                        <strong>Live sync</strong>
+                    </article>
+                    <article class="manake-auth-chip">
+                        <span>Orders</span>
+                        <strong>Operational board</strong>
+                    </article>
+                    <article class="manake-auth-chip">
+                        <span>Content</span>
+                        <strong>One panel control</strong>
+                    </article>
+                </div>
+
+                <div class="manake-auth-note mt-8 rounded-[1.6rem] border border-white/15 bg-white/10 p-5 text-sm text-slate-200">
                     {{ __('ui.admin.login_hint') }}
                 </div>
-                <a href="/" class="mt-6 inline-flex items-center justify-center rounded-xl border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition">
+                <a href="/" class="mt-6 inline-flex items-center justify-center rounded-2xl border border-white/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10" data-skip-loader="true">
                     {{ __('ui.admin.back_home') }}
                 </a>
             </div>

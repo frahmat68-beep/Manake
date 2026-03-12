@@ -117,11 +117,12 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800">
+<body class="bg-slate-100 text-slate-800" data-manake-shell="app">
+@include('partials.page-loader')
 @php
     $isAuthenticated = auth('web')->check();
     $brandName = site_setting('brand.name', 'Manake');
-    $sidebarLogoUrl = $assetWithVersion('MANAKE-FAV-M.png');
+    $sidebarLogoUrl = $cmsBrandLogoUrl ?: $assetWithVersion('manake-logo-blue.png');
     $locale = app()->getLocale();
 
     $categories = collect($navCategories ?? [])->filter(fn ($category) => ! empty($category->slug ?? null))->values();
@@ -220,7 +221,7 @@
     />
 
     <div class="lg:pl-16">
-        <header class="sticky top-0 z-30 border-b border-slate-200 bg-white">
+        <header class="manake-topbar-shell sticky top-0 z-30 border-b border-slate-200 bg-white" data-manake-topbar="app">
             <div class="mx-auto flex w-full max-w-[1320px] flex-wrap items-center gap-2.5 px-4 py-3 sm:gap-3 sm:px-6 sm:py-4">
                 <button class="order-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm lg:hidden" type="button" @click="sidebarOpen = true" aria-label="{{ __('ui.nav.toggle_menu') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -379,7 +380,7 @@
             </div>
         </header>
 
-        <main class="px-4 py-5 sm:px-6 sm:py-8">
+        <main class="manake-main-stage px-4 py-5 sm:px-6 sm:py-8">
             <div class="mx-auto w-full max-w-[1320px]">
                 @yield('content')
             </div>
