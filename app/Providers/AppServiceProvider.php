@@ -70,7 +70,7 @@ class AppServiceProvider extends ServiceProvider
                     ->limit(8)
                     ->get()
                     ->map(function (OrderNotification $notification) {
-                        $targetUrl = route('booking.history');
+                        $targetUrl = route('notifications');
                         if ($notification->order) {
                             $targetUrl = route('account.orders.show', $notification->order);
                         }

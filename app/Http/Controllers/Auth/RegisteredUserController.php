@@ -103,7 +103,11 @@ class RegisteredUserController extends Controller
         if (config('security.otp_required') && schema_column_exists_cached('users', 'is_otp_verified')) {
             try {
                 $otp = $user->generateOtp();
-                Mail::to($user->email)->send(new OtpMail($otp));
+                Mail::to($user->email)->send(new OtpMail(
+                    otp: $otp,
+                    recipientName: (string) ($user->display_name ?? $user->name ?? 'Pelanggan Manake'),
+                    expiresInMinutes: max((int) config('security.otp_ttl_minutes', 5), 1),
+                ));
                 Log::info('Registration OTP sent.', [
                     'user_id' => $user->id,
                     'email' => $user->email,

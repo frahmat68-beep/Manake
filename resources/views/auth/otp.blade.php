@@ -1,26 +1,37 @@
-<x-guest-layout>
+<x-guest-layout
+    :page-title="__('app.auth.otp_page_title')"
+    :eyebrow="__('app.auth.otp_title')"
+    :heading="__('app.auth.otp_heading')"
+    :subheading="__('app.auth.otp_subheading')"
+    :aside-eyebrow="__('app.auth.otp_title')"
+    :aside-heading="__('app.auth.otp_aside_heading')"
+    :aside-text="__('app.auth.otp_aside_text')"
+    :aside-points="[
+        __('app.auth.otp_point_1'),
+        __('app.auth.otp_point_2'),
+        __('app.auth.otp_point_3'),
+    ]"
+>
     <div class="space-y-5">
-        <div>
-            <h1 class="text-xl font-semibold text-slate-900">{{ __('Verifikasi OTP') }}</h1>
-            <p class="mt-2 text-sm text-slate-600">{{ __('Masukkan 6 digit kode OTP yang dikirim ke email kamu.') }}</p>
-        </div>
-
         @if (session('status'))
-            <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
                 {{ session('status') }}
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            <div class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
                 {{ $errors->first() }}
             </div>
         @endif
 
         <form method="POST" action="{{ route('otp.verify') }}" class="space-y-4">
             @csrf
-            <div>
-                <label for="otp" class="text-xs font-semibold uppercase tracking-widest text-slate-500">{{ __('Kode OTP') }}</label>
+
+            <div class="space-y-1.5">
+                <label for="otp" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    {{ __('app.auth.otp_label') }}
+                </label>
                 <input
                     id="otp"
                     name="otp"
@@ -28,20 +39,21 @@
                     inputmode="numeric"
                     maxlength="6"
                     autocomplete="one-time-code"
-                    placeholder="{{ __('Contoh: 123456') }}"
-                    class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-center text-lg tracking-[0.35em] text-slate-800 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                    placeholder="{{ __('app.auth.otp_placeholder') }}"
+                    class="input w-full rounded-2xl px-4 py-3 text-center text-2xl tracking-[0.35em]"
                     required
                 >
             </div>
-            <button class="inline-flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
-                {{ __('Verifikasi OTP') }}
+
+            <button class="btn-primary inline-flex w-full items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold">
+                {{ __('app.auth.otp_verify_button') }}
             </button>
         </form>
 
-        <form method="POST" action="{{ route('otp.resend') }}" class="text-center">
+        <form method="POST" action="{{ route('otp.resend') }}">
             @csrf
-            <button class="text-sm font-semibold text-blue-600 hover:text-blue-700">
-                {{ __('Kirim ulang OTP') }}
+            <button class="btn-secondary inline-flex w-full items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold">
+                {{ __('app.auth.otp_resend_button') }}
             </button>
         </form>
     </div>

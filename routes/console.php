@@ -16,9 +16,9 @@ Artisan::command('orders:send-return-reminders', function (OrderReminderService 
 })->purpose('Kirim reminder 6 jam & 3 jam sebelum rental berakhir');
 
 Artisan::command('orders:expire-pending-payments', function (OrderPaymentLifecycleService $lifecycleService) {
-    $expired = $lifecycleService->expirePendingPayments(60);
+    $expired = $lifecycleService->expirePendingPayments(1440);
     $this->info("Order pending yang expired: {$expired}");
-})->purpose('Expire order pending payment yang melewati batas 1 jam');
+})->purpose('Expire order pending payment yang melewati batas 24 jam');
 
 Schedule::command('orders:send-return-reminders')
     ->everyThirtyMinutes()

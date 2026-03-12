@@ -11,17 +11,21 @@ use Illuminate\Queue\SerializesModels;
 
 class OtpMail extends Mailable
 {
-    public int $otp;
-
-    public function __construct(int $otp)
-    {
-        $this->otp = $otp;
+    public function __construct(
+        public int $otp,
+        public string $recipientName = 'Pelanggan Manake',
+        public int $expiresInMinutes = 5,
+    ) {
     }
 
     public function build()
     {
         return $this->subject('Kode OTP Manake')
-            ->view('emails.otp');
+            ->view('emails.otp')
+            ->with([
+                'otp' => $this->otp,
+                'recipientName' => $this->recipientName,
+                'expiresInMinutes' => $this->expiresInMinutes,
+            ]);
     }
 }
-

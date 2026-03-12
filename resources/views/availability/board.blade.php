@@ -206,17 +206,18 @@
 
         .availability-pill {
             display: inline-flex;
-            min-height: 2.2rem;
-            min-width: 6.75rem;
+            min-height: 2.25rem;
+            min-width: 7.25rem;
             align-items: center;
             justify-content: center;
             border-radius: 999px;
-            padding: 0.45rem 0.9rem;
+            padding: 0.5rem 1rem;
             text-align: center;
             font-size: 11px;
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1;
             white-space: nowrap;
+            letter-spacing: -0.01em;
         }
 
         .availability-pill--success {

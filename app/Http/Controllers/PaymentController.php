@@ -7,6 +7,7 @@ use App\Models\OrderNotification;
 use App\Models\Payment;
 use App\Models\PaymentWebhookEvent;
 use App\Services\MidtransService;
+use App\Services\OrderPaymentLifecycleService;
 use App\Services\PricingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,10 +19,17 @@ use Midtrans\Transaction;
 
 class PaymentController extends Controller
 {
-    public function createSnapToken(Request $request, Order $order, MidtransService $midtrans, PricingService $pricing)
+    public function createSnapToken(Request $request, Order $order, MidtransService $midtrans, PricingService $pricing, OrderPaymentLifecycleService $paymentLifecycle)
     {
         if ($order->user_id !== $request->user()->id) {
             abort(403);
+        }
+
+        $paymentLifecycle->expirePendingOrderIfPastCutoff($order);
+        if ((string) ($order->status_pembayaran ?? '') === Order::PAYMENT_EXPIRED) {
+            return response()->json([
+                'message' => __('Link pembayaran ini sudah kedaluwarsa setelah 24 jam.'),
+            ], 422);
         }
 
         if (! $order->midtrans_order_id) {
@@ -191,10 +199,27 @@ class PaymentController extends Controller
         return response()->json(['status' => 'ok']);
     }
 
-    public function refreshStatus(Request $request, Order $order)
+    public function refreshStatus(Request $request, Order $order, OrderPaymentLifecycleService $paymentLifecycle)
     {
         if ($order->user_id !== $request->user()->id) {
             abort(403);
+        }
+
+        $paymentLifecycle->expirePendingOrderIfPastCutoff($order);
+        if ((string) ($order->status_pembayaran ?? '') === Order::PAYMENT_EXPIRED) {
+            return response()->json([
+                'status' => 'ok',
+                'is_paid' => false,
+                'payment_status' => Order::PAYMENT_EXPIRED,
+                'order_status' => Order::STATUS_EXPIRED,
+                'detail_url' => route('account.orders.show', $order),
+                'can_view_invoice' => false,
+                'has_damage_fee_outstanding' => false,
+                'invoice_url' => null,
+                'invoice_pdf_url' => null,
+                'invoice_pdf_preview_url' => null,
+                'receipt_number' => $order->order_number,
+            ]);
         }
 
         if (! $order->midtrans_order_id) {

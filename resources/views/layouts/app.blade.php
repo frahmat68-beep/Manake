@@ -160,7 +160,7 @@
             this.authModalOpen = false;
         },
         async openNotification(event, targetUrl, markReadUrl, isUnread = false) {
-            const navigateTo = targetUrl || '{{ route('booking.history') }}';
+            const navigateTo = targetUrl || '{{ route('notifications') }}';
 
             if (isUnread && markReadUrl) {
                 try {
@@ -273,7 +273,7 @@
                                 <div class="mt-2 max-h-72 space-y-2 overflow-y-auto">
                                     @forelse ($notificationItems as $notification)
                                         @php
-                                            $notificationTargetUrl = $notification['url'] ?? route('booking.history');
+                                            $notificationTargetUrl = $notification['url'] ?? route('notifications');
                                             $notificationReadUrl = $notification['mark_read_url'] ?? '';
                                             $notificationUnread = ! empty($notification['is_new']);
                                         @endphp
@@ -298,6 +298,9 @@
                                         <p class="rounded-xl border border-slate-200 px-3 py-2 text-xs text-slate-500">{{ __('app.notifications.empty') }}</p>
                                     @endforelse
                                 </div>
+                                <a href="{{ route('notifications') }}" class="mt-3 block rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-blue-700 transition hover:border-blue-200 hover:bg-blue-50" @click="notifOpen = false">
+                                    {{ __('ui.nav.view_all') }}
+                                </a>
                             </div>
                         </div>
                     @else
@@ -391,7 +394,7 @@
         >
             <div class="absolute inset-0 bg-slate-900/55" @click="closeAuthModal()"></div>
 
-            <div class="relative z-10 w-full max-w-5xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)]">
+            <div class="manake-auth-card relative z-10 w-full max-w-5xl overflow-hidden rounded-[2rem] lg:grid lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
                 <button
                     type="button"
                     data-ui-icon-button
@@ -402,16 +405,20 @@
                     ✕
                 </button>
 
-                <div class="p-6 sm:p-8 lg:p-10">
-                    <div class="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-1">
-                        <button type="button" class="rounded-lg px-3 py-1.5 text-xs font-semibold transition" :class="authModalView === 'login' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'" @click="authModalView = 'login'">{{ __('ui.nav.login') }}</button>
-                        <button type="button" class="rounded-lg px-3 py-1.5 text-xs font-semibold transition" :class="authModalView === 'register' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'" @click="authModalView = 'register'">{{ __('ui.nav.register') }}</button>
-                        <button type="button" class="rounded-lg px-3 py-1.5 text-xs font-semibold transition" :class="authModalView === 'forgot' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'" @click="authModalView = 'forgot'">{{ __('ui.auth.forgot_title') }}</button>
+                <div class="manake-auth-panel p-6 sm:p-8 lg:p-10">
+                    <a href="{{ route('home') }}" class="inline-flex items-center" data-skip-loader="true">
+                        <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" alt="Manake" img-class="h-10 w-auto" />
+                    </a>
+
+                    <div class="mt-5 inline-flex rounded-2xl border border-slate-200 bg-slate-50/90 p-1">
+                        <button type="button" data-ui-chip-option :data-ui-active="authModalView === 'login' ? 'true' : 'false'" class="rounded-xl px-3 py-2 text-xs font-semibold" @click="authModalView = 'login'">{{ __('ui.nav.login') }}</button>
+                        <button type="button" data-ui-chip-option :data-ui-active="authModalView === 'register' ? 'true' : 'false'" class="rounded-xl px-3 py-2 text-xs font-semibold" @click="authModalView = 'register'">{{ __('ui.nav.register') }}</button>
+                        <button type="button" data-ui-chip-option :data-ui-active="authModalView === 'forgot' ? 'true' : 'false'" class="rounded-xl px-3 py-2 text-xs font-semibold" @click="authModalView = 'forgot'">{{ __('ui.auth.forgot_title') }}</button>
                     </div>
 
                     <div class="mt-6" x-show="authModalView === 'login'" x-transition>
-                        <h2 class="text-2xl font-semibold text-slate-900">{{ __('app.auth.login_title') }}</h2>
-                        <p class="mt-2 text-sm text-slate-500">{{ __('app.auth.login_subheading') }}</p>
+                        <h2 class="text-2xl font-semibold tracking-[-0.03em] text-slate-950">{{ __('app.auth.login_title') }}</h2>
+                        <p class="mt-2 text-sm leading-6 text-slate-500">{{ __('app.auth.login_subheading') }}</p>
 
                         @if (session('error') && (old('auth_modal') === 'login' || $authModalView === 'login'))
                             <div class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">{{ session('error') }}</div>
@@ -425,44 +432,44 @@
                             @csrf
                             <input type="hidden" name="auth_modal" value="login">
 
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500">{{ __('app.auth.email') }}</label>
+                            <div class="space-y-1.5">
+                                <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('app.auth.email') }}</label>
                                 <input
                                     type="email"
                                     name="email"
                                     value="{{ old('auth_modal') === 'login' ? old('email') : '' }}"
                                     required
-                                    class="input mt-2 w-full rounded-xl px-4 py-2.5 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                                    class="input w-full rounded-2xl px-4 py-3 text-sm"
                                     placeholder="{{ __('app.auth.email_placeholder') }}"
                                 >
                             </div>
 
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500">{{ __('app.auth.password') }}</label>
+                            <div class="space-y-1.5">
+                                <div class="flex items-center justify-between gap-3">
+                                    <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('app.auth.password') }}</label>
+                                    <button type="button" class="text-xs font-semibold text-blue-600 hover:text-blue-700" @click="authModalView = 'forgot'">
+                                        {{ __('app.auth.forgot_password') }}
+                                    </button>
+                                </div>
                                 <x-password-input
                                     id="modal-login-password"
                                     name="password"
                                     :required="true"
                                     placeholder="{{ __('app.auth.password_placeholder_mask') }}"
                                     autocomplete="current-password"
-                                    wrapper-class="mt-2"
-                                    input-class="input w-full rounded-xl px-4 py-2.5 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
                                 />
                             </div>
 
-                            <button class="btn-primary w-full rounded-xl px-4 py-2.5 text-sm font-semibold transition">
+                            <button class="btn-primary w-full rounded-2xl px-4 py-3 text-sm font-semibold transition">
                                 {{ __('app.auth.login_button') }}
                             </button>
                         </form>
-
-                        <button type="button" class="mt-3 text-sm font-semibold text-blue-600 hover:text-blue-700" @click="authModalView = 'forgot'">
-                            {{ __('app.auth.forgot_password') }}
-                        </button>
                     </div>
 
                     <div class="mt-6" x-show="authModalView === 'register'" x-transition>
-                        <h2 class="text-2xl font-semibold text-slate-900">{{ __('app.auth.register_title') }}</h2>
-                        <p class="mt-2 text-sm text-slate-500">{{ __('app.auth.register_subheading') }}</p>
+                        <h2 class="text-2xl font-semibold tracking-[-0.03em] text-slate-950">{{ __('app.auth.register_title') }}</h2>
+                        <p class="mt-2 text-sm leading-6 text-slate-500">{{ __('app.auth.register_subheading') }}</p>
 
                         @if ($errors->any() && old('auth_modal') === 'register')
                             <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{{ $errors->first() }}</div>
@@ -472,53 +479,51 @@
                             @csrf
                             <input type="hidden" name="auth_modal" value="register">
 
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500">{{ __('app.auth.email') }}</label>
+                            <div class="space-y-1.5">
+                                <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('app.auth.email') }}</label>
                                 <input
                                     type="email"
                                     name="email"
                                     value="{{ old('auth_modal') === 'register' ? old('email') : '' }}"
                                     required
-                                    class="input mt-2 w-full rounded-xl px-4 py-2.5 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                                    class="input w-full rounded-2xl px-4 py-3 text-sm"
                                     placeholder="{{ __('app.auth.email_placeholder') }}"
                                 >
                             </div>
 
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500">{{ __('app.auth.password') }}</label>
+                            <div class="space-y-1.5">
+                                <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('app.auth.password') }}</label>
                                 <x-password-input
                                     id="modal-register-password"
                                     name="password"
                                     :required="true"
                                     placeholder="{{ __('app.auth.password_placeholder') }}"
                                     autocomplete="new-password"
-                                    wrapper-class="mt-2"
-                                    input-class="input w-full rounded-xl px-4 py-2.5 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
                                 />
                             </div>
 
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500">{{ __('app.auth.password_confirm') }}</label>
+                            <div class="space-y-1.5">
+                                <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('app.auth.password_confirm') }}</label>
                                 <x-password-input
                                     id="modal-register-password-confirmation"
                                     name="password_confirmation"
                                     :required="true"
                                     placeholder="{{ __('app.auth.password_confirm_placeholder') }}"
                                     autocomplete="new-password"
-                                    wrapper-class="mt-2"
-                                    input-class="input w-full rounded-xl px-4 py-2.5 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
                                 />
                             </div>
 
-                            <button class="btn-primary w-full rounded-xl px-4 py-2.5 text-sm font-semibold transition">
+                            <button class="btn-primary w-full rounded-2xl px-4 py-3 text-sm font-semibold transition">
                                 {{ __('app.auth.register_button') }}
                             </button>
                         </form>
                     </div>
 
                     <div class="mt-6" x-show="authModalView === 'forgot'" x-transition>
-                        <h2 class="text-2xl font-semibold text-slate-900">{{ __('ui.auth.forgot_title') }}</h2>
-                        <p class="mt-2 text-sm text-slate-500">{{ __('ui.auth.forgot_subheading') }}</p>
+                        <h2 class="text-2xl font-semibold tracking-[-0.03em] text-slate-950">{{ __('ui.auth.forgot_title') }}</h2>
+                        <p class="mt-2 text-sm leading-6 text-slate-500">{{ __('ui.auth.forgot_subheading') }}</p>
 
                         @if (session('status') && ($authModalView === 'forgot' || old('auth_modal') === 'forgot'))
                             <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ session('status') }}</div>
@@ -532,19 +537,19 @@
                             @csrf
                             <input type="hidden" name="auth_modal" value="forgot">
 
-                            <div>
-                                <label class="text-xs font-semibold text-slate-500">{{ __('ui.auth.email_label') }}</label>
+                            <div class="space-y-1.5">
+                                <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.auth.email_label') }}</label>
                                 <input
                                     type="email"
                                     name="email"
                                     value="{{ old('auth_modal') === 'forgot' ? old('email') : '' }}"
                                     required
-                                    class="input mt-2 w-full rounded-xl px-4 py-2.5 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                                    class="input w-full rounded-2xl px-4 py-3 text-sm"
                                     placeholder="{{ __('ui.auth.email_placeholder') }}"
                                 >
                             </div>
 
-                            <button class="btn-primary w-full rounded-xl px-4 py-2.5 text-sm font-semibold transition">
+                            <button class="btn-primary w-full rounded-2xl px-4 py-3 text-sm font-semibold transition">
                                 {{ __('ui.auth.forgot_button') }}
                             </button>
                         </form>
@@ -555,27 +560,26 @@
                     </div>
                 </div>
 
-                <div class="relative hidden overflow-hidden bg-gradient-to-br from-slate-950 via-blue-900 to-slate-900 p-8 text-white lg:block lg:p-10">
-                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top,_white,_transparent_60%)]"></div>
+                <div class="manake-auth-showcase relative hidden overflow-hidden p-8 text-white lg:block lg:p-10">
+                    <span class="manake-kicker manake-kicker-inverse">{{ __('ui.nav.register') }}</span>
                     <div class="relative z-10">
-                        <img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake" class="h-12 w-auto">
-                        <h1 class="mt-6 text-3xl font-semibold leading-tight">{{ __('app.auth.login_heading') }}</h1>
-                        <p class="mt-4 text-sm leading-relaxed text-blue-100">
+                        <h1 class="mt-6 text-3xl font-semibold leading-tight tracking-[-0.04em]">{{ __('app.auth.login_heading') }}</h1>
+                        <p class="mt-4 max-w-md text-sm leading-7 text-blue-100/82">
                             {{ __('app.auth.login_note') }}
                         </p>
-                        <div class="mt-7 space-y-3 text-sm">
-                            <div class="flex items-start gap-3">
-                                <span class="mt-1 h-2 w-2 rounded-full bg-white"></span>
-                                <p>{{ __('app.auth.login_benefit_1') }}</p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span class="mt-1 h-2 w-2 rounded-full bg-white"></span>
-                                <p>{{ __('app.auth.login_benefit_2') }}</p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span class="mt-1 h-2 w-2 rounded-full bg-white"></span>
-                                <p>{{ __('app.auth.login_benefit_3') }}</p>
-                            </div>
+                        <div class="manake-auth-matrix mt-8">
+                            <article class="manake-auth-chip">
+                                <span>Orders</span>
+                                <strong>{{ __('app.auth.login_benefit_1') }}</strong>
+                            </article>
+                            <article class="manake-auth-chip">
+                                <span>Alerts</span>
+                                <strong>{{ __('app.auth.login_benefit_2') }}</strong>
+                            </article>
+                            <article class="manake-auth-chip">
+                                <span>Checkout</span>
+                                <strong>{{ __('app.auth.login_benefit_3') }}</strong>
+                            </article>
                         </div>
                     </div>
                 </div>

@@ -58,20 +58,10 @@
 <aside
     x-data="{
         catalogSubmenuOpen: false,
-        catalogSubmenuPinned: false,
         catalogSubmenuEnabled: {{ $submenuEnabled ? 'true' : 'false' }},
         catalogToggle() {
             if (!this.catalogSubmenuEnabled) return;
-            this.catalogSubmenuPinned = !this.catalogSubmenuPinned;
-            this.catalogSubmenuOpen = this.catalogSubmenuPinned || !this.catalogSubmenuOpen;
-        },
-        catalogOpen() {
-            if (!this.catalogSubmenuEnabled) return;
-            this.catalogSubmenuOpen = true;
-        },
-        catalogClose() {
-            if (!this.catalogSubmenuEnabled || this.catalogSubmenuPinned) return;
-            this.catalogSubmenuOpen = false;
+            this.catalogSubmenuOpen = !this.catalogSubmenuOpen;
         }
     }"
     data-manake-sidebar="app"
@@ -90,7 +80,7 @@
                     light="MANAKE-FAV-M.png"
                     dark="MANAKE-FAV-M-white.png"
                     :alt="$brandName"
-                    img-class="h-11 w-auto object-contain"
+                    img-class="h-12 w-auto object-contain"
                 />
             </span>
             <span class="manake-sidebar-brand__wordmark inline-flex lg:hidden lg:group-hover/sidebar:inline-flex lg:group-focus-within/sidebar:inline-flex">
@@ -98,7 +88,7 @@
                     light="manake-logo-blue.png"
                     dark="manake-logo-white.png"
                     :alt="$brandName"
-                    img-class="h-9 w-auto max-w-[10.75rem] shrink-0 object-contain object-left"
+                    img-class="h-11 w-auto max-w-[13rem] shrink-0 object-contain object-left"
                 />
             </span>
         </a>
@@ -110,13 +100,13 @@
         </button>
     </div>
 
-    <nav class="mt-6 space-y-1 px-1">
+    <nav class="mt-5 space-y-1.5 px-1">
         @foreach ($items as $item)
             @php
                 $isCatalogMenu = ($item['key'] ?? '') === 'catalog';
             @endphp
             @if ($isCatalogMenu && $categories->isNotEmpty())
-                <div class="space-y-1" @mouseenter="catalogOpen()" @mouseleave="catalogClose()">
+                <div class="space-y-1" @click.outside="catalogSubmenuOpen = false">
                     <div class="flex items-center gap-1">
                         <a
                             href="{{ $item['url'] }}"
@@ -193,10 +183,8 @@
                 </a>
             @endif
         @endforeach
-    </nav>
 
-    <div class="mt-auto border-t border-slate-200 pt-4">
-        <div class="relative px-1" @click.outside="shellPrefsOpen = false">
+        <div class="relative pt-1" @click.outside="shellPrefsOpen = false">
             <button
                 type="button"
                 data-nav-item
@@ -215,8 +203,9 @@
             <div
                 x-cloak
                 x-show="shellPrefsOpen"
-                x-transition.origin.bottom.left
-                class="mt-3 w-full lg:absolute lg:bottom-0 lg:left-[calc(100%-0.25rem)] lg:z-20 lg:mt-0 lg:w-[18.5rem]"
+                x-transition.origin.left.center
+                @click.stop
+                class="mt-2 w-full lg:absolute lg:left-[calc(100%+0.35rem)] lg:top-1/2 lg:z-20 lg:mt-0 lg:w-[15.5rem] lg:-translate-y-1/2"
             >
                 <x-preferences.popover
                     :locale="$locale"
@@ -225,7 +214,9 @@
                 />
             </div>
         </div>
+    </nav>
 
+    <div class="mt-auto border-t border-slate-200 pt-4">
     @if ($isAuthenticated)
         <div class="mt-3 border-t border-slate-200 pt-3">
             <a

@@ -29,8 +29,8 @@ class OrderPaymentLifecycleTest extends TestCase
             'rental_end_date' => now()->addDays(3)->toDateString(),
         ]);
         $expiredOrder->forceFill([
-            'created_at' => now()->subMinutes(70),
-            'updated_at' => now()->subMinutes(70),
+            'created_at' => now()->subHours(25),
+            'updated_at' => now()->subHours(25),
         ])->saveQuietly();
 
         Payment::create([
@@ -55,8 +55,8 @@ class OrderPaymentLifecycleTest extends TestCase
             'rental_end_date' => now()->addDays(5)->toDateString(),
         ]);
         $freshOrder->forceFill([
-            'created_at' => now()->subMinutes(20),
-            'updated_at' => now()->subMinutes(20),
+            'created_at' => now()->subHours(2),
+            'updated_at' => now()->subHours(2),
         ])->saveQuietly();
 
         Payment::create([
@@ -69,7 +69,7 @@ class OrderPaymentLifecycleTest extends TestCase
             'snap_token' => 'snap-new',
         ]);
 
-        $expiredCount = app(OrderPaymentLifecycleService::class)->expirePendingPayments(60);
+        $expiredCount = app(OrderPaymentLifecycleService::class)->expirePendingPayments(1440);
 
         $this->assertSame(1, $expiredCount);
 

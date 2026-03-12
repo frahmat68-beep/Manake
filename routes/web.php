@@ -16,7 +16,6 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\AvailabilityBoardController;
-use App\Http\Controllers\UserPlaceholderController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\DbExplorerController;
@@ -97,7 +96,7 @@ Route::middleware(['auth', 'otp'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/notifications', [UserPlaceholderController::class, 'notifications'])->name('notifications');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markRead'])->name('notifications.read');
 
     Route::get('/booking', [OrderController::class, 'index'])->name('booking.index');

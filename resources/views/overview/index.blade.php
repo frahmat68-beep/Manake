@@ -23,12 +23,12 @@
 @endphp
 
 @section('content')
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <h2 class="text-2xl font-semibold text-blue-700">{{ $bookingTitle }}</h2>
             <p class="text-sm text-slate-500">{{ $bookingSubtitle }}</p>
         </div>
-        <a href="{{ route('catalog') }}" class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition">
+        <a href="{{ route('catalog') }}" class="btn-primary inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold">
             {{ $bookingCtaText }}
         </a>
     </div>
@@ -57,13 +57,13 @@
         </div>
     </div>
 
-    <div class="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-[1.4fr,1fr]">
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="mt-7 grid grid-cols-1 gap-5 xl:grid-cols-[1.4fr,1fr]">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex items-center justify-between">
                 <h3 class="text-sm font-semibold text-blue-700">{{ $bookingActiveTitle }}</h3>
             </div>
 
-            <div class="mt-5 space-y-4">
+            <div class="mt-4 space-y-3.5">
                 @forelse ($activeRentals as $order)
                     @php
                         $meta = $paymentMeta($order->status_pembayaran ?? 'pending');
@@ -95,11 +95,11 @@
                                     {{ $meta['label'] }}
                                 </span>
                                 @if (($order->status_pembayaran ?? 'pending') !== 'paid')
-                                    <a href="{{ route('booking.pay', $order) }}" class="rounded-xl bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700">
+                                    <a href="{{ route('booking.pay', $order) }}" class="btn-primary rounded-xl px-3 py-2 text-xs font-semibold">
                                         {{ __('ui.actions.pay') }}
                                     </a>
                                 @endif
-                                <a href="{{ route('account.orders.show', $order) }}" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:border-blue-200 hover:text-blue-600">
+                                <a href="{{ route('account.orders.show', $order) }}" class="btn-secondary rounded-xl px-3 py-2 text-xs font-semibold">
                                     {!! strip_tags((string) __('ui.overview.detail_reschedule')) !!}
                                 </a>
                             </div>
@@ -109,7 +109,7 @@
                     <div class="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-6 text-center">
                         <p class="text-sm font-semibold text-slate-700">{{ __('ui.overview.empty_active_title') }}</p>
                         <p class="mt-2 text-xs text-slate-500">{{ __('ui.overview.empty_active_body') }}</p>
-                        <a href="{{ route('catalog') }}" class="mt-4 inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700 transition">
+                        <a href="{{ route('catalog') }}" class="btn-primary mt-4 inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-semibold">
                             {{ __('ui.overview.empty_active_cta') }}
                         </a>
                     </div>
@@ -117,7 +117,7 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex items-center justify-between">
                 <h3 class="text-sm font-semibold text-blue-700">{{ $bookingRecentTitle }}</h3>
             </div>
@@ -176,7 +176,7 @@
     </div>
 
     @if (isset($orders) && method_exists($orders, 'links'))
-        <div class="mt-6">
+        <div class="mt-5">
             {{ $orders->links() }}
         </div>
     @endif

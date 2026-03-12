@@ -6,6 +6,7 @@ use App\Models\Equipment;
 use App\Models\Order;
 use App\Models\OrderNotification;
 use App\Services\AvailabilityService;
+use App\Services\OrderPaymentLifecycleService;
 use App\Services\PricingService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -15,8 +16,18 @@ use Illuminate\Support\Facades\Schema;
 
 class OrderController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, OrderPaymentLifecycleService $paymentLifecycle)
     {
+        Order::query()
+            ->where('user_id', $request->user()->id)
+            ->where('status_pembayaran', Order::PAYMENT_PENDING)
+            ->where('status_pesanan', Order::STATUS_PENDING_PAYMENT)
+            ->whereNull('paid_at')
+            ->where('created_at', '<=', now()->subDay())
+            ->orderBy('id')
+            ->get()
+            ->each(fn (Order $order) => $paymentLifecycle->expirePendingOrderIfPastCutoff($order));
+
         $baseQuery = Order::query()->where('user_id', $request->user()->id);
 
         $orders = (clone $baseQuery)
@@ -38,9 +49,10 @@ class OrderController extends Controller
         ]);
     }
 
-    public function show(Request $request, Order $order)
+    public function show(Request $request, Order $order, OrderPaymentLifecycleService $paymentLifecycle)
     {
         $this->ensureOwnedOrder($request, $order);
+        $paymentLifecycle->expirePendingOrderIfPastCutoff($order);
         $this->markOrderNotificationsAsRead($request, $order);
 
         $relations = ['items.equipment', 'payment', 'damagePayment'];
@@ -55,9 +67,16 @@ class OrderController extends Controller
         ]);
     }
 
-    public function pay(Request $request, Order $order)
+    public function pay(Request $request, Order $order, OrderPaymentLifecycleService $paymentLifecycle)
     {
         $this->ensureOwnedOrder($request, $order);
+        $paymentLifecycle->expirePendingOrderIfPastCutoff($order);
+
+        if ((string) ($order->status_pembayaran ?? '') === Order::PAYMENT_EXPIRED) {
+            return redirect()
+                ->route('account.orders.show', $order)
+                ->with('error', __('Link pembayaran sudah kedaluwarsa setelah 24 jam. Silakan buat pesanan baru.'));
+        }
 
         return redirect()->route('account.orders.show', $order)->with('pay_now', true);
     }

@@ -22,7 +22,7 @@
         $actionableCount = $ordersCollection->filter(fn ($order) => in_array((string) ($order->status_pesanan ?? ''), ['lunas', 'barang_diambil'], true))->count();
     @endphp
 
-    <div class="mx-auto max-w-7xl space-y-6">
+    <div class="mx-auto max-w-7xl space-y-5">
         @if (session('success'))
             <div class="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
                 {{ session('success') }}
@@ -99,7 +99,7 @@
             </article>
         </section>
 
-        <section class="grid gap-6 xl:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
+        <section class="grid gap-5 xl:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
             <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
                 <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
                     <div>
@@ -244,6 +244,42 @@
                         <li>{{ __('2. Setelah diambil, ubah ke') }} <span class="font-semibold">{{ __('Konfirmasi Kembali') }}</span> {{ __('saat unit kembali.') }}</li>
                         <li>{{ __('3. Gunakan') }} <span class="font-semibold">{{ __('Tandai Rusak') }}</span> {{ __('jika ada kerusakan saat pengembalian.') }}</li>
                     </ul>
+                </section>
+
+                <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex items-center justify-between gap-3">
+                        <div>
+                            <h3 class="text-base font-semibold text-blue-700">{{ __('Arsip Selesai') }}</h3>
+                            <p class="text-xs text-slate-500">{{ __('Pesanan yang selesai otomatis dipindahkan ke arsip.') }}</p>
+                        </div>
+                        <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-700">
+                            {{ __('Lihat semua') }}
+                        </a>
+                    </div>
+
+                    <div class="mt-3 space-y-2.5">
+                        @forelse (($archivedOrders ?? collect()) as $archivedOrder)
+                            <article class="rounded-xl border border-slate-200 px-3 py-3">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="min-w-0">
+                                        <p class="truncate text-sm font-semibold text-slate-900">{{ $archivedOrder->order_number ?? ('ORD-' . $archivedOrder->id) }}</p>
+                                        <p class="text-xs text-slate-500">{{ $archivedOrder->user?->name ?: __('Pelanggan') }}</p>
+                                    </div>
+                                    <span class="status-chip status-chip-success">{{ __('Selesai') }}</span>
+                                </div>
+                                <div class="mt-2 flex items-center justify-between gap-3 text-xs text-slate-500">
+                                    <span>{{ optional($archivedOrder->updated_at)->format('d M Y H:i') }}</span>
+                                    <a href="{{ route('admin.orders.show', $archivedOrder) }}" class="font-semibold text-blue-600 hover:text-blue-700">
+                                        {{ __('Detail') }}
+                                    </a>
+                                </div>
+                            </article>
+                        @empty
+                            <div class="rounded-xl border border-dashed border-slate-200 px-4 py-5 text-sm text-slate-500">
+                                {{ __('Belum ada pesanan yang masuk arsip.') }}
+                            </div>
+                        @endforelse
+                    </div>
                 </section>
 
                 <details class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
