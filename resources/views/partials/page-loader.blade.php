@@ -1,19 +1,12 @@
-@php
-    $loaderCaption = app()->getLocale() === 'id'
-        ? 'Menyiapkan workspace Manake'
-        : 'Preparing the Manake workspace';
-@endphp
-
 <div id="manake-page-loader" class="manake-page-loader" aria-hidden="true">
     <div class="manake-page-loader__inner">
-        <div class="manake-loader-core">
-            <span class="manake-loader-orb"></span>
-            <span class="manake-loader-label">{{ site_setting('brand.name', 'Manake') }}</span>
+        <div class="manake-loader-wordmark-shell" role="presentation">
+            <img
+                src="{{ site_asset('manake-logo-blue.png') }}"
+                alt="{{ site_setting('brand.name', 'Manake') }}"
+                class="manake-loader-wordmark"
+            >
         </div>
-        <div class="manake-loader-bar" role="presentation">
-            <span></span>
-        </div>
-        <p class="manake-loader-caption">{{ $loaderCaption }}</p>
     </div>
 </div>
 

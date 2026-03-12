@@ -64,6 +64,7 @@
     };
 
     $logoFallbackUrl = $assetWithVersion('manake-logo-blue.png');
+    $logoMarkUrl = $assetWithVersion('MANAKE-FAV-M.png');
     $resolvedLogoUrl = $logoUrl ?: $logoFallbackUrl;
     $activeCategorySlug = (string) request()->query('category', request()->route('slug', ''));
     $submenuEnabledRaw = strtolower(trim((string) setting('catalog.sidebar_submenu_enabled', '1')));
@@ -99,13 +100,21 @@
             href="{{ route('home') }}"
             title="{{ $brandName }}"
             aria-label="{{ $brandName }}"
-            class="manake-brand-lockup rounded-xl px-1 py-1 text-slate-900 lg:justify-center lg:gap-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:gap-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:gap-3"
+            class="flex items-center rounded-xl px-1 py-1 text-slate-900"
         >
-            <span class="manake-brand-lockup__mark h-11 w-36 px-3 lg:w-11 lg:px-0 lg:group-hover/sidebar:w-36 lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:w-36 lg:group-focus-within/sidebar:px-3">
+            <span class="manake-sidebar-brand__mark hidden lg:inline-flex lg:group-hover/sidebar:hidden lg:group-focus-within/sidebar:hidden">
+                <img
+                    src="{{ $logoMarkUrl }}"
+                    alt="{{ $brandName }}"
+                    class="h-7 w-7 object-contain"
+                    onerror="this.onerror=null;this.src='{{ $logoFallbackUrl }}';"
+                >
+            </span>
+            <span class="manake-sidebar-brand__wordmark inline-flex lg:hidden lg:group-hover/sidebar:inline-flex lg:group-focus-within/sidebar:inline-flex">
                 <img
                     src="{{ $resolvedLogoUrl }}"
                     alt="{{ $brandName }}"
-                    class="manake-brand-lockup__wordmark h-8 w-28 shrink-0 transition-all duration-300 lg:w-8 lg:group-hover/sidebar:w-28 lg:group-focus-within/sidebar:w-28"
+                    class="h-8 w-auto max-w-[9rem] shrink-0 object-contain object-left"
                     onerror="this.onerror=null;this.src='{{ $logoFallbackUrl }}';"
                 >
             </span>

@@ -79,13 +79,13 @@
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
 >
     <div class="flex h-20 items-center justify-between border-b border-slate-200 px-4">
-        <a href="{{ route('admin.dashboard') }}" class="manake-brand-lockup">
-            <span class="manake-brand-lockup__mark h-12 px-4">
+        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center">
+            <span class="manake-sidebar-brand__wordmark">
                 <img
                     src="{{ $expandedLogoUrl }}"
                     alt="{{ $brandName }}"
                     onerror="this.onerror=null;this.src='{{ $expandedLogoFallbackUrl }}';"
-                    class="manake-brand-lockup__wordmark h-8 w-auto object-contain object-left"
+                    class="h-8 w-auto object-contain object-left"
                 >
             </span>
         </a>

@@ -108,7 +108,7 @@
                 $logoUrl = $assetWithVersion('manake-logo-blue.png');
             @endphp
             <div class="flex items-center justify-between">
-                <a href="/" class="manake-brand-pill inline-flex items-center rounded-2xl px-4 py-3 text-slate-900 shadow-sm">
+                <a href="/" class="inline-flex items-center text-slate-900">
                     <img src="{{ $logoUrl }}" alt="{{ $brandName }}" class="h-8 w-auto">
                 </a>
                 <button class="lg:hidden text-slate-500" @click="sidebarOpen = false" aria-label="{{ __('ui.actions.close') }}">

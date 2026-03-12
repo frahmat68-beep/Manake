@@ -31,7 +31,7 @@
         <div class="manake-auth-card mx-auto w-full max-w-5xl overflow-hidden rounded-[2rem] lg:grid lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
             <div class="manake-auth-panel p-6 text-slate-800 sm:p-8 lg:p-10">
                 <div class="space-y-5">
-                    <a href="/" class="manake-brand-pill inline-flex items-center rounded-2xl px-4 py-3 shadow-sm" data-skip-loader="true">
+                    <a href="/" class="inline-flex items-center" data-skip-loader="true">
                         <img src="{{ $logoUrlLight }}" alt="Manake" class="h-10 w-auto" onerror="this.onerror=null;this.src='{{ $logoFallbackLight }}';">
                     </a>
                     <div class="space-y-2">

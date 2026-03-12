@@ -93,7 +93,7 @@
     <body class="antialiased">
         <div class="min-h-screen flex flex-col items-center justify-center px-4 py-8 sm:px-6 sm:py-10">
             <div>
-                <a href="/" class="manake-brand-pill inline-flex items-center rounded-2xl px-4 py-3 shadow-sm">
+                <a href="/" class="inline-flex items-center">
                     <img src="{{ $logoUrl }}" alt="Manake" class="h-10 w-auto">
                 </a>
             </div>

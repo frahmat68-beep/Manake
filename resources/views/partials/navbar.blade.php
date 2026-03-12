@@ -37,7 +37,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
         <div class="flex h-16 items-center justify-between gap-3">
             <div class="flex min-w-0 items-center gap-6">
-                <a href="/" class="manake-brand-pill inline-flex shrink-0 items-center rounded-2xl px-3 py-2 shadow-sm">
+                <a href="/" class="inline-flex shrink-0 items-center">
                     <img src="{{ $logoUrl }}" alt="{{ $brandName }}" class="h-8 w-auto">
                 </a>
 

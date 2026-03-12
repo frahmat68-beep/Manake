@@ -27,7 +27,7 @@
     <div class="min-h-screen flex items-center justify-center px-4 py-8 sm:px-6 sm:py-10">
         <div class="card w-full max-w-5xl overflow-hidden rounded-3xl shadow-xl lg:grid lg:grid-cols-2">
             <div class="p-6 sm:p-8 lg:p-10">
-                <a href="/" class="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
+                <a href="/" class="inline-flex items-center">
                     <img src="{{ $logoUrl }}" alt="Manake" class="h-10 w-auto">
                 </a>
                 <h2 class="text-2xl font-semibold text-blue-700">{{ __('app.auth.login_title') }}</h2>
