@@ -205,7 +205,8 @@
                 x-show="shellPrefsOpen"
                 x-transition.origin.left.top
                 @click.stop
-                class="fixed inset-x-4 bottom-4 z-[90] w-auto max-w-[22rem] lg:absolute lg:inset-auto lg:left-[calc(100%+0.85rem)] lg:top-full lg:z-20 lg:mt-2 lg:w-[18rem] lg:max-w-none"
+                class="fixed inset-x-4 bottom-4 z-[90] w-auto max-w-[22rem] overflow-y-auto lg:absolute lg:inset-auto lg:bottom-0 lg:left-[calc(100%+0.9rem)] lg:z-20 lg:mt-0 lg:w-[18.5rem] lg:max-w-none"
+                style="max-height: calc(100vh - 2rem);"
             >
                 <x-preferences.popover
                     :locale="$locale"

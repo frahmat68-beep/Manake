@@ -1492,6 +1492,19 @@ html[data-theme-resolved='dark'] .manake-auth-panel {
         color-mix(in oklab, var(--surface) 92%, #060b16);
 }
 
+html[data-theme-resolved='dark'] .manake-auth-panel :is(h1, h2, h3, h4, .text-slate-950, .text-slate-900, .text-slate-800) {
+    color: var(--text) !important;
+}
+
+html[data-theme-resolved='dark'] .manake-auth-panel :is(p, label, .text-slate-600, .text-slate-500, .text-slate-400) {
+    color: color-mix(in oklab, var(--text-muted) 88%, white 12%) !important;
+}
+
+html[data-theme-resolved='dark'] .manake-auth-panel .input::placeholder,
+html[data-theme-resolved='dark'] .manake-auth-panel input::placeholder {
+    color: color-mix(in oklab, var(--text-soft) 82%, white 18%) !important;
+}
+
 html[data-theme-resolved='dark'] .manake-brand-pill {
     background: color-mix(in oklab, var(--surface) 92%, #08101f);
 }
@@ -1563,20 +1576,30 @@ html[data-theme-resolved='dark'] .manake-brand-pill {
     line-height: 0;
 }
 
+.manake-themed-asset__light,
 .manake-themed-asset__dark {
-    display: none;
+    flex: 0 0 auto;
+    max-width: 100%;
 }
 
 .manake-themed-asset img {
-    display: block;
+    display: block !important;
+}
+
+.manake-themed-asset__light {
+    display: block !important;
+}
+
+.manake-themed-asset__dark {
+    display: none !important;
 }
 
 html[data-theme-resolved='dark'] .manake-themed-asset--swap .manake-themed-asset__light {
-    display: none;
+    display: none !important;
 }
 
 html[data-theme-resolved='dark'] .manake-themed-asset--swap .manake-themed-asset__dark {
-    display: block;
+    display: block !important;
 }
 
 .manake-preferences-popover {
@@ -1585,6 +1608,7 @@ html[data-theme-resolved='dark'] .manake-themed-asset--swap .manake-themed-asset
         radial-gradient(220px 120px at 100% 0%, color-mix(in oklab, var(--primary) 7%, transparent), transparent 72%),
         linear-gradient(180deg, rgba(255, 255, 255, 0.985) 0%, rgba(246, 249, 255, 0.99) 100%) !important;
     backdrop-filter: blur(18px);
+    width: 100%;
     box-shadow:
         0 24px 50px rgba(15, 23, 42, 0.14),
         0 12px 26px rgba(15, 23, 42, 0.08);
@@ -1607,6 +1631,7 @@ html[data-theme-resolved='dark'] .manake-themed-asset--swap .manake-themed-asset
 }
 
 .manake-preferences-popover__hint {
+    display: none;
     margin-top: 0.25rem;
     color: var(--text-muted);
     font-size: 0.74rem;
@@ -1958,8 +1983,9 @@ html[data-theme-resolved='dark'] .manake-preferences-choice.is-active .manake-pr
     align-items: center;
     justify-content: center;
     background:
-        linear-gradient(180deg, rgba(246, 249, 255, 0.9) 0%, rgba(240, 245, 252, 0.92) 100%);
-    backdrop-filter: blur(8px);
+        radial-gradient(360px 180px at 50% 50%, rgba(42, 86, 232, 0.06), transparent 72%),
+        linear-gradient(180deg, rgba(247, 249, 255, 0.9) 0%, rgba(241, 245, 252, 0.94) 100%);
+    backdrop-filter: blur(6px);
     transition:
         opacity 260ms ease,
         visibility 260ms ease,
@@ -1968,7 +1994,8 @@ html[data-theme-resolved='dark'] .manake-preferences-choice.is-active .manake-pr
 
 html[data-theme-resolved='dark'] .manake-page-loader {
     background:
-        linear-gradient(180deg, rgba(8, 14, 26, 0.9) 0%, rgba(6, 13, 24, 0.92) 100%);
+        radial-gradient(360px 180px at 50% 50%, rgba(93, 130, 255, 0.08), transparent 74%),
+        linear-gradient(180deg, rgba(8, 14, 26, 0.92) 0%, rgba(6, 13, 24, 0.95) 100%);
 }
 
 .manake-page-loader.is-hidden {
@@ -2001,43 +2028,43 @@ html[data-theme-resolved='dark'] .manake-page-loader {
 .manake-loader-wordmark-shell::after {
     content: '';
     position: absolute;
-    top: -24%;
-    bottom: -24%;
-    left: -34%;
-    width: 42%;
+    top: -18%;
+    bottom: -18%;
+    left: -28%;
+    width: 30%;
     background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.04) 24%,
-        rgba(255, 255, 255, 0.88) 50%,
-        rgba(255, 255, 255, 0.08) 74%,
+        rgba(255, 255, 255, 0.02) 24%,
+        rgba(255, 255, 255, 0.62) 50%,
+        rgba(255, 255, 255, 0.06) 74%,
         transparent 100%
     );
-    transform: translateX(-185%) skewX(-18deg);
-    filter: blur(10px);
-    animation: manake-loader-sheen 1.15s ease-in-out infinite;
+    transform: translateX(-175%) skewX(-14deg);
+    filter: blur(7px);
+    animation: manake-loader-sheen 1.35s ease-in-out infinite;
     mix-blend-mode: screen;
-    opacity: 0.86;
+    opacity: 0.82;
     pointer-events: none;
 }
 
 .manake-loader-wordmark {
     position: relative;
     z-index: 1;
-    height: 5.6rem;
+    height: 3.85rem;
     width: auto;
     object-fit: contain;
     object-position: center;
     filter: none;
-    animation: manake-loader-breathe 1.3s ease-in-out infinite alternate;
+    animation: manake-loader-breathe 1.55s ease-in-out infinite alternate;
 }
 
 html[data-theme-resolved='dark'] .manake-loader-wordmark-shell::after {
     background: linear-gradient(
         108deg,
         transparent 22%,
-        rgba(255, 255, 255, 0.02) 36%,
-        rgba(147, 197, 253, 0.5) 50%,
+        rgba(255, 255, 255, 0.01) 36%,
+        rgba(147, 197, 253, 0.36) 50%,
         rgba(255, 255, 255, 0.03) 64%,
         transparent 78%
     );
@@ -2045,21 +2072,21 @@ html[data-theme-resolved='dark'] .manake-loader-wordmark-shell::after {
 
 @keyframes manake-loader-sheen {
     0% {
-        transform: translateX(-140%) skewX(-16deg);
+        transform: translateX(-140%) skewX(-14deg);
     }
     100% {
-        transform: translateX(140%) skewX(-16deg);
+        transform: translateX(140%) skewX(-14deg);
     }
 }
 
 @keyframes manake-loader-breathe {
     0% {
-        opacity: 0.92;
-        transform: translate3d(0, 1px, 0);
+        opacity: 0.94;
+        transform: translate3d(0, 1px, 0) scale(0.995);
     }
     100% {
         opacity: 1;
-        transform: translate3d(0, -1px, 0);
+        transform: translate3d(0, -1px, 0) scale(1.01);
     }
 }
 
@@ -2071,6 +2098,6 @@ html[data-theme-resolved='dark'] .manake-loader-wordmark-shell::after {
 
 @media (max-width: 640px) {
     .manake-loader-wordmark {
-        height: 4.4rem;
+        height: 3rem;
     }
 }

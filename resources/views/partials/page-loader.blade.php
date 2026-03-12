@@ -55,7 +55,7 @@
                 window.clearTimeout(navigationTimer);
             }
 
-            navigationTimer = window.setTimeout(showLoader, 120);
+            navigationTimer = window.setTimeout(showLoader, 180);
         };
 
         root.classList.add('manake-loaded');

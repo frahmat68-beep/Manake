@@ -48,6 +48,23 @@
             return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         };
 
+        const syncThemedImages = (resolvedTheme) => {
+            document.querySelectorAll('[data-manake-themed-image]').forEach((image) => {
+                if (!(image instanceof HTMLImageElement)) {
+                    return;
+                }
+
+                const lightSrc = image.dataset.lightSrc || image.getAttribute('src') || '';
+                const darkSrc = image.dataset.darkSrc || lightSrc;
+                const swapInDark = image.dataset.swapDark === 'true';
+                const nextSrc = resolvedTheme === 'dark' && swapInDark ? darkSrc : lightSrc;
+
+                if (nextSrc && image.getAttribute('src') !== nextSrc) {
+                    image.setAttribute('src', nextSrc);
+                }
+            });
+        };
+
         const applyTheme = (themePreference) => {
             const resolvedTheme = resolveTheme(themePreference);
             const root = document.documentElement;
@@ -55,9 +72,14 @@
             root.dataset.theme = 'manake-brand';
             root.dataset.themePreference = themePreference;
             root.dataset.themeResolved = resolvedTheme;
+            syncThemedImages(resolvedTheme);
         };
 
         applyTheme(preference);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            syncThemedImages(document.documentElement.dataset.themeResolved || resolveTheme(preference));
+        });
 
         try {
             localStorage.setItem('manake.theme', preference);
@@ -70,6 +92,7 @@
             getPreference: () => document.documentElement.dataset.themePreference || preference,
             applyTheme,
             resolveTheme,
+            syncThemedImages,
         };
 
         if (typeof window.matchMedia === 'function') {

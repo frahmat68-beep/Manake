@@ -9,20 +9,18 @@
 @php
     $lightUrl = site_asset($light);
     $darkUrl = $dark ? site_asset($dark) : $lightUrl;
+    $resolvedTheme = request()->attributes->get('theme_resolved', 'light');
+    $initialSrc = $swapInDark && $resolvedTheme === 'dark' ? $darkUrl : $lightUrl;
 @endphp
 
 <span {{ $attributes->class(['manake-themed-asset', 'manake-themed-asset--swap' => $swapInDark]) }}>
     <img
-        src="{{ $lightUrl }}"
+        src="{{ $initialSrc }}"
         alt="{{ $alt }}"
-        class="manake-themed-asset__light block {{ $imgClass }}"
+        data-manake-themed-image
+        data-light-src="{{ $lightUrl }}"
+        data-dark-src="{{ $darkUrl }}"
+        data-swap-dark="{{ $swapInDark ? 'true' : 'false' }}"
+        class="manake-themed-asset__image {{ $imgClass }}"
     >
-    @if ($swapInDark)
-        <img
-            src="{{ $darkUrl }}"
-            alt=""
-            aria-hidden="true"
-            class="manake-themed-asset__dark block {{ $imgClass }}"
-        >
-    @endif
 </span>
