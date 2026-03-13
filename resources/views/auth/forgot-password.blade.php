@@ -2,10 +2,10 @@
     :page-title="__('ui.auth.forgot_title') . ' | Manake.Id'"
     :eyebrow="null"
     :heading="__('ui.auth.forgot_title')"
-    :subheading="null"
+    :subheading="__('ui.auth.forgot_help')"
     :aside-eyebrow="null"
-    :aside-heading="__('ui.auth.forgot_help')"
-    :aside-text="null"
+    :aside-heading="__('ui.auth.forgot_title')"
+    :aside-text="__('ui.auth.forgot_note')"
     :aside-points="[]"
 >
     <div class="space-y-4">

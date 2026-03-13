@@ -19,7 +19,6 @@ use App\Http\Controllers\AvailabilityBoardController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\DbExplorerController;
-use App\Http\Controllers\Admin\SiteSettingsController;
 use App\Http\Controllers\Admin\StubController as AdminStubController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -156,8 +155,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminStubController::class, 'home'])->name('home');
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::patch('/dashboard/orders/{order}/operational-status', [AdminDashboardController::class, 'updateOperationalStatus'])->name('dashboard.orders.operational-status');
-        Route::get('/settings', [SiteSettingsController::class, 'edit'])->name('settings.index');
-        Route::post('/settings', [SiteSettingsController::class, 'update'])->name('settings.update');
+        Route::get('/settings', [AdminWebsiteSettingsController::class, 'edit'])->name('settings.index');
+        Route::post('/settings', [AdminWebsiteSettingsController::class, 'update'])->name('settings.update');
         Route::get('/settings/website', [AdminWebsiteSettingsController::class, 'edit'])->name('website.edit');
         Route::post('/settings/website', [AdminWebsiteSettingsController::class, 'update'])->name('website.update');
 

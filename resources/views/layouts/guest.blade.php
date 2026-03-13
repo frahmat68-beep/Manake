@@ -33,12 +33,12 @@
         @include('partials.page-loader')
 
         @php
-            $compactAuthShowcaseTitle = $asideHeading ?: __('app.auth.login_benefit_1');
-            $compactAuthShowcaseText = $asideText ?: __('app.auth.login_benefit_2');
+            $compactAuthShowcaseTitle = $asideHeading ?: $heading ?: $brandName;
+            $compactAuthShowcaseText = $asideText ?: null;
         @endphp
 
         <div class="manake-auth-shell min-h-screen px-4 py-4 sm:px-6 sm:py-6">
-            <div class="manake-auth-card mx-auto w-full max-w-5xl overflow-hidden rounded-[2rem] lg:grid lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
+            <div class="manake-auth-card mx-auto w-full max-w-5xl overflow-hidden rounded-[2rem] lg:grid lg:grid-cols-[minmax(0,0.96fr)_minmax(0,1.04fr)]">
                 <div class="manake-auth-panel p-5 sm:p-7 lg:p-8">
                     <div class="space-y-3">
                         <a href="{{ route('home') }}" class="inline-flex items-center" data-skip-loader="true" aria-label="{{ $brandName }}">
@@ -79,12 +79,14 @@
                             img-class="h-[2.6rem] w-auto"
                         />
                         <div class="space-y-2">
-                            <h2 class="text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-white">
+                            <h2 class="text-[1.75rem] font-semibold leading-tight tracking-[-0.04em] text-white">
                                 {{ $compactAuthShowcaseTitle }}
                             </h2>
-                            <p class="max-w-sm text-sm leading-6 text-blue-100/80">
-                                {{ $compactAuthShowcaseText }}
-                            </p>
+                            @if ($compactAuthShowcaseText)
+                                <p class="max-w-sm text-sm leading-6 text-blue-100/80">
+                                    {{ $compactAuthShowcaseText }}
+                                </p>
+                            @endif
                         </div>
                     </div>
 

@@ -2,10 +2,10 @@
     :page-title="__('app.auth.reset_password_button') . ' | Manake.Id'"
     :eyebrow="null"
     :heading="__('app.auth.reset_password_button')"
-    :subheading="null"
+    :subheading="__('ui.auth.forgot_help')"
     :aside-eyebrow="null"
-    :aside-heading="__('ui.auth.forgot_help')"
-    :aside-text="null"
+    :aside-heading="__('app.auth.reset_password_button')"
+    :aside-text="__('ui.auth.forgot_note')"
     :aside-points="[]"
 >
     <div class="space-y-5">

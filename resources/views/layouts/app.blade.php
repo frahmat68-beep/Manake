@@ -243,7 +243,7 @@
                     >
                     <div
                         id="global-catalog-search-dropdown"
-                        class="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-50 hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
+                        class="absolute left-0 right-auto top-[calc(100%+0.35rem)] z-50 hidden w-full max-w-[28rem] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
                     ></div>
                 </form>
 
@@ -598,19 +598,12 @@
         }
 
         const endpoint = form.dataset.searchSuggestUrl || '';
-        const locale = @json(app()->getLocale());
-        const currencyPrefix = locale === 'en' ? 'IDR' : 'Rp';
         const genericItemLabel = @json(__('ui.nav.search_generic_item'));
         const minimumQueryLength = 2;
+        const maxDropdownItems = 4;
         let debounceTimer = null;
         let activeAbortController = null;
         let lastItems = [];
-
-        const formatRupiah = (value) => {
-            const amount = Number(value || 0);
-            const localeTag = locale === 'en' ? 'en-US' : 'id-ID';
-            return `${currencyPrefix} ${amount.toLocaleString(localeTag)}`;
-        };
 
         const hideDropdown = () => {
             dropdown.classList.add('hidden');
@@ -623,7 +616,7 @@
         const createItemNode = (item) => {
             const link = document.createElement('a');
             link.href = item.detail_url || '#';
-            link.className = 'flex items-center gap-3 border-b border-slate-100 px-3 py-2 transition hover:bg-blue-50';
+            link.className = 'flex items-center gap-3 px-3 py-2.5 transition hover:bg-blue-50';
 
             const image = document.createElement('img');
             image.src = item.image_url || '{{ site_asset('MANAKE-FAV-M.png') }}';
@@ -647,17 +640,17 @@
 
         const renderDropdown = (items) => {
             dropdown.innerHTML = '';
-            lastItems = items;
+            lastItems = items.slice(0, maxDropdownItems);
 
-            if (!items.length) {
+            if (!lastItems.length) {
                 hideDropdown();
                 return;
             }
 
             const list = document.createElement('div');
-            list.className = 'scroll-panel max-h-[13.5rem] overflow-y-auto';
+            list.className = 'scroll-panel max-h-[14rem] divide-y divide-slate-100 overflow-y-auto';
 
-            items.forEach((item) => {
+            lastItems.forEach((item) => {
                 list.appendChild(createItemNode(item));
             });
 

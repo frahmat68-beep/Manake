@@ -2,10 +2,10 @@
     :page-title="__('app.auth.login_page_title')"
     :eyebrow="null"
     :heading="__('app.auth.login_title')"
-    :subheading="null"
+    :subheading="__('app.auth.login_note')"
     :aside-eyebrow="null"
     :aside-heading="__('app.auth.login_benefit_1')"
-    :aside-text="null"
+    :aside-text="__('app.auth.login_benefit_2')"
     :aside-points="[]"
 >
     <div class="space-y-4">

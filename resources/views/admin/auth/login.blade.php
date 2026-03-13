@@ -2,10 +2,10 @@
     :page-title="__('ui.admin.admin_login') . ' | Manake.Id'"
     :eyebrow="null"
     :heading="__('ui.admin.admin_login')"
-    :subheading="null"
+    :subheading="__('ui.admin.login_hint')"
     :aside-eyebrow="null"
-    :aside-heading="__('ui.admin.login_intro')"
-    :aside-text="__('ui.admin.login_hint')"
+    :aside-heading="__('ui.admin.login_subheading')"
+    :aside-text="null"
     :aside-points="[]"
 >
     <div class="space-y-4">

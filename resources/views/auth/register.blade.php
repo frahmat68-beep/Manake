@@ -2,10 +2,10 @@
     :page-title="__('app.auth.register_page_title')"
     :eyebrow="null"
     :heading="__('app.auth.register_title')"
-    :subheading="null"
+    :subheading="__('app.auth.register_note')"
     :aside-eyebrow="null"
-    :aside-heading="__('app.auth.register_step_1_desc')"
-    :aside-text="null"
+    :aside-heading="__('app.auth.register_title')"
+    :aside-text="__('app.auth.register_note')"
     :aside-points="[]"
 >
     <div class="space-y-4">

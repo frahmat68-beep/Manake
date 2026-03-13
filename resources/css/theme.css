@@ -1543,7 +1543,7 @@ html[data-theme-resolved='dark'] .manake-brand-pill {
 }
 
 #global-catalog-search-dropdown {
-    max-width: min(100%, 30rem);
+    max-width: min(100%, 28rem);
     z-index: 60;
 }
 

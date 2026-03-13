@@ -153,31 +153,36 @@ class EquipmentController extends Controller
 
         $builder = Equipment::query()
             ->with('category');
-        $hasDescriptionColumn = schema_column_exists_cached('equipments', 'description');
-
         if (schema_table_exists_cached('order_items') && schema_table_exists_cached('orders')) {
             $builder->withSum('activeOrderItems as reserved_units', 'qty');
         }
 
-        $applyKeywordSearch = function ($searchBuilder) use ($query, $hasDescriptionColumn) {
-            $searchBuilder->where(function ($nestedBuilder) use ($query, $hasDescriptionColumn) {
+        $applyKeywordSearch = function ($searchBuilder) use ($query) {
+            $searchBuilder->where(function ($nestedBuilder) use ($query) {
                 $nestedBuilder->where('name', 'like', '%' . $query . '%')
-                    ->orWhere('slug', 'like', '%' . $query . '%')
-                    ->orWhereHas('category', function ($categoryBuilder) use ($query) {
-                        $categoryBuilder->where('name', 'like', '%' . $query . '%');
-                    });
-
-                if ($hasDescriptionColumn) {
-                    $nestedBuilder->orWhere('description', 'like', '%' . $query . '%');
-                }
+                    ->orWhere('slug', 'like', '%' . $query . '%');
             });
         };
 
         $items = (clone $builder)
             ->tap($applyKeywordSearch)
-            ->orderBy('name')
-            ->limit(4)
-            ->get();
+            ->get()
+            ->sortBy(function (Equipment $equipment) use ($query) {
+                $name = Str::lower((string) $equipment->name);
+                $slug = Str::lower((string) $equipment->slug);
+                $needle = Str::lower($query);
+
+                return match (true) {
+                    str_starts_with($name, $needle) => 0,
+                    str_contains($name, $needle) => 1,
+                    str_starts_with($slug, $needle) => 2,
+                    str_contains($slug, $needle) => 3,
+                    default => 10,
+                };
+            })
+            ->values()
+            ->take(4)
+            ->values();
 
         if ($items->isEmpty()) {
             $normalizedQuery = Str::of($query)
@@ -289,8 +294,7 @@ class EquipmentController extends Controller
         $matchingIds = $items
             ->filter(function (Equipment $equipment) use ($query) {
                 return str_contains(Str::lower((string) $equipment->name), Str::lower($query))
-                    || str_contains(Str::lower((string) $equipment->slug), Str::lower($query))
-                    || str_contains(Str::lower((string) ($equipment->category?->name ?? '')), Str::lower($query));
+                    || str_contains(Str::lower((string) $equipment->slug), Str::lower($query));
             })
             ->pluck('id')
             ->all();
@@ -302,14 +306,9 @@ class EquipmentController extends Controller
             return [
                 'name' => (string) $equipment->name,
                 'slug' => (string) $equipment->slug,
-                'category' => (string) ($equipment->category?->name ?? 'Lainnya'),
                 'image_url' => $imageUrl,
                 'price_per_day' => (int) ($equipment->price_per_day ?? 0),
                 'available_units' => (int) ($equipment->available_units ?? 0),
-                'overview' => Str::of((string) ($equipment->description ?? ''))
-                    ->squish()
-                    ->limit(88)
-                    ->value(),
                 'detail_url' => route('product.show', $equipment->slug),
                 'is_recommended' => ! in_array($equipment->id, $matchingIds, true),
             ];
