@@ -1,6 +1,6 @@
 <x-guest-layout
     :page-title="__('app.auth.reset_password_button') . ' | Manake.Id'"
-    :eyebrow="__('ui.auth.forgot_title')"
+    :eyebrow="null"
     :heading="__('app.auth.reset_password_button')"
     :subheading="null"
     :aside-eyebrow="null"

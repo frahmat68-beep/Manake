@@ -192,12 +192,11 @@ class EquipmentController extends Controller
                 ->orderBy('name')
                 ->get();
 
-            $items = $fallbackItems
+            $rankedFallbackItems = $fallbackItems
                 ->map(function (Equipment $equipment) use ($normalizedQuery) {
                     $candidates = collect([
                         (string) $equipment->name,
                         (string) $equipment->slug,
-                        (string) ($equipment->category?->name ?? ''),
                     ])
                         ->filter()
                         ->flatMap(function (string $value) {
@@ -249,26 +248,42 @@ class EquipmentController extends Controller
                         return [
                             'equipment' => $equipment,
                             'rank' => $score,
+                            'similarity' => 100,
+                            'distance' => 0,
                         ];
                     }
 
                     $queryLength = max(mb_strlen($normalizedQuery), 1);
-                    $distanceThreshold = max(2, (int) ceil($queryLength / 3));
+                    $distanceThreshold = max(1, (int) ceil($queryLength / 4));
 
-                    if ($score['similarity'] < 55 && $score['distance'] > $distanceThreshold) {
+                    if ($score['similarity'] < 72 || $score['distance'] > $distanceThreshold) {
                         return null;
                     }
 
                     return [
                         'equipment' => $equipment,
                         'rank' => ($score['distance'] * 10) - $score['similarity'],
+                        'similarity' => $score['similarity'],
+                        'distance' => $score['distance'],
                     ];
                 })
                 ->filter()
                 ->sortBy('rank')
-                ->take(4)
-                ->pluck('equipment')
                 ->values();
+
+            if ($rankedFallbackItems->isNotEmpty()) {
+                $bestRank = (float) ($rankedFallbackItems->first()['rank'] ?? 0);
+
+                $items = $rankedFallbackItems
+                    ->filter(function (array $item) use ($bestRank) {
+                        return ((float) $item['rank']) <= ($bestRank + 8);
+                    })
+                    ->take(4)
+                    ->pluck('equipment')
+                    ->values();
+            } else {
+                $items = collect();
+            }
         }
 
         $matchingIds = $items

@@ -1,6 +1,6 @@
 <x-guest-layout
     :page-title="__('app.auth.otp_page_title')"
-    :eyebrow="__('app.auth.otp_title')"
+    :eyebrow="null"
     :heading="__('app.auth.otp_title')"
     :subheading="null"
     :aside-eyebrow="null"

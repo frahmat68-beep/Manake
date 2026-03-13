@@ -1,6 +1,6 @@
 <x-guest-layout
     :page-title="__('ui.auth.forgot_title') . ' | Manake.Id'"
-    :eyebrow="__('ui.auth.forgot_title')"
+    :eyebrow="null"
     :heading="__('ui.auth.forgot_title')"
     :subheading="null"
     :aside-eyebrow="null"

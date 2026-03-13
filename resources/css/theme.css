@@ -1543,7 +1543,8 @@ html[data-theme-resolved='dark'] .manake-brand-pill {
 }
 
 #global-catalog-search-dropdown {
-    max-width: min(100%, 34rem);
+    max-width: min(100%, 30rem);
+    z-index: 60;
 }
 
 .manake-sidebar-brand__mark {

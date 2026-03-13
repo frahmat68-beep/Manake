@@ -1,7 +1,7 @@
 <x-guest-layout
     :page-title="__('ui.admin.admin_login') . ' | Manake.Id'"
-    :eyebrow="__('ui.admin.admin_login')"
-    :heading="__('ui.admin.panel_title')"
+    :eyebrow="null"
+    :heading="__('ui.admin.admin_login')"
     :subheading="null"
     :aside-eyebrow="null"
     :aside-heading="__('ui.admin.login_intro')"

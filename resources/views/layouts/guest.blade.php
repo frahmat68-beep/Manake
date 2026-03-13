@@ -32,6 +32,11 @@
     <body class="min-h-screen antialiased" data-manake-shell="auth">
         @include('partials.page-loader')
 
+        @php
+            $compactAuthShowcaseTitle = $asideHeading ?: __('app.auth.login_benefit_1');
+            $compactAuthShowcaseText = $asideText ?: __('app.auth.login_benefit_2');
+        @endphp
+
         <div class="manake-auth-shell min-h-screen px-4 py-4 sm:px-6 sm:py-6">
             <div class="manake-auth-card mx-auto w-full max-w-5xl overflow-hidden rounded-[2rem] lg:grid lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
                 <div class="manake-auth-panel p-5 sm:p-7 lg:p-8">
@@ -65,34 +70,26 @@
                     </div>
                 </div>
 
-                <div class="manake-auth-showcase hidden p-7 text-slate-100 lg:block lg:p-8">
-                    @if ($asideEyebrow)
-                        <span class="manake-kicker manake-kicker-inverse">{{ $asideEyebrow }}</span>
-                    @endif
-                    @if ($asideHeading)
-                        <h2 class="mt-5 text-3xl font-semibold leading-tight tracking-[-0.04em] md:text-[2.25rem]">
-                            {{ $asideHeading }}
-                        </h2>
-                    @endif
-                    @if ($asideText)
-                        <p class="mt-4 max-w-md text-sm leading-7 text-blue-100/82">
-                            {{ $asideText }}
-                        </p>
-                    @endif
-
-                    @if (! empty($asidePoints))
-                        <div class="manake-auth-matrix mt-7">
-                            @foreach ($asidePoints as $point)
-                                <article class="manake-auth-chip">
-                                    <span>{{ $brandName }}</span>
-                                    <strong>{{ $point }}</strong>
-                                </article>
-                            @endforeach
+                <div class="manake-auth-showcase hidden p-7 text-slate-100 lg:flex lg:flex-col lg:justify-between lg:p-8">
+                    <div class="space-y-5">
+                        <x-brand.image
+                            light="manake-logo-white.png"
+                            dark="manake-logo-white.png"
+                            :alt="$brandName"
+                            img-class="h-[2.6rem] w-auto"
+                        />
+                        <div class="space-y-2">
+                            <h2 class="text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-white">
+                                {{ $compactAuthShowcaseTitle }}
+                            </h2>
+                            <p class="max-w-sm text-sm leading-6 text-blue-100/80">
+                                {{ $compactAuthShowcaseText }}
+                            </p>
                         </div>
-                    @endif
+                    </div>
 
                     @if ($showBackHome)
-                        <a href="{{ $backUrl }}" class="mt-8 inline-flex items-center justify-center rounded-2xl border border-white/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10" data-skip-loader="true">
+                        <a href="{{ $backUrl }}" class="mt-8 inline-flex w-fit items-center justify-center rounded-2xl border border-white/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10" data-skip-loader="true">
                             {{ $backLabel }}
                         </a>
                     @endif

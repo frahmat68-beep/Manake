@@ -598,9 +598,6 @@
         const locale = @json(app()->getLocale());
         const currencyPrefix = locale === 'en' ? 'IDR' : 'Rp';
         const genericItemLabel = @json(__('ui.nav.search_generic_item'));
-        const perDaySuffix = @json(__('ui.nav.search_per_day_suffix'));
-        const stockLeftTemplate = @json(__('ui.nav.search_stock_left_template'));
-        const noResultsTemplate = @json(__('ui.nav.search_no_results'));
         const minimumQueryLength = 2;
         let debounceTimer = null;
         let activeAbortController = null;
@@ -610,12 +607,6 @@
             const amount = Number(value || 0);
             const localeTag = locale === 'en' ? 'en-US' : 'id-ID';
             return `${currencyPrefix} ${amount.toLocaleString(localeTag)}`;
-        };
-
-        const applyTemplate = (template, params = {}) => {
-            return Object.entries(params).reduce((result, [key, value]) => {
-                return result.replaceAll(`:${key}`, String(value));
-            }, template);
         };
 
         const hideDropdown = () => {
@@ -629,7 +620,7 @@
         const createItemNode = (item) => {
             const link = document.createElement('a');
             link.href = item.detail_url || '#';
-            link.className = 'flex items-center gap-3 border-b border-slate-100 px-3 py-2.5 transition hover:bg-blue-50';
+            link.className = 'flex items-center gap-3 border-b border-slate-100 px-3 py-2 transition hover:bg-blue-50';
 
             const image = document.createElement('img');
             image.src = item.image_url || '{{ site_asset('MANAKE-FAV-M.png') }}';
@@ -651,23 +642,21 @@
             return link;
         };
 
-        const renderDropdown = (items, query) => {
+        const renderDropdown = (items) => {
             dropdown.innerHTML = '';
             lastItems = items;
 
-            const list = document.createElement('div');
-            list.className = 'scroll-panel max-h-[16rem] overflow-y-auto';
-
             if (!items.length) {
-                const emptyState = document.createElement('p');
-                emptyState.className = 'px-3 py-3 text-xs text-slate-500';
-                emptyState.textContent = applyTemplate(noResultsTemplate, { query });
-                list.appendChild(emptyState);
-            } else {
-                items.forEach((item) => {
-                    list.appendChild(createItemNode(item));
-                });
+                hideDropdown();
+                return;
             }
+
+            const list = document.createElement('div');
+            list.className = 'scroll-panel max-h-[13.5rem] overflow-y-auto';
+
+            items.forEach((item) => {
+                list.appendChild(createItemNode(item));
+            });
 
             dropdown.appendChild(list);
 
@@ -735,7 +724,7 @@
                     return;
                 }
 
-                renderDropdown(items, activeQuery);
+                renderDropdown(items);
             }, 220);
         });
 
