@@ -41,7 +41,7 @@
 
                         <div class="mt-4 grid gap-2 sm:grid-cols-2">
                             @foreach ($localeOptions as $value => $label)
-                                <label class="block">
+                                <label class="manake-settings-radio block">
                                     <input
                                         type="radio"
                                         name="locale"
@@ -49,7 +49,7 @@
                                         class="peer sr-only"
                                         {{ $locale === $value ? 'checked' : '' }}
                                     >
-                                    <span class="manake-settings-option flex min-h-[3.35rem] items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:border-blue-200 hover:text-blue-600">
+                                    <span class="manake-settings-option flex min-h-[3.35rem] items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition">
                                         <span>{{ $label }}</span>
                                         @if ($locale === $value)
                                             <span class="status-chip status-chip-info text-[10px]">{{ __('ui.settings.active_badge') }}</span>
@@ -71,7 +71,7 @@
 
                         <div class="mt-4 grid gap-2">
                             @foreach ($themeOptions as $value => $label)
-                                <label class="block">
+                                <label class="manake-settings-radio block">
                                     <input
                                         type="radio"
                                         name="theme"
@@ -79,7 +79,7 @@
                                         class="peer sr-only"
                                         {{ $theme === $value ? 'checked' : '' }}
                                     >
-                                    <span class="manake-settings-option flex min-h-[3.35rem] items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:border-blue-200 hover:text-blue-600">
+                                    <span class="manake-settings-option flex min-h-[3.35rem] items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition">
                                         <span>{{ $label }}</span>
                                         @if ($theme === $value)
                                             <span class="status-chip status-chip-info text-[10px]">{{ __('ui.settings.active_badge') }}</span>

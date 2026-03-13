@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ThemeController extends Controller
 {
-    public function switch(string $theme, Request $request): RedirectResponse
+    public function switch(string $theme, Request $request): RedirectResponse|JsonResponse
     {
         if (! in_array($theme, ['system', 'dark', 'light'], true)) {
             $theme = 'light';
@@ -23,8 +24,27 @@ class ThemeController extends Controller
         }
 
         $target = $this->resolveRedirectTarget($request, $request->query('redirect'));
+        $resolvedTheme = $this->resolveThemeVariant($theme, $request);
 
-        return redirect()->to($target)->withCookie(cookie('theme', $theme, 60 * 24 * 30));
+        $response = redirect()
+            ->to($target)
+            ->withCookie(cookie('theme', $theme, 60 * 24 * 30))
+            ->withCookie(cookie('theme_resolved', $resolvedTheme, 60 * 24 * 30));
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()
+                ->json([
+                    'theme' => [
+                        'preference' => $theme,
+                        'resolved' => $resolvedTheme,
+                    ],
+                    'redirect' => $target,
+                ])
+                ->withCookie(cookie('theme', $theme, 60 * 24 * 30))
+                ->withCookie(cookie('theme_resolved', $resolvedTheme, 60 * 24 * 30));
+        }
+
+        return $response;
     }
 
     private function resolveRedirectTarget(Request $request, mixed $redirectTarget): string
@@ -51,5 +71,24 @@ class ThemeController extends Controller
         ])->filter()->values()->all();
 
         return in_array($candidateParts['host'], $allowedHosts, true) ? $candidate : $fallback;
+    }
+
+    private function resolveThemeVariant(string $theme, Request $request): string
+    {
+        if ($theme === 'dark') {
+            return 'dark';
+        }
+
+        if ($theme === 'light') {
+            return 'light';
+        }
+
+        $resolved = $request->query('resolved');
+
+        return in_array($resolved, ['dark', 'light'], true)
+            ? $resolved
+            : (in_array($request->cookie('theme_resolved'), ['dark', 'light'], true)
+                ? $request->cookie('theme_resolved')
+                : 'light');
     }
 }

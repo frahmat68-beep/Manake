@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class LocaleController extends Controller
 {
-    public function switch(string $locale, Request $request): RedirectResponse
+    public function switch(string $locale, Request $request): RedirectResponse|JsonResponse
     {
         if (! in_array($locale, ['id', 'en'], true)) {
             $locale = 'id';
@@ -23,6 +24,15 @@ class LocaleController extends Controller
         }
 
         $target = $this->resolveRedirectTarget($request, $request->query('redirect'));
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()
+                ->json([
+                    'locale' => $locale,
+                    'redirect' => $target,
+                ])
+                ->withCookie(cookie('locale', $locale, 60 * 24 * 30));
+        }
 
         return redirect()->to($target)->withCookie(cookie('locale', $locale, 60 * 24 * 30));
     }

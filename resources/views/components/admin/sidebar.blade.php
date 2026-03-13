@@ -74,7 +74,7 @@
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
 >
     <div class="flex h-20 items-center justify-between border-b border-slate-200 px-4">
-        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center overflow-hidden">
+        <a href="{{ route('admin.dashboard') }}" class="manake-sidebar-brand-link inline-flex w-full items-center justify-center overflow-hidden">
             <span class="manake-sidebar-brand__wordmark">
                 <x-brand.image
                     light="manake-logo-blue.png"

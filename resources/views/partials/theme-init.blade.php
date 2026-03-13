@@ -90,6 +90,13 @@
             } catch (error) {
                 // Ignore cookie write errors.
             }
+
+            document.dispatchEvent(new CustomEvent('manake:theme-applied', {
+                detail: {
+                    preference: themePreference,
+                    resolved: resolvedTheme,
+                },
+            }));
         };
 
         applyTheme(preference);
