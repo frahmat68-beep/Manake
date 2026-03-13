@@ -68,12 +68,12 @@
     class="group/sidebar fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col overflow-visible border-r border-slate-200 bg-white px-2 py-5 shadow-sm transition-[width,transform,box-shadow] duration-200 ease-out lg:w-24 lg:translate-x-0 lg:hover:w-72 lg:focus-within:w-72 lg:hover:shadow-2xl lg:focus-within:shadow-2xl"
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
 >
-    <div class="flex h-14 items-center justify-between px-1.5">
+    <div class="flex h-20 items-center justify-between px-4">
         <a
             href="{{ route('home') }}"
             title="{{ $brandName }}"
             aria-label="{{ $brandName }}"
-            class="manake-sidebar-brand-link flex w-full items-center justify-center overflow-hidden rounded-xl px-2 py-1 text-slate-900 lg:px-1"
+            class="manake-sidebar-brand-link flex w-full items-center justify-center overflow-hidden rounded-xl px-2 py-2 text-slate-900 lg:px-2"
         >
             <span class="manake-sidebar-brand__mark" aria-hidden="true">
                 <x-brand.image
