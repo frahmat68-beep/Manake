@@ -99,4 +99,41 @@ class OrderPaymentLifecycleTest extends TestCase
             'status' => 'pending',
         ]);
     }
+
+    public function test_reconcile_rental_payment_state_updates_failed_order_status(): void
+    {
+        $user = User::factory()->create();
+
+        $order = Order::create([
+            'user_id' => $user->id,
+            'order_number' => 'MNK-FAILED-STATE',
+            'midtrans_order_id' => 'MNK-FAILED-STATE',
+            'status_pembayaran' => 'pending',
+            'status_pesanan' => 'menunggu_pembayaran',
+            'status' => 'pending',
+            'total_amount' => 350000,
+            'rental_start_date' => now()->addDays(1)->toDateString(),
+            'rental_end_date' => now()->addDays(2)->toDateString(),
+        ]);
+
+        Payment::create([
+            'order_id' => $order->id,
+            'provider' => 'midtrans',
+            'midtrans_order_id' => $order->midtrans_order_id,
+            'status' => 'failed',
+            'transaction_status' => 'deny',
+            'gross_amount' => 350000,
+            'snap_token' => 'snap-failed',
+        ]);
+
+        $updated = app(OrderPaymentLifecycleService::class)->reconcileRentalPaymentState($order);
+
+        $this->assertTrue($updated);
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'status_pembayaran' => 'failed',
+            'status_pesanan' => 'dibatalkan',
+            'status' => 'failed',
+        ]);
+    }
 }

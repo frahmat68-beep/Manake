@@ -6,7 +6,6 @@ use App\Models\Order;
 use App\Models\OrderNotification;
 use App\Models\Payment;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class OrderPaymentLifecycleService
 {
@@ -130,6 +129,109 @@ class OrderPaymentLifecycleService
                 $this->createExpiredNotification($lockedOrder);
             }
 
+            $updated = true;
+        });
+
+        if ($updated) {
+            $order->refresh();
+        }
+
+        return $updated;
+    }
+
+    public function reconcileRentalPaymentState(Order $order): bool
+    {
+        $payment = $order->relationLoaded('payment')
+            ? $order->payment
+            : $order->payment()->latest('id')->first();
+
+        if (! $payment) {
+            return false;
+        }
+
+        $paymentStatus = (string) ($payment->status ?? '');
+        if (! in_array($paymentStatus, [
+            Order::PAYMENT_PAID,
+            Order::PAYMENT_FAILED,
+            Order::PAYMENT_EXPIRED,
+            Order::PAYMENT_REFUNDED,
+        ], true)) {
+            return false;
+        }
+
+        $updated = false;
+
+        DB::transaction(function () use ($order, &$updated) {
+            $lockedOrder = Order::query()
+                ->whereKey($order->id)
+                ->lockForUpdate()
+                ->first();
+
+            if (! $lockedOrder) {
+                return;
+            }
+
+            $lockedPayment = Payment::query()
+                ->where('order_id', $lockedOrder->id)
+                ->where('provider', Payment::PROVIDER_MIDTRANS_RENTAL)
+                ->latest('id')
+                ->first();
+
+            if (! $lockedPayment) {
+                return;
+            }
+
+            $paymentStatus = (string) ($lockedPayment->status ?? '');
+            $hasChanges = false;
+
+            if ($paymentStatus === Order::PAYMENT_PAID && $lockedOrder->status_pembayaran !== Order::PAYMENT_PAID) {
+                $lockedOrder->status_pembayaran = Order::PAYMENT_PAID;
+                if (
+                    (string) $lockedOrder->status_pesanan === Order::STATUS_PENDING_PAYMENT
+                    && $lockedOrder->canTransitionToOrderStatus(Order::STATUS_READY_PICKUP)
+                ) {
+                    $lockedOrder->status_pesanan = Order::STATUS_READY_PICKUP;
+                }
+                $lockedOrder->status = 'paid';
+                $lockedOrder->paid_at = $lockedOrder->paid_at ?: ($lockedPayment->paid_at ?? now());
+                $hasChanges = true;
+            }
+
+            if ($paymentStatus === Order::PAYMENT_FAILED && $lockedOrder->status_pembayaran !== Order::PAYMENT_FAILED) {
+                $lockedOrder->status_pembayaran = Order::PAYMENT_FAILED;
+                if ($lockedOrder->canTransitionToOrderStatus(Order::STATUS_CANCELLED)) {
+                    $lockedOrder->status_pesanan = Order::STATUS_CANCELLED;
+                }
+                $lockedOrder->status = 'failed';
+                $lockedOrder->paid_at = null;
+                $hasChanges = true;
+            }
+
+            if ($paymentStatus === Order::PAYMENT_EXPIRED && $lockedOrder->status_pembayaran !== Order::PAYMENT_EXPIRED) {
+                $lockedOrder->status_pembayaran = Order::PAYMENT_EXPIRED;
+                if ($lockedOrder->canTransitionToOrderStatus(Order::STATUS_EXPIRED)) {
+                    $lockedOrder->status_pesanan = Order::STATUS_EXPIRED;
+                }
+                $lockedOrder->status = 'expired';
+                $lockedOrder->paid_at = null;
+                $hasChanges = true;
+            }
+
+            if ($paymentStatus === Order::PAYMENT_REFUNDED && $lockedOrder->status_pembayaran !== Order::PAYMENT_REFUNDED) {
+                $lockedOrder->status_pembayaran = Order::PAYMENT_REFUNDED;
+                if ($lockedOrder->canTransitionToOrderStatus(Order::STATUS_REFUNDED)) {
+                    $lockedOrder->status_pesanan = Order::STATUS_REFUNDED;
+                }
+                $lockedOrder->status = 'refunded';
+                $lockedOrder->paid_at = null;
+                $hasChanges = true;
+            }
+
+            if (! $hasChanges) {
+                return;
+            }
+
+            $lockedOrder->save();
             $updated = true;
         });
 

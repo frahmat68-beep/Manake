@@ -1,12 +1,13 @@
 <div id="manake-page-loader" class="manake-page-loader is-hidden" aria-hidden="true">
     <div class="manake-page-loader__inner">
-        <div class="manake-loader-wordmark-shell" role="presentation">
+        <div class="manake-loader-card" role="presentation">
             <x-brand.image
-                light="manake-logo-blue.png"
-                dark="manake-logo-white.png"
+                light="MANAKE-FAV-M.png"
+                dark="MANAKE-FAV-M-white.png"
                 :alt="site_setting('brand.name', 'Manake')"
-                img-class="manake-loader-wordmark"
+                img-class="manake-loader-mark"
             />
+            <span class="manake-loader-progress" aria-hidden="true"></span>
         </div>
     </div>
 </div>
@@ -55,7 +56,7 @@
                 window.clearTimeout(navigationTimer);
             }
 
-            navigationTimer = window.setTimeout(showLoader, 180);
+            navigationTimer = window.setTimeout(showLoader, 220);
         };
 
         root.classList.add('manake-loaded');

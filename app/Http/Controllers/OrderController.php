@@ -28,6 +28,14 @@ class OrderController extends Controller
             ->get()
             ->each(fn (Order $order) => $paymentLifecycle->expirePendingOrderIfPastCutoff($order));
 
+        Order::query()
+            ->where('user_id', $request->user()->id)
+            ->with('payment')
+            ->latest()
+            ->limit(24)
+            ->get()
+            ->each(fn (Order $order) => $paymentLifecycle->reconcileRentalPaymentState($order));
+
         $baseQuery = Order::query()->where('user_id', $request->user()->id);
 
         $orders = (clone $baseQuery)
@@ -53,6 +61,7 @@ class OrderController extends Controller
     {
         $this->ensureOwnedOrder($request, $order);
         $paymentLifecycle->expirePendingOrderIfPastCutoff($order);
+        $paymentLifecycle->reconcileRentalPaymentState($order);
         $this->markOrderNotificationsAsRead($request, $order);
 
         $relations = ['items.equipment', 'payment', 'damagePayment'];
@@ -71,6 +80,7 @@ class OrderController extends Controller
     {
         $this->ensureOwnedOrder($request, $order);
         $paymentLifecycle->expirePendingOrderIfPastCutoff($order);
+        $paymentLifecycle->reconcileRentalPaymentState($order);
 
         if ((string) ($order->status_pembayaran ?? '') === Order::PAYMENT_EXPIRED) {
             return redirect()

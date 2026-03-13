@@ -9,28 +9,24 @@
 @endphp
 
 <div {{ $attributes->class(['manake-preferences-popover rounded-[1.45rem] border p-3 shadow-2xl']) }}>
-    <div class="space-y-3.5">
+    <div class="space-y-3">
         <div class="space-y-1">
             <p class="manake-preferences-popover__title">{{ __('ui.nav.settings') }}</p>
-            <p class="manake-preferences-popover__hint">{{ __('ui.settings.quick_hint') }}</p>
         </div>
 
         <section class="space-y-2">
             <p class="manake-preferences-popover__label">{{ __('ui.nav.language') }}</p>
-            <div class="grid grid-cols-2 gap-2">
+            <div class="manake-preferences-grid manake-preferences-grid--two">
                 @foreach (['id' => __('ui.languages.id'), 'en' => __('ui.languages.en')] as $value => $label)
                     <a
                         href="{{ route('lang.switch', ['locale' => $value, 'redirect' => $redirect]) }}"
                         data-locale-option="{{ $value }}"
                         data-ui-active="{{ $locale === $value ? 'true' : 'false' }}"
-                        class="manake-preferences-choice rounded-2xl border px-3 py-2.5 {{ $locale === $value ? 'is-active' : '' }}"
+                        class="manake-preferences-choice manake-preferences-choice--compact rounded-2xl border {{ $locale === $value ? 'is-active' : '' }}"
                     >
                         <span class="manake-preferences-choice__dot" aria-hidden="true"></span>
                         <span class="manake-preferences-choice__body">
                             <span class="manake-preferences-choice__title">{{ $label }}</span>
-                            <span class="manake-preferences-choice__meta">
-                                {{ $value === 'id' ? __('ui.languages.id_meta') : __('ui.languages.en_meta') }}
-                            </span>
                         </span>
                     </a>
                 @endforeach
@@ -41,7 +37,7 @@
 
         <section class="space-y-2">
             <p class="manake-preferences-popover__label">{{ __('ui.nav.theme') }}</p>
-            <div class="space-y-2">
+            <div class="manake-preferences-grid manake-preferences-grid--three">
                 @foreach ([
                     'system' => ['label' => __('ui.settings.theme_system'), 'meta' => __('ui.settings.theme_system_meta'), 'icon' => 'monitor'],
                     'dark' => ['label' => __('ui.settings.theme_dark'), 'meta' => __('ui.settings.theme_dark_meta'), 'icon' => 'moon'],
@@ -51,7 +47,7 @@
                         href="{{ route('theme.switch', ['theme' => $value, 'redirect' => $redirect]) }}"
                         data-theme-option="{{ $value }}"
                         data-ui-active="{{ $currentTheme === $value ? 'true' : 'false' }}"
-                        class="manake-preferences-choice manake-preferences-choice--row rounded-2xl border px-3 py-2.5 {{ $currentTheme === $value ? 'is-active' : '' }}"
+                        class="manake-preferences-choice manake-preferences-choice--compact rounded-2xl border {{ $currentTheme === $value ? 'is-active' : '' }}"
                     >
                         <span class="manake-preferences-choice__icon" aria-hidden="true">
                             @if ($themeOption['icon'] === 'monitor')
@@ -80,10 +76,6 @@
                         </span>
                         <span class="manake-preferences-choice__body">
                             <span class="manake-preferences-choice__title">{{ $themeOption['label'] }}</span>
-                            <span class="manake-preferences-choice__meta">{{ $themeOption['meta'] }}</span>
-                        </span>
-                        <span class="manake-preferences-choice__state">
-                            {{ $currentTheme === $value ? __('ui.settings.active_label') : __('ui.settings.choose_label') }}
                         </span>
                     </a>
                 @endforeach

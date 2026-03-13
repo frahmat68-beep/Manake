@@ -1609,13 +1609,14 @@ html[data-theme-resolved='dark'] .manake-themed-asset--swap .manake-themed-asset
         linear-gradient(180deg, rgba(255, 255, 255, 0.985) 0%, rgba(246, 249, 255, 0.99) 100%) !important;
     backdrop-filter: blur(18px);
     width: 100%;
+    max-width: 18rem;
     box-shadow:
         0 24px 50px rgba(15, 23, 42, 0.14),
         0 12px 26px rgba(15, 23, 42, 0.08);
 }
 
 .manake-preferences-popover__title {
-    font-size: 0.76rem;
+    font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -1642,7 +1643,7 @@ html[data-theme-resolved='dark'] .manake-themed-asset--swap .manake-themed-asset
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    min-height: 3.05rem;
+    min-height: 2.9rem;
     border-color: color-mix(in oklab, var(--border) 88%, white 12%) !important;
     background: linear-gradient(
         180deg,
@@ -1715,14 +1716,14 @@ html[data-theme-resolved='dark'] .manake-themed-asset--swap .manake-themed-asset
 }
 
 .manake-preferences-choice__title {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 700;
     line-height: 1.2;
     color: var(--text);
 }
 
 .manake-preferences-choice__meta {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     line-height: 1.35;
     color: var(--text-muted);
 }
@@ -1747,10 +1748,44 @@ html[data-theme-resolved='dark'] .manake-themed-asset--swap .manake-themed-asset
     background: linear-gradient(135deg, #5f88ff 0%, #2958eb 100%);
 }
 
+.manake-preferences-grid {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.manake-preferences-grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.manake-preferences-grid--three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.manake-preferences-choice--compact {
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 2.85rem;
+    padding: 0.8rem 0.75rem;
+}
+
+.manake-preferences-choice--compact .manake-preferences-choice__icon,
+.manake-preferences-choice--compact .manake-preferences-choice__dot {
+    width: 1.55rem;
+    height: 1.55rem;
+}
+
+.manake-preferences-choice--compact .manake-preferences-choice__body {
+    display: block;
+    flex: 0 1 auto;
+}
+
+.manake-preferences-choice--compact .manake-preferences-choice__title {
+    font-size: 0.76rem;
+}
+
 [data-ui-icon-button] {
     position: relative;
     isolation: isolate;
-    overflow: hidden;
     border: 1px solid color-mix(in oklab, var(--border) 88%, white 12%) !important;
     background: linear-gradient(
         180deg,
@@ -1983,19 +2018,18 @@ html[data-theme-resolved='dark'] .manake-preferences-choice.is-active .manake-pr
     align-items: center;
     justify-content: center;
     background:
-        radial-gradient(360px 180px at 50% 50%, rgba(42, 86, 232, 0.06), transparent 72%),
-        linear-gradient(180deg, rgba(247, 249, 255, 0.9) 0%, rgba(241, 245, 252, 0.94) 100%);
-    backdrop-filter: blur(6px);
+        radial-gradient(320px 160px at 50% 50%, rgba(42, 86, 232, 0.08), transparent 74%),
+        linear-gradient(180deg, rgba(247, 249, 255, 0.88) 0%, rgba(241, 245, 252, 0.93) 100%);
+    backdrop-filter: blur(10px);
     transition:
-        opacity 260ms ease,
-        visibility 260ms ease,
-        transform 260ms ease;
+        opacity 220ms ease,
+        visibility 220ms ease;
 }
 
 html[data-theme-resolved='dark'] .manake-page-loader {
     background:
-        radial-gradient(360px 180px at 50% 50%, rgba(93, 130, 255, 0.08), transparent 74%),
-        linear-gradient(180deg, rgba(8, 14, 26, 0.92) 0%, rgba(6, 13, 24, 0.95) 100%);
+        radial-gradient(320px 160px at 50% 50%, rgba(93, 130, 255, 0.11), transparent 74%),
+        linear-gradient(180deg, rgba(8, 14, 26, 0.9) 0%, rgba(6, 13, 24, 0.94) 100%);
 }
 
 .manake-page-loader.is-hidden {
@@ -2009,84 +2043,81 @@ html[data-theme-resolved='dark'] .manake-page-loader {
     align-items: center;
     justify-content: center;
     position: relative;
-    padding: 0;
+    padding: 1rem;
 }
 
-.manake-loader-wordmark-shell {
+.manake-loader-card {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    overflow: visible;
-    padding: 0;
+    display: grid;
+    justify-items: center;
+    gap: 0.95rem;
+    min-width: 10.75rem;
+    padding: 1rem 1.1rem 0.95rem;
+    border: 1px solid color-mix(in oklab, var(--primary) 16%, var(--border));
+    border-radius: 1.4rem;
+    background:
+        radial-gradient(120px 70px at 50% 0%, color-mix(in oklab, var(--primary) 11%, transparent), transparent 78%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(246, 249, 255, 0.98) 100%);
+    box-shadow:
+        0 24px 52px rgba(15, 23, 42, 0.12),
+        0 10px 24px rgba(15, 23, 42, 0.06);
 }
 
-.manake-loader-wordmark-shell::before {
-    content: none;
+html[data-theme-resolved='dark'] .manake-loader-card {
+    border-color: rgba(93, 130, 255, 0.22);
+    background:
+        radial-gradient(120px 70px at 50% 0%, rgba(93, 130, 255, 0.16), transparent 78%),
+        linear-gradient(180deg, rgba(11, 22, 41, 0.96) 0%, rgba(9, 18, 34, 0.98) 100%);
+    box-shadow:
+        0 28px 54px rgba(2, 6, 23, 0.36),
+        0 12px 26px rgba(2, 6, 23, 0.2);
 }
 
-.manake-loader-wordmark-shell::after {
+.manake-loader-mark {
+    width: 2.75rem;
+    height: 2.75rem;
+    object-fit: contain;
+    animation: manake-loader-mark-float 1.15s ease-in-out infinite alternate;
+}
+
+.manake-loader-progress {
+    position: relative;
+    display: block;
+    width: 6.6rem;
+    height: 0.26rem;
+    overflow: hidden;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--primary) 10%, var(--surface-2));
+}
+
+.manake-loader-progress::after {
     content: '';
     position: absolute;
-    top: -18%;
-    bottom: -18%;
-    left: -28%;
-    width: 30%;
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.02) 24%,
-        rgba(255, 255, 255, 0.62) 50%,
-        rgba(255, 255, 255, 0.06) 74%,
-        transparent 100%
-    );
-    transform: translateX(-175%) skewX(-14deg);
-    filter: blur(7px);
-    animation: manake-loader-sheen 1.35s ease-in-out infinite;
-    mix-blend-mode: screen;
-    opacity: 0.82;
-    pointer-events: none;
+    inset: 0;
+    width: 44%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--primary) 86%, white) 52%, transparent 100%);
+    transform: translateX(-135%);
+    animation: manake-loader-progress-run 1s ease-in-out infinite;
 }
 
-.manake-loader-wordmark {
-    position: relative;
-    z-index: 1;
-    height: 3.85rem;
-    width: auto;
-    object-fit: contain;
-    object-position: center;
-    filter: none;
-    animation: manake-loader-breathe 1.55s ease-in-out infinite alternate;
-}
-
-html[data-theme-resolved='dark'] .manake-loader-wordmark-shell::after {
-    background: linear-gradient(
-        108deg,
-        transparent 22%,
-        rgba(255, 255, 255, 0.01) 36%,
-        rgba(147, 197, 253, 0.36) 50%,
-        rgba(255, 255, 255, 0.03) 64%,
-        transparent 78%
-    );
-}
-
-@keyframes manake-loader-sheen {
+@keyframes manake-loader-progress-run {
     0% {
-        transform: translateX(-140%) skewX(-14deg);
+        transform: translateX(-135%);
     }
     100% {
-        transform: translateX(140%) skewX(-14deg);
+        transform: translateX(235%);
     }
 }
 
-@keyframes manake-loader-breathe {
+@keyframes manake-loader-mark-float {
     0% {
+        transform: translateY(0) scale(0.985);
         opacity: 0.94;
-        transform: translate3d(0, 1px, 0) scale(0.995);
     }
     100% {
+        transform: translateY(-2px) scale(1);
         opacity: 1;
-        transform: translate3d(0, -1px, 0) scale(1.01);
     }
 }
 
@@ -2097,7 +2128,17 @@ html[data-theme-resolved='dark'] .manake-loader-wordmark-shell::after {
 }
 
 @media (max-width: 640px) {
-    .manake-loader-wordmark {
-        height: 3rem;
+    .manake-loader-card {
+        min-width: 9.5rem;
+        padding: 0.9rem 1rem 0.85rem;
+    }
+
+    .manake-loader-mark {
+        width: 2.35rem;
+        height: 2.35rem;
+    }
+
+    .manake-loader-progress {
+        width: 5.8rem;
     }
 }

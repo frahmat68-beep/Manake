@@ -144,6 +144,9 @@
         sidebarOpen: false,
         notifOpen: false,
         notifCount: {{ (int) ($notificationCount ?? 0) }},
+        notifBadge() {
+            return this.notifCount > 99 ? '99+' : String(this.notifCount);
+        },
         shellPrefsOpen: false,
         authModalOpen: {{ $authModalOpen ? 'true' : 'false' }},
         authModalView: '{{ $authModalView ?: 'login' }}',
@@ -208,7 +211,7 @@
 
     <div class="lg:pl-24">
         <header class="manake-topbar-shell sticky top-0 z-30 border-b border-slate-200 bg-white" data-manake-topbar="app">
-            <div class="mx-auto flex w-full max-w-[1320px] flex-wrap items-center gap-2.5 px-4 py-3 sm:gap-3 sm:px-6 sm:py-4">
+            <div class="mx-auto flex w-full max-w-[1320px] flex-wrap items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6 sm:py-3">
                 <button data-ui-icon-button class="order-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl lg:hidden" type="button" @click="sidebarOpen = true" aria-label="{{ __('ui.nav.toggle_menu') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="4" y1="7" x2="20" y2="7" />
@@ -262,11 +265,11 @@
                                 <span
                                     x-cloak
                                     x-show="notifCount > 0"
-                                    x-text="notifCount"
-                                    class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-semibold text-white"
+                                    x-text="notifBadge()"
+                                    class="absolute -right-1.5 -top-1.5 inline-flex h-[1.35rem] min-w-[1.35rem] items-center justify-center rounded-full bg-blue-600 px-1.5 text-[10px] font-semibold leading-none text-white"
                                 ></span>
                             </button>
-                            <div x-cloak x-show="notifOpen" x-transition.origin.top.right class="card absolute right-0 mt-2 w-80 rounded-xl p-3 shadow-lg">
+                            <div x-cloak x-show="notifOpen" x-transition.origin.top.right class="card absolute right-0 mt-2 w-[22rem] max-w-[calc(100vw-2rem)] rounded-xl p-3 shadow-lg">
                                 <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{{ __('ui.nav.notifications') }}</p>
                                 <div class="mt-2 max-h-72 space-y-2 overflow-y-auto">
                                     @forelse ($notificationItems as $notification)
@@ -332,7 +335,7 @@
                             </svg>
                             @if (($cartCount ?? 0) > 0)
                                 <span class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-semibold text-white">
-                                    {{ $cartCount }}
+                                    {{ $cartCount > 99 ? '99+' : $cartCount }}
                                 </span>
                             @endif
                         </a>
@@ -374,7 +377,7 @@
             </div>
         </header>
 
-        <main class="manake-main-stage px-4 py-4 sm:px-6 sm:py-6">
+        <main class="manake-main-stage px-4 py-3 sm:px-6 sm:py-4">
             <div class="mx-auto w-full max-w-[1320px]">
                 @yield('content')
             </div>
@@ -644,13 +647,13 @@
         const createItemNode = (item) => {
             const link = document.createElement('a');
             link.href = item.detail_url || '#';
-            link.className = 'flex items-center gap-3 border-b border-slate-100 px-3 py-2.5 transition hover:bg-blue-50';
+            link.className = 'flex items-center gap-3 border-b border-slate-100 px-3 py-3 transition hover:bg-blue-50';
 
             const image = document.createElement('img');
             image.src = item.image_url || '{{ site_asset('MANAKE-FAV-M.png') }}';
             image.alt = item.name || genericItemLabel;
             image.loading = 'lazy';
-            image.className = 'h-12 w-12 rounded-lg border border-slate-200 bg-slate-50 object-cover';
+            image.className = 'h-11 w-11 rounded-xl border border-slate-200 bg-slate-50 object-cover';
             link.appendChild(image);
 
             const content = document.createElement('div');
@@ -661,24 +664,7 @@
             name.textContent = item.name || genericItemLabel;
             content.appendChild(name);
 
-            const meta = document.createElement('p');
-            meta.className = 'mt-0.5 truncate text-xs italic text-slate-500';
-            meta.textContent = item.overview || item.category || '';
-            content.appendChild(meta);
-
-            const pricing = document.createElement('p');
-            pricing.className = 'mt-0.5 text-[11px] font-medium text-blue-700';
-            pricing.textContent = `${formatRupiah(item.price_per_day)} ${perDaySuffix}`;
-            content.appendChild(pricing);
-
             link.appendChild(content);
-
-            const stockBadge = document.createElement('span');
-            stockBadge.className = 'rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700';
-            stockBadge.textContent = applyTemplate(stockLeftTemplate, {
-                qty: Math.max(Number(item.available_units || 0), 0),
-            });
-            link.appendChild(stockBadge);
 
             return link;
         };
