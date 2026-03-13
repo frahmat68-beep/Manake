@@ -9,6 +9,33 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
+if (! function_exists('site_public_media_candidates')) {
+    function site_public_media_candidates(string $path): array
+    {
+        $normalizedPath = ltrim($path, '/');
+        $candidates = [
+            [public_path('storage/' . $normalizedPath), public_path('storage')],
+            [base_path('storage/app/public/' . $normalizedPath), base_path('storage/app/public')],
+        ];
+
+        try {
+            $publicDisk = Storage::disk('public');
+
+            if (method_exists($publicDisk, 'exists') && $publicDisk->exists($normalizedPath)) {
+                $diskPath = $publicDisk->path($normalizedPath);
+
+                if (is_file($diskPath)) {
+                    $candidates[] = [$diskPath, dirname($diskPath)];
+                }
+            }
+        } catch (\Throwable $exception) {
+            // Fall through to bundled/public path checks.
+        }
+
+        return $candidates;
+    }
+}
+
 if (! function_exists('schema_table_exists_cached')) {
     function schema_table_exists_cached(string $table): bool
     {
@@ -325,28 +352,7 @@ if (! function_exists('site_setting_forget')) {
 if (! function_exists('site_public_media_path')) {
     function site_public_media_path(string $path): ?string
     {
-        $normalizedPath = ltrim($path, '/');
-
-        try {
-            $publicDisk = Storage::disk('public');
-
-            if (method_exists($publicDisk, 'exists') && $publicDisk->exists($normalizedPath)) {
-                $diskPath = $publicDisk->path($normalizedPath);
-
-                if (is_file($diskPath)) {
-                    return $diskPath;
-                }
-            }
-        } catch (\Throwable $exception) {
-            // Fall through to bundled/public path checks.
-        }
-
-        $candidates = [
-            public_path('storage/' . $normalizedPath),
-            base_path('storage/app/public/' . $normalizedPath),
-        ];
-
-        foreach ($candidates as $candidate) {
+        foreach (site_public_media_candidates($path) as [$candidate]) {
             if (is_file($candidate)) {
                 return $candidate;
             }

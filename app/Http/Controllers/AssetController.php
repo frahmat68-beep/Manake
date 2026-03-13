@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 
 class AssetController extends Controller
 {
@@ -16,26 +15,7 @@ class AssetController extends Controller
     {
         $normalizedPath = ltrim($path, '/');
 
-        try {
-            $publicDisk = Storage::disk('public');
-
-            if (method_exists($publicDisk, 'exists') && $publicDisk->exists($normalizedPath)) {
-                $diskPath = $publicDisk->path($normalizedPath);
-
-                if (is_file($diskPath)) {
-                    return $this->serveFile($diskPath, dirname($diskPath));
-                }
-            }
-        } catch (\Throwable $exception) {
-            // Fall through to bundled/public path checks.
-        }
-
-        $candidates = [
-            [public_path('storage/' . $normalizedPath), public_path('storage')],
-            [base_path('storage/app/public/' . $normalizedPath), base_path('storage/app/public')],
-        ];
-
-        foreach ($candidates as [$candidatePath, $allowedRoot]) {
+        foreach (site_public_media_candidates($normalizedPath) as [$candidatePath, $allowedRoot]) {
             if (is_file($candidatePath)) {
                 return $this->serveFile($candidatePath, $allowedRoot);
             }

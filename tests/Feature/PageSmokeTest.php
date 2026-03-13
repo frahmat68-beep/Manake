@@ -6,6 +6,7 @@ use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PageSmokeTest extends TestCase
@@ -66,10 +67,18 @@ class PageSmokeTest extends TestCase
 
     public function test_public_asset_routes_serve_logo_and_media_files(): void
     {
-        Storage::disk('public')->put('equipments/test-asset-route.png', 'fake-image');
+        $path = 'equipments/test-asset-route-' . Str::lower(Str::random(8)) . '.png';
+        Storage::disk('public')->put($path, 'fake-image');
 
-        $this->get('/assets/public/manake-logo-blue.png')->assertOk();
-        $this->get('/assets/media/equipments/test-asset-route.png')->assertOk();
+        try {
+            $this->get('/assets/public/manake-logo-blue.png')->assertOk();
+
+            $response = $this->get('/assets/media/' . $path);
+            $response->assertOk();
+            $this->assertSame('fake-image', $response->getContent());
+        } finally {
+            Storage::disk('public')->delete($path);
+        }
     }
 
     public function test_admin_pages_render_without_exception_for_authenticated_admin(): void
