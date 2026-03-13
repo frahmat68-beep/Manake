@@ -221,7 +221,7 @@
 
     <div class="mt-auto border-t border-slate-200 pt-4">
     @if ($isAuthenticated)
-        <div class="mt-3 border-t border-slate-200 pt-3">
+        <div class="space-y-2">
             <a
                 href="{{ route('profile.complete') }}"
                 title="{{ __('ui.nav.my_profile') }}"
@@ -234,7 +234,7 @@
                 <span class="text-sm font-semibold transition-all duration-200 lg:ml-0 lg:pointer-events-none lg:max-w-0 lg:overflow-hidden lg:whitespace-nowrap lg:opacity-0 lg:-translate-x-2 lg:group-hover/sidebar:ml-3 lg:group-hover/sidebar:pointer-events-auto lg:group-hover/sidebar:max-w-[10rem] lg:group-hover/sidebar:opacity-100 lg:group-hover/sidebar:translate-x-0 lg:group-focus-within/sidebar:ml-3 lg:group-focus-within/sidebar:pointer-events-auto lg:group-focus-within/sidebar:max-w-[10rem] lg:group-focus-within/sidebar:opacity-100 lg:group-focus-within/sidebar:translate-x-0">{{ $displayName }}</span>
             </a>
 
-            <form method="POST" action="{{ route('logout') }}" class="mt-2">
+            <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button
                     type="submit"

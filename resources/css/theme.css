@@ -1555,9 +1555,10 @@ html[data-theme-resolved='dark'] .manake-brand-pill {
 }
 
 .manake-brand-wordmark-image {
-    width: auto;
-    max-width: 10.9rem;
-    height: 2.45rem;
+    width: min(11.25rem, 100%);
+    max-width: 11.25rem;
+    height: auto;
+    max-height: 3.1rem;
     object-fit: contain;
     object-position: center;
 }
