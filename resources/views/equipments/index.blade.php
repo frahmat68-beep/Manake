@@ -188,6 +188,7 @@
                                     : 'bg-amber-100 text-amber-700';
                                 $imagePath = $item->image_path ?? $item->image;
                                 $image = site_media_url($imagePath) ?: $catalogFallbackImage;
+                                $prioritizeImage = ($loop->parent?->first ?? false) && $loop->index < 3;
                                 $reservedUnits = (int) ($item->reserved_units ?? 0);
                                 $availableUnits = (int) $item->available_units;
                                 $canRent = $statusValue === 'ready' && (int) $item->stock > 0;
@@ -225,7 +226,9 @@
                                         alt="{{ $item->name }}"
                                         class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
                                         onerror="this.onerror=null;this.src='{{ $catalogFallbackImage }}';"
-                                        loading="lazy"
+                                        loading="{{ $prioritizeImage ? 'eager' : 'lazy' }}"
+                                        fetchpriority="{{ $prioritizeImage ? 'high' : 'auto' }}"
+                                        decoding="async"
                                     >
                                     <span class="badge-status absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold">
                                         {{ $item->category?->name ?? __('app.category.title') }}
