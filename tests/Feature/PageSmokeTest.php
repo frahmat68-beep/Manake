@@ -53,6 +53,18 @@ class PageSmokeTest extends TestCase
         $response->assertDontSee('http://127.0.0.1:8000/manake-logo-blue.png', false);
     }
 
+    public function test_dark_theme_cookie_renders_dark_shell_and_dark_brand_assets(): void
+    {
+        $response = $this
+            ->withCookie('theme', 'dark')
+            ->get(route('login'));
+
+        $response->assertOk();
+        $response->assertSee('data-theme-preference="dark"', false);
+        $response->assertSee('data-theme-resolved="dark"', false);
+        $response->assertSee('/assets/public/manake-logo-white.png?v=', false);
+    }
+
     public function test_core_shell_pages_do_not_depend_on_runtime_cdn_assets(): void
     {
         foreach ([route('home'), route('login'), route('admin.login')] as $url) {

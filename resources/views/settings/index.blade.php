@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="mt-6 grid gap-4 lg:grid-cols-2">
-                    <section class="rounded-[1.5rem] border border-slate-200 bg-slate-50/70 p-4">
+                    <section class="manake-settings-section rounded-[1.5rem] border p-4">
                         <div class="space-y-1">
                             <h2 class="text-sm font-semibold text-slate-900">{{ __('ui.settings.section_language') }}</h2>
                             <p class="text-xs text-slate-500">{{ __('ui.settings.section_language_hint') }}</p>
@@ -49,7 +49,7 @@
                                         class="peer sr-only"
                                         {{ $locale === $value ? 'checked' : '' }}
                                     >
-                                    <span class="flex min-h-[3.35rem] items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:border-blue-200 hover:text-blue-600">
+                                    <span class="manake-settings-option flex min-h-[3.35rem] items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:border-blue-200 hover:text-blue-600">
                                         <span>{{ $label }}</span>
                                         @if ($locale === $value)
                                             <span class="status-chip status-chip-info text-[10px]">{{ __('ui.settings.active_badge') }}</span>
@@ -63,7 +63,7 @@
                         @enderror
                     </section>
 
-                    <section class="rounded-[1.5rem] border border-slate-200 bg-slate-50/70 p-4">
+                    <section class="manake-settings-section rounded-[1.5rem] border p-4">
                         <div class="space-y-1">
                             <h2 class="text-sm font-semibold text-slate-900">{{ __('ui.settings.section_theme') }}</h2>
                             <p class="text-xs text-slate-500">{{ __('ui.settings.section_theme_hint') }}</p>
@@ -79,7 +79,7 @@
                                         class="peer sr-only"
                                         {{ $theme === $value ? 'checked' : '' }}
                                     >
-                                    <span class="flex min-h-[3.35rem] items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:border-blue-200 hover:text-blue-600">
+                                    <span class="manake-settings-option flex min-h-[3.35rem] items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:border-blue-200 hover:text-blue-600">
                                         <span>{{ $label }}</span>
                                         @if ($theme === $value)
                                             <span class="status-chip status-chip-info text-[10px]">{{ __('ui.settings.active_badge') }}</span>
@@ -110,11 +110,11 @@
                 </div>
 
                 <dl class="mt-4 space-y-3">
-                    <div class="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-3">
+                    <div class="manake-settings-summary rounded-2xl border px-4 py-3">
                         <dt class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{{ __('ui.settings.summary_language') }}</dt>
                         <dd class="mt-2 text-sm font-semibold text-slate-900">{{ $localeOptions[$locale] ?? __('ui.languages.id') }}</dd>
                     </div>
-                    <div class="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-3">
+                    <div class="manake-settings-summary rounded-2xl border px-4 py-3">
                         <dt class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{{ __('ui.settings.summary_theme') }}</dt>
                         <dd class="mt-2 text-sm font-semibold text-slate-900">{{ $themeOptions[$theme] ?? __('ui.settings.theme_system') }}</dd>
                     </div>

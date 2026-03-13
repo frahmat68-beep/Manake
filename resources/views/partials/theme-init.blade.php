@@ -1,5 +1,10 @@
 @php
     $initialThemePreference = $themePreference ?? request()->attributes->get('theme_preference', 'light');
+    $initialThemeResolved = $themeResolved ?? request()->attributes->get(
+        'theme_resolved',
+        $initialThemePreference === 'dark' ? 'dark' : 'light'
+    );
+    $initialThemePreferenceExplicit = (bool) ($themePreferenceExplicit ?? request()->attributes->get('theme_preference_explicit', false));
 @endphp
 <script>
     window.tailwind = window.tailwind || {};
@@ -10,29 +15,33 @@
     (() => {
         const allowed = ['system', 'dark', 'light'];
         let preference = @json($initialThemePreference);
+        const initialResolvedTheme = @json($initialThemeResolved);
+        const hasExplicitPreference = @json($initialThemePreferenceExplicit);
 
         if (!allowed.includes(preference)) {
             preference = 'light';
         }
 
-        try {
-            const localTheme = localStorage.getItem('manake.theme');
-            if (allowed.includes(localTheme)) {
-                preference = localTheme;
+        if (!hasExplicitPreference) {
+            try {
+                const localTheme = localStorage.getItem('manake.theme');
+                if (allowed.includes(localTheme)) {
+                    preference = localTheme;
+                }
+            } catch (error) {
+                // Ignore localStorage access errors.
             }
-        } catch (error) {
-            // Ignore localStorage access errors.
-        }
 
-        try {
-            const cookieTheme = decodeURIComponent(
-                (document.cookie.split('; ').find((row) => row.startsWith('theme=')) || '').split('=')[1] || ''
-            );
-            if (allowed.includes(cookieTheme)) {
-                preference = cookieTheme;
+            try {
+                const cookieTheme = decodeURIComponent(
+                    (document.cookie.split('; ').find((row) => row.startsWith('theme=')) || '').split('=')[1] || ''
+                );
+                if (allowed.includes(cookieTheme)) {
+                    preference = cookieTheme;
+                }
+            } catch (error) {
+                // Ignore cookie parsing errors.
             }
-        } catch (error) {
-            // Ignore cookie parsing errors.
         }
 
         const resolveTheme = (themePreference) => {
@@ -66,13 +75,21 @@
         };
 
         const applyTheme = (themePreference) => {
-            const resolvedTheme = resolveTheme(themePreference);
+            const resolvedTheme = themePreference !== 'system' && themePreference === preference && hasExplicitPreference
+                ? initialResolvedTheme
+                : resolveTheme(themePreference);
             const root = document.documentElement;
             root.classList.toggle('dark', resolvedTheme === 'dark');
             root.dataset.theme = 'manake-brand';
             root.dataset.themePreference = themePreference;
             root.dataset.themeResolved = resolvedTheme;
             syncThemedImages(resolvedTheme);
+
+            try {
+                document.cookie = `theme_resolved=${encodeURIComponent(resolvedTheme)}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+            } catch (error) {
+                // Ignore cookie write errors.
+            }
         };
 
         applyTheme(preference);

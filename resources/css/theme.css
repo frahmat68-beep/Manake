@@ -1549,15 +1549,15 @@ html[data-theme-resolved='dark'] .manake-brand-pill {
 }
 
 .manake-brand-mark-image {
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 2.85rem;
+    height: 2.85rem;
     object-fit: contain;
 }
 
 .manake-brand-wordmark-image {
     width: auto;
-    max-width: 8.8rem;
-    height: 2rem;
+    max-width: 9.6rem;
+    height: 2.15rem;
     object-fit: contain;
     object-position: left center;
 }
@@ -1632,8 +1632,8 @@ html[data-theme-resolved='dark'] .manake-brand-pill {
 .manake-themed-asset img {
     display: block !important;
     image-rendering: auto;
-    backface-visibility: hidden;
-    transform: translateZ(0);
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
 }
 
 .manake-themed-asset__light {
@@ -1679,6 +1679,10 @@ html[data-theme-resolved='dark'] .manake-themed-asset--swap .manake-themed-asset
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--text-soft);
+}
+
+.manake-preferences-divider {
+    background: color-mix(in oklab, var(--border) 84%, white 16%);
 }
 
 .manake-preferences-popover__hint {
@@ -1833,6 +1837,31 @@ html[data-theme-resolved='dark'] .manake-themed-asset--swap .manake-themed-asset
 
 .manake-preferences-grid--stacked {
     grid-template-columns: minmax(0, 1fr);
+}
+
+.manake-settings-section {
+    border-color: color-mix(in oklab, var(--border) 82%, white 18%) !important;
+    background: linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--surface) 98%, white 2%) 0%,
+        color-mix(in oklab, var(--surface-2) 92%, var(--surface)) 100%
+    ) !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.manake-settings-option {
+    border-color: color-mix(in oklab, var(--border) 84%, white 16%) !important;
+    background: linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--surface) 99%, white 1%) 0%,
+        color-mix(in oklab, var(--surface-2) 94%, var(--surface)) 100%
+    ) !important;
+    color: var(--text) !important;
+}
+
+.manake-settings-summary {
+    border-color: color-mix(in oklab, var(--border) 84%, white 16%) !important;
+    background: color-mix(in oklab, var(--surface-2) 92%, var(--surface)) !important;
 }
 
 .manake-preferences-choice--compact {
@@ -2014,6 +2043,15 @@ html[data-theme-resolved='dark'] .manake-preferences-popover {
         0 14px 28px rgba(2, 6, 23, 0.22);
 }
 
+html[data-theme-resolved='dark'] .manake-preferences-popover__title,
+html[data-theme-resolved='dark'] .manake-preferences-popover__label {
+    color: color-mix(in oklab, var(--text-muted) 84%, white 16%);
+}
+
+html[data-theme-resolved='dark'] .manake-preferences-divider {
+    background: color-mix(in oklab, var(--border) 78%, transparent 22%);
+}
+
 html[data-theme-resolved='dark'] .manake-preferences-choice {
     border-color: color-mix(in oklab, var(--border) 82%, transparent) !important;
     background: linear-gradient(
@@ -2067,6 +2105,31 @@ html[data-theme-resolved='dark'] .manake-preferences-choice.is-active .manake-pr
 
 html[data-theme-resolved='dark'] .manake-preferences-choice.is-active .manake-preferences-choice__check {
     color: #fff;
+}
+
+html[data-theme-resolved='dark'] .manake-settings-section {
+    border-color: color-mix(in oklab, var(--border) 78%, transparent 22%) !important;
+    background: linear-gradient(
+        180deg,
+        rgba(12, 24, 46, 0.98) 0%,
+        rgba(9, 18, 35, 0.99) 100%
+    ) !important;
+    box-shadow: 0 16px 28px rgba(2, 6, 23, 0.22);
+}
+
+html[data-theme-resolved='dark'] .manake-settings-option {
+    border-color: color-mix(in oklab, var(--border) 76%, transparent 24%) !important;
+    background: linear-gradient(
+        180deg,
+        rgba(17, 31, 58, 0.96) 0%,
+        rgba(13, 24, 46, 0.99) 100%
+    ) !important;
+    color: var(--text) !important;
+}
+
+html[data-theme-resolved='dark'] .manake-settings-summary {
+    border-color: color-mix(in oklab, var(--border) 76%, transparent 24%) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
 }
 
 .manake-auth-chip,

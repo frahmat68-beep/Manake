@@ -38,7 +38,7 @@
             </div>
         </section>
 
-        <div class="h-px bg-slate-200/90"></div>
+        <div class="manake-preferences-divider h-px"></div>
 
         <section class="space-y-2.5">
             <p class="manake-preferences-popover__label">{{ __('ui.nav.theme') }}</p>

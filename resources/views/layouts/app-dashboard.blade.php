@@ -1,5 +1,18 @@
+@php
+    $initialThemePreference = $themePreference ?? request()->attributes->get('theme_preference', 'light');
+    $initialThemeResolved = $themeResolved ?? request()->attributes->get(
+        'theme_resolved',
+        $initialThemePreference === 'dark' ? 'dark' : 'light'
+    );
+@endphp
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" class="scroll-smooth">
+<html
+    lang="{{ app()->getLocale() }}"
+    class="scroll-smooth {{ $initialThemeResolved === 'dark' ? 'dark' : '' }}"
+    data-theme="manake-brand"
+    data-theme-preference="{{ $initialThemePreference }}"
+    data-theme-resolved="{{ $initialThemeResolved }}"
+>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">

@@ -9,7 +9,7 @@
 @php
     $lightUrl = site_asset($light);
     $darkUrl = $dark ? site_asset($dark) : $lightUrl;
-    $resolvedTheme = request()->attributes->get('theme_resolved', 'light');
+    $resolvedTheme = $themeResolved ?? request()->attributes->get('theme_resolved', 'light');
     $initialSrc = $swapInDark && $resolvedTheme === 'dark' ? $darkUrl : $lightUrl;
 @endphp
 
