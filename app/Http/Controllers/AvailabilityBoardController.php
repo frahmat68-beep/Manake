@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipment;
-use App\Models\OrderItem;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Services\AvailabilityService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AvailabilityBoardController extends Controller
 {
-    public function index(Request $request, AvailabilityService $availability): View
+    public function index(Request $request, AvailabilityService $availability): View| \Illuminate\Http\JsonResponse
     {
         try {
             $windowStartDate = $this->bookingWindowStart();
@@ -248,6 +248,14 @@ class AvailabilityBoardController extends Controller
                 ],
             ]);
         } catch (\Throwable $exception) {
+            if (config('app.debug')) {
+                return response()->json([
+                    'error' => $exception->getMessage(),
+                    'file' => $exception->getFile(),
+                    'line' => $exception->getLine(),
+                    'trace' => explode("\n", $exception->getTraceAsString()),
+                ], 500);
+            }
             report($exception);
             return $this->fallbackView($search ?? '', now()->startOfMonth(), now()->startOfMonth(), now()->endOfMonth(), now()->startOfWeek(), now()->endOfWeek(), now(), now(), now()->addMonths(3));
         }
@@ -286,78 +294,175 @@ class AvailabilityBoardController extends Controller
     private function loadMonthlySchedules(Collection $equipmentIds, Carbon $calendarStart, Carbon $calendarEnd): Collection
     {
         if (
-            ! schema_table_exists_cached('order_items')
+            $equipmentIds->isEmpty()
+            || ! schema_table_exists_cached('order_items')
             || ! schema_table_exists_cached('orders')
         ) {
             return collect();
         }
 
         return OrderItem::query()
-            ->with(['order:id,user_id,order_number,midtrans_order_id,status_pesanan,status_pembayaran,rental_start_date,rental_end_date,created_at'])
-            ->whereIn('equipment_id', $equipmentIds)
+            ->with([
+                'equipment:id,name',
+                'order:id,order_number,status_pesanan,rental_start_date,rental_end_date',
+            ])
+            ->whereIn('equipment_id', $equipmentIds->all())
             ->whereHas('order', function ($query) use ($calendarStart, $calendarEnd) {
-                $query->whereIn('status_pesanan', Order::HOLD_SLOT_STATUSES)
+                $query
+                    ->whereIn('status_pesanan', Order::HOLD_SLOT_STATUSES)
                     ->whereDate('rental_start_date', '<=', $calendarEnd->toDateString())
                     ->whereDate('rental_end_date', '>=', $calendarStart->toDateString());
             })
+            ->latest('id')
             ->limit(180)
-            ->get()
+            ->get(['id', 'order_id', 'equipment_id', 'qty', 'rental_start_date', 'rental_end_date'])
             ->map(function (OrderItem $item) {
                 $startDate = $item->rental_start_date ?: $item->order?->rental_start_date;
                 $endDate = $item->rental_end_date ?: $item->order?->rental_end_date;
-
                 if (! $startDate || ! $endDate) {
                     return null;
                 }
 
                 return [
-                    'id' => (int) $item->id,
-                    'equipment_id' => (int) $item->equipment_id,
-                    'order_number' => (string) ($item->order?->order_number ?: $item->order?->midtrans_order_id),
-                    'start_date' => (string) $startDate->toDateString(),
-                    'end_date' => (string) $endDate->toDateString(),
-                    'qty' => (int) $item->qty,
+                    'equipment_name' => (string) ($item->equipment?->name ?? 'Equipment'),
+                    'order_number' => (string) ($item->order?->order_number ?? ('ORD-' . ($item->order?->id ?? 0))),
+                    'status_pesanan' => (string) ($item->order?->status_pesanan ?? '-'),
+                    'qty' => max((int) ($item->qty ?? 0), 1),
+                    'start_date' => Carbon::parse($startDate)->toDateString(),
+                    'end_date' => Carbon::parse($endDate)->toDateString(),
                 ];
             })
             ->filter()
+            ->sortBy([
+                ['start_date', 'asc'],
+                ['equipment_name', 'asc'],
+            ])
             ->values();
     }
 
     private function buildDailySchedulesByDate(Collection $monthlySchedules, Carbon $calendarStart, Carbon $calendarEnd): array
     {
-        $result = [];
-        for ($cursor = $calendarStart->copy(); $cursor->lte($calendarEnd); $cursor->addDay()) {
-            $result[$cursor->toDateString()] = [];
+        if ($monthlySchedules->isEmpty()) {
+            return [];
         }
+
+        $result = [];
 
         foreach ($monthlySchedules as $schedule) {
             $startDate = $this->parseDate(data_get($schedule, 'start_date'));
             $endDate = $this->parseDate(data_get($schedule, 'end_date'));
 
-            if (! $startDate || ! $endDate) {
+            if (! $startDate || ! $endDate || $endDate->lt($startDate)) {
                 continue;
             }
 
-            for ($cursor = $startDate->copy(); $cursor->lte($endDate); $cursor->addDay()) {
+            $rangeStart = $startDate->lt($calendarStart) ? $calendarStart->copy() : $startDate->copy();
+            $rangeEnd = $endDate->gt($calendarEnd) ? $calendarEnd->copy() : $endDate->copy();
+
+            for ($cursor = $rangeStart->copy(); $cursor->lte($rangeEnd); $cursor->addDay()) {
                 $dateKey = $cursor->toDateString();
-                if (isset($result[$dateKey])) {
-                    $result[$dateKey][] = $schedule;
+                if (! array_key_exists($dateKey, $result)) {
+                    $result[$dateKey] = [];
                 }
+
+                $result[$dateKey][] = [
+                    'equipment_name' => (string) data_get($schedule, 'equipment_name', 'Equipment'),
+                    'status_pesanan' => (string) data_get($schedule, 'status_pesanan', '-'),
+                    'status_label' => $this->resolveOrderStatusLabel((string) data_get($schedule, 'status_pesanan', '')),
+                    'qty' => max((int) data_get($schedule, 'qty', 1), 1),
+                    'start_date' => $startDate->toDateString(),
+                    'end_date' => $endDate->toDateString(),
+                ];
             }
         }
 
         foreach ($result as $dateKey => $rows) {
             usort($rows, function (array $left, array $right): int {
-                $res = strcmp((string) data_get($left, 'start_date', ''), (string) data_get($right, 'start_date', ''));
-                if ($res === 0) {
-                    return ((int) data_get($left, 'id', 0)) - ((int) data_get($right, 'id', 0));
+                $leftName = (string) ($left['equipment_name'] ?? '');
+                $rightName = (string) ($right['equipment_name'] ?? '');
+                $nameCompare = strcasecmp($leftName, $rightName);
+                if ($nameCompare !== 0) {
+                    return $nameCompare;
                 }
-                return $res;
+
+                return strcasecmp((string) ($left['status_label'] ?? ''), (string) ($right['status_label'] ?? ''));
             });
+
             $result[$dateKey] = $rows;
         }
 
         return $result;
+    }
+
+    private function resolveMonthDate(string $monthValue): Carbon
+    {
+        if ($monthValue !== '' && preg_match('/^\d{4}-\d{2}$/', $monthValue) === 1) {
+            try {
+                return Carbon::createFromFormat('Y-m', $monthValue)->startOfMonth();
+            } catch (\Throwable $exception) {
+                // Fallback to current month.
+            }
+        }
+
+        return now()->startOfMonth();
+    }
+
+    private function resolveSelectedDate(
+        string $selectedValue,
+        Carbon $calendarStart,
+        Carbon $calendarEnd,
+        Carbon $windowStartDate,
+        Carbon $windowEndDate
+    ): Carbon
+    {
+        $defaultDate = $windowStartDate->copy();
+        $selectedDate = null;
+
+        if ($selectedValue !== '') {
+            try {
+                $selectedDate = Carbon::parse($selectedValue)->startOfDay();
+            } catch (\Throwable $exception) {
+                $selectedDate = null;
+            }
+        }
+
+        if (! $selectedDate) {
+            $selectedDate = $defaultDate;
+        }
+
+        if ($selectedDate->lt($windowStartDate)) {
+            $selectedDate = $windowStartDate->copy();
+        }
+
+        if ($selectedDate->gt($windowEndDate)) {
+            $selectedDate = $windowEndDate->copy();
+        }
+
+        if ($selectedDate->lt($calendarStart) || $selectedDate->gt($calendarEnd)) {
+            if ($windowStartDate->gt($calendarStart) && $windowStartDate->lt($calendarEnd)) {
+                return $windowStartDate->copy()->startOfDay();
+            }
+
+            return $calendarStart->copy()->startOfDay();
+        }
+
+        return $selectedDate;
+    }
+
+    private function clampMonthDate(Carbon $monthDate, Carbon $windowStartDate, Carbon $windowEndDate): Carbon
+    {
+        $minMonth = $windowStartDate->copy()->startOfMonth();
+        $maxMonth = $windowEndDate->copy()->startOfMonth();
+
+        if ($monthDate->lt($minMonth)) {
+            return $minMonth;
+        }
+
+        if ($monthDate->gt($maxMonth)) {
+            return $maxMonth;
+        }
+
+        return $monthDate;
     }
 
     private function bookingWindowStart(): Carbon
@@ -367,127 +472,80 @@ class AvailabilityBoardController extends Controller
 
     private function bookingWindowEnd(): Carbon
     {
-        return now()->addMonths(4)->endOfMonth();
-    }
-
-    private function resolveMonthDate(string $raw): Carbon
-    {
-        if ($raw === '') {
-            return now()->startOfMonth();
-        }
-
-        try {
-            return Carbon::createFromFormat('Y-m', $raw)->startOfMonth();
-        } catch (\Throwable $exception) {
-            return now()->startOfMonth();
-        }
-    }
-
-    private function clampMonthDate(Carbon $date, Carbon $start, Carbon $end): Carbon
-    {
-        if ($date->isBefore($start->copy()->startOfMonth())) {
-            return $start->copy()->startOfMonth();
-        }
-        if ($date->isAfter($end->copy()->startOfMonth())) {
-            return $end->copy()->startOfMonth();
-        }
-        return $date;
-    }
-
-    private function resolveSelectedDate(string $raw, Carbon $calendarStart, Carbon $calendarEnd, Carbon $windowStart, Carbon $windowEnd): Carbon
-    {
-        $selectedDate = null;
-        if ($raw !== '') {
-            try {
-                $selectedDate = Carbon::parse($raw)->startOfDay();
-            } catch (\Throwable $exception) {
-                $selectedDate = null;
-            }
-        }
-
-        if (! $selectedDate) {
-            $selectedDate = now()->startOfDay();
-        }
-
-        if ($selectedDate->isBefore($calendarStart)) {
-            $selectedDate = $calendarStart->copy();
-        }
-        if ($selectedDate->isAfter($calendarEnd)) {
-            $selectedDate = $calendarEnd->copy();
-        }
-
-        if (! $selectedDate->betweenIncluded($windowStart, $windowEnd)) {
-            return now()->startOfDay();
-        }
-
-        return $selectedDate;
-    }
-
-    private function resolveEquipmentImageUrl(Equipment $equipment): ?string
-    {
-        $imagePath = (string) ($equipment->main_image_url ?? $equipment->image_url ?? '');
-        if ($imagePath === '') {
-            return null;
-        }
-
-        if (str_starts_with($imagePath, 'http')) {
-            return $imagePath;
-        }
-
-        if (function_exists('site_media_url')) {
-            $resolvedImageUrl = site_media_url($imagePath);
-            if ($resolvedImageUrl) {
-                return $resolvedImageUrl;
-            }
-        }
-
-        return asset('storage/' . ltrim($imagePath, '/'));
+        return now()->addMonthsNoOverflow(3)->startOfDay();
     }
 
     private function resolveEquipmentStatusLabel(string $status): string
     {
         return match ($status) {
-            'ready' => 'Tersedia',
-            'maintenance' => 'Pemeliharaan',
-            'broken' => 'Rusak',
-            'unavailable' => 'Tidak Tersedia',
-            default => str($status)->replace('_', ' ')->title()->value(),
-        };
-    }
-
-    private function resolveSourceLabel(string $type): string
-    {
-        return match ($type) {
-            'booking' => 'Disewa',
-            'maintenance' => 'Pemeliharaan',
-            'buffer_before' => 'Persiapan (Buffer)',
-            'buffer_after' => 'Pengembalian (Buffer)',
-            default => str($type)->replace('_', ' ')->title()->value(),
+            'ready' => 'Ready',
+            'maintenance' => 'Maintenance',
+            'unavailable' => 'Unavailable',
+            default => strtoupper($status),
         };
     }
 
     private function resolveStatusBadgeClass(string $status): string
     {
         return match ($status) {
-            'ready' => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400',
-            'maintenance' => 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400',
-            'broken' => 'bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400',
-            default => 'bg-slate-100 text-slate-700 dark:bg-slate-500/10 dark:text-slate-400',
+            'ready' => 'bg-emerald-100 text-emerald-700',
+            'maintenance' => 'bg-amber-100 text-amber-700',
+            'unavailable' => 'bg-rose-100 text-rose-700',
+            default => 'bg-slate-100 text-slate-700',
+        };
+    }
+
+    private function resolveOrderStatusLabel(string $status): string
+    {
+        return match ($status) {
+            'menunggu_pembayaran' => 'Menunggu Pembayaran',
+            'diproses' => 'Diproses',
+            'lunas' => 'Lunas',
+            'barang_dipinjam' => 'Sedang Disewa',
+            'barang_diambil' => 'Sedang Disewa',
+            'dikembalikan' => 'Dikembalikan',
+            'selesai' => 'Selesai',
+            'dibatalkan' => 'Dibatalkan',
+            'barang_rusak' => 'Klaim Kerusakan',
+            default => str($status)->replace('_', ' ')->title()->value(),
         };
     }
 
     private function parseDate(mixed $value): ?Carbon
     {
-        if ($value instanceof Carbon) {
-            return $value->copy()->startOfDay();
-        }
         if ($value === null || $value === '') {
             return null;
         }
+
         try {
             return Carbon::parse((string) $value)->startOfDay();
         } catch (\Throwable $exception) {
             return null;
         }
+    }
+
+    private function resolveEquipmentImageUrl(Equipment $equipment): string
+    {
+        $imagePath = (string) ($equipment->image_path ?? $equipment->image ?? '');
+
+        if ($imagePath !== '') {
+            $resolvedImageUrl = site_media_url($imagePath);
+            if ($resolvedImageUrl) {
+                return $resolvedImageUrl;
+            }
+        }
+
+        return site_asset('MANAKE-FAV-M.png');
+    }
+
+    private function resolveSourceLabel(string $type): string
+    {
+        return match ($type) {
+            'booking' => 'Dipakai',
+            'buffer_before' => 'Buffer Sebelum',
+            'buffer_after' => 'Buffer Sesudah',
+            'maintenance' => 'Maintenance',
+            default => str($type)->replace('_', ' ')->title()->value(),
+        };
     }
 }
