@@ -18,12 +18,12 @@ class SecurityHeaders
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 
         $csp = "default-src 'self'; ";
-        $csp .= "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://app.midtrans.com https://app.sandbox.midtrans.com https://cdn.jsdelivr.net https://unpkg.com https://accounts.google.com; ";
+        $csp .= "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.midtrans.com https://cdn.jsdelivr.net https://unpkg.com https://accounts.google.com; ";
         $csp .= "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com; ";
         $csp .= "font-src 'self' https://fonts.gstatic.com data:; ";
         $csp .= "img-src 'self' data: https:; ";
-        $csp .= "connect-src 'self' https://app.midtrans.com https://app.sandbox.midtrans.com https://cdn.jsdelivr.net https://unpkg.com; ";
-        $csp .= "frame-src 'self' https://app.midtrans.com https://app.sandbox.midtrans.com https://accounts.google.com; ";
+        $csp .= "connect-src 'self' https://*.midtrans.com https://cdn.jsdelivr.net https://unpkg.com; ";
+        $csp .= "frame-src 'self' https://*.midtrans.com https://accounts.google.com; ";
 
         $response->headers->set('Content-Security-Policy', $csp);
 

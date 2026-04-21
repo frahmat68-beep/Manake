@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Equipment;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class NvidiaAiService
 {
@@ -91,31 +92,40 @@ class NvidiaAiService
      */
     protected function buildSystemPrompt(): string
     {
-        $siteName = site_setting('brand.name', 'Manake');
-        $tagline = site_setting('brand.tagline', 'Rental Alat Produksi Profesional');
-        $owner = "Kiki Rachmat";
-        
-        // Fetch Categories with safety
-        $categories = schema_table_exists_cached('categories') 
-            ? Category::all(['name', 'description'])->map(fn($c) => "- {$c->name}: {$c->description}")->implode("\n")
-            : "Data kategori sedang tidak tersedia.";
-        
-        if (empty($categories)) {
-            $categories = "Belum ada kategori yang terdaftar.";
-        }
-        
-        // Fetch Ready Equipments with more detail and safety
-        $equipments = schema_table_exists_cached('equipments')
-            ? Equipment::with('category:id,name')
-                ->where('status', 'ready')
-                ->get(['name', 'price_per_day', 'description', 'stock', 'category_id', 'slug'])
-                ->map(function($e) {
-                    return "- {$e->name} [Slug: {$e->slug}] ({$e->category?->name}): Rp" . number_format($e->price_per_day, 0, ',', '.') . "/hari. Stok: {$e->stock}. Deskripsi: {$e->description}";
-                })->implode("\n")
-            : "Data alat sedang tidak tersedia.";
+        try {
+            $siteName = site_setting('brand.name', 'Manake');
+            $tagline = site_setting('brand.tagline', 'Rental Alat Produksi Profesional');
+            $owner = "Kiki Rachmat";
+            
+            // Fetch Categories with safety
+            $categories = schema_table_exists_cached('categories') 
+                ? Category::all(['name', 'description'])->map(fn($c) => "- {$c->name}: {$c->description}")->implode("\n")
+                : "Data kategori sedang tidak tersedia.";
+            
+            if (empty($categories)) {
+                $categories = "Belum ada kategori yang terdaftar.";
+            }
+            
+            // Fetch Ready Equipments with more detail and safety
+            $equipments = schema_table_exists_cached('equipments')
+                ? Equipment::with('category:id,name')
+                    ->where('status', 'ready')
+                    ->get(['name', 'price_per_day', 'description', 'stock', 'category_id', 'slug'])
+                    ->map(function($e) {
+                        return "- {$e->name} [Slug: {$e->slug}] ({$e->category?->name}): Rp" . number_format($e->price_per_day, 0, ',', '.') . "/hari. Stok: {$e->stock}. Deskripsi: {$e->description}";
+                    })->implode("\n")
+                : "Data alat sedang tidak tersedia.";
 
-        if (empty($equipments)) {
-            $equipments = "Semua alat sedang tidak tersedia atau dalam penyewaan.";
+            if (empty($equipments)) {
+                $equipments = "Semua alat sedang tidak tersedia atau dalam penyewaan.";
+            }
+        } catch (Throwable $e) {
+            Log::error('Chatbot Prompt Building Failure: ' . $e->getMessage());
+            $siteName = 'Manake';
+            $tagline = 'Rental Alat Produksi Profesional';
+            $owner = "Kiki Rachmat";
+            $categories = "Data kategori sedang dimuat...";
+            $equipments = "Data alat sedang dimuat...";
         }
 
         return "Kamu adalah 'Manake Guide', asisten AI cerdas untuk platform '{$siteName}' ({$tagline}).
