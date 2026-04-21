@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatbotController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AssetController;
@@ -68,6 +69,10 @@ Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/rental-rules', [PageController::class, 'rentalRules'])->name('rental.rules');
 Route::post('/payment/callback', [PaymentController::class, 'handleNotification'])->name('payment.callback');
 Route::post('/midtrans/callback', [PaymentController::class, 'handleNotification'])->name('midtrans.callback');
+
+// Chatbot Routes
+Route::post('/chatbot/message', [ChatbotController::class, 'chat'])->name('chatbot.message')->middleware('throttle:10,1');
+Route::post('/chatbot/reset', [ChatbotController::class, 'reset'])->name('chatbot.reset');
 
 Route::middleware('auth.feature')->group(function () {
     Route::get('/cart', [CartController::class, 'show'])->name('cart');

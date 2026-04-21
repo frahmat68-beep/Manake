@@ -775,5 +775,6 @@
     })();
 </script>
 
+    <x-chatbot-widget />
 </body>
 </html>
