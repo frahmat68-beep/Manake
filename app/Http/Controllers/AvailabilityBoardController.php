@@ -18,209 +18,18 @@ class AvailabilityBoardController extends Controller
     public function index(Request $request, AvailabilityService $availability): View| \Illuminate\Http\JsonResponse
     {
         try {
-            $windowStartDate = $this->bookingWindowStart();
-            $windowEndDate = $this->bookingWindowEnd();
-            
-            $monthRaw = (string) $request->query('month', '');
-            $monthDate = $this->resolveMonthDate($monthRaw);
-            $monthDate = $this->clampMonthDate($monthDate, $windowStartDate, $windowEndDate);
-            
-            $monthStart = $monthDate->copy()->startOfMonth();
+            $windowStartDate = now()->startOfDay();
+            $windowEndDate = now()->addMonths(3);
+            $monthDate = now()->startOfMonth();
+            $monthStart = $monthDate->copy();
             $monthEnd = $monthDate->copy()->endOfMonth();
-            $calendarStart = $monthStart->copy()->startOfWeek(Carbon::MONDAY);
-            $calendarEnd = $monthEnd->copy()->endOfWeek(Carbon::SUNDAY);
-            
-            $dateRaw = (string) $request->query('date', '');
-            $selectedDate = $this->resolveSelectedDate(
-                $dateRaw,
-                $calendarStart,
-                $calendarEnd,
-                $windowStartDate,
-                $windowEndDate
-            );
-            $search = trim((string) $request->query('q', ''));
-
-            if (! schema_table_exists_cached('equipments')) {
-                return $this->fallbackView($search, $monthDate, $monthStart, $monthEnd, $calendarStart, $calendarEnd, $selectedDate, $windowStartDate, $windowEndDate);
-            }
-
-            $dateKeys = [];
-            $calendarTotals = [];
-            for ($cursor = $calendarStart->copy(); $cursor->lte($calendarEnd); $cursor->addDay()) {
-                $dateKey = $cursor->toDateString();
-                $dateKeys[] = $dateKey;
-                $calendarTotals[$dateKey] = [
-                    'reserved_units' => 0,
-                    'busy_equipments' => 0,
-                    'booking_equipments' => 0,
-                    'buffer_equipments' => 0,
-                    'status_blocked_equipments' => 0,
-                ];
-            }
-
-            $equipmentQuery = Equipment::query()
-                ->with(['category'])
-                ->orderBy('name');
-
-            if ($search !== '') {
-                $equipmentQuery->where(function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%')
-                        ->orWhere('slug', 'like', '%' . $search . '%');
-                });
-            }
-
-            $equipments = $equipmentQuery->limit(24)->get();
-            $equipmentIds = $equipments->pluck('id')->all();
-
-            // Optimization: Load all reservations for these equipments in one go
-            $allReservations = [];
-            if (!empty($equipmentIds)) {
-                $allReservations = $availability->getBatchDailyReservedUnits($equipments, $calendarStart, $calendarEnd);
-            }
-
-            $selectedDateKey = $selectedDate->toDateString();
-            $equipmentRows = collect();
-            $selectedBusyRows = collect();
-            $selectedFreeRows = collect();
-
-            foreach ($equipments as $equipment) {
-                $daily = $allReservations[$equipment->id] ?? [];
-                $statusValue = (string) ($equipment->status ?? 'ready');
-                $statusLabel = $this->resolveEquipmentStatusLabel($statusValue);
-
-                $dayCells = [];
-                foreach ($dateKeys as $dateKey) {
-                    $reserved = (int) data_get($daily, $dateKey . '.qty', 0);
-                    $available = max((int) $equipment->stock - $reserved, 0);
-                    $isBlockedByStatus = $statusValue !== 'ready';
-                    $isBlocked = $isBlockedByStatus || $available <= 0;
-                    $sourceTypes = collect(data_get($daily, $dateKey . '.sources', []))
-                        ->pluck('type')
-                        ->filter(fn ($type) => is_string($type) && $type !== '')
-                        ->values();
-                    $hasBooking = $sourceTypes->contains(fn (string $type) => in_array($type, ['booking', 'maintenance'], true));
-                    $hasBuffer = $sourceTypes->contains(fn (string $type) => in_array($type, ['buffer_before', 'buffer_after'], true));
-
-                    $dayCells[$dateKey] = [
-                        'reserved' => $reserved,
-                        'available' => $available,
-                        'is_blocked' => $isBlocked,
-                    ];
-
-                    if ($reserved > 0) {
-                        $calendarTotals[$dateKey]['reserved_units'] += $reserved;
-                    }
-                    if ($isBlocked || $reserved > 0) {
-                        $calendarTotals[$dateKey]['busy_equipments']++;
-                    }
-                    if ($isBlockedByStatus) {
-                        $calendarTotals[$dateKey]['status_blocked_equipments']++;
-                    }
-                    if ($hasBooking || $isBlockedByStatus) {
-                        $calendarTotals[$dateKey]['booking_equipments']++;
-                    } elseif ($hasBuffer) {
-                        $calendarTotals[$dateKey]['buffer_equipments']++;
-                    }
-                }
-
-                $selectedCell = $dayCells[$selectedDateKey] ?? [
-                    'reserved' => 0,
-                    'available' => (int) $equipment->stock,
-                    'is_blocked' => $statusValue !== 'ready',
-                ];
-
-                $sources = collect(data_get($daily, $selectedDateKey . '.sources', []));
-                $sourceLabels = $sources
-                    ->pluck('type')
-                    ->filter(fn ($type) => is_string($type) && $type !== '')
-                    ->map(fn (string $type) => $this->resolveSourceLabel($type))
-                    ->unique()
-                    ->values();
-
-                if ($sourceLabels->isEmpty() && $statusValue !== 'ready') {
-                    $sourceLabels = collect([$statusLabel]);
-                }
-
-                $orderNumbers = $sources
-                    ->pluck('order_number')
-                    ->filter(fn ($value) => is_string($value) && trim($value) !== '')
-                    ->unique()
-                    ->values();
-
-                $row = [
-                    'id' => (int) $equipment->id,
-                    'name' => (string) $equipment->name,
-                    'category' => (string) ($equipment->category?->name ?? '-'),
-                    'category_id' => (int) ($equipment->category_id ?? 0),
-                    'slug' => (string) ($equipment->slug ?? ''),
-                    'price_per_day' => (int) ($equipment->price_per_day ?? 0),
-                    'image_url' => $this->resolveEquipmentImageUrl($equipment),
-                    'stock' => (int) ($equipment->stock ?? 0),
-                    'status' => $statusValue,
-                    'status_label' => $statusLabel,
-                    'status_badge_class' => $this->resolveStatusBadgeClass($statusValue),
-                    'day_cells' => $dayCells,
-                    'selected_reserved' => (int) ($selectedCell['reserved'] ?? 0),
-                    'selected_available' => (int) ($selectedCell['available'] ?? 0),
-                    'selected_is_blocked' => (bool) ($selectedCell['is_blocked'] ?? false),
-                    'source_labels' => $sourceLabels,
-                    'order_numbers' => $orderNumbers,
-                ];
-
-                $equipmentRows->push($row);
-
-                if (($row['selected_is_blocked'] ?? false) || ($row['selected_reserved'] ?? 0) > 0) {
-                    $selectedBusyRows->push($row);
-                } else {
-                    $selectedFreeRows->push($row);
-                }
-            }
-
-            $totalEquipments = $equipmentRows->count();
-            $selectedBusyCount = $selectedBusyRows->count();
-            $selectedReservedUnits = (int) $selectedBusyRows->sum('selected_reserved');
-
-            $calendarDays = collect($dateKeys)->map(function (string $dateKey) use ($calendarTotals, $calendarStart, $monthStart, $selectedDateKey, $totalEquipments, $windowStartDate, $windowEndDate) {
-                $date = Carbon::parse($dateKey)->startOfDay();
-                $busyEquipments = (int) data_get($calendarTotals, $dateKey . '.busy_equipments', 0);
-                $reservedUnits = (int) data_get($calendarTotals, $dateKey . '.reserved_units', 0);
-                $bookingEquipments = (int) data_get($calendarTotals, $dateKey . '.booking_equipments', 0);
-                $bufferEquipments = (int) data_get($calendarTotals, $dateKey . '.buffer_equipments', 0);
-                $isSelectable = $date->gte($windowStartDate) && $date->lte($windowEndDate);
-
-                $tone = 'calm';
-                if ($bookingEquipments > 0) {
-                    $tone = 'critical';
-                } elseif ($bufferEquipments > 0) {
-                    $tone = 'busy';
-                }
-
-                return [
-                    'date' => $dateKey,
-                    'day' => $date->day,
-                    'in_month' => $date->month === $monthStart->month,
-                    'is_today' => $date->isSameDay(now()),
-                    'is_selected' => $dateKey === $selectedDateKey,
-                    'is_selectable' => $isSelectable,
-                    'reserved_units' => $reservedUnits,
-                    'busy_equipments' => $busyEquipments,
-                    'booking_equipments' => $bookingEquipments,
-                    'buffer_equipments' => $bufferEquipments,
-                    'available_equipments' => max($totalEquipments - $busyEquipments, 0),
-                    'tone' => $tone,
-                    'week_index' => $date->isBefore($calendarStart) ? 0 : floor($date->diffInDays($calendarStart) / 7),
-                ];
-            });
-
-            $monthlySchedules = $this->loadMonthlySchedules(
-                $equipmentRows->pluck('id')->filter()->values(),
-                $calendarStart,
-                $calendarEnd
-            );
-            $dailySchedulesByDate = $this->buildDailySchedulesByDate($monthlySchedules, $calendarStart, $calendarEnd);
+            $calendarStart = $monthStart->copy()->startOfWeek();
+            $calendarEnd = $monthEnd->copy()->endOfWeek();
+            $selectedDate = now()->startOfDay();
+            $search = '';
 
             return view('availability.board', [
-                'search' => $search,
+                'search' => '',
                 'monthDate' => $monthDate,
                 'monthStart' => $monthStart,
                 'monthEnd' => $monthEnd,
@@ -229,33 +38,21 @@ class AvailabilityBoardController extends Controller
                 'selectedDate' => $selectedDate,
                 'windowStartDate' => $windowStartDate,
                 'windowEndDate' => $windowEndDate,
-                'dateKeys' => $dateKeys,
-                'calendarDays' => $calendarDays,
-                'equipmentRows' => $equipmentRows,
-                'selectedBusyRows' => $selectedBusyRows
-                    ->sortByDesc('selected_reserved')
-                    ->values(),
-                'selectedFreeRows' => $selectedFreeRows
-                    ->sortBy('name')
-                    ->values(),
-                'monthlySchedules' => $monthlySchedules,
-                'dailySchedulesByDate' => $dailySchedulesByDate,
+                'dateKeys' => [],
+                'calendarDays' => collect(),
+                'equipmentRows' => collect(),
+                'selectedBusyRows' => collect(),
+                'selectedFreeRows' => collect(),
+                'monthlySchedules' => collect(),
+                'dailySchedulesByDate' => [],
                 'summary' => [
-                    'total_equipments' => $totalEquipments,
-                    'busy_equipments' => $selectedBusyCount,
-                    'available_equipments' => max($totalEquipments - $selectedBusyCount, 0),
-                    'reserved_units' => $selectedReservedUnits,
+                    'total_equipments' => 0,
+                    'busy_equipments' => 0,
+                    'available_equipments' => 0,
+                    'reserved_units' => 0,
                 ],
             ]);
         } catch (\Throwable $exception) {
-            if (config('app.debug')) {
-                return response()->json([
-                    'error' => $exception->getMessage(),
-                    'file' => $exception->getFile(),
-                    'line' => $exception->getLine(),
-                    'trace' => explode("\n", $exception->getTraceAsString()),
-                ], 500);
-            }
             report($exception);
             return $this->fallbackView($search ?? '', now()->startOfMonth(), now()->startOfMonth(), now()->endOfMonth(), now()->startOfWeek(), now()->endOfWeek(), now(), now(), now()->addMonths(3));
         }
