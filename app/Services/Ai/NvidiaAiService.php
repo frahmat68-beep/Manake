@@ -34,6 +34,12 @@ class NvidiaAiService
             ]);
         }
 
+        // Check if API keys are configured
+        if (!$this->primaryKey) {
+            Log::error('Nvidia AI Primary API Key is not configured.');
+            return "Maaf, sistem AI sedang dalam pemeliharaan (API Key belum dikonfigurasi). Silakan coba lagi nanti.";
+        }
+
         // Try primary key first
         $response = $this->sendRequest($this->primaryKey, $messages);
 
@@ -67,7 +73,7 @@ class NvidiaAiService
     {
         try {
             return Http::withToken($key)
-                ->timeout(30)
+                ->timeout(9)
                 ->post("{$this->baseUrl}/chat/completions", [
                     'model' => $this->model,
                     'messages' => $messages,

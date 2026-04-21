@@ -218,7 +218,8 @@
                                         return new Intl.NumberFormat(@js($intlLocale)).format(value);
                                     }
                                 }"
-                                class="card group flex h-full flex-col overflow-hidden rounded-[1.6rem] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+                                @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')"
+                                class="card group flex h-full flex-col overflow-hidden rounded-[1.6rem] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
                             >
                                 <div class="media-stage relative flex h-56 items-center justify-center p-4 sm:h-60">
                                     <img

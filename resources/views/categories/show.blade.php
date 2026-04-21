@@ -75,7 +75,11 @@
                                 : 'bg-amber-100 text-amber-700';
                         @endphp
 
-                        <article class="card group flex h-full flex-col overflow-hidden rounded-2xl shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+                        <article 
+                            x-data="{}" 
+                            @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $slug) }}')"
+                            class="card group flex h-full flex-col overflow-hidden rounded-2xl shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
+                        >
                             <div class="relative flex h-56 items-center justify-center bg-slate-50 p-4 sm:h-60">
                                 <img src="{{ $image }}" alt="{{ $name }}" class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105" onerror="this.onerror=null;this.src='{{ $categoryFallbackImage }}';" loading="lazy">
                                 <span class="absolute right-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold {{ $statusClass }}">
