@@ -74,9 +74,9 @@ class AvailabilityBoardController extends Controller
             $equipmentIds = $equipments->pluck('id')->all();
 
             $allReservations = [];
-            // if (!empty($equipmentIds)) {
-            //    $allReservations = $availability->getBatchDailyReservedUnits($equipments, $calendarStart, $calendarEnd);
-            // }
+            if (!empty($equipmentIds)) {
+                $allReservations = $availability->getBatchDailyReservedUnits($equipments, $calendarStart, $calendarEnd);
+            }
 
             $selectedDateKey = $selectedDate->toDateString();
             $equipmentRows = collect();
@@ -221,10 +221,33 @@ class AvailabilityBoardController extends Controller
             );
             $dailySchedulesByDate = $this->buildDailySchedulesByDate($monthlySchedules, $calendarStart, $calendarEnd);
 
-            return response()->json([
-                'equipmentRows' => $equipmentRows,
+            return view('availability.board', [
+                'search' => $search,
+                'monthDate' => $monthDate,
+                'monthStart' => $monthStart,
+                'monthEnd' => $monthEnd,
+                'calendarStart' => $calendarStart,
+                'calendarEnd' => $calendarEnd,
+                'selectedDate' => $selectedDate,
+                'windowStartDate' => $windowStartDate,
+                'windowEndDate' => $windowEndDate,
+                'dateKeys' => $dateKeys,
                 'calendarDays' => $calendarDays,
+                'equipmentRows' => $equipmentRows,
+                'selectedBusyRows' => $selectedBusyRows
+                    ->sortByDesc('selected_reserved')
+                    ->values(),
+                'selectedFreeRows' => $selectedFreeRows
+                    ->sortBy('name')
+                    ->values(),
                 'monthlySchedules' => $monthlySchedules,
+                'dailySchedulesByDate' => $dailySchedulesByDate,
+                'summary' => [
+                    'total_equipments' => $totalEquipments,
+                    'busy_equipments' => $selectedBusyCount,
+                    'available_equipments' => max($totalEquipments - $selectedBusyCount, 0),
+                    'reserved_units' => $selectedReservedUnits,
+                ],
             ]);
         } catch (\Throwable $exception) {
             report($exception);
