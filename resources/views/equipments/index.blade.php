@@ -95,24 +95,24 @@
                     <div class="flex flex-col gap-3">
                         <div class="max-w-3xl">
                             <p class="section-kicker">{{ __('ui.nav.catalog') }}</p>
-                            <h1 class=\"mt-2 text-2xl font-extrabold text-blue-700 sm:text-3xl\">{{ $catalogTitle }}</h1>
-                            <p class=\"mt-2 text-sm text-slate-600 sm:text-base\">{{ $catalogSubtitle }}</p>
+                            <h1 class="mt-2 text-2xl font-extrabold text-blue-700 sm:text-3xl">{{ $catalogTitle }}</h1>
+                            <p class="mt-2 text-sm text-slate-600 sm:text-base">{{ $catalogSubtitle }}</p>
                         </div>
                     </div>
 
-                    <div class=\"surface-band mt-5 rounded-2xl p-4\">
-                        <div class=\"flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between\">
-                            <p class=\"text-xs font-semibold text-slate-500\">{{ $categoryLabel }}</p>
+                    <div class="surface-band mt-5 rounded-2xl p-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                            <p class="text-xs font-semibold text-slate-500">{{ $categoryLabel }}</p>
                             @if ($search !== '')
-                                <a href=\"{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}\" class=\"btn-secondary inline-flex items-center justify-center rounded-xl px-3 py-1.5 text-xs font-semibold transition\">
+                                <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="btn-secondary inline-flex items-center justify-center rounded-xl px-3 py-1.5 text-xs font-semibold transition">
                                     {{ $catalogResetSearchLabel }}
                                 </a>
                             @endif
                         </div>
-                        <div class=\"mt-3 flex flex-wrap gap-2.5 sm:gap-3\">
+                        <div class="mt-3 flex flex-wrap gap-2.5 sm:gap-3">
                             <a
-                                href=\"{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}\"
-                                class=\"catalog-filter-chip rounded-full border px-4 py-1.5 text-[11px] font-bold tracking-tight transition sm:text-xs {{ $activeCategorySlug === '' ? 'border-blue-200 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:text-blue-600' }}\"
+                                href="{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}"
+                                class="catalog-filter-chip rounded-full border px-4 py-1.5 text-[11px] font-bold tracking-tight transition sm:text-xs {{ $activeCategorySlug === '' ? 'border-blue-200 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:text-blue-600' }}"
                             >
                                 {{ $catalogAllCategoriesLabel }}
                             </a>
@@ -124,22 +124,22 @@
                                     }
                                 @endphp
                                 <a
-                                    href=\"{{ route('catalog', $categoryParams) }}\"
-                                    class=\"catalog-filter-chip relative rounded-full border px-4 py-1.5 text-[11px] font-bold tracking-tight transition sm:text-xs {{ $activeCategorySlug === $category->slug ? 'border-blue-200 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:text-blue-600' }}\"
-                                    :class=\"showGuide && activeGuideIndex === {{ $loop->iteration }} ? 'pr-9 border-blue-300 text-blue-700 shadow-md ring-2 ring-blue-100' : ''\"
+                                    href="{{ route('catalog', $categoryParams) }}"
+                                    class="catalog-filter-chip relative rounded-full border px-4 py-1.5 text-[11px] font-bold tracking-tight transition sm:text-xs {{ $activeCategorySlug === $category->slug ? 'border-blue-200 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:text-blue-600' }}"
+                                    :class="showGuide && activeGuideIndex === {{ $loop->iteration }} ? 'pr-9 border-blue-300 text-blue-700 shadow-md ring-2 ring-blue-100' : ''"
                                 >
                                     {{ $category->name }}
                                     <span
                                         x-cloak
-                                        x-show=\"showGuide && activeGuideIndex === {{ $loop->iteration }}\"
+                                        x-show="showGuide && activeGuideIndex === {{ $loop->iteration }}"
                                         x-transition.opacity.duration.200ms
-                                        class=\"idle-hamburger-indicator pointer-events-none absolute right-2.5 top-1/2 text-blue-600\"
-                                        aria-hidden=\"true\"
+                                        class="idle-hamburger-indicator pointer-events-none absolute right-2.5 top-1/2 text-blue-600"
+                                        aria-hidden="true"
                                     >
-                                        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\">
-                                            <line x1=\"5\" y1=\"7\" x2=\"19\" y2=\"7\"></line>
-                                            <line x1=\"8\" y1=\"12\" x2=\"16\" y2=\"12\"></line>
-                                            <line x1=\"10\" y1=\"17\" x2=\"14\" y2=\"17\"></line>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                            <line x1="5" y1="7" x2="19" y2="7"></line>
+                                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            <line x1="10" y1="17" x2="14" y2="17"></line>
                                         </svg>
                                     </span>
                                 </a>
@@ -149,15 +149,15 @@
                 </div>
 
                 @if ($search !== '')
-                    <p class=\"mt-4 text-sm text-slate-500\">
-                        {{ $catalogSearchResultPrefix }} <span class=\"font-semibold text-slate-700\">&quot;{{ $search }}&quot;</span>.
+                    <p class="mt-4 text-sm text-slate-500">
+                        {{ $catalogSearchResultPrefix }} <span class="font-semibold text-slate-700">&quot;{{ $search }}&quot;</span>.
                     </p>
                 @endif
             </div>
         </section>
 
-        <section class=\"bg-slate-100\">
-            <div class=\"mx-auto max-w-7xl space-y-10 px-4 pb-12 sm:px-6\">
+        <section class="bg-slate-100">
+            <div class="mx-auto max-w-7xl space-y-10 px-4 pb-12 sm:px-6">
                 @forelse ($groups as $group)
                     @php
                         $category = $group['category'];
@@ -165,19 +165,19 @@
                     @endphp
 
                     <section>
-                        <div class=\"mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between\">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                             <div>
-                                <h2 class=\"text-2xl font-semibold text-blue-700\">{{ $category->name }}</h2>
+                                <h2 class="text-2xl font-semibold text-blue-700">{{ $category->name }}</h2>
                                 @if (!empty($category->description))
-                                    <p class=\"text-sm text-slate-500\">{{ $category->description }}</p>
+                                    <p class="text-sm text-slate-500">{{ $category->description }}</p>
                                 @endif
                             </div>
-                            <span class=\"rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600\">
+                            <span class="rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600">
                                 {{ $items->count() }} {{ $catalogItemSuffix }}
                             </span>
                         </div>
 
-                        <div class=\"grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3\">
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             @foreach ($items as $item)
                             @php
                                 $statusValue = $item->status ?? ($item->stock > 0 ? 'ready' : 'unavailable');
@@ -195,7 +195,7 @@
                             @endphp
 
                             <article
-                                x-data=\"{
+                                x-data="{
                                     quickOpen: false,
                                     quickQty: 1,
                                     quickStart: '',
@@ -217,53 +217,53 @@
                                     formatIdr(value) {
                                         return new Intl.NumberFormat(@js($intlLocale)).format(value);
                                     }
-                                }\"
-                                @click=\"if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')\"
-                                class=\"card group flex h-full flex-col overflow-hidden rounded-[1.6rem] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg cursor-pointer\"
+                                }"
+                                @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')"
+                                class="card group flex h-full flex-col overflow-hidden rounded-[1.6rem] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
                             >
-                                <div class=\"media-stage relative flex h-56 items-center justify-center p-4 sm:h-60\">
+                                <div class="media-stage relative flex h-56 items-center justify-center p-4 sm:h-60">
                                     <img
-                                        src=\"{{ $image }}\"
-                                        alt=\"{{ $item->name }}\"
-                                        class=\"h-full w-full object-contain transition-transform duration-300 group-hover:scale-105\"
-                                        onerror=\"this.onerror=null;this.src='{{ $catalogFallbackImage }}';\"
-                                        loading=\"{{ $prioritizeImage ? 'eager' : 'lazy' }}\"
-                                        fetchpriority=\"{{ $prioritizeImage ? 'high' : 'auto' }}\"
-                                        decoding=\"async\"
+                                        src="{{ $image }}"
+                                        alt="{{ $item->name }}"
+                                        class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                                        onerror="this.onerror=null;this.src='{{ $catalogFallbackImage }}';"
+                                        loading="{{ $prioritizeImage ? 'eager' : 'lazy' }}"
+                                        fetchpriority="{{ $prioritizeImage ? 'high' : 'auto' }}"
+                                        decoding="async"
                                     >
-                                    <span class=\"badge-status absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold\">
+                                    <span class="badge-status absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold">
                                         {{ $item->category?->name ?? __('app.category.title') }}
                                     </span>
-                                    <span class=\"absolute right-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold {{ $statusClass }}\">
+                                    <span class="absolute right-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold {{ $statusClass }}">
                                         {{ $statusLabel }}
                                     </span>
                                 </div>
 
-                                <div class=\"flex flex-1 flex-col p-5\">
-                                    <h3 class=\"min-h-[3.4rem] text-lg font-semibold leading-snug text-slate-900\">{{ $item->name }}</h3>
-                                    <p class=\"mt-2 text-xs text-slate-500\">{{ __('app.product.price_per_day') }}</p>
-                                    <p class=\"text-lg font-semibold text-slate-900\">{{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}</p>
+                                <div class="flex flex-1 flex-col p-5">
+                                    <h3 class="min-h-[3.4rem] text-lg font-semibold leading-snug text-slate-900">{{ $item->name }}</h3>
+                                    <p class="mt-2 text-xs text-slate-500">{{ __('app.product.price_per_day') }}</p>
+                                    <p class="text-lg font-semibold text-slate-900">{{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}</p>
 
-                                    <div class=\"mt-4 grid grid-cols-3 gap-2 text-center\">
-                                        <div class=\"surface-band rounded-lg px-2 py-2\">
-                                            <p class=\"text-[10px] uppercase tracking-wide text-slate-500\">{{ $catalogStockLabel }}</p>
-                                            <p class=\"mt-1 text-sm font-semibold text-slate-900\">{{ $item->stock }}</p>
+                                    <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+                                        <div class="surface-band rounded-lg px-2 py-2">
+                                            <p class="text-[10px] uppercase tracking-wide text-slate-500">{{ $catalogStockLabel }}</p>
+                                            <p class="mt-1 text-sm font-semibold text-slate-900">{{ $item->stock }}</p>
                                         </div>
-                                        <div class=\"surface-band rounded-lg px-2 py-2\">
-                                            <p class=\"text-[10px] uppercase tracking-wide text-slate-500\">{{ $catalogInUseLabel }}</p>
-                                            <p class=\"mt-1 text-sm font-semibold text-amber-600\">{{ $reservedUnits }}</p>
+                                        <div class="surface-band rounded-lg px-2 py-2">
+                                            <p class="text-[10px] uppercase tracking-wide text-slate-500">{{ $catalogInUseLabel }}</p>
+                                            <p class="mt-1 text-sm font-semibold text-amber-600">{{ $reservedUnits }}</p>
                                         </div>
-                                        <div class=\"surface-band rounded-lg px-2 py-2\">
-                                            <p class=\"text-[10px] uppercase tracking-wide text-slate-500\">{{ $catalogAvailableLabel }}</p>
-                                            <p class=\"mt-1 text-sm font-semibold {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}\">{{ $availableUnits }}</p>
+                                        <div class="surface-band rounded-lg px-2 py-2">
+                                            <p class="text-[10px] uppercase tracking-wide text-slate-500">{{ $catalogAvailableLabel }}</p>
+                                            <p class="mt-1 text-sm font-semibold {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}">{{ $availableUnits }}</p>
                                         </div>
                                     </div>
-                                    <p class=\"mt-2 text-[11px] text-slate-500\">{{ $catalogAvailabilityNote }}</p>
+                                    <p class="mt-2 text-[11px] text-slate-500">{{ $catalogAvailabilityNote }}</p>
 
-                                    <div class=\"mt-4 mt-auto space-y-3\">
+                                    <div class="mt-4 mt-auto space-y-3">
                                         <a
-                                            href=\"{{ route('product.show', $item->slug) }}\"
-                                            class=\"btn-secondary inline-flex w-full items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition\"
+                                            href="{{ route('product.show', $item->slug) }}"
+                                            class="btn-secondary inline-flex w-full items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition"
                                         >
                                             {{ __('app.actions.view_detail') }}
                                         </a>
@@ -271,14 +271,14 @@
                                         @auth
                                             @if ($canRent)
                                                 <button
-                                                    type=\"button\"
-                                                    class=\"btn-primary inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition\"
-                                                    @click=\"quickOpen = true; quickQty = 1; quickStart = ''; quickEnd = '';\"
+                                                    type="button"
+                                                    class="btn-primary inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition"
+                                                    @click="quickOpen = true; quickQty = 1; quickStart = ''; quickEnd = '';"
                                                 >
                                                     {{ $catalogQuickOrderButton }}
                                                 </button>
                                             @else
-                                                <button type=\"button\" disabled class=\"inline-flex w-full cursor-not-allowed items-center justify-center rounded-xl bg-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-500\">
+                                                <button type="button" disabled class="inline-flex w-full cursor-not-allowed items-center justify-center rounded-xl bg-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-500">
                                                     {{ $catalogOutOfStockButton }}
                                                 </button>
                                             @endif
@@ -287,14 +287,14 @@
                                         @guest
                                             @if ($canRent)
                                                 <a
-                                                    href=\"{{ route('login', ['reason' => 'cart']) }}\"
-                                                    @click.prevent=\"window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: 'login' }))\"
-                                                    class=\"btn-primary inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition\"
+                                                    href="{{ route('login', ['reason' => 'cart']) }}"
+                                                    @click.prevent="window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: 'login' }))"
+                                                    class="btn-primary inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition"
                                                 >
                                                     {{ $catalogLoginToOrderButton }}
                                                 </a>
                                             @else
-                                                <button type=\"button\" disabled class=\"inline-flex w-full cursor-not-allowed items-center justify-center rounded-xl bg-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-500\">
+                                                <button type="button" disabled class="inline-flex w-full cursor-not-allowed items-center justify-center rounded-xl bg-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-500">
                                                     {{ $catalogOutOfStockButton }}
                                                 </button>
                                             @endif
@@ -304,103 +304,103 @@
 
                                 @auth
                                     @if ($canRent)
-                                        <template x-teleport=\"body\">
+                                        <template x-teleport="body">
                                             <div
                                                 x-cloak
-                                                x-show=\"quickOpen\"
+                                                x-show="quickOpen"
                                                 x-transition.opacity
-                                                class=\"fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/45 px-4\"
-                                                @click.self=\"quickOpen = false\"
-                                                @keydown.escape.window=\"quickOpen = false\"
+                                                class="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/45 px-4"
+                                                @click.self="quickOpen = false"
+                                                @keydown.escape.window="quickOpen = false"
                                             >
-                                                <div class=\"w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl\">
-                                                    <div class=\"flex items-start justify-between gap-3\">
+                                                <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
+                                                    <div class="flex items-start justify-between gap-3">
                                                         <div>
-                                                            <p class=\"text-xs font-semibold text-blue-600\">{{ $catalogQuickOrderTitle }}</p>
-                                                            <h4 class=\"mt-1 text-base font-semibold text-slate-900\">{{ $item->name }}</h4>
-                                                            <p class=\"text-xs text-slate-500\">{{ $catalogQuickOrderHint }}</p>
+                                                            <p class="text-xs font-semibold text-blue-600">{{ $catalogQuickOrderTitle }}</p>
+                                                            <h4 class="mt-1 text-base font-semibold text-slate-900">{{ $item->name }}</h4>
+                                                            <p class="text-xs text-slate-500">{{ $catalogQuickOrderHint }}</p>
                                                         </div>
                                                         <button
-                                                            type=\"button\"
-                                                            class=\"inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-500 hover:text-slate-700\"
-                                                            @click=\"quickOpen = false\"
-                                                            aria-label=\"{{ __('ui.actions.close') }}\"
+                                                            type="button"
+                                                            class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-500 hover:text-slate-700"
+                                                            @click="quickOpen = false"
+                                                            aria-label="{{ __('ui.actions.close') }}"
                                                         >
-                                                            <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
-                                                                <line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"></line>
-                                                                <line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"></line>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                                <line x1="6" y1="6" x2="18" y2="18"></line>
                                                             </svg>
                                                         </button>
                                                     </div>
 
-                                                    <form method=\"POST\" action=\"{{ route('cart.add') }}\" class=\"mt-4 space-y-3\">
+                                                    <form method="POST" action="{{ route('cart.add') }}" class="mt-4 space-y-3">
                                                         @csrf
-                                                        <input type=\"hidden\" name=\"equipment_id\" value=\"{{ $item->id }}\">
-                                                        <input type=\"hidden\" name=\"name\" value=\"{{ $item->name }}\">
-                                                        <input type=\"hidden\" name=\"slug\" value=\"{{ $item->slug }}\">
-                                                        <input type=\"hidden\" name=\"category\" value=\"{{ $item->category?->name }}\">
-                                                        <input type=\"hidden\" name=\"image\" value=\"{{ $image }}\">
-                                                        <input type=\"hidden\" name=\"price\" value=\"{{ $item->price_per_day }}\">
+                                                        <input type="hidden" name="equipment_id" value="{{ $item->id }}">
+                                                        <input type="hidden" name="name" value="{{ $item->name }}">
+                                                        <input type="hidden" name="slug" value="{{ $item->slug }}">
+                                                        <input type="hidden" name="category" value="{{ $item->category?->name }}">
+                                                        <input type="hidden" name="image" value="{{ $image }}">
+                                                        <input type="hidden" name="price" value="{{ $item->price_per_day }}">
 
-                                                        <div class=\"grid grid-cols-1 gap-3 sm:grid-cols-2\">
+                                                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                                             <div>
-                                                                <label class=\"text-xs font-semibold text-slate-500\">{{ $catalogQuickStartDateLabel }}</label>
+                                                                <label class="text-xs font-semibold text-slate-500">{{ $catalogQuickStartDateLabel }}</label>
                                                                 <input
-                                                                    type=\"date\"
-                                                                    name=\"rental_start_date\"
-                                                                    x-model=\"quickStart\"
-                                                                    min=\"{{ $bookingMinDate }}\"
-                                                                    max=\"{{ $bookingMaxDate }}\"
-                                                                    class=\"mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none\"
+                                                                    type="date"
+                                                                    name="rental_start_date"
+                                                                    x-model="quickStart"
+                                                                    min="{{ $bookingMinDate }}"
+                                                                    max="{{ $bookingMaxDate }}"
+                                                                    class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                                                                     required
                                                                 >
                                                             </div>
                                                             <div>
-                                                                <label class=\"text-xs font-semibold text-slate-500\">{{ $catalogQuickEndDateLabel }}</label>
+                                                                <label class="text-xs font-semibold text-slate-500">{{ $catalogQuickEndDateLabel }}</label>
                                                                 <input
-                                                                    type=\"date\"
-                                                                    name=\"rental_end_date\"
-                                                                    x-model=\"quickEnd\"
-                                                                    :min=\"quickStart || minDate\"
-                                                                    :max=\"maxDate\"
-                                                                    class=\"mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none\"
+                                                                    type="date"
+                                                                    name="rental_end_date"
+                                                                    x-model="quickEnd"
+                                                                    :min="quickStart || minDate"
+                                                                    :max="maxDate"
+                                                                    class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                                                                     required
                                                                 >
                                                             </div>
                                                         </div>
 
                                                         <div>
-                                                            <label class=\"text-xs font-semibold text-slate-500\">{{ $catalogQuickQtyLabel }}</label>
+                                                            <label class="text-xs font-semibold text-slate-500">{{ $catalogQuickQtyLabel }}</label>
                                                             <input
-                                                                type=\"number\"
-                                                                name=\"qty\"
-                                                                min=\"1\"
-                                                                :max=\"maxQty\"
-                                                                x-model=\"quickQty\"
-                                                                class=\"no-spinner mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none\"
+                                                                type="number"
+                                                                name="qty"
+                                                                min="1"
+                                                                :max="maxQty"
+                                                                x-model="quickQty"
+                                                                class="no-spinner mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                                                                 required
                                                             >
                                                         </div>
 
-                                                        <div class=\"grid grid-cols-2 gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm text-slate-600\">
+                                                        <div class="grid grid-cols-2 gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm text-slate-600">
                                                             <div>
-                                                                <p class=\"text-[11px] uppercase tracking-wide text-slate-500\">{{ $catalogQuickDurationLabel }}</p>
-                                                                <p class=\"font-semibold text-slate-900\" x-text=\"calcDays() > 0 ? `${calcDays()} {{ $dayLabel }}` : '-'\"></p>
+                                                                <p class="text-[11px] uppercase tracking-wide text-slate-500">{{ $catalogQuickDurationLabel }}</p>
+                                                                <p class="font-semibold text-slate-900" x-text="calcDays() > 0 ? `${calcDays()} {{ $dayLabel }}` : '-'"></p>
                                                             </div>
-                                                            <div class=\"text-right\">
-                                                                <p class=\"text-[11px] uppercase tracking-wide text-slate-500\">{{ $catalogQuickEstimateLabel }}</p>
-                                                                <p class=\"font-semibold text-slate-900\" x-text=\"calcTotal() > 0 ? `{{ $currencyPrefix }} ${formatIdr(calcTotal())}` : '{{ $currencyPrefix }} -'\"></p>
+                                                            <div class="text-right">
+                                                                <p class="text-[11px] uppercase tracking-wide text-slate-500">{{ $catalogQuickEstimateLabel }}</p>
+                                                                <p class="font-semibold text-slate-900" x-text="calcTotal() > 0 ? `{{ $currencyPrefix }} ${formatIdr(calcTotal())}` : '{{ $currencyPrefix }} -'"></p>
                                                             </div>
                                                         </div>
 
-                                                        <div class=\"flex gap-2 pt-1\">
-                                                            <button type=\"button\" class=\"inline-flex flex-1 items-center justify-center rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600 hover:border-blue-200 hover:text-blue-600\" @click=\"quickOpen = false\">
+                                                        <div class="flex gap-2 pt-1">
+                                                            <button type="button" class="inline-flex flex-1 items-center justify-center rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600 hover:border-blue-200 hover:text-blue-600" @click="quickOpen = false">
                                                                 {{ $catalogQuickCancelButton }}
                                                             </button>
                                                             <button
-                                                                type=\"submit\"
-                                                                class=\"inline-flex flex-1 items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition disabled:cursor-not-allowed disabled:opacity-50\"
-                                                                :disabled=\"!quickStart || !quickEnd || calcDays() <= 0\"
+                                                                type="submit"
+                                                                class="inline-flex flex-1 items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition disabled:cursor-not-allowed disabled:opacity-50"
+                                                                :disabled="!quickStart || !quickEnd || calcDays() <= 0"
                                                             >
                                                                 {{ $catalogQuickAddButton }}
                                                             </button>
@@ -416,9 +416,9 @@
                         </div>
                     </section>
                 @empty
-                    <div class=\"card rounded-2xl p-8 text-center shadow-sm\">
-                        <p class=\"text-base font-semibold text-slate-900\">{{ $emptyTitle }}</p>
-                        <p class=\"mt-2 text-sm text-slate-500\">{{ $emptySubtitle }}</p>
+                    <div class="card rounded-2xl p-8 text-center shadow-sm">
+                        <p class="text-base font-semibold text-slate-900">{{ $emptyTitle }}</p>
+                        <p class="mt-2 text-sm text-slate-500">{{ $emptySubtitle }}</p>
                     </div>
                 @endforelse
             </div>
