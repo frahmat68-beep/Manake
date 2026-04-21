@@ -43,18 +43,22 @@ $isVercelRuntime = getenv('VERCEL') !== false;
 $vercelStoragePath = null;
 
 if ($isVercelRuntime) {
-    $appUrl = getenv('APP_URL');
-    $vercelUrl = getenv('VERCEL_URL');
-    if ((! is_string($appUrl) || trim($appUrl) === '') && is_string($vercelUrl) && trim($vercelUrl) !== '') {
-        $setRuntimeEnv('APP_URL', 'https://' . trim($vercelUrl));
+    $sanitizeEnv = static function (?string $value): string {
+        return trim((string) $value, " \t\n\r\0\x0B\"'");
+    };
+
+    $appUrl = $sanitizeEnv(getenv('APP_URL'));
+    $vercelUrl = $sanitizeEnv(getenv('VERCEL_URL'));
+    if ($appUrl === '' && $vercelUrl !== '') {
+        $setRuntimeEnv('APP_URL', 'https://' . $vercelUrl);
     }
 
     $appKey = getenv('APP_KEY');
     if (! $isValidAppKey(is_string($appKey) ? $appKey : null)) {
         $seed = implode('|', array_filter([
-            getenv('VERCEL_PROJECT_ID') ?: null,
-            getenv('VERCEL_ENV') ?: null,
-            getenv('VERCEL_URL') ?: null,
+            $sanitizeEnv(getenv('VERCEL_PROJECT_ID')) ?: null,
+            $sanitizeEnv(getenv('VERCEL_ENV')) ?: null,
+            $vercelUrl ?: null,
             'manake',
         ]));
 
@@ -78,7 +82,6 @@ if ($isVercelRuntime) {
         }
     }
 
-    // Ensure storage-dependent config values resolve to writable runtime paths on Vercel.
     $setRuntimeEnv('LARAVEL_STORAGE_PATH', $vercelStoragePath);
     $setRuntimeEnv('VIEW_COMPILED_PATH', $vercelStoragePath . '/framework/views');
     $setRuntimeEnv('APP_SERVICES_CACHE', $vercelStoragePath . '/framework/cache/services.php');
@@ -115,7 +118,6 @@ $app = Application::configure(basePath: dirname(__DIR__))
             'admin.super' => AdminSuper::class,
         ]);
 
-        // Laravel 11/12 CSRF exceptions are configured here (not in app/Http/Middleware/VerifyCsrfToken.php).
         $middleware->validateCsrfTokens(except: [
             'payment/callback',
             'midtrans/callback',

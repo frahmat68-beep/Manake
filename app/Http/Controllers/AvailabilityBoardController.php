@@ -11,21 +11,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class AvailabilityBoardController extends Controller
 {
-    public function index(Request $request, AvailabilityService $availability): \Illuminate\View\View
+    public function index(Request $request, AvailabilityService $availability): View
     {
         $windowStartDate = $this->bookingWindowStart();
         $windowEndDate = $this->bookingWindowEnd();
-        $monthDate = $this->resolveMonthDate((string) $request->query('month', ''));
+        
+        $monthRaw = (string) $request->query('month', '');
+        $monthDate = $this->resolveMonthDate($monthRaw);
         $monthDate = $this->clampMonthDate($monthDate, $windowStartDate, $windowEndDate);
+        
         $monthStart = $monthDate->copy()->startOfMonth();
         $monthEnd = $monthDate->copy()->endOfMonth();
         $calendarStart = $monthStart->copy()->startOfWeek(Carbon::MONDAY);
         $calendarEnd = $monthEnd->copy()->endOfWeek(Carbon::SUNDAY);
+        
+        $dateRaw = (string) $request->query('date', '');
         $selectedDate = $this->resolveSelectedDate(
-            (string) $request->query('date', ''),
+            $dateRaw,
             $calendarStart,
             $calendarEnd,
             $windowStartDate,
