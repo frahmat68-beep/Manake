@@ -221,33 +221,10 @@ class AvailabilityBoardController extends Controller
             );
             $dailySchedulesByDate = $this->buildDailySchedulesByDate($monthlySchedules, $calendarStart, $calendarEnd);
 
-            return view('availability.board', [
-                'search' => $search,
-                'monthDate' => $monthDate,
-                'monthStart' => $monthStart,
-                'monthEnd' => $monthEnd,
-                'calendarStart' => $calendarStart,
-                'calendarEnd' => $calendarEnd,
-                'selectedDate' => $selectedDate,
-                'windowStartDate' => $windowStartDate,
-                'windowEndDate' => $windowEndDate,
-                'dateKeys' => $dateKeys,
-                'calendarDays' => $calendarDays,
+            return response()->json([
                 'equipmentRows' => $equipmentRows,
-                'selectedBusyRows' => $selectedBusyRows
-                    ->sortByDesc('selected_reserved')
-                    ->values(),
-                'selectedFreeRows' => $selectedFreeRows
-                    ->sortBy('name')
-                    ->values(),
+                'calendarDays' => $calendarDays,
                 'monthlySchedules' => $monthlySchedules,
-                'dailySchedulesByDate' => $dailySchedulesByDate,
-                'summary' => [
-                    'total_equipments' => $totalEquipments,
-                    'busy_equipments' => $selectedBusyCount,
-                    'available_equipments' => max($totalEquipments - $selectedBusyCount, 0),
-                    'reserved_units' => $selectedReservedUnits,
-                ],
             ]);
         } catch (\Throwable $exception) {
             report($exception);
