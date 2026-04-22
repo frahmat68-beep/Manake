@@ -52,3 +52,62 @@ Untuk setup konsisten lokal/CI:
 ```bash
 docker compose up --build
 ```
+
+## 6) Vercel via GitHub
+
+Konfigurasi yang disarankan saat import repo ke Vercel:
+
+- Framework Preset: `Other`
+- Root Directory: `.`
+- Build Command: `npm run build`
+- Output Directory: `public/build`
+- Install Command:
+  - `npm install`
+  - Composer dependency PHP ditangani oleh runtime/deploy flow Vercel PHP
+
+Environment variables minimum untuk Vercel:
+
+```env
+APP_NAME=Manake
+APP_ENV=production
+APP_DEBUG=false
+APP_KEY=base64:...
+APP_URL=https://<your-vercel-domain>
+
+DB_CONNECTION=pgsql
+DB_URL=postgresql://...
+DB_SSLMODE=require
+
+LOG_CHANNEL=stderr
+LOG_STACK=stderr
+LOG_LEVEL=info
+
+SESSION_LIFETIME=120
+SESSION_ENCRYPT=true
+SESSION_PATH=/
+
+MAIL_MAILER=smtp
+MAIL_HOST=...
+MAIL_PORT=587
+MAIL_USERNAME=...
+MAIL_PASSWORD=...
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=...
+MAIL_FROM_NAME=Manake
+
+MIDTRANS_SERVER_KEY=...
+MIDTRANS_CLIENT_KEY=...
+MIDTRANS_IS_PRODUCTION=false
+
+SUPER_ADMIN_EMAIL=...
+SUPER_ADMIN_PASSWORD=...
+
+ADMIN_DB_EDIT_ENABLED=false
+```
+
+Catatan runtime Vercel untuk project ini:
+
+- `SESSION_DRIVER`, `CACHE_STORE`, dan `QUEUE_CONNECTION` akan otomatis dibuat aman untuk Vercel melalui config aplikasi.
+- Queue async jangka panjang tidak cocok dijalankan di Vercel serverless tanpa layanan worker terpisah.
+- File upload lokal di `storage/app/public` tidak persisten antar deployment. Jika admin akan sering upload aset produksi, pindahkan media ke object storage eksternal.
+- Jangan commit file `.env.production` atau secret produksi ke repository. Simpan semuanya di Vercel Project Settings -> Environment Variables.
