@@ -61,9 +61,14 @@ Konfigurasi yang disarankan saat import repo ke Vercel:
 - Root Directory: `.`
 - Build Command: `npm run build`
 - Output Directory: `public/build`
+- Node.js Version: gunakan default project Vercel atau `22.x`
 - Install Command:
   - `npm install`
   - Composer dependency PHP ditangani oleh runtime/deploy flow Vercel PHP
+
+Template env yang aman tanpa secret disediakan di:
+
+- `.env.vercel.example`
 
 Environment variables minimum untuk Vercel:
 
@@ -111,3 +116,4 @@ Catatan runtime Vercel untuk project ini:
 - Queue async jangka panjang tidak cocok dijalankan di Vercel serverless tanpa layanan worker terpisah.
 - File upload lokal di `storage/app/public` tidak persisten antar deployment. Jika admin akan sering upload aset produksi, pindahkan media ke object storage eksternal.
 - Jangan commit file `.env.production` atau secret produksi ke repository. Simpan semuanya di Vercel Project Settings -> Environment Variables.
+- Pastikan `composer.lock` tetap ikut ada di repository/deployment agar dependency PHP yang dipakai Vercel deterministik.
