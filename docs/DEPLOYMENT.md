@@ -115,5 +115,6 @@ Catatan runtime Vercel untuk project ini:
 - `SESSION_DRIVER`, `CACHE_STORE`, dan `QUEUE_CONNECTION` akan otomatis dibuat aman untuk Vercel melalui config aplikasi.
 - Queue async jangka panjang tidak cocok dijalankan di Vercel serverless tanpa layanan worker terpisah.
 - File upload lokal di `storage/app/public` tidak persisten antar deployment. Jika admin akan sering upload aset produksi, pindahkan media ke object storage eksternal.
+- Upload media admin sekarang bisa diarahkan ke disk lain dengan `SITE_MEDIA_DISK` seperti `s3`, sehingga Vercel tidak bergantung pada filesystem lokal untuk logo, hero, dan gambar equipment.
 - Jangan commit file `.env.production` atau secret produksi ke repository. Simpan semuanya di Vercel Project Settings -> Environment Variables.
 - Pastikan `composer.lock` tetap ikut ada di repository/deployment agar dependency PHP yang dipakai Vercel deterministik.
