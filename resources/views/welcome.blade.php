@@ -187,6 +187,49 @@
         </div>
     </section>
 
+    <section class="bg-slate-50 pb-6 sm:pb-8">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6">
+            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+                <div class="mb-3 flex items-center justify-between gap-3">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('app.landing.snapshot_title') }}</p>
+                        <h2 class="text-lg font-semibold text-slate-900">{{ __('Ringkasan Alat Disewa') }}</h2>
+                    </div>
+                    <a href="{{ route('availability.board') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-700">
+                        {{ __('Lihat ketersediaan') }} ->
+                    </a>
+                </div>
+
+                @if ($guestRentalSnapshot->isNotEmpty())
+                    <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                        @foreach ($guestRentalSnapshot->take(6) as $item)
+                            <article class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div>
+                                        <p class="text-sm font-semibold text-slate-900">{{ $item['name'] }}</p>
+                                        <p class="mt-1 text-xs text-slate-500">
+                                            {{ __('Tanggal sewa:') }}
+                                            {{ $formatLandingDate($item['start_date'] ?? null) }}
+                                            -
+                                            {{ $formatLandingDate($item['end_date'] ?? null) }}
+                                        </p>
+                                    </div>
+                                    <span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-semibold text-blue-700">
+                                        x{{ max((int) ($item['qty'] ?? 1), 1) }}
+                                    </span>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-4 py-5 text-sm text-slate-500">
+                        {{ __('Belum ada alat yang sedang dijadwalkan. Gunakan halaman ketersediaan untuk cek stok sebelum checkout.') }}
+                    </div>
+                @endif
+            </div>
+        </div>
+    </section>
+
     @if ($isLoggedIn && $latestOrder)
         @php
             $landingOrderStatus = $latestOrder->status_pesanan ?? 'menunggu_pembayaran';

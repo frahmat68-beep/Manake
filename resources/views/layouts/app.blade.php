@@ -494,6 +494,14 @@
                                 {{ __('app.auth.login_button') }}
                             </button>
                         </form>
+
+                        <div class="relative flex items-center py-4">
+                            <div class="flex-grow border-t border-slate-200"></div>
+                            <span class="mx-4 flex-shrink text-[10px] font-semibold uppercase tracking-widest text-slate-400">Atau masuk dengan</span>
+                            <div class="flex-grow border-t border-slate-200"></div>
+                        </div>
+
+                        <x-auth.google-button label="Google" />
                     </div>
 
                     <div class="mt-6" x-show="authModalView === 'register'" x-transition>
@@ -547,6 +555,14 @@
                                 {{ __('app.auth.register_button') }}
                             </button>
                         </form>
+
+                        <div class="relative flex items-center py-4">
+                            <div class="flex-grow border-t border-slate-200"></div>
+                            <span class="mx-4 flex-shrink text-[10px] font-semibold uppercase tracking-widest text-slate-400">Atau daftar dengan</span>
+                            <div class="flex-grow border-t border-slate-200"></div>
+                        </div>
+
+                        <x-auth.google-button label="Google" />
                     </div>
 
                     <div class="mt-6" x-show="authModalView === 'forgot'" x-transition>

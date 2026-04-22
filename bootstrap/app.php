@@ -119,8 +119,6 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->validateCsrfTokens(except: [
-            'payment/callback',
-            'midtrans/callback',
             'api/midtrans/callback',
         ]);
 

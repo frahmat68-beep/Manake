@@ -60,16 +60,17 @@ class ContentController extends Controller
 
                 if ($request->hasFile($field)) {
                     if ($current && ! str_starts_with((string) $current, 'http')) {
-                        Storage::disk('public')->delete($current);
+                        site_media_delete($current);
                     }
 
-                    $storedPath = $request->file($field)->store('site/' . $meta['group'], 'public');
+                    $storedPath = site_media_store_uploaded_file($request->file($field), 'site/' . $meta['group']);
                     $value = $storedPath;
                     site_media_upsert(
                         key: $settingKey,
                         path: $storedPath,
                         group: $meta['group'],
                         altText: $imageAltValue,
+                        disk: site_media_disk(),
                         adminId: $adminId
                     );
                 } else {

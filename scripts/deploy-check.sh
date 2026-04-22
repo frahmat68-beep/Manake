@@ -29,19 +29,14 @@ if [[ "$APP_DEBUG_VALUE" != "false" ]]; then
     exit 1
 fi
 
-echo "==> composer install --optimize-autoloader --no-dev"
-composer install --optimize-autoloader --no-dev
+echo "==> composer validate"
+composer validate --no-check-publish
+
+echo "==> composer install --optimize-autoloader --no-dev --dry-run"
+composer install --optimize-autoloader --no-dev --dry-run
 
 echo "==> php artisan optimize:clear"
 php artisan optimize:clear
-
-echo "==> php artisan migrate --force"
-php artisan migrate --force
-
-if [[ ! -L public/storage ]]; then
-    echo "==> php artisan storage:link"
-    php artisan storage:link || true
-fi
 
 echo "==> php artisan config:cache"
 php artisan config:cache
@@ -51,5 +46,8 @@ php artisan route:cache
 
 echo "==> php artisan view:cache"
 php artisan view:cache
+
+echo "==> php artisan optimize:clear"
+php artisan optimize:clear
 
 echo "Deploy checks passed."

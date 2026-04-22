@@ -23,7 +23,7 @@ class ThemeController extends Controller
             ])->save();
         }
 
-        $target = $this->resolveRedirectTarget($request, $request->query('redirect'));
+        $target = $this->resolveRedirectTarget($request, $request->input('redirect'));
         $resolvedTheme = $this->resolveThemeVariant($theme, $request);
 
         $response = redirect()
@@ -83,7 +83,7 @@ class ThemeController extends Controller
             return 'light';
         }
 
-        $resolved = $request->query('resolved');
+        $resolved = $request->input('resolved');
 
         return in_array($resolved, ['dark', 'light'], true)
             ? $resolved

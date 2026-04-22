@@ -41,15 +41,15 @@
             </p>
             <div class="mt-8 flex justify-center">
                 <span class="inline-flex items-center rounded-3xl bg-blue-50 px-6 py-2 text-sm font-black text-blue-700 border border-blue-100">
-                    {{ $equipments->total() }} {{ __('Alat Tersedia') }}
+                    {{ $products->count() }} {{ __('Alat Tersedia') }}
                 </span>
             </div>
         </header>
 
         {{-- Equipment Grid --}}
-        @if ($equipments->count() > 0)
+        @if ($products->count() > 0)
             <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                @foreach ($equipments as $item)
+                @foreach ($products as $item)
                     <article class="group relative flex flex-col overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-100">
                         {{-- Image Container --}}
                         <div class="relative aspect-[4/5] overflow-hidden bg-slate-50 border-b border-slate-100">

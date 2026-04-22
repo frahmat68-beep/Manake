@@ -1,9 +1,22 @@
+@php
+    $chatbotWelcomeMessage = config('chatbot.welcome_message');
+    $chatbotFaqPreview = collect(config('chatbot.faqs', []))
+        ->take(4)
+        ->map(fn ($entry) => [
+            'question' => (string) data_get($entry, 'question', ''),
+            'answer' => (string) data_get($entry, 'answer', ''),
+        ])
+        ->filter(fn ($entry) => $entry['question'] !== '' && $entry['answer'] !== '')
+        ->values();
+@endphp
+
 <div
     x-data="{
         isOpen: false,
         messages: [
-            { role: 'assistant', content: 'Halo! Saya Manake Guide. Ada yang bisa saya bantu terkait sewa alat hari ini?' }
+            { role: 'assistant', content: @js($chatbotWelcomeMessage) }
         ],
+        faqPreview: @js($chatbotFaqPreview),
         userInput: '',
         isLoading: false,
         
@@ -50,8 +63,14 @@
         resetChat() {
             if (confirm('Hapus riwayat chat?')) {
                 fetch('{{ route('chatbot.reset') }}', { method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } });
-                this.messages = [{ role: 'assistant', content: 'Halo! Saya Manake Guide. Ada yang bisa saya bantu?' }];
+                this.messages = [{ role: 'assistant', content: @js($chatbotWelcomeMessage) }];
             }
+        },
+
+        useFaq(question, answer) {
+            this.messages.push({ role: 'user', content: question });
+            this.messages.push({ role: 'assistant', content: answer });
+            this.$nextTick(() => this.scrollToBottom());
         }
     }"
     class="fixed bottom-6 right-6 z-[100]"
@@ -113,6 +132,22 @@
             x-ref="chatContainer"
             class="flex-1 overflow-y-auto bg-slate-50 p-4 space-y-4"
         >
+            <template x-if="messages.length === 1 && faqPreview.length > 0">
+                <div class="rounded-2xl border border-blue-100 bg-blue-50/80 p-3">
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-700">FAQ cepat</p>
+                    <div class="mt-2 space-y-2">
+                        <template x-for="(faq, index) in faqPreview" :key="`faq-${index}`">
+                            <button
+                                type="button"
+                                class="w-full rounded-xl border border-blue-200 bg-white px-3 py-2 text-left text-xs font-medium text-slate-700 transition hover:border-blue-300 hover:bg-blue-50"
+                                @click="useFaq(faq.question, faq.answer)"
+                                x-text="faq.question"
+                            ></button>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
             <template x-for="(msg, index) in messages" :key="index">
                 <div
                     class="flex"
@@ -159,7 +194,7 @@
                     </svg>
                 </button>
             </form>
-            <p class="mt-2 text-center text-[10px] text-slate-400">Dimotori oleh NVIDIA AI • Manake Studio</p>
+            <p class="mt-2 text-center text-[10px] text-slate-400">Manake Guide • FAQ + AI Assistant</p>
         </div>
     </div>
 </div>

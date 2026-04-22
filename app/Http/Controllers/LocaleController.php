@@ -23,7 +23,7 @@ class LocaleController extends Controller
             ])->save();
         }
 
-        $target = $this->resolveRedirectTarget($request, $request->query('redirect'));
+        $target = $this->resolveRedirectTarget($request, $request->input('redirect'));
 
         if ($request->expectsJson() || $request->ajax()) {
             return response()

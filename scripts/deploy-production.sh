@@ -19,6 +19,26 @@ fi
 echo "==> Validate production environment and warm cache"
 bash scripts/deploy-check.sh
 
+echo "==> Install PHP dependencies for production"
+composer install --optimize-autoloader --no-dev
+
+echo "==> php artisan migrate --force"
+php artisan migrate --force
+
+if [[ ! -L public/storage ]]; then
+    echo "==> php artisan storage:link"
+    php artisan storage:link || true
+fi
+
+echo "==> php artisan config:cache"
+php artisan config:cache
+
+echo "==> php artisan route:cache"
+php artisan route:cache
+
+echo "==> php artisan view:cache"
+php artisan view:cache
+
 if command -v npm >/dev/null 2>&1; then
     echo "==> Install Node dependencies (clean)"
     npm ci

@@ -12,7 +12,6 @@ use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class EquipmentController extends Controller
@@ -78,7 +77,7 @@ class EquipmentController extends Controller
         $data['slug'] = $this->generateUniqueSlug($data['slug'] ?? null, $data['name']);
 
         if ($request->hasFile('image')) {
-            $data['image_path'] = $request->file('image')->store('equipments', 'public');
+            $data['image_path'] = site_media_store_uploaded_file($request->file('image'), 'equipments');
         }
 
         $equipment = Equipment::create($data);
@@ -125,9 +124,9 @@ class EquipmentController extends Controller
 
         if ($request->hasFile('image')) {
             if ($equipment->image_path) {
-                Storage::disk('public')->delete($equipment->image_path);
+                site_media_delete($equipment->image_path);
             }
-            $data['image_path'] = $request->file('image')->store('equipments', 'public');
+            $data['image_path'] = site_media_store_uploaded_file($request->file('image'), 'equipments');
         }
 
         $equipment->update($data);
@@ -144,7 +143,7 @@ class EquipmentController extends Controller
         $snapshot = $equipment->only(['id', 'name', 'slug', 'status', 'stock']);
 
         if ($equipment->image_path) {
-            Storage::disk('public')->delete($equipment->image_path);
+            site_media_delete($equipment->image_path);
         }
 
         $equipment->delete();

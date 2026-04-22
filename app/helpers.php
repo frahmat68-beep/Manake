@@ -36,6 +36,19 @@ if (! function_exists('site_public_media_candidates')) {
     }
 }
 
+if (! function_exists('site_media_disk')) {
+    function site_media_disk(?string $fallback = 'public'): string
+    {
+        $configured = trim((string) config('filesystems.public_media_disk', ''));
+
+        if ($configured !== '') {
+            return $configured;
+        }
+
+        return $fallback ?: 'public';
+    }
+}
+
 if (! function_exists('schema_table_exists_cached')) {
     function schema_table_exists_cached(string $table): bool
     {
@@ -377,6 +390,29 @@ if (! function_exists('site_public_media_path')) {
     }
 }
 
+if (! function_exists('site_media_delete')) {
+    function site_media_delete(?string $path, ?string $disk = null): void
+    {
+        $normalizedPath = trim((string) $path);
+        if ($normalizedPath === '' || str_starts_with($normalizedPath, 'http://') || str_starts_with($normalizedPath, 'https://')) {
+            return;
+        }
+
+        try {
+            Storage::disk($disk ?: site_media_disk())->delete(ltrim($normalizedPath, '/'));
+        } catch (\Throwable $exception) {
+            // Ignore missing disk/files and keep request flow stable.
+        }
+    }
+}
+
+if (! function_exists('site_media_store_uploaded_file')) {
+    function site_media_store_uploaded_file(\Illuminate\Http\UploadedFile $file, string $directory, ?string $disk = null): string
+    {
+        return $file->store($directory, $disk ?: site_media_disk());
+    }
+}
+
 if (! function_exists('site_asset')) {
     function site_asset(string $path, bool $withVersion = true): string
     {
@@ -406,7 +442,7 @@ if (! function_exists('site_media_url')) {
             return $path;
         }
 
-        $resolvedDisk = $disk ?: 'public';
+        $resolvedDisk = $disk ?: site_media_disk();
         $normalizedPath = ltrim($path, '/');
 
         try {
@@ -470,7 +506,7 @@ if (! function_exists('site_media_upsert')) {
             ['key' => $key],
             [
                 'path' => $path,
-                'disk' => $disk,
+                'disk' => $disk ?: site_media_disk(),
                 'group' => $group,
                 'alt_text' => $altText,
                 'uploaded_by_admin_id' => $adminId ?? Auth::guard('admin')->id(),

@@ -260,9 +260,13 @@ class EquipmentController extends Controller
 
                     $queryLength = max(mb_strlen($normalizedQuery), 1);
                     $distanceThreshold = min(2, max(1, (int) ceil($queryLength / 5)));
+                    $equipmentName = Str::of((string) $equipment->name)->lower()->ascii()->value();
+                    $equipmentSlug = Str::of((string) $equipment->slug)->lower()->ascii()->value();
                     $startsWithSameLetter = $normalizedQuery !== ''
-                        && isset($value[0])
-                        && $value[0] === $normalizedQuery[0];
+                        && (
+                            str_starts_with($equipmentName, $normalizedQuery[0])
+                            || str_starts_with($equipmentSlug, $normalizedQuery[0])
+                        );
 
                     if (
                         ! $startsWithSameLetter

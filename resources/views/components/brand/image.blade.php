@@ -7,8 +7,10 @@
 ])
 
 @php
-    $lightUrl = site_asset($light);
-    $darkUrl = $dark ? site_asset($dark) : $lightUrl;
+    $managedLogoPath = site_setting('brand.logo_path');
+    $managedLogoUrl = site_media_url($managedLogoPath);
+    $lightUrl = $managedLogoUrl ?: site_asset($light);
+    $darkUrl = $managedLogoUrl ?: ($dark ? site_asset($dark) : $lightUrl);
     $resolvedTheme = $themeResolved ?? request()->attributes->get('theme_resolved', 'light');
     $initialSrc = $swapInDark && $resolvedTheme === 'dark' ? $darkUrl : $lightUrl;
 @endphp
@@ -17,6 +19,9 @@
     <img
         src="{{ $initialSrc }}"
         alt="{{ $alt }}"
+        @if ($managedLogoUrl)
+            name="manake-cms-logo"
+        @endif
         data-manake-themed-image
         data-light-src="{{ $lightUrl }}"
         data-dark-src="{{ $darkUrl }}"

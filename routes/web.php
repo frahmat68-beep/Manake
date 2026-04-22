@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatbotController;
-use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\CartController;
@@ -28,7 +27,6 @@ use App\Http\Controllers\Admin\EquipmentController as AdminEquipmentController;
 use App\Http\Controllers\Admin\ContentController as AdminContentController;
 use App\Http\Controllers\Admin\CopywritingController as AdminCopywritingController;
 use App\Http\Controllers\Admin\WebsiteSettingsController as AdminWebsiteSettingsController;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,15 +42,9 @@ Route::get('/assets/media/{path}', [AssetController::class, 'media'])
     ->name('assets.media');
 
 Route::get('/', [CategoryController::class, 'home'])->name('home');
-Route::get('/logout', function (Request $request) {
-    Auth::guard('web')->logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-    return redirect('/');
-});
 
-Route::get('/lang/{locale}', [LocaleController::class, 'switch'])->name('lang.switch');
-Route::get('/theme/{theme}', [ThemeController::class, 'switch'])->name('theme.switch');
+Route::post('/lang/{locale}', [LocaleController::class, 'switch'])->name('lang.switch');
+Route::post('/theme/{theme}', [ThemeController::class, 'switch'])->name('theme.switch');
 
 Route::get('/catalog', [EquipmentController::class, 'index'])->name('catalog');
 Route::get('/availability-board', [AvailabilityBoardController::class, 'index'])->name('availability.board');
@@ -69,9 +61,6 @@ Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('categ
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/rental-rules', [PageController::class, 'rentalRules'])->name('rental.rules');
-Route::post('/payment/callback', [PaymentController::class, 'handleNotification'])->name('payment.callback');
-Route::post('/midtrans/callback', [PaymentController::class, 'handleNotification'])->name('midtrans.callback');
-
 // Chatbot Routes
 Route::post('/chatbot/message', [ChatbotController::class, 'chat'])->name('chatbot.message')->middleware('throttle:10,1');
 Route::post('/chatbot/reset', [ChatbotController::class, 'reset'])->name('chatbot.reset');

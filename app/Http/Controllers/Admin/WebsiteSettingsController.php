@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-
 class WebsiteSettingsController extends Controller
 {
     public function edit()
@@ -101,6 +99,7 @@ class WebsiteSettingsController extends Controller
                 path: $values['brand_logo'],
                 group: 'branding',
                 altText: 'Brand logo',
+                disk: site_media_disk(),
                 adminId: $adminId
             );
         }
@@ -111,6 +110,7 @@ class WebsiteSettingsController extends Controller
                 path: $values['brand_favicon'],
                 group: 'branding',
                 altText: 'Brand favicon',
+                disk: site_media_disk(),
                 adminId: $adminId
             );
         }
@@ -126,10 +126,10 @@ class WebsiteSettingsController extends Controller
     {
         $current = SiteSetting::query()->where('key', $settingKey)->value('value');
         if ($current) {
-            Storage::disk('public')->delete($current);
+            site_media_delete($current);
         }
 
-        return $file->store($directory, 'public');
+        return site_media_store_uploaded_file($file, $directory);
     }
 
     private function settingsKeys(): array

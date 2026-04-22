@@ -18,12 +18,12 @@ class PrelaunchReadinessTest extends TestCase
     public function test_theme_and_language_switch_redirect_back_and_store_preference(): void
     {
         $this->from(route('catalog'))
-            ->get(route('theme.switch', 'dark'))
+            ->post(route('theme.switch', 'dark'))
             ->assertRedirect(route('catalog'));
         $this->assertSame('dark', session('theme'));
 
         $this->from(route('catalog'))
-            ->get(route('lang.switch', 'en'))
+            ->post(route('lang.switch', 'en'))
             ->assertRedirect(route('catalog'));
         $this->assertSame('en', session('locale'));
     }

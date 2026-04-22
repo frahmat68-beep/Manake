@@ -67,6 +67,14 @@
             </button>
         </form>
 
+        <div class="relative flex items-center py-2">
+            <div class="flex-grow border-t border-slate-200"></div>
+            <span class="mx-4 flex-shrink text-[10px] font-semibold uppercase tracking-widest text-slate-400">Atau daftar dengan</span>
+            <div class="flex-grow border-t border-slate-200"></div>
+        </div>
+
+        <x-auth.google-button label="Google" />
+
         <div class="border-t border-slate-200/80 pt-4 text-sm text-slate-500">
             {{ __('app.auth.already_have_account') }}
             <a href="{{ route('login') }}" class="font-semibold text-blue-600 hover:text-blue-700" data-skip-loader="true">

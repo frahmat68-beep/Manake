@@ -83,8 +83,3 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
-
-Route::get('/run-migration-force-1234', function () {
-    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-    return "Migrated: " . \Illuminate\Support\Facades\Artisan::output();
-});

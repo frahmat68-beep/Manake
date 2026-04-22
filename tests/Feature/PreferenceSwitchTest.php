@@ -17,7 +17,9 @@ class PreferenceSwitchTest extends TestCase
                 'HTTP_HOST' => 'manake.vercel.app',
                 'HTTPS' => 'on',
             ])
-            ->get('https://manake.vercel.app/theme/dark?redirect=' . urlencode('https://manake.vercel.app/booking/history'));
+            ->post('https://manake.vercel.app/theme/dark', [
+                'redirect' => 'https://manake.vercel.app/booking/history',
+            ]);
 
         $response->assertRedirect('https://manake.vercel.app/booking/history');
     }
@@ -29,7 +31,9 @@ class PreferenceSwitchTest extends TestCase
                 'HTTP_HOST' => 'manake.vercel.app',
                 'HTTPS' => 'on',
             ])
-            ->get('https://manake.vercel.app/lang/en?redirect=' . urlencode('https://manake.vercel.app/booking/history'));
+            ->post('https://manake.vercel.app/lang/en', [
+                'redirect' => 'https://manake.vercel.app/booking/history',
+            ]);
 
         $response->assertRedirect('https://manake.vercel.app/booking/history');
     }
@@ -39,10 +43,11 @@ class PreferenceSwitchTest extends TestCase
         $response = $this
             ->withHeader('X-Requested-With', 'XMLHttpRequest')
             ->withHeader('Accept', 'application/json')
-            ->get(route('theme.switch', [
+            ->post(route('theme.switch', [
                 'theme' => 'dark',
+            ]), [
                 'redirect' => '/booking/history',
-            ]));
+            ]);
 
         $response
             ->assertOk()
@@ -56,10 +61,11 @@ class PreferenceSwitchTest extends TestCase
         $response = $this
             ->withHeader('X-Requested-With', 'XMLHttpRequest')
             ->withHeader('Accept', 'application/json')
-            ->get(route('lang.switch', [
+            ->post(route('lang.switch', [
                 'locale' => 'en',
+            ]), [
                 'redirect' => '/booking/history',
-            ]));
+            ]);
 
         $response
             ->assertOk()
