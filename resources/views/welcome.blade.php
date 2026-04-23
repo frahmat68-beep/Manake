@@ -18,6 +18,22 @@
         .ready-carousel .swiper-slide > article {
             width: 100%;
         }
+        .hero-rotator-word {
+            position: relative;
+            display: inline-flex;
+            min-width: 12ch;
+            color: #2563eb;
+        }
+        .hero-rotator-word::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -0.08em;
+            height: 0.18em;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(37,99,235,0.1), rgba(14,165,233,0.45), rgba(37,99,235,0.08));
+        }
     </style>
 @endpush
 
@@ -75,6 +91,13 @@
         $flowKicker = setting('copy.landing.flow_kicker', __('app.landing.flow_kicker'));
         $flowTitle = setting('copy.landing.flow_title', __('app.landing.flow_title'));
         $flowCatalogLink = setting('copy.landing.flow_catalog_link', __('app.landing.flow_catalog_link'));
+        $heroRotatingPhrases = collect([
+            'camera bodies siap produksi',
+            'lighting kit untuk set komersial',
+            'audio gear untuk shooting lapangan',
+            'drone dan support gear siap jalan',
+            'catalog alat untuk studio dan production house',
+        ]);
         $step1Title = setting('copy.landing.step_1_title', __('app.landing.step_1_title'));
         $step1Desc = setting('copy.landing.step_1_desc', __('app.landing.step_1_desc'));
         $step2Title = setting('copy.landing.step_2_title', __('app.landing.step_2_title'));
@@ -94,15 +117,34 @@
             <div class="spotlight-shell rounded-[2rem] p-4 sm:p-6 lg:p-6">
                 <div class="grid items-start gap-4 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:gap-6">
                     <div class="min-w-0">
-                        <h1 class="max-w-3xl text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl lg:text-[2.9rem]">
-                        @if ($heroTitle)
-                            {{ $heroTitle }}
-                        @else
-                            {{ __('app.landing.hero_title') }}
-                            <span class="text-blue-600">{{ __('app.landing.hero_highlight') }}</span>
-                            {{ __('app.landing.hero_suffix') }}
-                        @endif
-                    </h1>
+                        <h1 class="max-w-3xl text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl lg:text-[2.9rem]"
+                            x-data="{ 
+                                titles: @js($heroRotatingPhrases->values()), 
+                                active: 0,
+                                init() { if (this.titles.length > 1) { setInterval(() => { this.active = (this.active + 1) % this.titles.length }, 2400) } }
+                            }">
+                            @if ($heroTitle)
+                                {{ $heroTitle }}
+                            @else
+                                {{ __('Rental equipment') }}
+                                <span class="hero-rotator-word min-w-[240px] sm:min-w-[320px]">
+                                    <template x-for="(title, index) in titles" :key="index">
+                                        <span 
+                                            x-show="active === index"
+                                            x-transition:enter="transition ease-out duration-500 delay-200"
+                                            x-transition:enter-start="opacity-0 translate-y-4"
+                                            x-transition:enter-end="opacity-100 translate-y-0"
+                                            x-transition:leave="transition ease-in duration-300 absolute inset-0"
+                                            x-transition:leave-start="opacity-100 translate-y-0"
+                                            x-transition:leave-end="opacity-0 -translate-y-4"
+                                            class="block whitespace-nowrap"
+                                            x-text="title"
+                                        ></span>
+                                    </template>
+                                </span>
+                                {{ __('yang siap dipakai untuk project serius.') }}
+                            @endif
+                        </h1>
                         <p class="mt-4 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
                             {{ $heroSubtitle ?: __('app.landing.hero_desc') }}
                         </p>

@@ -147,7 +147,7 @@
         }
     @endphp
 
-    <div x-data="{ sidebarOpen: false, adminSettingsOpen: false }" class="min-h-screen">
+    <div x-data="{ sidebarOpen: false, sidebarCollapsed: false, adminSettingsOpen: false }" class="min-h-screen">
         <div x-cloak x-show="sidebarOpen" class="fixed inset-0 z-40 bg-slate-900/40 lg:hidden" @click="sidebarOpen = false"></div>
 
         <x-admin.sidebar
@@ -159,7 +159,7 @@
             :admin-role="$adminRole"
         />
 
-        <div class="lg:pl-72">
+        <div class="transition-all duration-300" :class="sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-72'">
             <header class="manake-topbar-shell sticky top-0 z-30 border-b border-slate-200 bg-white" data-manake-topbar="admin">
                 <div class="mx-auto flex h-16 w-full max-w-[1320px] items-center justify-between gap-3 px-4 sm:px-6">
                     <div class="flex min-w-0 items-center gap-3">
@@ -168,6 +168,13 @@
                                 <line x1="4" y1="7" x2="20" y2="7"></line>
                                 <line x1="4" y1="12" x2="20" y2="12"></line>
                                 <line x1="4" y1="17" x2="20" y2="17"></line>
+                            </svg>
+                        </button>
+                        
+                        <!-- Desktop Collapse Toggle -->
+                        <button type="button" class="hidden lg:flex h-9 w-9 items-center justify-center rounded-xl hover:bg-slate-50 transition" @click="sidebarCollapsed = !sidebarCollapsed">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300" :class="sidebarCollapsed ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m15 18-6-6 6-6"/>
                             </svg>
                         </button>
                         <div class="min-w-0">

@@ -30,6 +30,68 @@
                 opacity: 0.3;
             }
         }
+        
+        .spotlight-card {
+            position: relative;
+            isolation: isolate;
+            background:
+                radial-gradient(160px 120px at 12% 0%, rgba(96, 165, 250, 0.12), transparent 65%),
+                linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,250,255,0.98));
+        }
+        .spotlight-card::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            background: radial-gradient(
+                600px circle at var(--mouse-x) var(--mouse-y),
+                rgba(59, 130, 246, 0.22),
+                transparent 40%
+            );
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 500ms;
+            border-radius: inherit;
+        }
+        .spotlight-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: linear-gradient(180deg, rgba(255,255,255,0.12), transparent 32%);
+            pointer-events: none;
+        }
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+        .spotlight-card > * {
+            position: relative;
+            z-index: 2;
+        }
+        .glow-search-shell {
+            position: relative;
+        }
+        .glow-search-shell::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border-radius: 1.35rem;
+            background: linear-gradient(90deg, rgba(37,99,235,0.14), rgba(14,165,233,0.18), rgba(99,102,241,0.16));
+            filter: blur(14px);
+            opacity: 0.75;
+            transition: opacity 220ms ease, transform 220ms ease;
+        }
+        .glow-search-shell:focus-within::before {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+        .catalog-spotlight-badge {
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.8);
+            border: 1px solid rgba(191,219,254,0.85);
+            box-shadow: 0 8px 24px -18px rgba(37,99,235,0.45);
+        }
     </style>
 @endpush
 
@@ -98,6 +160,20 @@
                             <h1 class="mt-2 text-2xl font-extrabold text-blue-700 sm:text-3xl">{{ $catalogTitle }}</h1>
                             <p class="mt-2 text-sm text-slate-600 sm:text-base">{{ $catalogSubtitle }}</p>
                         </div>
+                    </div>
+
+                    <!-- Glowing Search Bar -->
+                    <div class="glow-search-shell max-w-xl mt-6">
+                        <form action="{{ route('catalog') }}" method="GET" class="relative flex items-center overflow-hidden rounded-[1.35rem] border border-slate-200/80 bg-white/95 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.35)] backdrop-blur">
+                            <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            </span>
+                            <input type="text" name="q" value="{{ $search }}" placeholder="Cari kamera, lighting, drone, audio..." 
+                                   class="flex-1 bg-transparent py-4 pl-12 pr-4 text-[15px] font-medium text-slate-900 border-none focus:ring-0">
+                            <button type="submit" class="mr-2 flex h-11 min-w-[44px] shrink-0 items-center justify-center rounded-[1rem] bg-[linear-gradient(135deg,#2563eb,#0ea5e9)] text-white shadow-sm transition hover:scale-[1.02]">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            </button>
+                        </form>
                     </div>
 
                     <div class="surface-band mt-5 rounded-2xl p-4">
@@ -216,22 +292,31 @@
                                     },
                                     formatIdr(value) {
                                         return new Intl.NumberFormat('{{ $intlLocale }}').format(value);
+                                    },
+                                    handleMouseMove(e) {
+                                        const { currentTarget: target } = e;
+                                        const rect = target.getBoundingClientRect();
+                                        const x = e.clientX - rect.left;
+                                        const y = e.clientY - rect.top;
+                                        target.style.setProperty('--mouse-x', `${x}px`);
+                                        target.style.setProperty('--mouse-y', `${y}px`);
                                     }
                                 }"
+                                @mousemove="handleMouseMove"
                                 @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')"
-                                class="card group flex h-full flex-col overflow-hidden rounded-[1.6rem] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
+                                class="spotlight-card group flex h-full flex-col overflow-hidden rounded-[1.7rem] border border-slate-200/80 shadow-[0_20px_48px_-32px_rgba(15,23,42,0.45)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_64px_-34px_rgba(37,99,235,0.32)] cursor-pointer"
                             >
                                 <div class="media-stage relative flex h-56 items-center justify-center p-4 sm:h-60">
                                     <img
                                         src="{{ $image }}"
                                         alt="{{ $item->name }}"
-                                        class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                                        class="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.07]"
                                         onerror="this.onerror=null;this.src='{{ $catalogFallbackImage }}';"
                                         loading="{{ $prioritizeImage ? 'eager' : 'lazy' }}"
                                         fetchpriority="{{ $prioritizeImage ? 'high' : 'auto' }}"
                                         decoding="async"
                                     >
-                                    <span class="badge-status absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold">
+                                    <span class="catalog-spotlight-badge absolute left-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold text-slate-700">
                                         {{ $item->category?->name ?? __('app.category.title') }}
                                     </span>
                                     <span class="absolute right-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold {{ $statusClass }}">
@@ -240,9 +325,12 @@
                                 </div>
 
                                 <div class="flex flex-1 flex-col p-5">
-                                    <h3 class="min-h-[3.4rem] text-lg font-semibold leading-snug text-slate-900">{{ $item->name }}</h3>
+                                    <h3 class="min-h-[3.4rem] text-[1.05rem] font-semibold leading-snug text-slate-900">{{ $item->name }}</h3>
                                     <p class="mt-2 text-xs text-slate-500">{{ __('app.product.price_per_day') }}</p>
-                                    <p class="text-lg font-semibold text-slate-900">{{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}</p>
+                                    <div class="mt-1 flex items-end gap-2">
+                                        <p class="text-xl font-semibold tracking-[-0.02em] text-slate-950">{{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}</p>
+                                        <span class="pb-0.5 text-xs font-medium text-slate-500">/{{ __('app.product.per_day') }}</span>
+                                    </div>
 
                                     <div class="mt-4 grid grid-cols-3 gap-2 text-center">
                                         <div class="surface-band rounded-lg px-2 py-2">

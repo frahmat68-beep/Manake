@@ -840,6 +840,36 @@ html[data-theme-resolved='dark'] .rounded-full.bg-slate-100.text-slate-700 {
     z-index: 1;
 }
 
+[data-manake-sidebar='app'] {
+    box-shadow: 0 24px 60px -38px rgba(15, 23, 42, 0.42);
+}
+
+[data-manake-sidebar='app'] [data-nav-item] {
+    position: relative;
+    overflow: hidden;
+}
+
+[data-manake-sidebar='app'] [data-nav-item]::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.16), transparent 45%);
+    opacity: 0;
+    transition: opacity 180ms ease;
+    pointer-events: none;
+}
+
+[data-manake-sidebar='app'] [data-nav-item]:hover::before,
+[data-manake-sidebar='app'] [data-nav-item][data-nav-active='true']::before {
+    opacity: 1;
+}
+
+[data-manake-sidebar='app'] [data-nav-item][data-nav-active='true'] {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    box-shadow: 0 14px 30px -20px rgba(37, 99, 235, 0.9);
+}
+
 .spotlight-kicker {
     display: inline-flex;
     align-items: center;

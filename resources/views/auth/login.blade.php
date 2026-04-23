@@ -2,87 +2,64 @@
     :page-title="__('app.auth.login_page_title')"
     :eyebrow="null"
     :heading="__('app.auth.login_title')"
-    :subheading="__('app.auth.login_note')"
+    :subheading="null"
     :aside-eyebrow="null"
-    :aside-heading="__('app.auth.login_benefit_1')"
-    :aside-text="__('app.auth.login_benefit_2')"
+    :aside-heading="null"
+    :aside-text="null"
     :aside-points="[]"
 >
-    <div class="space-y-4">
-        @if ($errors->any())
-            <div class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-                {{ $errors->first() }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        @if (session('status'))
-            <div class="rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700">
-                {{ session('status') }}
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('login') }}" class="space-y-4">
-            @csrf
-
-            <div class="space-y-1.5">
-                <label for="login-email" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    {{ __('app.auth.email') }}
-                </label>
-                <input
-                    id="login-email"
-                    type="email"
-                    name="email"
-                    value="{{ old('email') }}"
-                    required
-                    autocomplete="email"
-                    class="input w-full rounded-2xl px-4 py-3 text-sm"
-                    placeholder="{{ __('app.auth.email_placeholder') }}"
-                >
-            </div>
-
-            <div class="space-y-1.5">
-                <div class="flex items-center justify-between gap-3">
-                    <label for="login-password" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                        {{ __('app.auth.password') }}
-                    </label>
-                    <a href="{{ route('password.request') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-700" data-skip-loader="true">
-                        {{ __('app.auth.forgot_password') }}
-                    </a>
-                </div>
-                <x-password-input
-                    id="login-password"
-                    name="password"
-                    :required="true"
-                    placeholder="{{ __('app.auth.password_placeholder_mask') }}"
-                    autocomplete="current-password"
-                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
-                />
-            </div>
-
-            <button class="btn-primary inline-flex w-full items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold">
-                {{ __('app.auth.login_button') }}
-            </button>
-        </form>
-
-        <div class="relative flex items-center py-2">
-            <div class="flex-grow border-t border-slate-200"></div>
-            <span class="mx-4 flex-shrink text-[10px] font-semibold uppercase tracking-widest text-slate-400">Atau masuk dengan</span>
-            <div class="flex-grow border-t border-slate-200"></div>
+    <!-- Global Errors/Status -->
+    @if (session('error') || session('status') || $errors->any())
+        <div class="w-full flex flex-col gap-2 mb-2">
+            @if (session('error'))
+                <div class="text-sm text-red-400 text-center">{{ session('error') }}</div>
+            @endif
+            @if (session('status'))
+                <div class="text-sm text-emerald-400 text-center">{{ session('status') }}</div>
+            @endif
+            @if ($errors->any())
+                <div class="text-sm text-red-400 text-center">{{ $errors->first() }}</div>
+            @endif
         </div>
+    @endif
 
-        <x-auth.google-button label="Google" />
+    <form method="POST" action="{{ route('login') }}" class="w-full flex flex-col gap-4">
+        @csrf
 
-        <div class="border-t border-slate-200/80 pt-4 text-sm text-slate-500">
-            {{ __('app.auth.no_account') }}
-            <a href="{{ route('register') }}" class="font-semibold text-blue-600 hover:text-blue-700" data-skip-loader="true">
-                {{ __('app.auth.register_now') }}
+        <input
+            placeholder="{{ __('ui.auth.email_placeholder') }}"
+            type="email"
+            name="email"
+            value="{{ old('email') }}"
+            required
+            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+        />
+        <div class="relative">
+            <input
+                placeholder="{{ __('ui.auth.password_placeholder') }}"
+                type="password"
+                name="password"
+                required
+                class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+            />
+            <a href="{{ route('password.request') }}" class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-500 hover:text-white transition-colors" data-skip-loader="true">
+                {{ __('ui.auth.forgot_password') }}
             </a>
         </div>
-    </div>
+        
+        <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
+            {{ __('ui.auth.login_button') }}
+        </button>
+        
+        <x-auth.google-button label="Continue with Google" class="w-full flex items-center justify-center gap-2 !bg-white/5 !rounded-xl !px-5 !py-3 !font-medium !text-white !border !border-white/10 hover:!bg-white/10 transition-all !text-sm mb-2" />
+        
+        <div class="w-full text-center mt-2">
+            <span class="text-xs text-gray-400">
+                Don't have an account? 
+                <a href="{{ route('register') }}" class="font-medium text-blue-500 hover:text-blue-400 transition" data-skip-loader="true">
+                    Sign up, it's free!
+                </a>
+            </span>
+        </div>
+    </form>
 </x-guest-layout>

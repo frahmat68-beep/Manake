@@ -420,203 +420,169 @@
         <div
             x-cloak
             x-show="authModalOpen"
-            class="fixed inset-0 z-[80] flex items-center justify-center px-4 py-6"
+            class="fixed inset-0 z-[80] min-h-screen flex flex-col items-center justify-center bg-[#121212] overflow-hidden w-full"
             @keydown.escape.window="closeAuthModal()"
         >
-            <div class="absolute inset-0 bg-slate-900/55" @click="closeAuthModal()"></div>
+            <div class="absolute inset-0" @click="closeAuthModal()"></div>
 
-            <div class="manake-auth-card relative z-10 w-full max-w-5xl overflow-hidden rounded-[2rem] lg:grid lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-                <button
-                    type="button"
-                    data-ui-icon-button
-                    class="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full transition"
-                    @click="closeAuthModal()"
-                    aria-label="{{ __('ui.actions.close') }}"
-                >
-                    ✕
-                </button>
-
-                <div class="manake-auth-panel p-6 sm:p-8 lg:p-10">
-                    <a href="{{ route('home') }}" class="inline-flex items-center" data-skip-loader="true">
-                        <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" alt="Manake" img-class="h-10 w-auto" />
-                    </a>
-
-                    <div class="mt-5 inline-flex rounded-2xl border border-slate-200 bg-slate-50/90 p-1">
-                        <button type="button" data-ui-chip-option :data-ui-active="authModalView === 'login' ? 'true' : 'false'" class="rounded-xl px-3 py-2 text-xs font-semibold" @click="authModalView = 'login'">{{ __('ui.nav.login') }}</button>
-                        <button type="button" data-ui-chip-option :data-ui-active="authModalView === 'register' ? 'true' : 'false'" class="rounded-xl px-3 py-2 text-xs font-semibold" @click="authModalView = 'register'">{{ __('ui.nav.register') }}</button>
-                    </div>
-
-                    <div class="mt-6" x-show="authModalView === 'login'" x-transition>
-                        <h2 class="text-2xl font-semibold tracking-[-0.03em] text-slate-950">{{ __('app.auth.login_title') }}</h2>
-
-                        @if (session('error') && (old('auth_modal') === 'login' || $authModalView === 'login'))
-                            <div class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">{{ session('error') }}</div>
-                        @endif
-
-                        @if ($errors->any() && old('auth_modal') === 'login')
-                            <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{{ $errors->first() }}</div>
-                        @endif
-
-                        <form method="POST" action="{{ route('login') }}" class="mt-5 space-y-4">
-                            @csrf
-                            <input type="hidden" name="auth_modal" value="login">
-
-                            <div class="space-y-1.5">
-                                <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('app.auth.email') }}</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value="{{ old('auth_modal') === 'login' ? old('email') : '' }}"
-                                    required
-                                    class="input w-full rounded-2xl px-4 py-3 text-sm"
-                                    placeholder="{{ __('app.auth.email_placeholder') }}"
-                                >
-                            </div>
-
-                            <div class="space-y-1.5">
-                                <div class="flex items-center justify-between gap-3">
-                                    <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('app.auth.password') }}</label>
-                                    <button type="button" class="text-xs font-semibold text-blue-600 hover:text-blue-700" @click="authModalView = 'forgot'">
-                                        {{ __('app.auth.forgot_password') }}
-                                    </button>
-                                </div>
-                                <x-password-input
-                                    id="modal-login-password"
-                                    name="password"
-                                    :required="true"
-                                    placeholder="{{ __('app.auth.password_placeholder_mask') }}"
-                                    autocomplete="current-password"
-                                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
-                                />
-                            </div>
-
-                            <button class="btn-primary w-full rounded-2xl px-4 py-3 text-sm font-semibold transition">
-                                {{ __('app.auth.login_button') }}
-                            </button>
-                        </form>
-
-                        <div class="relative flex items-center py-4">
-                            <div class="flex-grow border-t border-slate-200"></div>
-                            <span class="mx-4 flex-shrink text-[10px] font-semibold uppercase tracking-widest text-slate-400">Atau masuk dengan</span>
-                            <div class="flex-grow border-t border-slate-200"></div>
-                        </div>
-
-                        <x-auth.google-button label="Google" />
-                    </div>
-
-                    <div class="mt-6" x-show="authModalView === 'register'" x-transition>
-                        <h2 class="text-2xl font-semibold tracking-[-0.03em] text-slate-950">{{ __('app.auth.register_title') }}</h2>
-
-                        @if ($errors->any() && old('auth_modal') === 'register')
-                            <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{{ $errors->first() }}</div>
-                        @endif
-
-                        <form method="POST" action="{{ route('register') }}" class="mt-5 space-y-4">
-                            @csrf
-                            <input type="hidden" name="auth_modal" value="register">
-
-                            <div class="space-y-1.5">
-                                <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('app.auth.email') }}</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value="{{ old('auth_modal') === 'register' ? old('email') : '' }}"
-                                    required
-                                    class="input w-full rounded-2xl px-4 py-3 text-sm"
-                                    placeholder="{{ __('app.auth.email_placeholder') }}"
-                                >
-                            </div>
-
-                            <div class="space-y-1.5">
-                                <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('app.auth.password') }}</label>
-                                <x-password-input
-                                    id="modal-register-password"
-                                    name="password"
-                                    :required="true"
-                                    placeholder="{{ __('app.auth.password_placeholder') }}"
-                                    autocomplete="new-password"
-                                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
-                                />
-                            </div>
-
-                            <div class="space-y-1.5">
-                                <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('app.auth.password_confirm') }}</label>
-                                <x-password-input
-                                    id="modal-register-password-confirmation"
-                                    name="password_confirmation"
-                                    :required="true"
-                                    placeholder="{{ __('app.auth.password_confirm_placeholder') }}"
-                                    autocomplete="new-password"
-                                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
-                                />
-                            </div>
-
-                            <button class="btn-primary w-full rounded-2xl px-4 py-3 text-sm font-semibold transition">
-                                {{ __('app.auth.register_button') }}
-                            </button>
-                        </form>
-
-                        <div class="relative flex items-center py-4">
-                            <div class="flex-grow border-t border-slate-200"></div>
-                            <span class="mx-4 flex-shrink text-[10px] font-semibold uppercase tracking-widest text-slate-400">Atau daftar dengan</span>
-                            <div class="flex-grow border-t border-slate-200"></div>
-                        </div>
-
-                        <x-auth.google-button label="Google" />
-                    </div>
-
-                    <div class="mt-6" x-show="authModalView === 'forgot'" x-transition>
-                        <h2 class="text-2xl font-semibold tracking-[-0.03em] text-slate-950">{{ __('ui.auth.forgot_title') }}</h2>
-
-                        @if (session('status') && ($authModalView === 'forgot' || old('auth_modal') === 'forgot'))
-                            <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ session('status') }}</div>
-                        @endif
-
-                        @if ($errors->any() && old('auth_modal') === 'forgot')
-                            <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{{ $errors->first() }}</div>
-                        @endif
-
-                        <form method="POST" action="{{ route('password.email') }}" class="mt-5 space-y-4">
-                            @csrf
-                            <input type="hidden" name="auth_modal" value="forgot">
-
-                            <div class="space-y-1.5">
-                                <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.auth.email_label') }}</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value="{{ old('auth_modal') === 'forgot' ? old('email') : '' }}"
-                                    required
-                                    class="input w-full rounded-2xl px-4 py-3 text-sm"
-                                    placeholder="{{ __('ui.auth.email_placeholder') }}"
-                                >
-                            </div>
-
-                            <button class="btn-primary w-full rounded-2xl px-4 py-3 text-sm font-semibold transition">
-                                {{ __('ui.auth.forgot_button') }}
-                            </button>
-                        </form>
-
-                        <button type="button" class="mt-3 text-sm font-semibold text-blue-600 hover:text-blue-700" @click="authModalView = 'login'">
-                            {{ __('ui.auth.back_to_login') }}
-                        </button>
-                    </div>
+            <button
+                type="button"
+                class="absolute right-4 top-4 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+                @click="closeAuthModal()"
+                aria-label="{{ __('ui.actions.close') }}"
+            >
+                ✕
+            </button>            <!-- Centered glass card -->
+            <div class="relative z-10 w-full max-w-sm rounded-3xl !bg-[#0f1115] border !border-white/10 !shadow-[0_0_80px_-20px_rgba(37,99,235,0.25)] !backdrop-blur-xl p-8 flex flex-col items-center">
+                <!-- Logo -->
+                <div class="flex items-center justify-center mb-8">
+                    <img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" class="h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(37,99,235,0.3)]" />
                 </div>
-
-                <div class="manake-auth-showcase relative hidden overflow-hidden p-8 text-white lg:flex lg:flex-col lg:justify-between lg:p-10">
-                    <div class="relative z-10 space-y-5">
-                        <x-brand.image
-                            light="manake-logo-white.png"
-                            dark="manake-logo-white.png"
-                            alt="Manake"
-                            img-class="h-[2.6rem] w-auto"
-                        />
-                        <p class="max-w-sm text-sm leading-6 text-blue-100/82">
-                            {{ __('app.auth.login_benefit_1') }}
-                        </p>
+                
+                <!-- Title -->
+                @if ($heading ?? null)
+                    <div class="w-full text-center mb-8">
+                        <h2 class="text-3xl font-extrabold tracking-tighter !text-white" x-text="
+                            authModalView === 'login' ? '{{ $heading }}' : 
+                            authModalView === 'register' ? 'Register' : 
+                            'Forgot Password'
+                        ">
+                        </h2>
                     </div>
+                @endif
+                
+                <div class="flex flex-col w-full gap-4">
+                    <!-- Global Errors/Status -->
+                    @if (session('error') || session('status') || $errors->any())
+                        <div class="w-full flex flex-col gap-2 mb-2">
+                            @if (session('error'))
+                                <div class="text-sm text-red-400 text-center">{{ session('error') }}</div>
+                            @endif
+                            @if (session('status'))
+                                <div class="text-sm text-emerald-400 text-center">{{ session('status') }}</div>
+                            @endif
+                            @if ($errors->any())
+                                <div class="text-sm text-red-400 text-center">{{ $errors->first() }}</div>
+                            @endif
+                        </div>
+                    @endif
+                    
+                    <!-- Form Content -->
+                    <div class="w-full">
+                    <!-- LOGIN FORM -->
+                    <form method="POST" action="{{ route('login') }}" class="w-full flex flex-col gap-4" x-show="authModalView === 'login'" x-transition.opacity.duration.250ms>
+                        @csrf
+                        <input type="hidden" name="auth_modal" value="login">
+                        <input
+                            placeholder="Email"
+                            type="email"
+                            name="email"
+                            value="{{ old('auth_modal') === 'login' ? old('email') : '' }}"
+                            required
+                            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+                        />
+                        <div class="relative">
+                            <input
+                                placeholder="Password"
+                                type="password"
+                                name="password"
+                                required
+                                class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+                            />
+                            <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-500 hover:text-white transition-colors" @click="authModalView = 'forgot'">
+                                Forgot?
+                            </button>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
+                            Sign in
+                        </button>
+                        
+                        <x-auth.google-button label="Continue with Google" class="w-full flex items-center justify-center gap-2 !bg-white/5 !rounded-xl !px-5 !py-3 !font-medium !text-white !border !border-white/10 hover:!bg-white/10 transition-all !text-sm mb-2" />
+                        
+                        <div class="w-full text-center mt-2">
+                            <span class="text-xs text-gray-400">
+                                Don't have an account? 
+                                <button type="button" class="font-medium text-blue-500 hover:text-blue-400 transition" @click="authModalView = 'register'">
+                                    Sign up, it's free!
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                    <!-- REGISTER FORM -->
+                    <form method="POST" action="{{ route('register') }}" class="w-full flex flex-col gap-4" x-show="authModalView === 'register'" x-cloak x-transition.opacity.duration.250ms>
+                        @csrf
+                        <input type="hidden" name="auth_modal" value="register">
+                        <input
+                            placeholder="Email"
+                            type="email"
+                            name="email"
+                            value="{{ old('auth_modal') === 'register' ? old('email') : '' }}"
+                            required
+                            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+                        />
+                        <input
+                            placeholder="Password"
+                            type="password"
+                            name="password"
+                            required
+                            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+                        />
+                        <input
+                            placeholder="Confirm Password"
+                            type="password"
+                            name="password_confirmation"
+                            required
+                            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+                        />
+                        
+                        <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
+                            Sign up
+                        </button>
+                        
+                        <x-auth.google-button label="Continue with Google" class="w-full flex items-center justify-center gap-2 !bg-white/5 !rounded-xl !px-5 !py-3 !font-medium !text-white !border !border-white/10 hover:!bg-white/10 transition-all !text-sm mb-2" />
+                        
+                        <div class="w-full text-center mt-2">
+                            <span class="text-xs text-gray-400">
+                                Already have an account? 
+                                <button type="button" class="font-medium text-blue-500 hover:text-blue-400 transition" @click="authModalView = 'login'">
+                                    Sign in
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                    <!-- FORGOT PASSWORD FORM -->
+                    <form method="POST" action="{{ route('password.email') }}" class="w-full flex flex-col gap-4" x-show="authModalView === 'forgot'" x-cloak x-transition.opacity.duration.250ms>
+                        @csrf
+                        <input type="hidden" name="auth_modal" value="forgot">
+                        <input
+                            placeholder="Email"
+                            type="email"
+                            name="email"
+                            value="{{ old('auth_modal') === 'forgot' ? old('email') : '' }}"
+                            required
+                            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+                        />
+                        
+                        <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
+                            Send Reset Link
+                        </button>
+                        
+                        <div class="w-full text-center mt-2">
+                            <span class="text-xs text-gray-400">
+                                Remember your password? 
+                                <button type="button" class="font-medium text-blue-500 hover:text-blue-400 transition" @click="authModalView = 'login'">
+                                    Back to login
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
                 </div>
             </div>
+
         </div>
     @endunless
 </div>

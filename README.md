@@ -169,31 +169,10 @@ Untuk validasi saja (tanpa deployment penuh), gunakan:
 bash scripts/deploy-check.sh
 ```
 
-## Queue & Scheduler Runtime
-
-Template operasional sudah disediakan:
-- Supervisor:
-  - `deploy/supervisor/manake-queue-worker.conf`
-  - `deploy/supervisor/manake-scheduler.conf`
-- systemd:
-  - `deploy/systemd/manake-queue-worker.service`
-  - `deploy/systemd/manake-scheduler.service`
-  - `deploy/systemd/manake-scheduler.timer`
-
-## Docker (Opsional)
-
-Untuk environment konsisten lokal/CI:
-
-```bash
-docker compose up --build
-```
-
-File yang disediakan:
-- `Dockerfile` (multi-stage build: Composer + Node + runtime)
-- `docker-compose.yml` (app, queue, scheduler, mysql, redis)
-- `.dockerignore`
-
 ## Security & Audit
+
+Audit log admin sudah aktif via tabel `audit_logs` untuk perubahan penting (order/content/category/equipment/DB explorer).
+Monitoring error (Sentry/Bugsnag) disiapkan melalui env di `.env.example` agar mudah diaktifkan saat production hardening.
 
 ## Testing
 
@@ -204,8 +183,5 @@ composer analyse
 npm run test
 php artisan test
 ```
-
-Audit log admin sudah aktif via tabel `audit_logs` untuk perubahan penting (order/content/category/equipment/DB explorer).
-Monitoring error (Sentry/Bugsnag) disiapkan melalui env di `.env.example` agar mudah diaktifkan saat production hardening.
 
 Target release: seluruh test harus green sebelum deploy.

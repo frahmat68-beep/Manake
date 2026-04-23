@@ -2,84 +2,63 @@
     :page-title="__('app.auth.register_page_title')"
     :eyebrow="null"
     :heading="__('app.auth.register_title')"
-    :subheading="__('app.auth.register_note')"
+    :subheading="null"
     :aside-eyebrow="null"
-    :aside-heading="__('app.auth.register_title')"
-    :aside-text="__('app.auth.register_note')"
+    :aside-heading="null"
+    :aside-text="null"
     :aside-points="[]"
 >
-    <div class="space-y-4">
-        @if ($errors->any())
-            <div class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-                {{ $errors->first() }}
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('register') }}" class="space-y-4">
-            @csrf
-
-            <div class="space-y-1.5">
-                <label for="register-email" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    {{ __('app.auth.email') }}
-                </label>
-                <input
-                    id="register-email"
-                    type="email"
-                    name="email"
-                    value="{{ old('email') }}"
-                    required
-                    autocomplete="email"
-                    class="input w-full rounded-2xl px-4 py-3 text-sm"
-                    placeholder="{{ __('app.auth.email_placeholder') }}"
-                >
-            </div>
-
-            <div class="space-y-1.5">
-                <label for="register-password" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    {{ __('app.auth.password') }}
-                </label>
-                <x-password-input
-                    id="register-password"
-                    name="password"
-                    :required="true"
-                    placeholder="{{ __('app.auth.password_placeholder') }}"
-                    autocomplete="new-password"
-                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
-                />
-            </div>
-
-            <div class="space-y-1.5">
-                <label for="register-password-confirmation" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    {{ __('app.auth.password_confirm') }}
-                </label>
-                <x-password-input
-                    id="register-password-confirmation"
-                    name="password_confirmation"
-                    :required="true"
-                    placeholder="{{ __('app.auth.password_confirm_placeholder') }}"
-                    autocomplete="new-password"
-                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
-                />
-            </div>
-
-            <button class="btn-primary inline-flex w-full items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold">
-                {{ __('app.auth.register_button') }}
-            </button>
-        </form>
-
-        <div class="relative flex items-center py-2">
-            <div class="flex-grow border-t border-slate-200"></div>
-            <span class="mx-4 flex-shrink text-[10px] font-semibold uppercase tracking-widest text-slate-400">Atau daftar dengan</span>
-            <div class="flex-grow border-t border-slate-200"></div>
+    <!-- Global Errors/Status -->
+    @if ($errors->any())
+        <div class="w-full flex flex-col gap-2 mb-2">
+            <div class="text-sm text-red-400 text-center">{{ $errors->first() }}</div>
         </div>
+    @endif
 
-        <x-auth.google-button label="Google" />
+    <form method="POST" action="{{ route('register') }}" class="w-full flex flex-col gap-4">
+        @csrf
 
-        <div class="border-t border-slate-200/80 pt-4 text-sm text-slate-500">
-            {{ __('app.auth.already_have_account') }}
-            <a href="{{ route('login') }}" class="font-semibold text-blue-600 hover:text-blue-700" data-skip-loader="true">
-                {{ __('app.auth.login_link') }}
-            </a>
+        <input
+            placeholder="{{ __('ui.auth.email_placeholder') }}"
+            type="email"
+            name="email"
+            value="{{ old('email') }}"
+            required
+            autocomplete="email"
+            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+        />
+
+        <input
+            placeholder="{{ __('ui.auth.password_placeholder') }}"
+            type="password"
+            name="password"
+            required
+            autocomplete="new-password"
+            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+        />
+        
+        <input
+            placeholder="{{ __('ui.auth.confirm_password_placeholder') }}"
+            type="password"
+            name="password_confirmation"
+            required
+            autocomplete="new-password"
+            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+        />
+        
+        <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
+            Sign up
+        </button>
+        
+        <x-auth.google-button label="Continue with Google" class="w-full flex items-center justify-center gap-2 !bg-white/5 !rounded-xl !px-5 !py-3 !font-medium !text-white !border !border-white/10 hover:!bg-white/10 transition-all !text-sm mb-2" />
+        
+        <div class="w-full text-center mt-2">
+            <span class="text-xs text-gray-400">
+                Already have an account? 
+                <a href="{{ route('login') }}" class="font-medium text-blue-500 hover:text-blue-400 transition" data-skip-loader="true">
+                    Sign in
+                </a>
+            </span>
         </div>
-    </div>
+    </form>
 </x-guest-layout>

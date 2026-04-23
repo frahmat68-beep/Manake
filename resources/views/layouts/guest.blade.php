@@ -50,66 +50,30 @@
             $compactAuthShowcaseText = $asideText ?: null;
         @endphp
 
-        <div class="manake-auth-shell min-h-screen px-4 py-4 sm:px-6 sm:py-6">
-            <div class="manake-auth-card mx-auto w-full max-w-5xl overflow-hidden rounded-[2rem] lg:grid lg:grid-cols-[minmax(0,0.96fr)_minmax(0,1.04fr)]">
-                <div class="manake-auth-panel p-5 sm:p-7 lg:p-8">
-                    <div class="space-y-3">
-                        <a href="{{ route('home') }}" class="inline-flex items-center" data-skip-loader="true" aria-label="{{ $brandName }}">
-                            <x-brand.image
-                                light="manake-logo-blue.png"
-                                dark="manake-logo-white.png"
-                                :alt="$brandName"
-                                img-class="manake-brand-wordmark-image"
-                            />
-                        </a>
+        <div class="min-h-screen flex flex-col items-center justify-center bg-[#121212] relative overflow-hidden w-full">
+            <!-- Centered glass card -->
+            <div class="relative z-10 w-full max-w-sm rounded-3xl !bg-[#0f1115] border !border-white/10 !shadow-[0_0_80px_-20px_rgba(37,99,235,0.25)] !backdrop-blur-xl p-8 flex flex-col items-center">
+                <!-- Logo -->
+                <a href="{{ route('home') }}" class="flex items-center justify-center mb-8 hover:scale-105 transition-transform" data-skip-loader="true">
+                    <img src="{{ asset('manake-logo-blue.png') }}" alt="{{ $brandName }}" class="h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(37,99,235,0.3)]" />
+                </a>
 
-                        @if ($eyebrow || $heading || $subheading)
-                            <div class="space-y-1.5">
-                                @if ($eyebrow)
-                                    <span class="manake-kicker">{{ $eyebrow }}</span>
-                                @endif
-                                @if ($heading)
-                                    <h1 class="text-3xl font-semibold tracking-[-0.03em] text-slate-950">{{ $heading }}</h1>
-                                @endif
-                        @if ($subheading)
-                            <p class="max-w-md text-sm leading-6 text-slate-500">{{ $subheading }}</p>
-                        @endif
-                            </div>
-                        @endif
-                    </div>
+                @if ($heading ?? null)
+                    <h2 class="text-3xl font-extrabold tracking-tighter !text-white mb-8 text-center">
+                        {{ $heading }}
+                    </h2>
+                @endif
 
-                    <div class="mt-6">
-                        {{ $slot }}
-                    </div>
-                </div>
-
-                <div class="manake-auth-showcase hidden p-7 text-slate-100 lg:flex lg:flex-col lg:justify-between lg:p-8">
-                    <div class="space-y-5">
-                        <x-brand.image
-                            light="manake-logo-white.png"
-                            dark="manake-logo-white.png"
-                            :alt="$brandName"
-                            img-class="manake-brand-wordmark-image"
-                        />
-                        <div class="space-y-2">
-                            <h2 class="text-[1.75rem] font-semibold leading-tight tracking-[-0.04em] text-white">
-                                {{ $compactAuthShowcaseTitle }}
-                            </h2>
-                            @if ($compactAuthShowcaseText)
-                                <p class="max-w-sm text-sm leading-6 text-blue-100/80">
-                                    {{ $compactAuthShowcaseText }}
-                                </p>
-                            @endif
-                        </div>
-                    </div>
-
-                    @if ($showBackHome)
-                        <a href="{{ $backUrl }}" class="mt-8 inline-flex w-fit items-center justify-center rounded-2xl border border-white/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10" data-skip-loader="true">
-                            {{ $backLabel }}
-                        </a>
-                    @endif
+                <div class="flex flex-col w-full gap-4">
+                    {{ $slot }}
                 </div>
             </div>
+            
+            @if ($showBackHome)
+                <a href="{{ $backUrl }}" class="relative z-10 mt-6 inline-flex w-fit items-center justify-center text-sm font-semibold text-gray-500 hover:text-white transition" data-skip-loader="true">
+                    &larr; {{ $backLabel }}
+                </a>
+            @endif
         </div>
 
         @include('partials.theme-toggle')

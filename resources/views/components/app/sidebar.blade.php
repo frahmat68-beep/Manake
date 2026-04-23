@@ -65,10 +65,10 @@
         }
     }"
     data-manake-sidebar="app"
-    class="group/sidebar fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col overflow-visible border-r border-slate-200 bg-white px-2 py-5 shadow-sm transition-[width,transform,box-shadow] duration-200 ease-out lg:w-24 lg:translate-x-0 lg:hover:w-72 lg:focus-within:w-72 lg:hover:shadow-2xl lg:focus-within:shadow-2xl"
+    class="group/sidebar fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col overflow-visible border-r border-slate-200 bg-white/92 px-2 py-4 shadow-sm backdrop-blur transition-[width,transform,box-shadow] duration-200 ease-out lg:w-[5.35rem] lg:translate-x-0 lg:hover:w-[17.5rem] lg:focus-within:w-[17.5rem] lg:hover:shadow-2xl lg:focus-within:shadow-2xl"
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
 >
-    <div class="flex h-20 items-center justify-between px-4">
+    <div class="flex h-16 items-center justify-between px-3">
         <a
             href="{{ route('home') }}"
             title="{{ $brandName }}"
@@ -100,7 +100,7 @@
         </button>
     </div>
 
-    <nav class="mt-5 space-y-1.5 px-1">
+    <nav class="mt-3 space-y-1 px-1">
         @foreach ($items as $item)
             @php
                 $isCatalogMenu = ($item['key'] ?? '') === 'catalog';
@@ -113,7 +113,7 @@
                             aria-label="{{ $item['label'] }}"
                             data-nav-item
                             data-nav-active="{{ $item['active'] ? 'true' : 'false' }}"
-                            class="flex h-12 min-w-0 flex-1 items-center rounded-xl px-3 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3 {{ $item['active'] ? '!text-white' : '!text-slate-700' }}"
+                            class="flex h-11 min-w-0 flex-1 items-center rounded-2xl px-3 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3 {{ $item['active'] ? '!text-white' : '!text-slate-700' }}"
                         >
                             <span data-nav-icon>{!! $item['icon'] !!}</span>
                             <span class="truncate text-sm font-semibold transition-all duration-200 lg:ml-0 lg:pointer-events-none lg:max-w-0 lg:overflow-hidden lg:whitespace-nowrap lg:opacity-0 lg:-translate-x-2 lg:group-hover/sidebar:ml-3 lg:group-hover/sidebar:pointer-events-auto lg:group-hover/sidebar:max-w-[12rem] lg:group-hover/sidebar:opacity-100 lg:group-hover/sidebar:translate-x-0 lg:group-focus-within/sidebar:ml-3 lg:group-focus-within/sidebar:pointer-events-auto lg:group-focus-within/sidebar:max-w-[12rem] lg:group-focus-within/sidebar:opacity-100 lg:group-focus-within/sidebar:translate-x-0">{{ $item['label'] }}</span>
@@ -176,7 +176,7 @@
                     @if (isset($item['modal']))
                         @click.prevent="openAuthModal('{{ $item['modal'] }}')"
                     @endif
-                    class="flex h-12 items-center rounded-xl px-3 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3 {{ $item['active'] ? '!text-white' : '!text-slate-700' }}"
+                    class="flex h-11 items-center rounded-2xl px-3 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3 {{ $item['active'] ? '!text-white' : '!text-slate-700' }}"
                 >
                     <span data-nav-icon>{!! $item['icon'] !!}</span>
                     <span class="text-sm font-semibold transition-all duration-200 lg:ml-0 lg:pointer-events-none lg:max-w-0 lg:overflow-hidden lg:whitespace-nowrap lg:opacity-0 lg:-translate-x-2 lg:group-hover/sidebar:ml-3 lg:group-hover/sidebar:pointer-events-auto lg:group-hover/sidebar:max-w-[12rem] lg:group-hover/sidebar:opacity-100 lg:group-hover/sidebar:translate-x-0 lg:group-focus-within/sidebar:ml-3 lg:group-focus-within/sidebar:pointer-events-auto lg:group-focus-within/sidebar:max-w-[12rem] lg:group-focus-within/sidebar:opacity-100 lg:group-focus-within/sidebar:translate-x-0">{{ $item['label'] }}</span>
@@ -190,7 +190,7 @@
                 data-nav-item
                 :data-nav-active="shellPrefsOpen ? 'true' : 'false'"
                 data-settings-toggle
-                class="flex h-12 w-full items-center rounded-xl px-3 !text-slate-700 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3"
+                class="flex h-11 w-full items-center rounded-2xl px-3 !text-slate-700 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3"
                 @click="shellPrefsOpen = !shellPrefsOpen"
                 :aria-expanded="shellPrefsOpen.toString()"
                 aria-label="{{ __('ui.nav.settings') }}"

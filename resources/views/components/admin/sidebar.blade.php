@@ -70,19 +70,22 @@
 
 <aside
     data-manake-sidebar="admin"
-    class="fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-white transition-transform duration-200 lg:translate-x-0"
-    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+    class="fixed inset-y-0 left-0 z-50 flex -translate-x-full flex-col border-r border-slate-200 bg-white transition-all duration-300 lg:translate-x-0"
+    :class="{
+        'translate-x-0': sidebarOpen,
+        '-translate-x-full lg:translate-x-0': !sidebarOpen,
+        'w-72': !sidebarCollapsed,
+        'w-20': sidebarCollapsed
+    }"
 >
     <div class="flex h-20 items-center justify-between border-b border-slate-200 px-4">
-        <a href="{{ route('admin.dashboard') }}" class="manake-sidebar-brand-link inline-flex w-full items-center justify-center overflow-hidden">
-            <span class="manake-sidebar-brand__wordmark">
-                <x-brand.image
-                    light="manake-logo-blue.png"
-                    dark="manake-logo-white.png"
-                    :alt="$brandName"
-                    img-class="manake-brand-wordmark-image"
-                />
-            </span>
+        <a href="{{ route('admin.dashboard') }}" class="manake-sidebar-brand-link inline-flex items-center overflow-hidden transition-all duration-300" :class="sidebarCollapsed ? 'w-10' : 'w-full'">
+            <x-brand.image
+                light="manake-logo-blue.png"
+                dark="manake-logo-white.png"
+                :alt="$brandName"
+                img-class="h-8 w-auto min-w-[32px]"
+            />
         </a>
         <button type="button" data-ui-icon-button class="rounded-lg p-1.5 lg:hidden" @click="sidebarOpen = false" aria-label="{{ __('ui.actions.close') }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -92,44 +95,46 @@
         </button>
     </div>
 
-    <div class="flex-1 overflow-y-auto px-3 py-4">
-        <p class="px-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('ui.admin.sidebar_operational') }}</p>
+    <div class="flex-1 overflow-y-auto px-3 py-4 no-scrollbar">
+        <p class="px-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 transition-opacity" :class="sidebarCollapsed ? 'opacity-0' : 'opacity-100'">{{ __('ui.admin.sidebar_operational') }}</p>
         <nav class="mt-2 space-y-1">
             @foreach ($primaryItems as $item)
                 <a
                     href="{{ $item['url'] }}"
                     data-nav-item
                     data-nav-active="{{ $activePage === $item['key'] ? 'true' : 'false' }}"
-                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'text-white' : 'text-slate-700' }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'text-white bg-blue-600 shadow-md' : 'text-slate-600 hover:bg-slate-50' }}"
+                    :title="sidebarCollapsed ? '{{ $item['label'] }}' : ''"
                 >
-                    <span data-nav-icon>{!! $item['icon'] !!}</span>
-                    <span>{{ $item['label'] }}</span>
+                    <span class="flex-shrink-0">{!! $item['icon'] !!}</span>
+                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.300ms class="truncate">{{ $item['label'] }}</span>
                 </a>
             @endforeach
         </nav>
 
-        <p class="mt-6 px-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('ui.admin.sidebar_settings') }}</p>
+        <p class="mt-6 px-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 transition-opacity" :class="sidebarCollapsed ? 'opacity-0' : 'opacity-100'">{{ __('ui.admin.sidebar_settings') }}</p>
         <nav class="mt-2 space-y-1">
             @foreach ($settingsItems as $item)
                 <a
                     href="{{ $item['url'] }}"
                     data-nav-item
                     data-nav-active="{{ $activePage === $item['key'] ? 'true' : 'false' }}"
-                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'text-white' : 'text-slate-700' }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'text-white bg-blue-600 shadow-md' : 'text-slate-600 hover:bg-slate-50' }}"
+                    :title="sidebarCollapsed ? '{{ $item['label'] }}' : ''"
                 >
-                    <span data-nav-icon>{!! $item['icon'] !!}</span>
-                    <span>{{ $item['label'] }}</span>
+                    <span class="flex-shrink-0">{!! $item['icon'] !!}</span>
+                    <span x-show="!sidebarCollapsed" x-transition.opacity.duration.300ms class="truncate">{{ $item['label'] }}</span>
                 </a>
             @endforeach
         </nav>
     </div>
 
     <div class="border-t border-slate-200 px-4 py-4">
-        <div class="flex items-center gap-3 rounded-xl bg-slate-50 px-3 py-2.5 text-slate-700">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">{{ $adminInitial }}</span>
-            <div class="min-w-0">
+        <div class="flex items-center gap-3 rounded-xl bg-slate-50 p-2 text-slate-700 transition-all" :class="sidebarCollapsed ? 'justify-center' : ''">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">{{ $adminInitial }}</span>
+            <div class="min-w-0" x-show="!sidebarCollapsed" x-transition.opacity.duration.300ms>
                 <p class="truncate text-sm font-semibold">{{ $adminName }}</p>
-                <p class="truncate text-[11px] uppercase tracking-wide text-slate-400">{{ $adminRole }}</p>
+                <p class="truncate text-[10px] uppercase tracking-wide text-slate-400">{{ $adminRole }}</p>
             </div>
         </div>
     </div>
