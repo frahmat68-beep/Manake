@@ -10,7 +10,7 @@ export default defineConfig({
         }),
     ],
     css: {
-        postcss: 'tools/postcss.config.js',
+        postcss: 'tools/config/postcss.config.js',
     },
     resolve: {
         alias: {

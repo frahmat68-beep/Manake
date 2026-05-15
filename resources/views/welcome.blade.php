@@ -169,6 +169,7 @@
                                                 <div class="min-w-0">
                                                     <p class="truncate text-sm font-semibold text-slate-900">{{ $item['name'] }}</p>
                                                     <p class="mt-1 text-xs leading-relaxed text-slate-500">
+                                                        Tanggal sewa:
                                                         {{ $formatLandingDate($item['start_date'] ?? null) }}
                                                         -
                                                         {{ $formatLandingDate($item['end_date'] ?? null) }}

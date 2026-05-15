@@ -55,13 +55,13 @@
         ],
         "test": [
             "@php artisan config:clear --ansi",
-            "@php artisan test --configuration tools/phpunit.xml"
+            "@php artisan test --configuration tools/config/phpunit.xml"
         ],
         "lint:php": [
             "@php vendor/bin/pint --test --dirty"
         ],
         "analyse": [
-            "@php vendor/bin/phpstan analyse -c tools/phpstan.neon --memory-limit=1G"
+            "@php vendor/bin/phpstan analyse -c tools/config/phpstan.neon --memory-limit=1G"
         ],
         "qa:full": [
             "@php artisan optimize:clear --ansi",

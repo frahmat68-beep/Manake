@@ -34,18 +34,17 @@
             required
             class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
         />
-        <div class="relative">
-            <input
-                placeholder="{{ __('ui.auth.password_placeholder') }}"
-                type="password"
-                name="password"
-                required
-                class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
-            />
-            <a href="{{ route('password.request') }}" class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-500 hover:text-white transition-colors" data-skip-loader="true">
+        <x-password-input
+            id="password"
+            name="password"
+            required
+            placeholder="{{ __('ui.auth.password_placeholder') }}"
+            input-class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+        >
+            <a href="{{ route('password.request') }}" class="absolute right-12 top-1/2 -translate-y-1/2 text-xs text-gray-500 hover:text-white transition-colors" data-skip-loader="true">
                 {{ __('ui.auth.forgot_password') }}
             </a>
-        </div>
+        </x-password-input>
         
         <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
             {{ __('ui.auth.login_button') }}

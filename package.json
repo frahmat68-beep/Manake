@@ -3,16 +3,16 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build && node scripts/vercel-sync-dist.mjs && node scripts/vercel-sync-storage.mjs",
+        "build": "vite build && node tools/scripts/vercel-sync-dist.mjs && node tools/scripts/vercel-sync-storage.mjs",
         "dev": "vite",
         "test": "npm run test:php && npm run test:frontend",
-        "test:php": "php artisan test",
+        "test:php": "vendor/bin/phpunit -c tools/config/phpunit.xml",
         "test:frontend": "if [ -f ./node_modules/vitest/package.json ]; then npx vitest run; else echo 'Vitest not installed, skipping frontend tests.'; fi",
         "lint": "npm run lint:eslint && npm run lint:prettier",
-        "lint:eslint": "eslint -c tools/eslint.config.js resources/js --max-warnings=0",
-        "lint:prettier": "prettier --config tools/.prettierrc.json --ignore-path tools/.prettierignore --check \"resources/js/**/*.js\" \"resources/css/**/*.css\" \"tools/eslint.config.js\" \"vite.config.js\" \"tools/tailwind.config.js\" \"tools/postcss.config.js\" \"package.json\" \".github/workflows/**/*.yml\"",
-        "doctor": "bash scripts/doctor.sh",
-        "deploy:check": "bash scripts/deploy-check.sh"
+        "lint:eslint": "eslint -c tools/config/eslint.config.js resources/js --max-warnings=0",
+        "lint:prettier": "prettier --config tools/config/.prettierrc.json --ignore-path tools/config/.prettierignore --check \"resources/js/**/*.js\" \"resources/css/**/*.css\" \"tools/config/eslint.config.js\" \"vite.config.js\" \"tools/config/tailwind.config.js\" \"tools/config/postcss.config.js\" \"package.json\" \".github/workflows/**/*.yml\"",
+        "doctor": "bash tools/scripts/doctor.sh",
+        "deploy:check": "bash tools/scripts/deploy-check.sh"
     },
     "devDependencies": {
         "@eslint/js": "^9.0.0",

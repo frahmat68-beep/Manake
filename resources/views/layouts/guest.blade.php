@@ -55,7 +55,10 @@
             <div class="relative z-10 w-full max-w-sm rounded-3xl !bg-[#0f1115] border !border-white/10 !shadow-[0_0_80px_-20px_rgba(37,99,235,0.25)] !backdrop-blur-xl p-8 flex flex-col items-center">
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center justify-center mb-8 hover:scale-105 transition-transform" data-skip-loader="true">
-                    <img src="{{ asset('manake-logo-blue.png') }}" alt="{{ $brandName }}" class="h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(37,99,235,0.3)]" />
+                    @php
+                        $logoFile = ($initialThemeResolved === 'dark') ? 'manake-logo-white.png' : 'manake-logo-blue.png';
+                    @endphp
+                    <img src="{{ site_asset($logoFile) }}" alt="{{ $brandName }}" class="h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(37,99,235,0.3)]" />
                 </a>
 
                 @if ($heading ?? null)

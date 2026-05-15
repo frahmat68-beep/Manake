@@ -3,7 +3,7 @@ import globals from 'globals';
 
 export default [
     {
-        ignores: ['../node_modules/**', '../vendor/**', '../public/**', '../storage/**', '../bootstrap/cache/**'],
+        ignores: ['../../node_modules/**', '../../vendor/**', '../../public/**', '../../storage/**', '../../bootstrap/cache/**'],
     },
     js.configs.recommended,
     {
