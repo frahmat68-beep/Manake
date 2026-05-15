@@ -1,7 +1,7 @@
 <x-guest-layout
-    :page-title="__('app.auth.register_page_title')"
+    :page-title="__('ui.auth.register_page_title')"
     :eyebrow="null"
-    :heading="__('app.auth.register_title')"
+    :heading="__('ui.auth.register_title')"
     :subheading="null"
     :aside-eyebrow="null"
     :aside-heading="null"
@@ -47,16 +47,16 @@
         />
         
         <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
-            Sign up
+            {{ __('ui.auth.register_button') }}
         </button>
         
         <x-auth.google-button label="Continue with Google" class="w-full flex items-center justify-center gap-2 !bg-white/5 !rounded-xl !px-5 !py-3 !font-medium !text-white !border !border-white/10 hover:!bg-white/10 transition-all !text-sm mb-2" />
         
         <div class="w-full text-center mt-2">
             <span class="text-xs text-gray-400">
-                Already have an account? 
+                {{ __('ui.auth.already_have_account') }} 
                 <a href="{{ route('login') }}" class="font-medium text-blue-500 hover:text-blue-400 transition" data-skip-loader="true">
-                    Sign in
+                    {{ __('ui.auth.sign_in') }}
                 </a>
             </span>
         </div>

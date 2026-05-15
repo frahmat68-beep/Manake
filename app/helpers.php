@@ -444,6 +444,11 @@ if (! function_exists('site_media_url')) {
 
         $resolvedDisk = $disk ?: site_media_disk();
         $normalizedPath = ltrim($path, '/');
+        
+        // Remove storage/ prefix if it exists to prevent double prefixing
+        if (str_starts_with($normalizedPath, 'storage/')) {
+            $normalizedPath = substr($normalizedPath, 8);
+        }
 
         try {
             if ($resolvedDisk === 'public') {
@@ -451,6 +456,12 @@ if (! function_exists('site_media_url')) {
 
                 if (! $absolutePath) {
                     return null;
+                }
+
+                // If file is directly accessible in public/storage, return direct asset URL
+                // This is much faster and more reliable than routing through controller
+                if (str_contains($absolutePath, public_path('storage/'))) {
+                    return asset('storage/' . $normalizedPath);
                 }
 
                 $version = '1';

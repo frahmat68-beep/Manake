@@ -92,11 +92,11 @@
         $flowTitle = setting('copy.landing.flow_title', __('app.landing.flow_title'));
         $flowCatalogLink = setting('copy.landing.flow_catalog_link', __('app.landing.flow_catalog_link'));
         $heroRotatingPhrases = collect([
-            'camera bodies siap produksi',
-            'lighting kit untuk set komersial',
-            'audio gear untuk shooting lapangan',
-            'drone dan support gear siap jalan',
-            'catalog alat untuk studio dan production house',
+            'camera bodies',
+            'lighting kit',
+            'audio gear',
+            'drone dan support gear',
+            'catalog alat',
         ]);
         $step1Title = setting('copy.landing.step_1_title', __('app.landing.step_1_title'));
         $step1Desc = setting('copy.landing.step_1_desc', __('app.landing.step_1_desc'));

@@ -1,7 +1,7 @@
 <x-guest-layout
-    :page-title="__('app.auth.login_page_title')"
+    :page-title="__('ui.auth.login_page_title')"
     :eyebrow="null"
-    :heading="__('app.auth.login_title')"
+    :heading="__('ui.auth.login_title')"
     :subheading="null"
     :aside-eyebrow="null"
     :aside-heading="null"
@@ -54,9 +54,9 @@
         
         <div class="w-full text-center mt-2">
             <span class="text-xs text-gray-400">
-                Don't have an account? 
+                {{ __('ui.auth.no_account') }} 
                 <a href="{{ route('register') }}" class="font-medium text-blue-500 hover:text-blue-400 transition" data-skip-loader="true">
-                    Sign up, it's free!
+                    {{ __('ui.auth.register_now') }}
                 </a>
             </span>
         </div>
