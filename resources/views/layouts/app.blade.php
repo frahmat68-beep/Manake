@@ -123,17 +123,12 @@
             font-style: var(--manake-heading-style) !important;
             font-weight: var(--manake-heading-weight) !important;
         }
-        table tbody tr:hover td {
-            background-color: #eaf2ff;
-            color: #0f172a;
-        }
-        table tbody tr:focus-within td {
-            background-color: #eaf2ff;
-            color: #0f172a;
+        [data-manake-shell="app"] {
+            overflow-x: hidden;
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800" data-manake-shell="app">
+<body class="bg-slate-100 text-slate-800 antialiased selection:bg-blue-600/10 selection:text-blue-600" data-manake-shell="app">
 @include('partials.page-loader')
 @php
     $isAuthenticated = auth('web')->check();
@@ -226,9 +221,16 @@
         }
     }"
     x-on:open-auth-modal.window="openAuthModal(($event.detail && typeof $event.detail === 'string') ? $event.detail : 'login')"
+    x-on:mousemove="
+        const shell = $el.closest('[data-manake-shell]');
+        if (shell) {
+            shell.style.setProperty('--x', $event.clientX + 'px');
+            shell.style.setProperty('--y', $event.clientY + 'px');
+        }
+    "
     class="min-h-screen"
 >
-    <div class="fixed inset-0 z-40 bg-slate-900/40 transition lg:hidden" x-show="sidebarOpen" x-cloak @click="sidebarOpen = false; shellPrefsOpen = false"></div>
+    <div class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm transition lg:hidden" x-show="sidebarOpen" x-cloak x-transition.opacity @click="sidebarOpen = false; shellPrefsOpen = false"></div>
 
     <x-app.sidebar
         :logo-url="$sidebarLogoUrl"
@@ -240,7 +242,7 @@
     />
 
     <div class="lg:pl-24">
-        <header class="manake-topbar-shell glass sticky top-0 z-30 border-b border-slate-200/50" data-manake-topbar="app">
+        <header class="manake-topbar-shell glass-lg sticky top-0 z-30 border-b border-slate-200/50" data-manake-topbar="app">
             <div class="mx-auto flex w-full max-w-[1320px] flex-wrap items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6 sm:py-3">
                 <button data-ui-icon-button class="order-1 hover-scale inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl lg:hidden transition-all hover:bg-slate-100" type="button" @click="sidebarOpen = true" aria-label="{{ __('ui.nav.toggle_menu') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -273,7 +275,7 @@
                     >
                     <div
                         id="global-catalog-search-dropdown"
-                        class="absolute left-0 right-auto top-[calc(100%+0.45rem)] z-50 hidden overflow-hidden rounded-2xl border border-slate-200/50 glass shadow-2xl"
+                        class="absolute left-0 right-auto top-[calc(100%+0.6rem)] z-50 hidden overflow-hidden rounded-2xl border border-slate-200/50 glass-lg shadow-2xl animate-fade-up"
                     ></div>
                 </form>
 
@@ -296,12 +298,12 @@
                                     x-cloak
                                     x-show="notifCount > 0"
                                     x-text="notifBadge()"
-                                    class="absolute -right-1.5 -top-1.5 inline-flex h-[1.35rem] min-w-[1.35rem] items-center justify-center rounded-full bg-blue-600 px-1.5 text-[10px] font-semibold leading-none text-white"
+                                    class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white dark:ring-slate-900"
                                 ></span>
                             </button>
-                            <div x-cloak x-show="notifOpen" x-transition.origin.top.right class="card absolute right-0 mt-2 w-[22rem] max-w-[calc(100vw-2rem)] rounded-xl p-3 shadow-lg">
-                                <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{{ __('ui.nav.notifications') }}</p>
-                                <div class="mt-2 max-h-72 space-y-2 overflow-y-auto">
+                            <div x-cloak x-show="notifOpen" x-transition.origin.top.right class="card absolute right-0 mt-2 w-[22rem] max-w-[calc(100vw-2rem)] rounded-2xl p-4 shadow-2xl glass-lg">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600">{{ __('ui.nav.notifications') }}</p>
+                                <div class="mt-3 max-h-72 space-y-2 overflow-y-auto pr-1">
                                     @forelse ($notificationItems as $notification)
                                         @php
                                             $notificationTargetUrl = $notification['url'] ?? route('notifications');
@@ -311,25 +313,32 @@
                                         <a
                                             href="{{ $notificationTargetUrl }}"
                                             data-read="{{ $notificationUnread ? '0' : '1' }}"
-                                            class="block rounded-xl border border-slate-200 px-3 py-2 hover:border-blue-200"
+                                            class="block rounded-xl border border-slate-200/50 p-3 transition hover:border-blue-400/50 hover:bg-blue-50/50"
                                             @click.prevent="openNotification($event, '{{ $notificationTargetUrl }}', '{{ $notificationReadUrl }}', {{ $notificationUnread ? 'true' : 'false' }})"
                                         >
                                             <div class="flex items-start justify-between gap-2">
-                                                <p class="text-xs font-semibold text-slate-800">{{ $notification['title'] }}</p>
+                                                <p class="text-xs font-bold text-slate-900">{{ $notification['title'] }}</p>
                                                 @if (!empty($notification['is_new']))
-                                                    <span class="mt-0.5 inline-flex h-2.5 w-2.5 rounded-full bg-blue-500"></span>
+                                                    <span class="mt-1 inline-flex h-2 w-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></span>
                                                 @endif
                                             </div>
-                                            <p class="mt-1 text-xs text-slate-600">{{ $notification['body'] }}</p>
+                                            <p class="mt-1 text-xs leading-relaxed text-slate-600 line-clamp-2">{{ $notification['body'] }}</p>
                                             @if (!empty($notification['time']))
-                                                <p class="mt-1 text-[11px] text-slate-400">{{ $notification['time'] }}</p>
+                                                <p class="mt-2 text-[10px] font-medium text-slate-400 uppercase tracking-wider">{{ $notification['time'] }}</p>
                                             @endif
                                         </a>
                                     @empty
-                                        <p class="rounded-xl border border-slate-200 px-3 py-2 text-xs text-slate-500">{{ __('app.notifications.empty') }}</p>
+                                        <div class="flex flex-col items-center justify-center py-8 text-center">
+                                            <div class="rounded-full bg-slate-50 p-3 text-slate-300">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.4-1.4a2 2 0 0 1-.6-1.4V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5" />
+                                                </svg>
+                                            </div>
+                                            <p class="mt-3 text-xs font-medium text-slate-400">{{ __('app.notifications.empty') }}</p>
+                                        </div>
                                     @endforelse
                                 </div>
-                                <a href="{{ route('notifications') }}" class="mt-3 block rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-blue-700 transition hover:border-blue-200 hover:bg-blue-50" @click="notifOpen = false">
+                                <a href="{{ route('notifications') }}" class="mt-4 block rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-center text-xs font-bold text-blue-600 transition hover:bg-blue-50 hover:text-blue-700" @click="notifOpen = false">
                                     {{ __('ui.nav.view_all') }}
                                 </a>
                             </div>
@@ -364,7 +373,7 @@
                                 <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6" />
                             </svg>
                             @if (($cartCount ?? 0) > 0)
-                                <span class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-semibold text-white">
+                                <span class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white ring-2 ring-white dark:ring-slate-900">
                                     {{ $cartCount > 99 ? '99+' : $cartCount }}
                                 </span>
                             @endif
@@ -390,14 +399,14 @@
                         <button
                             type="button"
                             data-ui-text-button
-                            class="hidden text-sm font-semibold transition sm:inline"
+                            class="hidden text-sm font-bold tracking-tight transition sm:inline hover:text-blue-600"
                             @click="openAuthModal('login')"
                         >
                             {{ __('ui.nav.login') }}
                         </button>
                         <button
                             type="button"
-                            class="btn-primary hidden rounded-xl px-3 py-2 text-sm font-semibold transition sm:inline"
+                            class="btn-primary hidden rounded-xl px-4 py-2 text-sm font-bold transition sm:inline"
                             @click="openAuthModal('register')"
                         >
                             {{ __('ui.nav.register') }}
@@ -407,7 +416,7 @@
             </div>
         </header>
 
-        <main class="manake-main-stage px-4 py-3 sm:px-6 sm:py-4">
+        <main class="manake-main-stage px-4 py-6 sm:px-8 sm:py-8">
             <div class="mx-auto w-full max-w-[1320px]">
                 @yield('content')
             </div>
@@ -420,169 +429,171 @@
         <div
             x-cloak
             x-show="authModalOpen"
-            class="fixed inset-0 z-[80] min-h-screen flex flex-col items-center justify-center bg-[#121212] overflow-hidden w-full"
+            class="fixed inset-0 z-[80] min-h-screen flex flex-col items-center justify-center bg-slate-900/60 backdrop-blur-xl overflow-hidden w-full p-4"
             @keydown.escape.window="closeAuthModal()"
         >
             <div class="absolute inset-0" @click="closeAuthModal()"></div>
 
             <button
                 type="button"
-                class="absolute right-4 top-4 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+                class="absolute right-6 top-6 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 active:scale-90"
                 @click="closeAuthModal()"
                 aria-label="{{ __('ui.actions.close') }}"
             >
                 ✕
-            </button>            <!-- Centered glass card -->
-            <div class="relative z-10 w-full max-w-sm rounded-3xl !bg-[#0f1115]/90 border !border-white/10 !shadow-[0_0_80px_-20px_rgba(37,99,235,0.35)] backdrop-blur-2xl p-8 flex flex-col items-center hover-glow transition-all duration-500">
+            </button>
+            
+            <div class="relative z-10 w-full max-w-sm rounded-[2.5rem] border border-white/10 bg-slate-900/90 p-8 shadow-[0_0_100px_-20px_rgba(37,99,235,0.4)] animate-fade-up">
                 <!-- Logo -->
-                <div class="flex items-center justify-center mb-8">
-                    <img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" class="h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(37,99,235,0.3)]" />
+                <div class="mb-8 flex justify-center">
+                    <img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" class="h-16 w-auto drop-shadow-[0_0_15px_rgba(37,99,235,0.4)]" />
                 </div>
                 
-                <!-- Title -->
-                @if ($heading ?? null)
-                    <div class="w-full text-center mb-8">
-                        <h2 class="text-3xl font-extrabold tracking-tighter !text-white" x-text="
-                            authModalView === 'login' ? '{{ $heading }}' : 
-                            authModalView === 'register' ? 'Register' : 
-                            'Forgot Password'
-                        ">
-                        </h2>
-                    </div>
-                @endif
-                
-                <div class="flex flex-col w-full gap-4">
+                <div class="flex flex-col w-full">
                     <!-- Global Errors/Status -->
                     @if (session('error') || session('status') || $errors->any())
-                        <div class="w-full flex flex-col gap-2 mb-2">
+                        <div class="mb-4 flex flex-col gap-2">
                             @if (session('error'))
-                                <div class="text-sm text-red-400 text-center">{{ session('error') }}</div>
+                                <p class="text-center text-xs font-medium text-red-400">{{ session('error') }}</p>
                             @endif
                             @if (session('status'))
-                                <div class="text-sm text-emerald-400 text-center">{{ session('status') }}</div>
+                                <p class="text-center text-xs font-medium text-emerald-400">{{ session('status') }}</p>
                             @endif
                             @if ($errors->any())
-                                <div class="text-sm text-red-400 text-center">{{ $errors->first() }}</div>
+                                <p class="text-center text-xs font-medium text-red-400">{{ $errors->first() }}</p>
                             @endif
                         </div>
                     @endif
                     
-                    <!-- Form Content -->
                     <div class="w-full">
-                    <!-- LOGIN FORM -->
-                    <form method="POST" action="{{ route('login') }}" class="w-full flex flex-col gap-4" x-show="authModalView === 'login'" x-transition.opacity.duration.250ms>
-                        @csrf
-                        <input type="hidden" name="auth_modal" value="login">
-                        <input
-                            placeholder="Email"
-                            type="email"
-                            name="email"
-                            value="{{ old('auth_modal') === 'login' ? old('email') : '' }}"
-                            required
-                            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
-                        />
-                        <div class="relative">
-                            <input
-                                placeholder="Password"
-                                type="password"
-                                name="password"
-                                required
-                                class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
-                            />
-                            <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-500 hover:text-white transition-colors" @click="authModalView = 'forgot'">
-                                Forgot?
+                        <!-- LOGIN FORM -->
+                        <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-4" x-show="authModalView === 'login'" x-transition.opacity.duration.300ms>
+                            @csrf
+                            <input type="hidden" name="auth_modal" value="login">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Email Address</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value="{{ old('auth_modal') === 'login' ? old('email') : '' }}"
+                                    required
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    placeholder="Enter your email"
+                                />
+                            </div>
+                            <div class="space-y-1">
+                                <div class="flex items-center justify-between ml-1">
+                                    <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Password</label>
+                                    <button type="button" class="text-[10px] font-bold uppercase tracking-widest text-blue-500 hover:text-blue-400 transition" @click="authModalView = 'forgot'">
+                                        Forgot?
+                                    </button>
+                                </div>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    required
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    placeholder="••••••••"
+                                />
+                            </div>
+                            
+                            <button type="submit" class="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-blue-900/20">
+                                Sign In
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
                             </button>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
-                            Sign in
-                        </button>
-                        
-                        <x-auth.google-button label="Continue with Google" class="w-full flex items-center justify-center gap-2 !bg-white/5 !rounded-xl !px-5 !py-3 !font-medium !text-white !border !border-white/10 hover:!bg-white/10 transition-all !text-sm mb-2" />
-                        
-                        <div class="w-full text-center mt-2">
-                            <span class="text-xs text-gray-400">
+                            
+                            <div class="relative my-4 flex items-center justify-center">
+                                <span class="absolute h-[1px] w-full bg-white/5"></span>
+                                <span class="relative bg-slate-900 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-500">OR</span>
+                            </div>
+                            
+                            <x-auth.google-button label="Continue with Google" class="flex w-full items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 py-3.5 text-sm font-bold text-white transition hover:bg-white/10 active:scale-95" />
+                            
+                            <p class="mt-4 text-center text-xs text-slate-400">
                                 Don't have an account? 
-                                <button type="button" class="font-medium text-blue-500 hover:text-blue-400 transition" @click="authModalView = 'register'">
-                                    Sign up, it's free!
+                                <button type="button" class="font-bold text-blue-500 hover:text-blue-400" @click="authModalView = 'register'">
+                                    Create one now
                                 </button>
-                            </span>
-                        </div>
-                    </form>
+                            </p>
+                        </form>
 
-                    <!-- REGISTER FORM -->
-                    <form method="POST" action="{{ route('register') }}" class="w-full flex flex-col gap-4" x-show="authModalView === 'register'" x-cloak x-transition.opacity.duration.250ms>
-                        @csrf
-                        <input type="hidden" name="auth_modal" value="register">
-                        <input
-                            placeholder="Email"
-                            type="email"
-                            name="email"
-                            value="{{ old('auth_modal') === 'register' ? old('email') : '' }}"
-                            required
-                            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
-                        />
-                        <input
-                            placeholder="Password"
-                            type="password"
-                            name="password"
-                            required
-                            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
-                        />
-                        <input
-                            placeholder="Confirm Password"
-                            type="password"
-                            name="password_confirmation"
-                            required
-                            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
-                        />
-                        
-                        <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
-                            Sign up
-                        </button>
-                        
-                        <x-auth.google-button label="Continue with Google" class="w-full flex items-center justify-center gap-2 !bg-white/5 !rounded-xl !px-5 !py-3 !font-medium !text-white !border !border-white/10 hover:!bg-white/10 transition-all !text-sm mb-2" />
-                        
-                        <div class="w-full text-center mt-2">
-                            <span class="text-xs text-gray-400">
+                        <!-- REGISTER FORM -->
+                        <form method="POST" action="{{ route('register') }}" class="flex flex-col gap-4" x-show="authModalView === 'register'" x-cloak x-transition.opacity.duration.300ms>
+                            @csrf
+                            <input type="hidden" name="auth_modal" value="register">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Email Address</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value="{{ old('auth_modal') === 'register' ? old('email') : '' }}"
+                                    required
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    placeholder="Enter your email"
+                                />
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Password</label>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    required
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    placeholder="••••••••"
+                                />
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Confirm Password</label>
+                                <input
+                                    type="password"
+                                    name="password_confirmation"
+                                    required
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    placeholder="••••••••"
+                                />
+                            </div>
+                            
+                            <button type="submit" class="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-blue-900/20">
+                                Create Account
+                            </button>
+                            
+                            <p class="mt-4 text-center text-xs text-slate-400">
                                 Already have an account? 
-                                <button type="button" class="font-medium text-blue-500 hover:text-blue-400 transition" @click="authModalView = 'login'">
-                                    Sign in
+                                <button type="button" class="font-bold text-blue-500 hover:text-blue-400" @click="authModalView = 'login'">
+                                    Sign In
                                 </button>
-                            </span>
-                        </div>
-                    </form>
+                            </p>
+                        </form>
 
-                    <!-- FORGOT PASSWORD FORM -->
-                    <form method="POST" action="{{ route('password.email') }}" class="w-full flex flex-col gap-4" x-show="authModalView === 'forgot'" x-cloak x-transition.opacity.duration.250ms>
-                        @csrf
-                        <input type="hidden" name="auth_modal" value="forgot">
-                        <input
-                            placeholder="Email"
-                            type="email"
-                            name="email"
-                            value="{{ old('auth_modal') === 'forgot' ? old('email') : '' }}"
-                            required
-                            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
-                        />
-                        
-                        <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
-                            Send Reset Link
-                        </button>
-                        
-                        <div class="w-full text-center mt-2">
-                            <span class="text-xs text-gray-400">
-                                Remember your password? 
-                                <button type="button" class="font-medium text-blue-500 hover:text-blue-400 transition" @click="authModalView = 'login'">
-                                    Back to login
-                                </button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
+                        <!-- FORGOT PASSWORD FORM -->
+                        <form method="POST" action="{{ route('password.email') }}" class="flex flex-col gap-4" x-show="authModalView === 'forgot'" x-cloak x-transition.opacity.duration.300ms>
+                            @csrf
+                            <input type="hidden" name="auth_modal" value="forgot">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Email Address</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value="{{ old('auth_modal') === 'forgot' ? old('email') : '' }}"
+                                    required
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    placeholder="Enter your email"
+                                />
+                            </div>
+                            
+                            <button type="submit" class="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-blue-900/20">
+                                Send Reset Link
+                            </button>
+                            
+                            <button type="button" class="mt-4 text-center text-xs font-bold text-slate-400 hover:text-white transition" @click="authModalView = 'login'">
+                                ← Back to Login
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-
         </div>
     @endunless
 </div>
@@ -622,31 +633,43 @@
         };
 
             const showDropdown = () => {
-                dropdown.style.width = `min(${form.getBoundingClientRect().width}px, 24rem)`;
+                dropdown.style.width = `min(${form.getBoundingClientRect().width}px, 32rem)`;
                 dropdown.classList.remove('hidden');
             };
 
         const createItemNode = (item) => {
             const link = document.createElement('a');
             link.href = item.detail_url || '#';
-            link.className = 'flex items-center gap-3 px-3 py-2 transition hover:bg-blue-50';
+            link.className = 'flex items-center gap-4 px-4 py-3 transition hover:bg-blue-50/50 group';
 
             const image = document.createElement('img');
             image.src = item.image_url || '{{ site_asset('MANAKE-FAV-M.png') }}';
             image.alt = item.name || genericItemLabel;
             image.loading = 'lazy';
-            image.className = 'h-9 w-9 rounded-xl border border-slate-200 bg-slate-50 object-cover';
+            image.className = 'h-12 w-12 rounded-2xl border border-slate-200 bg-slate-50 object-cover group-hover:scale-105 transition-transform duration-300';
             link.appendChild(image);
 
             const content = document.createElement('div');
             content.className = 'min-w-0 flex-1';
 
             const name = document.createElement('p');
-            name.className = 'truncate text-[0.92rem] font-semibold text-slate-900';
+            name.className = 'truncate text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors';
             name.textContent = item.name || genericItemLabel;
             content.appendChild(name);
+            
+            if (item.category) {
+                const cat = document.createElement('p');
+                cat.className = 'text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-0.5';
+                cat.textContent = item.category;
+                content.appendChild(cat);
+            }
 
             link.appendChild(content);
+            
+            const arrow = document.createElement('span');
+            arrow.className = 'text-slate-300 group-hover:text-blue-500 transition-colors opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all';
+            arrow.innerHTML = '→';
+            link.appendChild(arrow);
 
             return link;
         };
@@ -661,7 +684,7 @@
             }
 
             const list = document.createElement('div');
-            list.className = 'scroll-panel max-h-[14rem] divide-y divide-slate-100 overflow-y-auto';
+            list.className = 'scroll-panel max-h-[22rem] divide-y divide-slate-100/50 overflow-y-auto';
 
             lastItems.forEach((item) => {
                 list.appendChild(createItemNode(item));
