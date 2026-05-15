@@ -112,9 +112,9 @@
         $step6Desc = setting('copy.landing.step_6_desc', __('app.landing.step_6_desc'));
     @endphp
 
-    <section class="bg-slate-50">
-        <div class="mx-auto max-w-7xl px-4 py-3 sm:px-6 sm:py-4 lg:py-5">
-            <div class="spotlight-shell rounded-[2rem] p-4 sm:p-6 lg:p-6">
+    <section class="noise-overlay relative overflow-hidden">
+        <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:py-16">
+            <div class="glass-lg rounded-[3rem] p-6 sm:p-10 lg:p-12 shadow-2xl relative z-10">
                 <div class="grid items-start gap-4 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:gap-6">
                     <div class="min-w-0">
                         <h1 class="max-w-3xl text-3xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-[3.5rem] tracking-tight"
@@ -145,17 +145,17 @@
                                 {{ __('yang siap produksi.') }}
                             @endif
                         </h1>
-                        <p class="mt-4 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
+                        <p class="mt-6 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-400">
                             {{ $heroSubtitle ?: __('app.landing.hero_desc') }}
                         </p>
 
                         <div class="mt-8 max-w-2xl rounded-[2rem] border border-slate-200/50 glass p-5 shadow-xl sm:p-6 hover-glow transition-all duration-500">
                             <div class="flex items-center justify-between gap-3">
                                 <div>
-                                    <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600">{{ __('app.landing.snapshot_title') }}</p>
-                                    <h2 class="mt-1 text-xl font-bold text-slate-900">{{ __('Rental Snapshot Saat Ini') }}</h2>
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">{{ __('app.landing.snapshot_title') }}</p>
+                                    <h2 class="mt-1 text-xl font-bold text-slate-900 dark:text-white">{{ __('Rental Snapshot Saat Ini') }}</h2>
                                 </div>
-                                <a href="{{ route('availability.board') }}" class="hover-scale inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-4 py-1.5 text-xs font-bold text-blue-600 transition hover:bg-blue-100">
+                                <a href="{{ route('availability.board') }}" class="hover-scale inline-flex items-center gap-1.5 rounded-full bg-blue-50 dark:bg-blue-900/30 px-4 py-1.5 text-xs font-bold text-blue-600 dark:text-blue-300 transition hover:bg-blue-100 dark:hover:bg-blue-900/50">
                                     {{ __('Lihat board') }}
                                     <span aria-hidden="true">→</span>
                                 </a>
@@ -164,18 +164,17 @@
                             @if ($guestRentalSnapshot->isNotEmpty())
                                 <div class="mt-4 grid gap-3 sm:grid-cols-2">
                                     @foreach ($guestRentalSnapshot->take(4) as $item)
-                                        <article class="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-                                            <div class="flex items-start justify-between gap-3">
+                                        <article class="premium-card rounded-2xl px-4 py-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                                            <div class="flex items-start justify-between gap-3 relative z-10">
                                                 <div class="min-w-0">
-                                                    <p class="truncate text-sm font-semibold text-slate-900">{{ $item['name'] }}</p>
-                                                    <p class="mt-1 text-xs leading-relaxed text-slate-500">
-                                                        Tanggal sewa:
+                                                    <p class="truncate text-sm font-bold text-slate-900 dark:text-white">{{ $item['name'] }}</p>
+                                                    <p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
                                                         {{ $formatLandingDate($item['start_date'] ?? null) }}
-                                                        -
+                                                        —
                                                         {{ $formatLandingDate($item['end_date'] ?? null) }}
                                                     </p>
                                                 </div>
-                                                <span class="shrink-0 rounded-full bg-blue-100 px-2.5 py-1 text-xs font-semibold text-blue-700">
+                                                <span class="shrink-0 rounded-full bg-blue-100 dark:bg-blue-900/50 px-2.5 py-1 text-xs font-bold text-blue-700 dark:text-blue-300">
                                                     x{{ max((int) ($item['qty'] ?? 1), 1) }}
                                                 </span>
                                             </div>
@@ -210,9 +209,10 @@
                                 <img src="{{ $heroImage }}" alt="{{ $heroImageAlt }}" class="h-36 w-full rounded-[1.2rem] object-cover sm:h-52 lg:h-56">
                             </div>
                         @endif
-                        <div class="card w-full overflow-hidden rounded-[2.5rem] shadow-2xl border border-slate-200/50 glass hover-glow transition-all duration-500">
-                            <div class="border-b border-white/10 bg-gradient-to-r from-blue-700 to-blue-500 px-6 py-5 text-white">
-                                <p class="text-xs font-bold uppercase tracking-[0.2em]">{{ $readyPanelTitle }}</p>
+                        <div class="card w-full overflow-hidden rounded-[2.5rem] shadow-2xl border border-slate-200/50 glass-lg hover-glow transition-all duration-500">
+                            <div class="border-b border-white/10 bg-gradient-to-r from-blue-700 to-blue-500 px-6 py-5 text-white relative overflow-hidden">
+                                <div class="absolute inset-0 bg-blue-600 opacity-20 noise-overlay"></div>
+                                <p class="relative z-10 text-xs font-bold uppercase tracking-[0.2em]">{{ $readyPanelTitle }}</p>
                             </div>
                             <div class="p-4 sm:p-5">
                                 <div class="swiper ready-carousel" data-slide-count="{{ max($productsReady->count(), 1) }}">
@@ -455,45 +455,34 @@
 
     <section class="bg-slate-100">
         <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-9">
-            <div class="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ $flowKicker }}</p>
-                    <h2 class="text-2xl font-semibold text-slate-900">{{ $flowTitle }}</h2>
+                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">{{ $flowKicker }}</p>
+                    <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">{{ $flowTitle }}</h2>
                 </div>
-                <a href="{{ route('catalog') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-700">{{ $flowCatalogLink }} →</a>
+                <a href="{{ route('catalog') }}" class="hover-scale group inline-flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400">
+                    {{ $flowCatalogLink }} 
+                    <span class="transition-transform group-hover:translate-x-1">→</span>
+                </a>
             </div>
 
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-                <article class="manake-panel rounded-2xl p-5">
-                    <p class="text-xs font-semibold text-blue-600">STEP 01</p>
-                    <h3 class="mt-2 text-base font-semibold text-slate-900">{{ $step1Title }}</h3>
-                    <p class="mt-2 text-sm text-slate-600">{{ $step1Desc }}</p>
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                @foreach([
+                    ['step' => '01', 'title' => $step1Title, 'desc' => $step1Desc],
+                    ['step' => '02', 'title' => $step2Title, 'desc' => $step2Desc],
+                    ['step' => '03', 'title' => $step3Title, 'desc' => $step3Desc],
+                    ['step' => '04', 'title' => $step4Title, 'desc' => $step4Desc],
+                    ['step' => '05', 'title' => $step5Title, 'desc' => $step5Desc],
+                    ['step' => '06', 'title' => $step6Title, 'desc' => $step6Desc]
+                ] as $item)
+                <article class="glass rounded-[2rem] p-8 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover-glow">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-sm font-bold text-white shadow-lg shadow-blue-600/20">
+                        {{ $item['step'] }}
+                    </div>
+                    <h3 class="mt-6 text-xl font-bold text-slate-900 dark:text-white">{{ $item['title'] }}</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{{ $item['desc'] }}</p>
                 </article>
-                <article class="manake-panel rounded-2xl p-5">
-                    <p class="text-xs font-semibold text-blue-600">STEP 02</p>
-                    <h3 class="mt-2 text-base font-semibold text-slate-900">{{ $step2Title }}</h3>
-                    <p class="mt-2 text-sm text-slate-600">{{ $step2Desc }}</p>
-                </article>
-                <article class="manake-panel rounded-2xl p-5">
-                    <p class="text-xs font-semibold text-blue-600">STEP 03</p>
-                    <h3 class="mt-2 text-base font-semibold text-slate-900">{{ $step3Title }}</h3>
-                    <p class="mt-2 text-sm text-slate-600">{{ $step3Desc }}</p>
-                </article>
-                <article class="manake-panel rounded-2xl p-5">
-                    <p class="text-xs font-semibold text-blue-600">STEP 04</p>
-                    <h3 class="mt-2 text-base font-semibold text-slate-900">{{ $step4Title }}</h3>
-                    <p class="mt-2 text-sm text-slate-600">{{ $step4Desc }}</p>
-                </article>
-                <article class="manake-panel rounded-2xl p-5">
-                    <p class="text-xs font-semibold text-blue-600">STEP 05</p>
-                    <h3 class="mt-2 text-base font-semibold text-slate-900">{{ $step5Title }}</h3>
-                    <p class="mt-2 text-sm text-slate-600">{{ $step5Desc }}</p>
-                </article>
-                <article class="manake-panel rounded-2xl p-5">
-                    <p class="text-xs font-semibold text-blue-600">STEP 06</p>
-                    <h3 class="mt-2 text-base font-semibold text-slate-900">{{ $step6Title }}</h3>
-                    <p class="mt-2 text-sm text-slate-600">{{ $step6Desc }}</p>
-                </article>
+                @endforeach
             </div>
         </div>
     </section>
