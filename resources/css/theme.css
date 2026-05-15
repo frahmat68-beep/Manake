@@ -1,28 +1,31 @@
 :root {
-    --bg: #eef3fb;
-    --bg-soft: #f8fbff;
-    --surface: #fcfdff;
-    --surface-2: #f4f8fd;
-    --surface-3: #eaf0fa;
-    --border: #d7e1f0;
-    --text: #10203b;
-    --text-muted: #5f728f;
-    --text-soft: #8798af;
-    --primary: #2a56e8;
-    --primary-strong: #173fb9;
-    --primary-soft: #e3ebff;
-    --primary-ring: rgba(42, 86, 232, 0.18);
-    --primary-contrast: #f8fbff;
-    --success: #0f9b6d;
-    --warning: #d97706;
-    --danger: #dc2626;
-    --radius-lg: 14px;
-    --radius-xl: 18px;
-    --radius-2xl: 24px;
-    --shadow-soft: 0 20px 48px rgba(10, 22, 54, 0.08), 0 8px 18px rgba(10, 22, 54, 0.04);
-    --shadow-xs: 0 12px 28px rgba(10, 22, 54, 0.07);
-    --gradient-brand: linear-gradient(135deg, #081127 0%, #193a8d 54%, #2a56e8 100%);
-    --gradient-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 248, 253, 0.96) 100%);
+    --bg: #f8fbff;
+    --bg-soft: #fcfdff;
+    --surface: rgba(255, 255, 255, 0.85);
+    --surface-2: #f1f5f9;
+    --surface-3: #e2e8f0;
+    --border: rgba(148, 163, 184, 0.15);
+    --text: #0f172a;
+    --text-muted: #475569;
+    --text-soft: #94a3b8;
+    --primary: #2563eb;
+    --primary-strong: #1d4ed8;
+    --primary-soft: rgba(37, 99, 235, 0.1);
+    --primary-ring: rgba(37, 99, 235, 0.2);
+    --primary-contrast: #ffffff;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 28px;
+    --shadow-soft: 
+        0 1px 3px 0 rgba(0, 0, 0, 0.05),
+        0 20px 25px -5px rgba(0, 0, 0, 0.05),
+        0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --shadow-xs: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --gradient-brand: linear-gradient(135deg, #1e293b 0%, #2563eb 100%);
+    --gradient-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
 }
 
 html[data-theme-resolved='light'] {
@@ -31,27 +34,27 @@ html[data-theme-resolved='light'] {
 
 html[data-theme-resolved='dark'] {
     color-scheme: dark;
-    --bg: #091429;
-    --bg-soft: #0f1d38;
-    --surface: #11203c;
-    --surface-2: #162848;
-    --surface-3: #1e3458;
-    --border: #2c4670;
-    --text: #eff4ff;
-    --text-muted: #b7c8e4;
-    --text-soft: #7f97bb;
-    --primary: #6b8dff;
-    --primary-strong: #4b70e8;
-    --primary-soft: rgba(93, 130, 255, 0.16);
-    --primary-ring: rgba(93, 130, 255, 0.28);
-    --primary-contrast: #f8fbff;
+    --bg: #020617;
+    --bg-soft: #0f172a;
+    --surface: rgba(15, 23, 42, 0.8);
+    --surface-2: #1e293b;
+    --surface-3: #334155;
+    --border: rgba(255, 255, 255, 0.08);
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-soft: #64748b;
+    --primary: #3b82f6;
+    --primary-strong: #60a5fa;
+    --primary-soft: rgba(59, 130, 246, 0.15);
+    --primary-ring: rgba(59, 130, 246, 0.3);
+    --primary-contrast: #ffffff;
     --success: #34d399;
     --warning: #fbbf24;
-    --danger: #fb7185;
-    --shadow-soft: 0 22px 48px rgba(2, 8, 23, 0.44), 0 10px 26px rgba(2, 8, 23, 0.24);
-    --shadow-xs: 0 14px 30px rgba(2, 8, 23, 0.28);
-    --gradient-brand: linear-gradient(145deg, #09142c 0%, #173a7a 46%, #3768ff 100%);
-    --gradient-surface: linear-gradient(180deg, rgba(16, 29, 54, 0.95) 0%, rgba(20, 37, 64, 0.97) 100%);
+    --danger: #f87171;
+    --shadow-soft: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    --shadow-xs: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    --gradient-brand: linear-gradient(135deg, #0f172a 0%, #3b82f6 100%);
+    --gradient-surface: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(2, 6, 23, 0.95) 100%);
 }
 
 html {
@@ -114,7 +117,46 @@ main {
 
 .card,
 .manake-panel {
-    animation: manake-fade-up 320ms ease both;
+    animation: manake-fade-up 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.glass {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+}
+
+.text-shimmer {
+    background: linear-gradient(
+        to right,
+        var(--text) 20%,
+        var(--primary) 40%,
+        var(--primary) 60%,
+        var(--text) 80%
+    );
+    background-size: 200% auto;
+    color: transparent !important;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    to { background-position: 200% center; }
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px var(--primary-ring) !important;
+    border-color: var(--primary) !important;
+}
+
+.hover-scale {
+    transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-scale:hover {
+    transform: scale(1.02);
 }
 
 .card,

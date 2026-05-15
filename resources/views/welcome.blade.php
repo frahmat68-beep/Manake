@@ -117,17 +117,17 @@
             <div class="spotlight-shell rounded-[2rem] p-4 sm:p-6 lg:p-6">
                 <div class="grid items-start gap-4 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:gap-6">
                     <div class="min-w-0">
-                        <h1 class="max-w-3xl text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl lg:text-[2.9rem]"
+                        <h1 class="max-w-3xl text-3xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-[3.5rem] tracking-tight"
                             x-data="{ 
                                 titles: @js($heroRotatingPhrases->values()), 
                                 active: 0,
                                 init() { if (this.titles.length > 1) { setInterval(() => { this.active = (this.active + 1) % this.titles.length }, 2400) } }
                             }">
                             @if ($heroTitle)
-                                {{ $heroTitle }}
+                                <span class="text-shimmer">{{ $heroTitle }}</span>
                             @else
                                 {{ __('Rental equipment') }}
-                                <span class="hero-rotator-word min-w-[240px] sm:min-w-[320px]">
+                                <span class="hero-rotator-word text-shimmer min-w-[240px] sm:min-w-[320px]">
                                     <template x-for="(title, index) in titles" :key="index">
                                         <span 
                                             x-show="active === index"
@@ -142,20 +142,20 @@
                                         ></span>
                                     </template>
                                 </span>
-                                {{ __('yang siap dipakai untuk project serius.') }}
+                                {{ __('yang siap produksi.') }}
                             @endif
                         </h1>
                         <p class="mt-4 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
                             {{ $heroSubtitle ?: __('app.landing.hero_desc') }}
                         </p>
 
-                        <div class="mt-6 max-w-2xl rounded-[1.7rem] border border-slate-200 bg-[linear-gradient(180deg,_#ffffff,_#f8fbff)] p-4 shadow-sm sm:p-5">
+                        <div class="mt-8 max-w-2xl rounded-[2rem] border border-slate-200/50 glass p-5 shadow-xl sm:p-6 hover-glow transition-all duration-500">
                             <div class="flex items-center justify-between gap-3">
                                 <div>
-                                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('app.landing.snapshot_title') }}</p>
-                                    <h2 class="mt-1 text-lg font-semibold text-slate-900">{{ __('Rental Snapshot Saat Ini') }}</h2>
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600">{{ __('app.landing.snapshot_title') }}</p>
+                                    <h2 class="mt-1 text-xl font-bold text-slate-900">{{ __('Rental Snapshot Saat Ini') }}</h2>
                                 </div>
-                                <a href="{{ route('availability.board') }}" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 transition hover:text-blue-700">
+                                <a href="{{ route('availability.board') }}" class="hover-scale inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-4 py-1.5 text-xs font-bold text-blue-600 transition hover:bg-blue-100">
                                     {{ __('Lihat board') }}
                                     <span aria-hidden="true">→</span>
                                 </a>
@@ -210,9 +210,9 @@
                                 <img src="{{ $heroImage }}" alt="{{ $heroImageAlt }}" class="h-36 w-full rounded-[1.2rem] object-cover sm:h-52 lg:h-56">
                             </div>
                         @endif
-                        <div class="card w-full overflow-hidden rounded-[1.8rem] shadow-sm">
-                            <div class="border-b border-slate-100 bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-3.5 text-white sm:px-5 sm:py-4">
-                                <p class="text-xs font-semibold uppercase tracking-[0.18em]">{{ $readyPanelTitle }}</p>
+                        <div class="card w-full overflow-hidden rounded-[2.5rem] shadow-2xl border border-slate-200/50 glass hover-glow transition-all duration-500">
+                            <div class="border-b border-white/10 bg-gradient-to-r from-blue-700 to-blue-500 px-6 py-5 text-white">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em]">{{ $readyPanelTitle }}</p>
                             </div>
                             <div class="p-4 sm:p-5">
                                 <div class="swiper ready-carousel" data-slide-count="{{ max($productsReady->count(), 1) }}">
@@ -226,19 +226,22 @@
                                             $price = data_get($product, 'price_per_day', data_get($product, 'price', 0));
                                         @endphp
                                         <div class="swiper-slide">
-                                            <article class="surface-band flex h-full flex-col overflow-hidden rounded-2xl">
-                                                <div class="media-stage flex h-40 w-full items-center justify-center p-3 sm:h-52 lg:h-56">
-                                                    <img src="{{ $image }}" alt="{{ $name }}" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ $productFallbackImage }}';">
+                                            <article class="surface-band flex h-full flex-col overflow-hidden rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                                                <div class="media-stage flex h-48 w-full items-center justify-center p-4 sm:h-60 lg:h-64 bg-slate-50/50">
+                                                    <img src="{{ $image }}" alt="{{ $name }}" class="h-full w-full object-contain hover-scale transition-transform duration-500" onerror="this.onerror=null;this.src='{{ $productFallbackImage }}';">
                                                 </div>
-                                                <div class="p-4">
+                                                <div class="p-6">
                                                     <div class="flex items-center justify-between gap-3">
-                                                        <p class="text-sm font-semibold text-slate-900 line-clamp-2">{{ $name }}</p>
-                                                        <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">{{ __('app.status.ready') }}</span>
+                                                        <p class="text-base font-bold text-slate-900 line-clamp-2">{{ $name }}</p>
+                                                        <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">{{ __('app.status.ready') }}</span>
                                                     </div>
-                                                    <p class="mt-2 text-xs text-slate-500">{{ __('app.landing.start_from') }}</p>
-                                                    <p class="text-lg font-semibold text-slate-900">Rp {{ number_format($price, 0, ',', '.') }} {{ __('app.product.per_day') }}</p>
-                                                    <a href="{{ route('product.show', $slug) }}" class="mt-3 inline-flex text-xs font-semibold text-blue-600 hover:text-blue-700">
-                                                        {{ __('app.actions.view_detail') }} →
+                                                    <p class="mt-3 text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('app.landing.start_from') }}</p>
+                                                    <p class="text-xl font-bold text-blue-600">Rp {{ number_format($price, 0, ',', '.') }}<span class="text-xs font-normal text-slate-400 ml-1">/{{ __('day') }}</span></p>
+                                                    <a href="{{ route('product.show', $slug) }}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-blue-600 hover:text-blue-700 transition-all hover:translate-x-1">
+                                                        {{ __('app.actions.view_detail') }} 
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                        </svg>
                                                     </a>
                                                 </div>
                                             </article>

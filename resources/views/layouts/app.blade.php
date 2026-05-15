@@ -240,9 +240,9 @@
     />
 
     <div class="lg:pl-24">
-        <header class="manake-topbar-shell sticky top-0 z-30 border-b border-slate-200 bg-white" data-manake-topbar="app">
+        <header class="manake-topbar-shell glass sticky top-0 z-30 border-b border-slate-200/50" data-manake-topbar="app">
             <div class="mx-auto flex w-full max-w-[1320px] flex-wrap items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6 sm:py-3">
-                <button data-ui-icon-button class="order-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl lg:hidden" type="button" @click="sidebarOpen = true" aria-label="{{ __('ui.nav.toggle_menu') }}">
+                <button data-ui-icon-button class="order-1 hover-scale inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl lg:hidden transition-all hover:bg-slate-100" type="button" @click="sidebarOpen = true" aria-label="{{ __('ui.nav.toggle_menu') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="4" y1="7" x2="20" y2="7" />
                         <line x1="4" y1="12" x2="20" y2="12" />
@@ -255,7 +255,7 @@
                     method="GET"
                     action="{{ route('catalog') }}"
                     data-search-suggest-url="{{ route('search.suggestions') }}"
-                    class="command-surface command-surface--search relative order-3 w-full rounded-2xl sm:order-2 sm:flex-1 sm:max-w-xl"
+                    class="command-surface command-surface--search relative order-3 w-full rounded-2xl sm:order-2 sm:flex-1 sm:max-w-xl transition-all focus-within:ring-4 focus-within:ring-blue-600/10 focus-within:border-blue-500/50"
                 >
                     <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -269,11 +269,11 @@
                         value="{{ $searchQuery }}"
                         placeholder="{{ __('ui.nav.search_placeholder') }}"
                         autocomplete="off"
-                        class="w-full rounded-2xl border-0 bg-transparent py-3 pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-transparent focus:outline-none focus:ring-0"
+                        class="w-full rounded-2xl border-0 bg-transparent py-3 pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0"
                     >
                     <div
                         id="global-catalog-search-dropdown"
-                        class="absolute left-0 right-auto top-[calc(100%+0.45rem)] z-50 hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
+                        class="absolute left-0 right-auto top-[calc(100%+0.45rem)] z-50 hidden overflow-hidden rounded-2xl border border-slate-200/50 glass shadow-2xl"
                     ></div>
                 </form>
 
@@ -433,7 +433,7 @@
             >
                 ✕
             </button>            <!-- Centered glass card -->
-            <div class="relative z-10 w-full max-w-sm rounded-3xl !bg-[#0f1115] border !border-white/10 !shadow-[0_0_80px_-20px_rgba(37,99,235,0.25)] !backdrop-blur-xl p-8 flex flex-col items-center">
+            <div class="relative z-10 w-full max-w-sm rounded-3xl !bg-[#0f1115]/90 border !border-white/10 !shadow-[0_0_80px_-20px_rgba(37,99,235,0.35)] backdrop-blur-2xl p-8 flex flex-col items-center hover-glow transition-all duration-500">
                 <!-- Logo -->
                 <div class="flex items-center justify-center mb-8">
                     <img src="{{ asset('manake-logo-blue.png') }}" alt="Manake" class="h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(37,99,235,0.3)]" />

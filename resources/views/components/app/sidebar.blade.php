@@ -65,7 +65,7 @@
         }
     }"
     data-manake-sidebar="app"
-    class="group/sidebar fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col overflow-visible border-r border-slate-200 bg-white/92 px-2 py-4 shadow-sm backdrop-blur transition-[width,transform,box-shadow] duration-200 ease-out lg:w-[5.35rem] lg:translate-x-0 lg:hover:w-[17.5rem] lg:focus-within:w-[17.5rem] lg:hover:shadow-2xl lg:focus-within:shadow-2xl"
+    class="group/sidebar glass fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col overflow-visible border-r border-slate-200/50 px-2 py-4 shadow-2xl transition-[width,transform,box-shadow] duration-300 ease-out lg:w-[5.35rem] lg:translate-x-0 lg:hover:w-[17.5rem] lg:focus-within:w-[17.5rem] lg:hover:shadow-[20px_0_50px_rgba(0,0,0,0.1)]"
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
 >
     <div class="flex h-16 items-center justify-between px-3">
@@ -113,10 +113,10 @@
                             aria-label="{{ $item['label'] }}"
                             data-nav-item
                             data-nav-active="{{ $item['active'] ? 'true' : 'false' }}"
-                            class="flex h-11 min-w-0 flex-1 items-center rounded-2xl px-3 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3 {{ $item['active'] ? '!text-white' : '!text-slate-700' }}"
+                            class="flex h-11 min-w-0 flex-1 items-center rounded-2xl px-3 transition-all duration-300 hover-scale lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3 {{ $item['active'] ? '!text-white shadow-lg shadow-blue-600/20' : '!text-slate-700 hover:bg-blue-50/50' }}"
                         >
-                            <span data-nav-icon>{!! $item['icon'] !!}</span>
-                            <span class="truncate text-sm font-semibold transition-all duration-200 lg:ml-0 lg:pointer-events-none lg:max-w-0 lg:overflow-hidden lg:whitespace-nowrap lg:opacity-0 lg:-translate-x-2 lg:group-hover/sidebar:ml-3 lg:group-hover/sidebar:pointer-events-auto lg:group-hover/sidebar:max-w-[12rem] lg:group-hover/sidebar:opacity-100 lg:group-hover/sidebar:translate-x-0 lg:group-focus-within/sidebar:ml-3 lg:group-focus-within/sidebar:pointer-events-auto lg:group-focus-within/sidebar:max-w-[12rem] lg:group-focus-within/sidebar:opacity-100 lg:group-focus-within/sidebar:translate-x-0">{{ $item['label'] }}</span>
+                            <span data-nav-icon class="transition-transform duration-300 group-hover:scale-110">{!! $item['icon'] !!}</span>
+                            <span class="truncate text-sm font-bold transition-all duration-300 lg:ml-0 lg:pointer-events-none lg:max-w-0 lg:overflow-hidden lg:whitespace-nowrap lg:opacity-0 lg:-translate-x-2 lg:group-hover/sidebar:ml-3 lg:group-hover/sidebar:pointer-events-auto lg:group-hover/sidebar:max-w-[12rem] lg:group-hover/sidebar:opacity-100 lg:group-hover/sidebar:translate-x-0 lg:group-focus-within/sidebar:ml-3 lg:group-focus-within/sidebar:pointer-events-auto lg:group-focus-within/sidebar:max-w-[12rem] lg:group-focus-within/sidebar:opacity-100 lg:group-focus-within/sidebar:translate-x-0">{{ $item['label'] }}</span>
                         </a>
                         <button
                             type="button"
