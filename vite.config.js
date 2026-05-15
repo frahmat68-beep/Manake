@@ -9,6 +9,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    css: {
+        postcss: 'tools/postcss.config.js',
+    },
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./resources/js', import.meta.url)),

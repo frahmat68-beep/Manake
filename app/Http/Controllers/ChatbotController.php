@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Services\ChatbotKnowledgeService;
-use App\Services\Ai\NvidiaAiService;
+use App\Services\Ai\LocalAiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class ChatbotController extends Controller
 {
-    protected NvidiaAiService $aiService;
+    protected LocalAiService $aiService;
     protected ChatbotKnowledgeService $knowledgeService;
 
-    public function __construct(NvidiaAiService $aiService, ChatbotKnowledgeService $knowledgeService)
+    public function __construct(LocalAiService $aiService, ChatbotKnowledgeService $knowledgeService)
     {
         $this->aiService = $aiService;
         $this->knowledgeService = $knowledgeService;
@@ -94,6 +94,8 @@ class ChatbotController extends Controller
             'gangguan koneksi ke mesin ai',
             'kesalahan internal pada sistem asisten digital',
             'sistem ai sedang mengalami gangguan teknis',
+            'mesin ai lokal kami sedang sibuk',
+            'kesalahan teknis pada sistem ai lokal',
         ] as $marker) {
             if (str_contains($normalized, $marker)) {
                 return true;

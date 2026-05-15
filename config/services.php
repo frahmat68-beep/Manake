@@ -51,16 +51,15 @@ return [
         'api_key' => env('BUGSNAG_API_KEY'),
     ],
 
-    'nvidia' => [
-        'api_key' => env('NVIDIA_API_KEY'),
-        'api_key_secondary' => env('NVIDIA_API_KEY_SECONDARY'),
-        'model' => env('NVIDIA_MODEL', 'meta/llama-3.1-8b-instruct'),
-    ],
-
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URL'),
+    ],
+
+    'ollama' => [
+        'base_url' => env('OLLAMA_BASE_URL', 'http://152.69.218.198:11434'),
+        'model' => env('OLLAMA_MODEL', 'qwen2:0.5b'),
     ],
 
 ];

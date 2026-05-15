@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Services\Ai\NvidiaAiService;
+use App\Services\Ai\LocalAiService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -12,7 +12,7 @@ class ChatbotFeatureTest extends TestCase
 
     public function test_chatbot_returns_faq_fallback_when_ai_service_is_unavailable(): void
     {
-        $mock = $this->mock(NvidiaAiService::class, function ($mock): void {
+        $mock = $this->mock(LocalAiService::class, function ($mock): void {
             $mock->shouldReceive('chat')
                 ->once()
                 ->andReturn('Maaf, sistem AI sedang dalam pemeliharaan (API Key belum dikonfigurasi). Silakan coba lagi nanti.');
