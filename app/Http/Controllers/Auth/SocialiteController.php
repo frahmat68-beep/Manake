@@ -30,7 +30,9 @@ class SocialiteController extends Controller
                 ]);
         }
 
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver($provider)
+            ->redirectUrl($this->getRedirectUrl())
+            ->redirect();
     }
 
     /**
@@ -51,7 +53,9 @@ class SocialiteController extends Controller
                     ]);
             }
 
-            $socialUser = Socialite::driver($provider)->user();
+            $socialUser = Socialite::driver($provider)
+                ->redirectUrl($this->getRedirectUrl())
+                ->user();
             
             $user = User::where('google_id', $socialUser->getId())
                 ->orWhere('email', $socialUser->getEmail())
@@ -90,10 +94,34 @@ class SocialiteController extends Controller
         }
     }
 
+    /**
+     * Get the resolved redirect URL for Google OAuth dynamically.
+     */
+    private function getRedirectUrl(): string
+    {
+        $configured = trim((string) config('services.google.redirect', ''));
+        
+        $currentHost = request()->getHost();
+        $isCurrentLocal = in_array($currentHost, ['127.0.0.1', 'localhost'], true);
+        
+        if ($configured === '') {
+            return url('/auth/google/callback');
+        }
+        
+        $configuredHost = parse_url($configured, PHP_URL_HOST);
+        $isConfiguredLocal = in_array($configuredHost, ['127.0.0.1', 'localhost'], true);
+        
+        // If current site is production but configured is local, override it dynamically
+        if (!$isCurrentLocal && $isConfiguredLocal) {
+            return url('/auth/google/callback');
+        }
+        
+        return $configured;
+    }
+
     private function googleOauthIsConfigured(): bool
     {
         return trim((string) config('services.google.client_id', '')) !== ''
-            && trim((string) config('services.google.client_secret', '')) !== ''
-            && trim((string) config('services.google.redirect', '')) !== '';
+            && trim((string) config('services.google.client_secret', '')) !== '';
     }
 }
