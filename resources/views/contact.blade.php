@@ -42,14 +42,14 @@
     @endphp
     <section class="mk-section">
         <div class="mk-container space-y-6">
-            <div class="mk-card spotlight-shell p-6 sm:p-10">
+            <div class="mk-card p-6 sm:p-10">
                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('ui.contact.title') }}</p>
                 <h1 class="mk-title-section mt-3">{{ __('ui.contact.info_title') }}</h1>
                 <p class="mk-copy mt-4 leading-relaxed">{{ __('ui.contact.subtitle') }}</p>
             </div>
 
             <div class="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-                <div class="mk-card spotlight-shell p-6">
+                <div class="mk-card p-6">
                     <h2 class="text-lg font-bold text-slate-900">{{ __('ui.contact.info_title') }}</h2>
                     <div class="mt-4 space-y-1 text-sm leading-relaxed text-slate-600">
                         @if ($contactAddressTitle)
@@ -105,7 +105,7 @@
                     </div>
                 </div>
 
-                <div class="mk-card spotlight-shell p-6">
+                <div class="mk-card p-6">
                     <h2 class="text-lg font-bold text-slate-900">{{ __('ui.contact.map_title') }}</h2>
                     <div class="mt-4 overflow-hidden rounded-xl border border-slate-200">
                         @if ($contactMapEmbed)

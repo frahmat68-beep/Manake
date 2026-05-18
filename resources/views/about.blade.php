@@ -11,14 +11,14 @@
 @section('content')
     <section class="mk-section">
         <div class="mk-container space-y-6">
-            <header class="mk-card spotlight-shell p-6 sm:p-10">
+            <header class="mk-card p-6 sm:p-10">
                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('app.footer.quick_about') }}</p>
                 <h1 class="mk-title-section mt-3">{{ setting('brand.name', 'Manake') }}</h1>
                 <p class="mk-copy mt-4 leading-relaxed">{{ $aboutText }}</p>
             </header>
 
             <div class="grid gap-6 lg:grid-cols-2">
-                <article class="mk-card spotlight-shell p-6">
+                <article class="mk-card p-6">
                     <h2 class="text-lg font-bold text-slate-900">{{ __('Yang Perlu Diisi di CMS') }}</h2>
                     <ul class="mt-4 space-y-2 text-sm text-slate-600">
                         <li>{{ __('1. Profil singkat bisnis: fokus layanan dan area cakupan.') }}</li>
@@ -29,7 +29,7 @@
                     </ul>
                 </article>
 
-                <article class="mk-card spotlight-shell p-6">
+                <article class="mk-card p-6">
                     <h2 class="text-lg font-bold text-slate-900">{{ __('Kontak Cepat') }}</h2>
                     <div class="mt-4 space-y-3 text-sm text-slate-600">
                         <p><span class="font-bold text-slate-900">WhatsApp:</span> {{ $contactWhatsapp }}</p>
