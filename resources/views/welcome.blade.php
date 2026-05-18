@@ -119,7 +119,8 @@
                         }"
                     >
                         Sewa alat produksi untuk
-                        <span class="manake-word-rotator text-blue-300">
+                        <span class="manake-word-rotator text-blue-300"
+                              :style="{ width: (titles[active].length + 1) + 'ch' }">
                             <template x-for="(title, index) in titles" :key="title">
                                 <span
                                     x-show="active === index"
@@ -151,7 +152,7 @@
                     </div>
                 </div>
 
-                <div class="relative">
+                <div class="relative overflow-hidden min-w-0">
                     <div class="pointer-events-none absolute -inset-6 rounded-[2.5rem] bg-blue-500/20 blur-3xl"></div>
                     <div class="relative overflow-hidden rounded-[2rem] border border-white/12 bg-white/10 p-3 shadow-2xl shadow-black/30 backdrop-blur-2xl sm:p-4">
                         <div class="mb-3 flex items-center justify-between px-1 text-xs text-slate-300">

@@ -482,7 +482,7 @@
         x-on:keydown.escape.window="handleEscape()"
         x-on:pointerup.window="cancelDanglingSelection()"
     >
-        <section class="mk-card p-5 sm:p-6 animate-fade-up">
+        <section class="mk-card p-4 sm:p-6 animate-fade-up">
             <div class="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div class="max-w-2xl">
                     <p class="section-kicker font-bold tracking-widest uppercase text-blue-600/80">{{ __('ui.nav.availability_board') ?: 'AVAILABILITY BOARD' }}</p>
@@ -494,7 +494,7 @@
                     </p>
                 </div>
 
-                <form method="GET" action="{{ route('availability.board') }}" class="grid w-full gap-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] lg:max-w-3xl">
+                <form method="GET" action="{{ route('availability.board') }}" class="grid w-full gap-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 sm:grid-cols-3 lg:max-w-3xl">
                     <div class="board-input-group sm:col-span-3 lg:col-span-1">
                         <svg class="absolute left-4 h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input
@@ -547,7 +547,7 @@
             </div>
         </section>
 
-        <section class="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+        <section class="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] overflow-hidden">
             <article class="mk-card overflow-hidden">
                 <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 px-5 py-4">
                     <div>
@@ -597,8 +597,8 @@
                         <span>Geser mendatar untuk melihat kalender penuh / Swipe horizontally</span>
                     </div>
 
-                    <div class="-mx-1 overflow-x-auto pb-1 px-1 sm:mx-0 sm:overflow-visible sm:px-0">
-                        <div class="min-w-[26rem] sm:min-w-0">
+                    <div class="-mx-1 overflow-x-auto pb-2 px-1 sm:mx-0 sm:overflow-visible sm:px-0 scrollbar-thin">
+                        <div class="min-w-[32rem] sm:min-w-0">
                             <div class="grid grid-cols-7 gap-1.5 sm:gap-2">
                                 @foreach ($weekdayLabels as $weekday)
                                     <p class="text-center text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400 sm:text-[11px]">{{ $weekday }}</p>

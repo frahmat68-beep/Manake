@@ -96,13 +96,15 @@
             <div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 sm:px-6 lg:grid-cols-[1.1fr,0.9fr] lg:gap-8">
                 <!-- Left Column: Visual & Specs -->
                 <div class="space-y-6">
-                    <div class="mk-card p-6 flex items-center justify-center">
-                        <img
-                            src="{{ $mainImage }}"
-                            alt="{{ $equipment->name }}"
-                            class="h-80 w-full object-contain sm:h-[380px] drop-shadow-md transition-transform duration-500 hover:scale-[1.01]"
-                            onerror="this.onerror=null;this.src='{{ $fallbackImage }}';"
-                        >
+                    <div class="mk-card p-6">
+                        <div class="relative w-full aspect-[4/3] sm:aspect-[16/10] flex items-center justify-center rounded-xl bg-slate-50 dark:bg-slate-900/30 overflow-hidden">
+                            <img
+                                src="{{ $mainImage }}"
+                                alt="{{ $equipment->name }}"
+                                class="max-h-full max-w-full object-contain drop-shadow-md transition-transform duration-500 hover:scale-[1.01]"
+                                onerror="this.onerror=null;this.src='{{ $fallbackImage }}';"
+                            >
+                        </div>
                     </div>
 
                     @if (count($gallery) > 1)
@@ -134,7 +136,7 @@
                                 <p class="text-slate-500 dark:text-slate-400 font-medium text-sm">{{ __('app.product.spec_unavailable') }}</p>
                             </div>
                         @else
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 @foreach ($specifications as $specification)
                                     <div class="flex items-start gap-3 p-3.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors duration-300 border border-transparent hover:border-slate-100 dark:hover:border-slate-800/60">
                                         <div class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500"></div>

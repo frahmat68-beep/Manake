@@ -2808,7 +2808,9 @@ html[data-theme-resolved='dark'] .manake-loader-card {
 .manake-word-rotator {
     display: inline-block;
     position: relative;
-    width: min(10.8ch, 100%);
+    /* width driven by Alpine :style binding */
+    max-width: 100%;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     height: 1.14em;
     vertical-align: -0.12em;
     overflow: hidden;
