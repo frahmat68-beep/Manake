@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.landing')
 
 @section('title', __('ui.rental_rules.page_title'))
 @section('meta_description', __('ui.rental_rules.meta_description'))
@@ -49,8 +49,9 @@
 @endphp
 
 @section('content')
-    <section x-data="{ contactModalOpen: false }" class="mx-auto max-w-6xl space-y-6">
-        <div class="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm sm:p-8">
+    <section x-data="{ contactModalOpen: false }" class="mk-section">
+        <div class="mk-container space-y-6">
+            <div class="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm sm:p-8">
             <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-500">{{ $rulesKicker }}</p>
             <h1 class="mt-2 text-3xl font-extrabold text-blue-700">{{ $rulesTitle }}</h1>
             <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
@@ -225,6 +226,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 @endsection

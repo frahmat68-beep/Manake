@@ -220,6 +220,7 @@ class CategoryController extends Controller
     {
         $category = null;
         $products = collect();
+        $equipments = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 12);
         $canResolveUsage = schema_table_exists_cached('order_items') && schema_table_exists_cached('orders');
 
         if (schema_table_exists_cached('categories')) {
@@ -242,7 +243,8 @@ class CategoryController extends Controller
             if ($canResolveUsage) {
                 $equipmentQuery->withSum('activeOrderItems as reserved_units', 'qty');
             }
-            $products = $equipmentQuery->get()->values();
+            $equipments = $equipmentQuery->paginate(12);
+            $products = collect($equipments->items());
         } else {
             $category = (object) [
                 'name' => Str::of($slug)->replace('-', ' ')->title()->value(),
@@ -251,6 +253,6 @@ class CategoryController extends Controller
             ];
         }
 
-        return view('categories.show', compact('category', 'products'));
+        return view('categories.show', compact('category', 'products', 'equipments'));
     }
 }

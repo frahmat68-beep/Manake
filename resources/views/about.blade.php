@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.landing')
 
 @section('title', __('app.footer.quick_about'))
 
@@ -9,17 +9,17 @@
 @endphp
 
 @section('content')
-    <section class="bg-slate-50">
-        <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-            <header class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <section class="mk-section">
+        <div class="mk-container space-y-6">
+            <header class="mk-card spotlight-shell p-6 sm:p-10">
                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('app.footer.quick_about') }}</p>
-                <h1 class="mt-3 text-2xl font-semibold text-slate-900 sm:text-3xl">{{ setting('brand.name', 'Manake') }}</h1>
-                <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">{{ $aboutText }}</p>
+                <h1 class="mk-title-section mt-3">{{ setting('brand.name', 'Manake') }}</h1>
+                <p class="mk-copy mt-4 leading-relaxed">{{ $aboutText }}</p>
             </header>
 
-            <div class="mt-6 grid gap-6 lg:grid-cols-2">
-                <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-slate-900">{{ __('Yang Perlu Diisi di CMS') }}</h2>
+            <div class="grid gap-6 lg:grid-cols-2">
+                <article class="mk-card spotlight-shell p-6">
+                    <h2 class="text-lg font-bold text-slate-900">{{ __('Yang Perlu Diisi di CMS') }}</h2>
                     <ul class="mt-4 space-y-2 text-sm text-slate-600">
                         <li>{{ __('1. Profil singkat bisnis: fokus layanan dan area cakupan.') }}</li>
                         <li>{{ __('2. Kontak aktif: WhatsApp, email, dan jam operasional.') }}</li>
@@ -29,17 +29,17 @@
                     </ul>
                 </article>
 
-                <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-slate-900">{{ __('Kontak Cepat') }}</h2>
+                <article class="mk-card spotlight-shell p-6">
+                    <h2 class="text-lg font-bold text-slate-900">{{ __('Kontak Cepat') }}</h2>
                     <div class="mt-4 space-y-3 text-sm text-slate-600">
-                        <p><span class="font-semibold text-slate-900">WhatsApp:</span> {{ $contactWhatsapp }}</p>
-                        <p><span class="font-semibold text-slate-900">Email:</span> {{ $contactEmail }}</p>
+                        <p><span class="font-bold text-slate-900">WhatsApp:</span> {{ $contactWhatsapp }}</p>
+                        <p><span class="font-bold text-slate-900">Email:</span> {{ $contactEmail }}</p>
                     </div>
-                    <div class="mt-5 flex flex-wrap gap-2">
-                        <a href="{{ route('contact') }}" class="inline-flex items-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-700">
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        <a href="{{ route('contact') }}" class="mk-button-secondary py-2 px-4 text-sm font-bold">
                             {{ __('app.footer.quick_contact') }}
                         </a>
-                        <a href="{{ route('catalog') }}" class="inline-flex items-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">
+                        <a href="{{ route('catalog') }}" class="mk-button-primary py-2 px-4 text-sm font-bold">
                             {{ __('app.footer.quick_catalog') }}
                         </a>
                     </div>
@@ -48,3 +48,4 @@
         </div>
     </section>
 @endsection
+

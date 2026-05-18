@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.landing')
 
 @php
     $statusValue = $equipment->status ?? ($equipment->stock > 0 ? 'ready' : 'unavailable');

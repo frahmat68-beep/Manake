@@ -1,10 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.landing')
 
 @section('title', __('app.category.title'))
 
 @section('content')
-    <section class="bg-slate-100">
-        <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+    <section class="mk-section bg-slate-100">
+        <div class="mk-container">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <h1 class="text-2xl font-semibold text-blue-700 sm:text-3xl">{{ __('ui.categories.title') }}</h1>

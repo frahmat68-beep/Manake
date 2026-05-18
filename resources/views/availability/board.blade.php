@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.landing')
 
 @section('title', setting('copy.availability.title', __('ui.availability_board.title')))
 @section('meta_description', setting('copy.availability.subtitle', __('ui.availability_board.subtitle')))
@@ -311,8 +311,9 @@
 @endpush
 
 @section('content')
-    <div
-        class="mx-auto max-w-7xl space-y-6"
+    <section class="mk-section">
+        <div
+            class="mk-container space-y-6"
         x-data="{
             schedulesByDate: @js($dailySchedulesByDate ?? []),
             equipmentRows: @js($equipmentClientRows),
@@ -1040,4 +1041,5 @@
             </div>
         </div>
     </div>
+    </section>
 @endsection

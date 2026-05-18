@@ -1,9 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.landing')
 
 @section('title', $category->name . ' - ' . config('app.name'))
 
 @section('content')
-    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <section class="mk-section">
+        <div class="mk-container">
         {{-- Breadcrumb --}}
         <nav class="mb-10 flex text-xs font-black uppercase tracking-widest" aria-label="{{ __('Breadcrumb') }}">
             <ol class="inline-flex items-center space-x-2">
@@ -124,5 +125,6 @@
                 </a>
             </article>
         @endif
-    </div>
+        </div>
+    </section>
 @endsection

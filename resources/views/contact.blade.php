@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.landing')
 
 @section('title', __('ui.contact.page_title'))
 
@@ -40,20 +40,20 @@
             ? (string) $contactInstagram
             : ($instagramHandle ? ('https://instagram.com/' . $instagramHandle) : null);
     @endphp
-    <section class="bg-slate-50">
-        <div class="mx-auto max-w-6xl px-6 py-12">
-            <div class="rounded-3xl border border-blue-100 bg-gradient-to-br from-white via-blue-50 to-slate-100 p-6 shadow-sm sm:p-8">
-                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-500">{{ __('ui.contact.title') }}</p>
-                <h1 class="mt-2 text-3xl font-extrabold text-blue-700">{{ __('ui.contact.info_title') }}</h1>
-                <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">{{ __('ui.contact.subtitle') }}</p>
+    <section class="mk-section">
+        <div class="mk-container space-y-6">
+            <div class="mk-card spotlight-shell p-6 sm:p-10">
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('ui.contact.title') }}</p>
+                <h1 class="mk-title-section mt-3">{{ __('ui.contact.info_title') }}</h1>
+                <p class="mk-copy mt-4 leading-relaxed">{{ __('ui.contact.subtitle') }}</p>
             </div>
 
-            <div class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-                <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-slate-900">{{ __('ui.contact.info_title') }}</h2>
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+                <div class="mk-card spotlight-shell p-6">
+                    <h2 class="text-lg font-bold text-slate-900">{{ __('ui.contact.info_title') }}</h2>
                     <div class="mt-4 space-y-1 text-sm leading-relaxed text-slate-600">
                         @if ($contactAddressTitle)
-                            <p class="font-semibold text-slate-900">{{ $contactAddressTitle }}</p>
+                            <p class="font-bold text-slate-900">{{ $contactAddressTitle }}</p>
                         @endif
                         @foreach ($contactAddressRest as $addressLine)
                             <p>{{ $addressLine }}</p>
@@ -70,7 +70,7 @@
                                         href="{{ $whatsappHref }}"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+                                        class="mk-button-primary py-2 px-4 text-sm font-bold"
                                     >
                                         {{ $whatsappNumber }}
                                     </a>
@@ -88,25 +88,25 @@
                     <div class="mt-5 grid gap-3 sm:grid-cols-2">
                         <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
                             <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ __('ui.contact.labels.email') }}</p>
-                            <a href="mailto:{{ $contactEmail }}" class="mt-1 block break-all text-sm font-semibold text-slate-800 hover:text-blue-700">
+                            <a href="mailto:{{ $contactEmail }}" class="mt-1 block break-all text-sm font-bold text-slate-800 hover:text-blue-700">
                                 {{ $contactEmail }}
                             </a>
                         </div>
                         <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
                             <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ __('ui.contact.labels.instagram') }}</p>
                             @if ($instagramUrl)
-                                <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="mt-1 block text-sm font-semibold text-slate-800 hover:text-blue-700">
+                                <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="mt-1 block text-sm font-bold text-slate-800 hover:text-blue-700">
                                     {{ $contactInstagram }}
                                 </a>
                             @else
-                                <p class="mt-1 text-sm font-semibold text-slate-800">{{ $contactInstagram }}</p>
+                                <p class="mt-1 text-sm font-bold text-slate-800">{{ $contactInstagram }}</p>
                             @endif
                         </div>
                     </div>
                 </div>
 
-                <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-slate-900">{{ __('ui.contact.map_title') }}</h2>
+                <div class="mk-card spotlight-shell p-6">
+                    <h2 class="text-lg font-bold text-slate-900">{{ __('ui.contact.map_title') }}</h2>
                     <div class="mt-4 overflow-hidden rounded-xl border border-slate-200">
                         @if ($contactMapEmbed)
                             <div class="[&>iframe]:h-[280px] [&>iframe]:w-full [&>iframe]:border-0">
@@ -123,3 +123,4 @@
         </div>
     </section>
 @endsection
+
