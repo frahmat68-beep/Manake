@@ -92,11 +92,12 @@
         $flowTitle = setting('copy.landing.flow_title', __('app.landing.flow_title'));
         $flowCatalogLink = setting('copy.landing.flow_catalog_link', __('app.landing.flow_catalog_link'));
         $heroRotatingPhrases = collect([
-            'camera bodies',
-            'lighting kit',
-            'audio gear',
-            'drone dan support gear',
-            'catalog alat',
+            'Camera',
+            'Lighting',
+            'Audio',
+            'Drone',
+            'Stabilizer',
+            'Production Gear',
         ]);
         $step1Title = setting('copy.landing.step_1_title', __('app.landing.step_1_title'));
         $step1Desc = setting('copy.landing.step_1_desc', __('app.landing.step_1_desc'));
@@ -138,7 +139,7 @@
                                             $imagePath = data_get($product, 'image_path') ?? data_get($product, 'image');
                                             $image = site_media_url($imagePath) ?: $productFallbackImage;
                                             $price = data_get($product, 'price_per_day', data_get($product, 'price', 0));
-                                            $stock = data_get($product, 'stock', 0);
+                                            $availableUnits = data_get($product, 'available_units', data_get($product, 'stock', 0));
                                         @endphp
                                         <div class="swiper-slide">
                                             <a href="{{ route('product.show', $slug) }}" class="group block surface-band flex h-full flex-col overflow-hidden rounded-[2rem] border border-slate-200/60 dark:border-slate-800 bg-white/70 dark:bg-slate-900/50 shadow-sm transition-all duration-300 hover:border-blue-400/50 hover:shadow-[0_20px_45px_-12px_rgba(37,99,235,0.12)] hover:-translate-y-1.5">
@@ -156,7 +157,7 @@
                                                             Available
                                                         </span>
                                                         <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full">
-                                                            {{ $stock }} unit tersedia
+                                                            {{ $availableUnits }} unit tersedia
                                                         </span>
                                                     </div>
                                                     <div class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800 flex items-end justify-between">
@@ -231,6 +232,27 @@
                         <p class="mt-6 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-400">
                             {{ $heroSubtitle ?: __('app.landing.hero_desc') }}
                         </p>
+
+                        <div class="mt-8 flex flex-wrap gap-4 items-center">
+                            <a href="{{ route('catalog') }}" class="relative inline-flex items-center justify-center px-8 py-3.5 rounded-full text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:-translate-y-0.5 select-none overflow-hidden group">
+                                <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-indigo-600"></span>
+                                <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-700 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                                <span class="relative flex items-center gap-2">
+                                    Lihat Katalog
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </span>
+                            </a>
+                            <a href="{{ route('availability.board') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full text-sm font-bold text-slate-700 dark:text-slate-300 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 transition-all duration-300 transform hover:-translate-y-0.5 select-none border border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md">
+                                <span class="flex items-center gap-2">
+                                    Cek Availability
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </span>
+                            </a>
+                        </div>
 
                         @if ($isLoggedIn && $damageAlertOrder)
                             <a href="{{ route('account.orders.show', $damageAlertOrder) }}" class="mt-8 block rounded-2xl border-2 border-rose-300 bg-rose-50 p-4 shadow-sm transition hover:border-rose-400">

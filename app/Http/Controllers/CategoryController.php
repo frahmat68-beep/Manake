@@ -59,7 +59,7 @@ class CategoryController extends Controller
 
                 return $equipmentQuery
                     ->get()
-                    ->filter(fn ($equipment) => (int) $equipment->stock > 0)
+                    ->filter(fn ($equipment) => (int) ($equipment->available_units ?? $equipment->stock ?? 0) > 0)
                     ->take(8)
                     ->values();
             });
