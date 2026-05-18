@@ -55,7 +55,7 @@
         $catalogInUseLabel = __('ui.catalog.in_use_label');
         $catalogAvailableLabel = __('ui.catalog.available_label');
         $catalogAvailabilityNote = __('ui.catalog.availability_note');
-        $catalogFallbackImage = asset('MANAKE-FAV-M.png');
+        $catalogFallbackImage = site_asset('MANAKE-FAV-M.png');
         $catalogQuickOrderButton = __('ui.catalog.quick_order_button');
         $catalogQuickOrderTitle = __('ui.catalog.quick_order_title');
         $catalogQuickOrderHint = __('ui.catalog.quick_order_hint');

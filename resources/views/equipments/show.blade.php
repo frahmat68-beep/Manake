@@ -8,7 +8,7 @@
         ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
         : 'bg-amber-500/10 text-amber-600 border-amber-500/20';
     $imagePath = $equipment->image_path ?? $equipment->image;
-    $fallbackImage = asset('MANAKE-FAV-M.png');
+    $fallbackImage = site_asset('MANAKE-FAV-M.png');
     $mainImage = site_media_url($imagePath) ?: $fallbackImage;
     $gallery = $mainImage ? [$mainImage] : [];
     $reservedUnits = (int) ($equipment->reserved_units ?? 0);
