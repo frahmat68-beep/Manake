@@ -2668,6 +2668,37 @@ html[data-theme-resolved='dark'] .manake-loader-card {
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
+.mk-badge-success {
+    background: hsla(var(--s-h), var(--s-s), var(--s-l), 0.1) !important;
+    color: hsl(var(--s-h), var(--s-s), var(--s-l)) !important;
+    border: 1px solid hsla(var(--s-h), var(--s-s), var(--s-l), 0.2) !important;
+}
+.mk-badge-danger {
+    background: hsla(var(--d-h), var(--d-s), var(--d-l), 0.1) !important;
+    color: hsl(var(--d-h), var(--d-s), var(--d-l)) !important;
+    border: 1px solid hsla(var(--d-h), var(--d-s), var(--d-l), 0.2) !important;
+}
+.mk-badge-info {
+    background: hsla(var(--p-h), var(--p-s), var(--p-l), 0.1) !important;
+    color: hsl(var(--p-h), var(--p-s), var(--p-l)) !important;
+    border: 1px solid hsla(var(--p-h), var(--p-s), var(--p-l), 0.2) !important;
+}
+.mk-badge-muted {
+    background: var(--mk-surface-2) !important;
+    color: var(--mk-text-muted) !important;
+    border: 1px solid var(--mk-border) !important;
+}
+
+.mk-card-soft {
+    background: var(--mk-surface-2) !important;
+    border: 1px solid var(--mk-border) !important;
+    border-radius: var(--mk-radius-xl);
+}
+
+.mk-muted {
+    color: var(--mk-text-muted) !important;
+}
+
 
 /* Typography Classes */
 .mk-title-hero {
