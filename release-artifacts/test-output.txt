@@ -7,6 +7,6 @@ Configuration: /Users/kiki/Documents/Web Develop/Website Manake/phpunit.xml
 .............................................................. 126 / 136 ( 92%)
 ..........                                                      136 / 136 (100%)
 
-Time: 00:32.094, Memory: 86.50 MB
+Time: 00:32.207, Memory: 86.50 MB
 
 OK (136 tests, 520 assertions)

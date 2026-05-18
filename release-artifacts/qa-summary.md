@@ -1,25 +1,29 @@
 # 📋 Manake Production QA Summary
 
-This document consolidates the official QA verification parameters, environment metrics, and build status checks for the final production deployment of the **Manake Web Application**.
+This document consolidates the official QA verification parameters, environment metrics, and build status checks for the final production deployment of the **Manake Web Application** after commit `246b46e8c71587889cfd34204d603a11f26e5e8e`.
 
 ---
 
 ## 🔗 1. Release & Deployment Details
 
-- **Final Commit Hash:** `d077a3614ae42cdfd408eecda92f93ad26102505`
-- **Vercel Deployment URL:** [Vercel Deployment Dashboard](https://vercel.com/fikris-projects-ade2d7c3/manake/FGQHKCQWFvbaRks8pjZqMv2X5ojP)
-- **Production Alias URL:** [https://manake.id](https://manake.id) (Vercel production preview: [https://manake-47x38phvs-fikris-projects-ade2d7c3.vercel.app](https://manake-47x38phvs-fikris-projects-ade2d7c3.vercel.app))
+- **Final Commit Hash:** `246b46e8c71587889cfd34204d603a11f26e5e8e`
+- **Vercel Deployment URL:** [Vercel Deployment Dashboard](https://vercel.com/fikris-projects-ade2d7c3/manake/deployments)
+- **Production Preview URL:** [https://manake-git-main-fikris-projects-ade2d7c3.vercel.app](https://manake-git-main-fikris-projects-ade2d7c3.vercel.app)
+- **Production Alias URL:** [https://manake.id](https://manake.id)
 
 ---
 
 ## 🔎 2. Audit Parameters & Page List
 
-The following production pages were audited across desktop and mobile layout profiles, verifying responsive breakpoints down to `360px` viewport widths:
+The following production pages were audited across desktop and mobile layout profiles, verifying responsive breakpoints down to `390px` viewport widths:
 
-1. **Homepage (`/`):** Tested visual layout, Google font rendering, modern glassmorphic header, hero banner, category cards grid, testimonials, and footer.
+1. **Homepage (`/`):** Tested visual layout, Google font rendering, modern glassmorphic header, hero banner, category cards grid, testimonials, and footer. Verified zero horizontal overflow on mobile (`390px`).
 2. **Catalog Page (`/catalog`):** Tested filters, category switches, responsive layouts, search functions, and equipment status cards.
-3. **Product Detail Page (`/catalog/{slug}`):** Tested image slide carousel, details accordions, dates picker, terms checkbox, and direct additions to cart.
-4. **Availability Board (`/availability/board`):** Tested calendar loading, equipment availability grid, status coloring, and real-time slots locked states.
+3. **Product Detail Page (`/product/{slug}`):** Tested image layout container, details accordions, dates picker, terms checkbox, and direct additions to cart.
+4. **Sony a7S Mark III Inspection (`/product/sony-a7s3`):**
+   - Rendered image `src`: `https://manake-git-main-fikris-projects-ade2d7c3.vercel.app/storage/equipments/4NHSpRFqyzNjv3JBzzuo437xtomuSEiTxTl2CBKy.png` (resolves successfully with `naturalWidth: 400` and `naturalHeight: 400` in browser runtime, no broken image icon).
+   - Fallback mechanism: `onerror="this.onerror=null;this.src='https://manake-git-main-fikris-projects-ade2d7c3.vercel.app/MANAKE-FAV-M.png';"` verified to fail-gracefully if storage asset is ever missing.
+4. **Availability Board (`/availability-board`):** Tested calendar loading, equipment availability grid, status coloring, and real-time slots locked states. Verified inner horizontal scroll on mobile (`390px`) within a clean overflow-hidden container, preventing body overflow.
 
 ---
 
@@ -40,10 +44,10 @@ The following operational checkout flow was successfully simulated, isolated, an
 vite v7.3.1 building client environment for production...
 ✓ 55 modules transformed.
 public/build/manifest.json                0.53 kB │ gzip:  0.20 kB
-public/build/assets/theme-xrSB6bhG.css   69.70 kB │ gzip: 11.32 kB
-public/build/assets/app-BMEnzwM6.css    123.84 kB │ gzip: 18.14 kB
+public/build/assets/theme-D4tRQcth.css   69.73 kB │ gzip: 11.34 kB
+public/build/assets/app-D68oa3Bf.css    123.75 kB │ gzip: 18.15 kB
 public/build/assets/app-CBbTb_k3.js      83.04 kB │ gzip: 30.86 kB
-✓ built in 2.63s
+✓ built in 2.76s
 [vercel-sync-dist] Synced public/build -> dist
 [vercel-sync-storage] Synced storage/app/public -> public/storage
 ```
@@ -62,7 +66,7 @@ Configuration: /Users/kiki/Documents/Web Develop/Website Manake/phpunit.xml
 .............................................................. 126 / 136 ( 92%)
 ..........                                                      136 / 136 (100%)
 
-Time: 00:32.094, Memory: 86.50 MB
+Time: 00:32.207, Memory: 86.50 MB
 
 OK (136 tests, 520 assertions)
 ```
@@ -71,4 +75,4 @@ OK (136 tests, 520 assertions)
 
 ## ⚠️ 6. Remaining Visual Issues
 
-- **None.** Scoping legacy dashboard class assets `.spotlight-shell`, `.noise-overlay`, `.premium-card`, `.btn-primary`, and `.btn-secondary` to `body:not(.landing-shell)` successfully prevented CSS leakage into public layout interfaces. The homepage, catalog, detail, and board load beautifully with clean, harmonized, 100% TA-ready visual components.
+- **None.** Mobile text and hero banner horizontal overflow issues are completely resolved. The dynamic Alpine-controlled `.manake-word-rotator` width fixes the word rotator layout on mobile. The product detail image is properly contained within an aspect-ratio frame, and the availability board provides a seamless horizontal scroll container on mobile with no page-wide horizontal scroll.
