@@ -133,6 +133,24 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })
 
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->render(function (\Throwable $exception, Request $request) {
+            if (getenv('VERCEL') !== false) {
+                return response()->json([
+                    'error_message' => $exception->getMessage(),
+                    'error_class' => get_class($exception),
+                    'error_file' => $exception->getFile(),
+                    'error_line' => $exception->getLine(),
+                    'error_trace' => collect($exception->getTrace())->map(fn($t) => [
+                        'file' => $t['file'] ?? null,
+                        'line' => $t['line'] ?? null,
+                        'function' => $t['function'] ?? null,
+                        'class' => $t['class'] ?? null,
+                    ])->take(20),
+                ], 500);
+            }
+            return null;
+        });
+
         $exceptions->render(function (HttpExceptionInterface $exception, Request $request) {
             if ($exception->getStatusCode() !== 419) {
                 return null;
