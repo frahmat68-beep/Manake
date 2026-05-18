@@ -28,6 +28,8 @@ abstract class TestCase extends BaseTestCase
 
         parent::setUp();
 
+        \Illuminate\Support\Facades\Cache::clear();
+
         $this->enforceSafeTestingDatabaseConnection();
         $this->initialOutputBufferLevel = ob_get_level();
     }

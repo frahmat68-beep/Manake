@@ -90,12 +90,12 @@ class AdminContentAndSettingsTest extends TestCase
     public function test_user_page_renders_dynamic_content(): void
     {
         SiteSetting::updateOrCreate(
-            ['key' => 'home.hero_title'],
+            ['key' => 'home.hero_title.id'],
             ['value' => 'Dynamic Hero']
         );
 
         SiteSetting::updateOrCreate(
-            ['key' => 'footer.about'],
+            ['key' => 'footer.about.id'],
             ['value' => 'Footer Dynamic']
         );
 
@@ -121,11 +121,11 @@ class AdminContentAndSettingsTest extends TestCase
 
         $response->assertRedirect(route('admin.copy.edit', 'footer'));
         $this->assertDatabaseHas('site_settings', [
-            'key' => 'footer.about',
+            'key' => 'footer.about.id',
             'value' => 'Kami menyewakan alat produksi untuk tim kecil sampai besar.',
         ]);
         $this->assertDatabaseHas('site_settings', [
-            'key' => 'site_tagline',
+            'key' => 'site_tagline.id',
             'value' => 'Rental alat produksi tanpa ribet.',
         ]);
     }
