@@ -1,6 +1,6 @@
 # 🏆 Manake Final Release & Production QA Verification Report
 
-This document presents the official, comprehensive validation and verification outcomes of the **Manake Web Application** for its production release after commit `246b46e8c71587889cfd34204d603a11f26e5e8e`. It is compiled to meet all graduation (sidang TA) and public launch standards.
+This document presents the official, comprehensive validation and verification outcomes of the **Manake Web Application** for its production release after commit `53f33b58e8a720a304cfce83bbe74072079a3b5f`. It is compiled to meet all graduation (sidang TA) and public launch standards.
 
 ---
 
@@ -98,6 +98,14 @@ OK (136 tests, 520 assertions)
 
 ## 🔗 5. Final Deployment Credentials
 
-- **Commit Hash:** `246b46e8c71587889cfd34204d603a11f26e5e8e`
+- **Commit Hash:** `53f33b58e8a720a304cfce83bbe74072079a3b5f`
 - **Vercel Status:** Success
 - **Production Status:** `100% Release Ready`
+
+### 🔑 Test Access Credentials
+- **Admin (Super Admin):**
+  - **Email:** `frahmat68@gmail.com`
+  - **Password:** `FikriKiki0201`
+- **User (Standard):**
+  - **Email:** `kikirachmat214@gmail.com`
+  - **Password:** `Kikirach0201`

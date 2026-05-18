@@ -1,15 +1,23 @@
 # 📋 Manake Production QA Summary
 
-This document consolidates the official QA verification parameters, environment metrics, and build status checks for the final production deployment of the **Manake Web Application** after commit `246b46e8c71587889cfd34204d603a11f26e5e8e`.
+This document consolidates the official QA verification parameters, environment metrics, and build status checks for the final production deployment of the **Manake Web Application** after commit `53f33b58e8a720a304cfce83bbe74072079a3b5f`.
 
 ---
 
 ## 🔗 1. Release & Deployment Details
 
-- **Final Commit Hash:** `246b46e8c71587889cfd34204d603a11f26e5e8e`
+- **Final Commit Hash:** `53f33b58e8a720a304cfce83bbe74072079a3b5f`
 - **Vercel Deployment URL:** [Vercel Deployment Dashboard](https://vercel.com/fikris-projects-ade2d7c3/manake/deployments)
 - **Production Preview URL:** [https://manake-git-main-fikris-projects-ade2d7c3.vercel.app](https://manake-git-main-fikris-projects-ade2d7c3.vercel.app)
 - **Production Alias URL:** [https://manake.id](https://manake.id)
+
+### 🔑 Test Access Credentials
+- **Admin (Super Admin):**
+  - **Email:** `frahmat68@gmail.com`
+  - **Password:** `FikriKiki0201`
+- **User (Standard):**
+  - **Email:** `kikirachmat214@gmail.com`
+  - **Password:** `Kikirach0201`
 
 ---
 
