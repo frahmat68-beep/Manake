@@ -482,16 +482,19 @@
         x-on:keydown.escape.window="handleEscape()"
         x-on:pointerup.window="cancelDanglingSelection()"
     >
-        <section class="mk-card p-6 sm:p-8 animate-fade-up">
+        <section class="mk-card p-5 sm:p-6 animate-fade-up">
             <div class="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                <div>
-                    <h1 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">{{ $availabilityTitle }}</h1>
-                    <p class="mt-2 max-w-2xl text-sm italic text-slate-600 sm:text-base">
+                <div class="max-w-2xl">
+                    <p class="section-kicker font-bold tracking-widest uppercase text-blue-600/80">{{ __('ui.nav.availability_board') ?: 'AVAILABILITY BOARD' }}</p>
+                    <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl leading-tight">
+                        {{ $availabilityTitle }}
+                    </h1>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                         {{ $availabilitySubtitle }}
                     </p>
                 </div>
 
-                <form method="GET" action="{{ route('availability.board') }}" class="grid w-full gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] lg:max-w-3xl">
+                <form method="GET" action="{{ route('availability.board') }}" class="grid w-full gap-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] lg:max-w-3xl">
                     <div class="board-input-group sm:col-span-3 lg:col-span-1">
                         <svg class="absolute left-4 h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input
@@ -546,42 +549,54 @@
 
         <section class="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
             <article class="mk-card overflow-hidden">
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-slate-50 px-5 py-4">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 px-5 py-4">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{{ $availabilityCalendarTitle }}</p>
-                        <h2 class="mt-1 text-xl font-semibold text-slate-900">{{ $monthLabel }}</h2>
+                        <h2 class="mt-1 text-xl font-semibold text-slate-900 dark:text-slate-100">{{ $monthLabel }}</h2>
                         <p class="mt-1 text-[11px] text-slate-500 sm:hidden">{{ $availabilityDragHint }}</p>
                     </div>
-                    <div class="inline-flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-2 py-1">
+                    <div class="inline-flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-2 py-1">
                         @if ($canGoPrev)
                             <a
                                 href="{{ route('availability.board', ['month' => $prevMonth, 'date' => $monthDate->copy()->subMonth()->startOfMonth()->toDateString(), 'q' => $search ?: null]) }}"
                                 data-ui-icon-button
-                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold transition-all"
+                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold transition-all"
                                 aria-label="Bulan sebelumnya"
                             >
-                                ←
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                             </a>
                         @else
-                            <span class="inline-flex h-8 w-8 cursor-not-allowed items-center justify-center rounded-lg text-slate-300">←</span>
+                            <span class="inline-flex h-8 w-8 cursor-not-allowed items-center justify-center rounded-lg text-slate-300 dark:text-slate-700">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                            </span>
                         @endif
-                        <span class="min-w-[7.5rem] text-center text-sm font-semibold text-slate-700 sm:min-w-[9rem]">{{ $monthLabel }}</span>
+                        <span class="min-w-[7.5rem] text-center text-sm font-semibold text-slate-700 dark:text-slate-300 sm:min-w-[9rem]">{{ $monthLabel }}</span>
                         @if ($canGoNext)
                             <a
                                 href="{{ route('availability.board', ['month' => $nextMonth, 'date' => $monthDate->copy()->addMonth()->startOfMonth()->toDateString(), 'q' => $search ?: null]) }}"
                                 data-ui-icon-button
-                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold transition-all"
+                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold transition-all"
                                 aria-label="Bulan berikutnya"
                             >
-                                →
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                             </a>
                         @else
-                            <span class="inline-flex h-8 w-8 cursor-not-allowed items-center justify-center rounded-lg text-slate-300">→</span>
+                            <span class="inline-flex h-8 w-8 cursor-not-allowed items-center justify-center rounded-lg text-slate-300 dark:text-slate-700">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                            </span>
                         @endif
                     </div>
                 </div>
 
                 <div class="px-3 py-3 sm:px-5 sm:py-4">
+                    <!-- Elegant horizontal scroll indicator for mobile -->
+                    <div class="flex items-center gap-1.5 mb-3 px-1 text-[10px] font-semibold text-slate-400 dark:text-slate-500 sm:hidden">
+                        <svg class="h-3.5 w-3.5 animate-pulse text-blue-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                        </svg>
+                        <span>Geser mendatar untuk melihat kalender penuh / Swipe horizontally</span>
+                    </div>
+
                     <div class="-mx-1 overflow-x-auto pb-1 px-1 sm:mx-0 sm:overflow-visible sm:px-0">
                         <div class="min-w-[26rem] sm:min-w-0">
                             <div class="grid grid-cols-7 gap-1.5 sm:gap-2">
@@ -649,49 +664,49 @@
 
             <div class="space-y-4">
                 <article class="mk-card p-6">
-                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{{ $availabilitySelectedTitle }}</p>
-                    <h2 class="mt-1 text-2xl font-semibold text-slate-900">{{ $selectedDateLabel }}</h2>
+                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">{{ $availabilitySelectedTitle }}</p>
+                    <h2 class="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ $selectedDateLabel }}</h2>
 
                     <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                        <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{{ $availabilityMetricTotal }}</p>
-                            <p class="mt-1 text-2xl font-semibold text-slate-900">{{ $summary['total_equipments'] ?? 0 }}</p>
+                        <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 px-3 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">{{ $availabilityMetricTotal }}</p>
+                            <p class="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ $summary['total_equipments'] ?? 0 }}</p>
                         </div>
-                        <div class="rounded-2xl border border-rose-200 bg-rose-50 px-3 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-rose-500">{{ $availabilityMetricBusy }}</p>
-                            <p class="mt-1 text-2xl font-semibold text-rose-700">{{ $summary['busy_equipments'] ?? 0 }}</p>
+                        <div class="rounded-2xl border border-rose-100 dark:border-rose-950/20 bg-rose-50/50 dark:bg-rose-950/10 px-3 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-rose-500 dark:text-rose-450">{{ $availabilityMetricBusy }}</p>
+                            <p class="mt-1 text-2xl font-semibold text-rose-700 dark:text-rose-400">{{ $summary['busy_equipments'] ?? 0 }}</p>
                         </div>
-                        <div class="rounded-2xl border border-emerald-100 bg-emerald-50 px-3 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-600">{{ $availabilityMetricAvailable }}</p>
-                            <p class="mt-1 text-2xl font-semibold text-emerald-700">{{ $summary['available_equipments'] ?? 0 }}</p>
+                        <div class="rounded-2xl border border-emerald-100 dark:border-emerald-950/20 bg-emerald-50/50 dark:bg-emerald-950/10 px-3 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">{{ $availabilityMetricAvailable }}</p>
+                            <p class="mt-1 text-2xl font-semibold text-emerald-700 dark:text-emerald-450">{{ $summary['available_equipments'] ?? 0 }}</p>
                         </div>
-                        <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{{ $availabilityMetricUnits }}</p>
-                            <p class="mt-1 text-2xl font-semibold text-slate-900">{{ $summary['reserved_units'] ?? 0 }}</p>
+                        <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 px-3 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">{{ $availabilityMetricUnits }}</p>
+                            <p class="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ $summary['reserved_units'] ?? 0 }}</p>
                         </div>
                     </div>
                 </article>
 
                 <article class="mk-card p-6">
                     <div class="flex items-center justify-between gap-2">
-                        <h3 class="text-base font-semibold text-slate-900">{{ $availabilityReadyTitle }}</h3>
+                        <h3 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ $availabilityReadyTitle }}</h3>
                         <span class="mk-badge mk-badge-success shrink-0">
                             {{ $selectedFreeRows->count() }} {{ $availabilityCountEmptySuffix }}
                         </span>
                     </div>
                     <div class="mt-3 space-y-2">
                         @forelse ($selectedFreeRows->take(6) as $row)
-                            <article class="board-item rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
+                            <article class="board-item rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 px-3.5 py-3">
                                 <div class="flex items-center justify-between gap-3">
-                                    <p class="text-sm font-semibold text-slate-900">{{ $row['name'] }}</p>
+                                    <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ $row['name'] }}</p>
                                     <span class="mk-badge mk-badge-success shrink-0">
                                         {{ strtr($availabilityMinLeftTemplate, [':qty' => (string) $row['selected_available']]) }}
                                     </span>
                                 </div>
-                                <p class="mt-1 text-xs italic text-slate-500">{{ $row['category'] }}</p>
+                                <p class="mt-1 text-xs italic text-slate-500 dark:text-slate-400">{{ $row['category'] }}</p>
                             </article>
                         @empty
-                            <p class="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-3 text-xs text-slate-500">
+                            <p class="rounded-xl border border-dashed border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30 px-3 py-3 text-xs text-slate-500 dark:text-slate-400">
                                 {{ $availabilityReadyEmpty }}
                             </p>
                         @endforelse
@@ -703,22 +718,22 @@
         <section class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
             <article class="mk-card p-6">
                 <div class="flex items-center justify-between gap-3">
-                    <h2 class="text-lg font-semibold text-slate-900">{{ $availabilityBusyTitle }} di {{ $selectedDateLabel }}</h2>
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">{{ $availabilityBusyTitle }} di {{ $selectedDateLabel }}</h2>
                     <span class="mk-badge mk-badge-danger shrink-0">{{ $selectedBusyRows->count() }} {{ $availabilityCountToolsSuffix }}</span>
                 </div>
                 <div class="mt-3 space-y-2">
                     @forelse ($selectedBusyRows->take(10) as $row)
-                        <article class="board-item rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
+                        <article class="board-item rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 px-3.5 py-3">
                             <div class="flex items-center justify-between gap-2">
-                                <p class="text-sm font-semibold text-slate-900">{{ $row['name'] }}</p>
-                                <p class="text-xs font-semibold text-rose-600">{{ strtr($availabilityInUseTemplate, [':qty' => (string) $row['selected_reserved']]) }}</p>
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ $row['name'] }}</p>
+                                <p class="text-xs font-semibold text-rose-600 dark:text-rose-400">{{ strtr($availabilityInUseTemplate, [':qty' => (string) $row['selected_reserved']]) }}</p>
                             </div>
                             @if ($row['source_labels']->isNotEmpty())
-                                <p class="mt-1 text-xs text-slate-600">{{ $row['source_labels']->implode(', ') }}</p>
+                                <p class="mt-1 text-xs text-slate-600 dark:text-slate-400">{{ $row['source_labels']->implode(', ') }}</p>
                             @endif
                         </article>
                     @empty
-                        <p class="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-3 text-xs text-slate-500">
+                        <p class="rounded-xl border border-dashed border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30 px-3 py-3 text-xs text-slate-500 dark:text-slate-400">
                             {{ $availabilityBusyEmpty }}
                         </p>
                     @endforelse
@@ -727,25 +742,25 @@
 
             <article class="mk-card p-6">
                 <div class="flex items-center justify-between gap-3">
-                    <h2 class="text-lg font-semibold text-slate-900">{{ $availabilityMonthlyTitle }}</h2>
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">{{ $availabilityMonthlyTitle }}</h2>
                     <span class="mk-badge mk-badge-info shrink-0">{{ $monthlySchedules->count() }} {{ $availabilityCountSchedulesSuffix }}</span>
                 </div>
                 <div class="mt-3 max-h-[29rem] space-y-2 overflow-y-auto pr-1">
                     @forelse ($monthlySchedules as $schedule)
-                        <article class="board-item rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
-                            <p class="text-sm font-semibold text-slate-900">{{ $schedule['equipment_name'] }}</p>
-                            <p class="mt-0.5 text-xs text-slate-600">
+                        <article class="board-item rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 px-3.5 py-3">
+                            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ $schedule['equipment_name'] }}</p>
+                            <p class="mt-0.5 text-xs text-slate-600 dark:text-slate-400">
                                 {{ \Carbon\Carbon::parse($schedule['start_date'])->translatedFormat('d M Y') }}
                                 -
                                 {{ \Carbon\Carbon::parse($schedule['end_date'])->translatedFormat('d M Y') }}
                                 • Qty {{ $schedule['qty'] }}
                             </p>
-                            <p class="mt-1 text-[11px] text-slate-500">
+                            <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
                                 {{ strtoupper($schedule['status_pesanan']) }}
                             </p>
                         </article>
                     @empty
-                        <p class="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-3 text-xs text-slate-500">
+                        <p class="rounded-xl border border-dashed border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30 px-3 py-3 text-xs text-slate-500 dark:text-slate-400">
                             {{ $availabilityMonthlyEmpty }}
                         </p>
                     @endforelse
@@ -762,18 +777,17 @@
             aria-modal="true"
             @click.self="closeScheduleModal()"
         >
-            <div class="absolute inset-0 bg-slate-950/55 backdrop-blur-[1px]"></div>
+            <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-[1.5px]"></div>
 
-            <div class="mk-card relative z-10 w-full max-w-3xl max-h-[92vh] overflow-hidden">
-                <div class="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 sm:px-5 sm:py-4">
+            <div class="mk-card relative z-10 w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 animate-fade-in">
+                <div class="flex items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 px-4 py-3 sm:px-5 sm:py-4">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{{ $availabilityModalDateTitle }}</p>
-                        <h2 class="mt-1 text-xl font-semibold text-slate-900" x-text="modalDateLabel"></h2>
+                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">{{ $availabilityModalDateTitle }}</p>
+                        <h2 class="mt-1 text-xl font-bold text-slate-900 dark:text-slate-100" x-text="modalDateLabel"></h2>
                     </div>
                     <button
                         type="button"
-                        data-ui-icon-button
-                        class="inline-flex h-10 w-10 items-center justify-center rounded-full transition"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-all font-semibold"
                         @click="closeScheduleModal()"
                         aria-label="{{ $availabilityModalClose }}"
                     >
@@ -781,40 +795,40 @@
                     </button>
                 </div>
 
-                <div class="px-4 py-4 sm:px-5">
+                <div class="px-4 py-4 sm:px-5 overflow-y-auto max-h-[calc(90vh-5rem)]">
                     <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                        <div class="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-rose-500">{{ $availabilityMetricBusy }}</p>
-                            <p class="mt-1 text-lg font-semibold text-rose-700" x-text="modalBusyEquipments"></p>
+                        <div class="rounded-xl border border-rose-100 dark:border-rose-950/20 bg-rose-50/50 dark:bg-rose-950/10 px-3.5 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-rose-500 dark:text-rose-450">{{ $availabilityMetricBusy }}</p>
+                            <p class="mt-1.5 text-xl font-bold text-rose-700 dark:text-rose-400" x-text="modalBusyEquipments"></p>
                         </div>
-                        <div class="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-amber-600">{{ $availabilityMetricUnits }}</p>
-                            <p class="mt-1 text-lg font-semibold text-amber-700" x-text="modalReservedUnits"></p>
+                        <div class="rounded-xl border border-amber-100 dark:border-amber-950/20 bg-amber-50/50 dark:bg-amber-950/10 px-3.5 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-450">{{ $availabilityMetricUnits }}</p>
+                            <p class="mt-1.5 text-xl font-bold text-amber-700 dark:text-amber-400" x-text="modalReservedUnits"></p>
                         </div>
-                        <div class="rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2.5">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-600">{{ $availabilityMetricAvailable }}</p>
-                            <p class="mt-1 text-lg font-semibold text-emerald-700" x-text="modalAvailableEquipments"></p>
+                        <div class="rounded-xl border border-emerald-100 dark:border-emerald-950/20 bg-emerald-50/50 dark:bg-emerald-950/10 px-3.5 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-450">{{ $availabilityMetricAvailable }}</p>
+                            <p class="mt-1.5 text-xl font-bold text-emerald-700 dark:text-emerald-400" x-text="modalAvailableEquipments"></p>
                         </div>
                     </div>
 
-                    <div class="mt-4 max-h-[52vh] space-y-2 overflow-y-auto pr-1 sm:max-h-[26rem]">
+                    <div class="mt-5 space-y-2.5">
                         <template x-if="modalSchedules.length === 0">
-                            <p class="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-500">
+                            <p class="rounded-xl border border-dashed border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30 px-4 py-4 text-xs font-medium text-slate-500 dark:text-slate-400">
                                 {{ $availabilityModalEmpty }}
                             </p>
                         </template>
 
                         <template x-for="(item, index) in modalSchedules" :key="`${item.equipment_name}-${index}`">
-                            <article class="board-item rounded-xl border border-slate-200 bg-slate-50 px-3 py-3">
+                            <article class="board-item rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 px-3.5 py-3">
                                 <div class="flex items-start justify-between gap-2">
                                     <div>
-                                        <p class="text-sm font-semibold text-slate-900" x-text="item.equipment_name"></p>
-                                        <p class="mt-0.5 text-xs text-slate-500" x-text="item.status_label"></p>
+                                        <p class="text-sm font-semibold text-slate-900 dark:text-slate-100" x-text="item.equipment_name"></p>
+                                        <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400" x-text="item.status_label"></p>
                                     </div>
-                                    <span class="rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-semibold text-blue-700" x-text="`x${item.qty}`"></span>
+                                    <span class="rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-150 dark:border-blue-900 px-2 py-0.5 text-[10px] font-bold text-blue-700 dark:text-blue-400" x-text="`x${item.qty}`"></span>
                                 </div>
-                                <p class="mt-2 text-xs text-slate-600">
-                                    {{ $availabilityPeriodLabel }}: <span x-text="`${formatDateLabel(item.start_date)} - ${formatDateLabel(item.end_date)}`"></span>
+                                <p class="mt-2 text-xs text-slate-650 dark:text-slate-350">
+                                    {{ $availabilityPeriodLabel }}: <span class="font-semibold text-slate-800 dark:text-slate-200" x-text="`${formatDateLabel(item.start_date)} - ${formatDateLabel(item.end_date)}`"></span>
                                 </p>
                             </article>
                         </template>
@@ -832,25 +846,24 @@
             aria-modal="true"
             @click.self="closeRangeSelectionModal()"
         >
-            <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-[1px]"></div>
+            <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-[1.5px]"></div>
 
-            <div class="mk-card relative z-10 w-full max-w-4xl max-h-[92vh] overflow-hidden">
-                <div class="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 sm:px-5 sm:py-4">
+            <div class="mk-card relative z-10 w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 animate-fade-in">
+                <div class="flex items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 px-4 py-3 sm:px-5 sm:py-4">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{{ $availabilityRangeKicker }}</p>
-                        <h2 class="mt-1 text-lg font-semibold text-slate-900">{{ $availabilityRangeTitle }}</h2>
-                        <p class="mt-1 text-xs text-slate-600">
-                            <span x-text="formatDateLabel(getRangeStartDate())"></span>
+                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">{{ $availabilityRangeKicker }}</p>
+                        <h2 class="mt-1 text-lg font-bold text-slate-900 dark:text-slate-100">{{ $availabilityRangeTitle }}</h2>
+                        <p class="mt-1 text-xs text-slate-600 dark:text-slate-400">
+                            <span class="font-semibold text-slate-800 dark:text-slate-200" x-text="formatDateLabel(getRangeStartDate())"></span>
                             -
-                            <span x-text="formatDateLabel(getRangeEndDate())"></span>
+                            <span class="font-semibold text-slate-800 dark:text-slate-200" x-text="formatDateLabel(getRangeEndDate())"></span>
                             •
-                            <span x-text="getRangeDurationLabel()"></span>
+                            <span class="font-semibold text-blue-600 dark:text-blue-450" x-text="getRangeDurationLabel()"></span>
                         </p>
                     </div>
                     <button
                         type="button"
-                        data-ui-icon-button
-                        class="inline-flex h-10 w-10 items-center justify-center rounded-full transition"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-all font-semibold"
                         @click="closeRangeSelectionModal()"
                         aria-label="{{ $availabilityModalClose }}"
                     >
@@ -858,13 +871,13 @@
                     </button>
                 </div>
 
-                <div class="space-y-4 overflow-y-auto px-4 py-4 sm:px-5">
+                <div class="space-y-4 overflow-y-auto px-4 py-4 sm:px-5 max-h-[calc(90vh-6rem)]">
                     <div class="grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_auto_auto] sm:items-end">
                         <div>
-                            <label class="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{{ $availabilityRangeFilterLabel }}</label>
+                            <label class="text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">{{ $availabilityRangeFilterLabel }}</label>
                             <select
                                 x-model="selectedRangeCategoryId"
-                                class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                                class="mk-input mt-1 w-full py-2 text-sm"
                             >
                                 <option value="all">{{ $availabilityRangeAllCategories }}</option>
                                 <template x-for="category in rangeCategoryOptions" :key="category.id">
@@ -872,51 +885,51 @@
                                 </template>
                             </select>
                         </div>
-                        <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{{ $availabilityRangeAvailableLabel }}</p>
-                            <p class="text-lg font-semibold text-emerald-700" x-text="getFilteredRangeRows().length"></p>
+                        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 px-3.5 py-2">
+                            <p class="text-[10px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-450">{{ $availabilityRangeAvailableLabel }}</p>
+                            <p class="text-base font-bold text-emerald-700 dark:text-emerald-400" x-text="getFilteredRangeRows().length"></p>
                         </div>
                         <a
                             :href="cartUrl"
-                            class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+                            class="mk-button-primary py-2.5 px-5 text-sm"
                         >
                             {{ $availabilityRangeContinue }}
                         </a>
                     </div>
 
-                    <div class="max-h-[55vh] space-y-2 overflow-y-auto pr-1">
+                    <div class="space-y-2.5">
                         <template x-if="getFilteredRangeRows().length === 0">
-                            <p class="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-500">
+                            <p class="rounded-xl border border-dashed border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30 px-4 py-4 text-xs font-medium text-slate-500 dark:text-slate-400">
                                 {{ $availabilityRangeEmpty }}
                             </p>
                         </template>
 
                         <template x-for="item in getFilteredRangeRows()" :key="`range-item-${item.id}`">
-                            <article class="board-item rounded-xl border border-slate-200 bg-slate-50 px-3 py-3">
-                                <div class="flex items-start gap-3">
+                            <article class="board-item rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 px-3.5 py-3">
+                                <div class="flex items-start gap-3.5">
                                     <img
                                         :src="item.image_url"
                                         :alt="item.name"
-                                        class="h-14 w-14 rounded-lg border border-slate-200 bg-white object-cover"
+                                        class="h-14 w-14 rounded-lg border border-slate-200 dark:border-slate-750 bg-white dark:bg-slate-800 object-cover"
                                         loading="lazy"
                                     >
                                     <div class="min-w-0 flex-1">
-                                        <p class="text-sm font-semibold text-slate-900" x-text="item.name"></p>
-                                        <p class="mt-0.5 text-xs italic text-slate-500" x-text="item.category"></p>
-                                        <p class="mt-1 text-[11px] font-medium text-blue-700">
+                                        <p class="text-sm font-semibold text-slate-900 dark:text-slate-100" x-text="item.name"></p>
+                                        <p class="mt-0.5 text-xs italic text-slate-500 dark:text-slate-400" x-text="item.category"></p>
+                                        <p class="mt-1 text-[11px] font-bold text-blue-700 dark:text-blue-400">
                                             {{ $availabilityFromPriceLabel }} <span x-text="`{{ $currencyPrefix }} ${Number(item.price_per_day || 0).toLocaleString(@js($intlLocale))}`"></span> {{ __('app.product.per_day') }}
                                         </p>
                                     </div>
-                                    <span class="shrink-0 rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-semibold text-emerald-700" x-text="@js($availabilityMinLeftTemplate).replace(':qty', item.min_available)"></span>
+                                    <span class="shrink-0 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-150 dark:border-emerald-900 px-2.5 py-1 text-[10px] font-bold text-emerald-700 dark:text-emerald-400" x-text="@js($availabilityMinLeftTemplate).replace(':qty', item.min_available)"></span>
                                 </div>
-                                <div class="mt-2 flex flex-wrap items-center gap-2">
+                                <div class="mt-3 flex flex-wrap items-center gap-3 border-t border-slate-200/50 dark:border-slate-800/50 pt-2.5">
                                     <a
                                         :href="buildProductUrl(item.slug)"
-                                        class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-blue-700"
+                                        class="mk-button-primary py-1.5 px-3 text-[11px]"
                                     >
                                         {{ $availabilityRangePick }}
                                     </a>
-                                    <span class="text-[11px] text-slate-500">{{ $availabilityRangePrefillNote }}</span>
+                                    <span class="text-[10px] text-slate-500 dark:text-slate-400" x-text="`* ${@js($availabilityRangePrefillNote)}`"></span>
                                 </div>
                             </article>
                         </template>
