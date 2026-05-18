@@ -92,39 +92,38 @@
     >
         <section class="relative overflow-hidden pt-12 pb-8">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
-                <div class="glass-lg noise-overlay spotlight-shell rounded-[2.5rem] p-8 sm:p-10 border border-white/20 shadow-2xl animate-fade-up">
+                <div class="mk-card p-8 sm:p-10 animate-fade-up">
                     <div class="flex flex-col gap-3">
                         <div class="max-w-3xl">
                             <p class="section-kicker font-bold tracking-widest uppercase text-blue-600/80">{{ __('ui.nav.catalog') }}</p>
-                            <h1 class="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-5xl leading-tight">
+                            <h1 class="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl leading-tight">
                                 {{ $catalogTitle }}
                             </h1>
-                            <p class="mt-4 text-base text-slate-600 sm:text-lg max-w-2xl leading-relaxed">
+                            <p class="mt-4 text-base text-slate-600 dark:text-slate-400 sm:text-lg max-w-2xl leading-relaxed">
                                 {{ $catalogSubtitle }}
                             </p>
                         </div>
                     </div>
 
-                    <!-- Modern Glass Search Bar -->
-                    <div class="max-w-2xl mt-10">
+                    <!-- Modern Search Bar -->
+                    <div class="max-w-2xl mt-8">
                         <form action="{{ route('catalog') }}" method="GET" class="relative group">
-                            <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-[1.5rem] blur opacity-25 group-focus-within:opacity-50 transition duration-500"></div>
-                            <div class="relative flex items-center overflow-hidden rounded-[1.35rem] border border-white/40 bg-white/80 backdrop-blur-xl shadow-xl transition-all duration-300 group-focus-within:ring-2 ring-blue-500/20">
+                            <div class="relative flex items-center overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shadow-sm transition-all duration-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/10">
                                 <span class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors">
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                                 </span>
                                 <input type="text" name="q" value="{{ $search }}" placeholder="Cari kamera, lighting, drone, audio..." 
-                                       class="flex-1 bg-transparent py-5 pl-14 pr-6 text-[16px] font-medium text-slate-900 border-none focus:ring-0 placeholder:text-slate-400">
-                                <button type="submit" class="mr-3 flex h-12 px-6 items-center justify-center rounded-xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:scale-[1.03] active:scale-[0.98] transition-all">
+                                       class="flex-1 bg-transparent py-4 pl-14 pr-6 text-[15px] font-medium text-slate-900 dark:text-slate-100 border-none focus:ring-0 placeholder:text-slate-400">
+                                <button type="submit" class="mr-2 flex h-11 px-5 items-center justify-center rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all">
                                     <span>Cari</span>
                                 </button>
                             </div>
                         </form>
                     </div>
 
-                    <div class="mt-10 pt-8 border-t border-slate-200/50">
+                    <div class="mt-10 pt-8 border-t border-slate-200/50 dark:border-slate-800/50">
                         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                            <p class="text-sm font-bold text-slate-500 uppercase tracking-wider">{{ $categoryLabel }}</p>
+                            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ $categoryLabel }}</p>
                             @if ($search !== '')
                                 <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="btn-secondary rounded-xl px-4 py-2 text-xs font-bold transition">
                                     {{ $catalogResetSearchLabel }}
@@ -134,7 +133,7 @@
                         <div class="mt-5 flex flex-wrap gap-3">
                             <a
                                 href="{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}"
-                                class="rounded-full border px-6 py-2 text-xs font-bold tracking-tight transition-all duration-300 {{ $activeCategorySlug === '' ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/20' : 'bg-white/50 text-slate-600 border-slate-200 hover:border-blue-400 hover:text-blue-600' }}"
+                                class="rounded-full border px-6 py-2 text-xs font-bold tracking-tight transition-all duration-300 {{ $activeCategorySlug === '' ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400' }}"
                             >
                                 {{ $catalogAllCategoriesLabel }}
                             </a>
@@ -147,7 +146,7 @@
                                 @endphp
                                 <a
                                     href="{{ route('catalog', $categoryParams) }}"
-                                    class="relative rounded-full border px-6 py-2 text-xs font-bold tracking-tight transition-all duration-300 {{ $activeCategorySlug === $category->slug ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/20' : 'bg-white/50 text-slate-600 border-slate-200 hover:border-blue-400 hover:text-blue-600' }}"
+                                    class="relative rounded-full border px-6 py-2 text-xs font-bold tracking-tight transition-all duration-300 {{ $activeCategorySlug === $category->slug ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400' }}"
                                     :class="showGuide && activeGuideIndex === {{ $loop->iteration }} ? 'pr-12 ring-4 ring-blue-500/10 border-blue-400' : ''"
                                 >
                                     {{ $category->name }}
@@ -251,10 +250,10 @@
                                 }"
                                 @mousemove="handleMouseMove"
                                 @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')"
-                                class="premium-card spotlight-shell noise-overlay group flex h-full flex-col overflow-hidden rounded-[2rem] transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 cursor-pointer animate-fade-up"
+                                class="mk-card group flex h-full flex-col overflow-hidden cursor-pointer animate-fade-up"
                                 style="animation-delay: {{ $loop->index * 50 }}ms"
                             >
-                                <div class="relative aspect-[4/3] overflow-hidden bg-slate-50/50 p-6 flex items-center justify-center">
+                                <div class="relative aspect-[4/3] overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 p-6 flex items-center justify-center border-b border-slate-100 dark:border-slate-800/60">
                                     <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                                     <img
                                         src="{{ $image }}"
@@ -266,7 +265,7 @@
                                         decoding="async"
                                     >
                                     <div class="absolute inset-x-4 top-4 flex items-center justify-between pointer-events-none">
-                                        <span class="glass-sm px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-blue-600 border border-blue-500/10">
+                                        <span class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 border border-blue-500/10">
                                             {{ $item->category?->name ?? __('app.category.title') }}
                                         </span>
                                         <span class="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border {{ $statusClass }}">
@@ -276,43 +275,43 @@
                                 </div>
 
                                 <div class="flex flex-1 flex-col p-7">
-                                    <h3 class="text-xl font-bold leading-tight text-slate-900 group-hover:text-blue-600 transition-colors duration-300 min-h-[3.5rem]">{{ $item->name }}</h3>
+                                    <h3 class="text-xl font-bold leading-tight text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 min-h-[3.5rem]">{{ $item->name }}</h3>
                                     
                                     <div class="mt-4 flex items-baseline gap-2">
-                                        <p class="text-2xl font-black tracking-tight text-slate-950">
+                                        <p class="text-2xl font-black tracking-tight text-slate-950 dark:text-slate-50">
                                             {{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}
                                         </p>
-                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">/ {{ __('app.product.per_day') }}</span>
+                                        <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">/ {{ __('app.product.per_day') }}</span>
                                     </div>
 
                                     <div class="mt-6 grid grid-cols-3 gap-3">
-                                        <div class="bg-slate-50/80 rounded-2xl p-3 border border-slate-100 text-center">
-                                            <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">{{ $catalogStockLabel }}</p>
-                                            <p class="mt-1 text-base font-black text-slate-900">{{ $item->stock }}</p>
+                                        <div class="bg-slate-50 dark:bg-slate-900/40 rounded-2xl p-3 border border-slate-100 dark:border-slate-800/60 text-center">
+                                            <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">{{ $catalogStockLabel }}</p>
+                                            <p class="mt-1 text-base font-black text-slate-900 dark:text-slate-100">{{ $item->stock }}</p>
                                         </div>
-                                        <div class="bg-slate-50/80 rounded-2xl p-3 border border-slate-100 text-center">
-                                            <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">{{ $catalogInUseLabel }}</p>
-                                            <p class="mt-1 text-base font-black text-amber-600">{{ $reservedUnits }}</p>
+                                        <div class="bg-slate-50 dark:bg-slate-900/40 rounded-2xl p-3 border border-slate-100 dark:border-slate-800/60 text-center">
+                                            <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">{{ $catalogInUseLabel }}</p>
+                                            <p class="mt-1 text-base font-black text-amber-600 dark:text-amber-500">{{ $reservedUnits }}</p>
                                         </div>
-                                        <div class="bg-slate-50/80 rounded-2xl p-3 border border-slate-100 text-center">
-                                            <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">{{ $catalogAvailableLabel }}</p>
-                                            <p class="mt-1 text-base font-black {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}">{{ $availableUnits }}</p>
+                                        <div class="bg-slate-50 dark:bg-slate-900/40 rounded-2xl p-3 border border-slate-100 dark:border-slate-800/60 text-center">
+                                            <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">{{ $catalogAvailableLabel }}</p>
+                                            <p class="mt-1 text-base font-black {{ $availableUnits > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">{{ $availableUnits }}</p>
                                         </div>
                                     </div>
-                                    <p class="mt-3 text-[10px] font-medium text-slate-400 text-center italic opacity-80">{{ $catalogAvailabilityNote }}</p>
+                                    <p class="mt-3 text-[10px] font-medium text-slate-400 dark:text-slate-500 text-center italic opacity-80">{{ $catalogAvailabilityNote }}</p>
 
                                     <div class="mt-8 flex flex-col gap-3">
                                         @auth
                                             @if ($canRent)
                                                 <button
                                                     type="button"
-                                                    class="btn-primary w-full py-3.5 rounded-xl font-bold tracking-wide"
+                                                    class="mk-button-primary w-full py-3.5"
                                                     @click="quickOpen = true; quickQty = 1; quickStart = ''; quickEnd = '';"
                                                 >
                                                     {{ $catalogQuickOrderButton }}
                                                 </button>
                                             @else
-                                                <button type="button" disabled class="w-full py-3.5 rounded-xl bg-slate-100 text-slate-400 font-bold border border-slate-200 cursor-not-allowed">
+                                                <button type="button" disabled class="w-full py-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 font-bold border border-slate-200 dark:border-slate-800 cursor-not-allowed">
                                                     {{ $catalogOutOfStockButton }}
                                                 </button>
                                             @endif
@@ -323,12 +322,12 @@
                                                 <a
                                                     href="{{ route('login', ['reason' => 'cart']) }}"
                                                     @click.prevent="window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: 'login' }))"
-                                                    class="btn-primary w-full py-3.5 rounded-xl font-bold tracking-wide text-center"
+                                                    class="mk-button-primary w-full py-3.5 text-center"
                                                 >
                                                     {{ $catalogLoginToOrderButton }}
                                                 </a>
                                             @else
-                                                <button type="button" disabled class="w-full py-3.5 rounded-xl bg-slate-100 text-slate-400 font-bold border border-slate-200 cursor-not-allowed">
+                                                <button type="button" disabled class="w-full py-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 font-bold border border-slate-200 dark:border-slate-800 cursor-not-allowed">
                                                     {{ $catalogOutOfStockButton }}
                                                 </button>
                                             @endif
@@ -336,7 +335,7 @@
 
                                         <a
                                             href="{{ route('product.show', $item->slug) }}"
-                                            class="btn-secondary w-full py-3 rounded-xl font-bold tracking-wide text-center"
+                                            class="mk-button-secondary w-full py-3 text-center"
                                         >
                                             {{ __('app.actions.view_detail') }}
                                         </a>
