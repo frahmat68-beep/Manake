@@ -216,7 +216,7 @@ html[data-theme-resolved='dark'] .glass-sm {
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.glass-lg {
+body:not(.landing-shell) .glass-lg {
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     background: var(--surface) !important;
@@ -244,12 +244,12 @@ html[data-theme-resolved='dark'] .glass-sm {
 }
 
 /* Spotlight Hover Effect */
-.spotlight-shell {
+body:not(.landing-shell) .spotlight-shell {
     position: relative;
     overflow: hidden;
 }
 
-.spotlight-shell::before {
+body:not(.landing-shell) .spotlight-shell::before {
     content: '';
     position: absolute;
     inset: -1px;
@@ -264,7 +264,7 @@ html[data-theme-resolved='dark'] .glass-sm {
     z-index: 1;
 }
 
-.spotlight-shell:hover::before {
+body:not(.landing-shell) .spotlight-shell:hover::before {
     opacity: 1;
 }
 
@@ -277,11 +277,11 @@ html[data-theme-resolved='dark'] .glass-sm {
     transform: scale(1.04);
 }
 
-.noise-overlay {
+body:not(.landing-shell) .noise-overlay {
     position: relative;
 }
 
-.noise-overlay::before {
+body:not(.landing-shell) .noise-overlay::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -291,7 +291,7 @@ html[data-theme-resolved='dark'] .glass-sm {
     background-image: var(--noise-url);
 }
 
-.premium-card {
+body:not(.landing-shell) .premium-card {
     position: relative;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -300,7 +300,7 @@ html[data-theme-resolved='dark'] .glass-sm {
         var(--shadow-soft);
 }
 
-html[data-theme-resolved='dark'] .premium-card {
+html[data-theme-resolved='dark'] body:not(.landing-shell) .premium-card {
     box-shadow: 
         inset 0 1px 0 rgba(255, 255, 255, 0.05),
         var(--shadow-soft);
@@ -972,7 +972,7 @@ html[data-theme-resolved='dark'] body:not(.landing-shell) .rounded-full.bg-slate
     overscroll-behavior: contain;
 }
 
-.spotlight-shell {
+body:not(.landing-shell) .spotlight-shell {
     position: relative;
     overflow: hidden;
     border: 1px solid color-mix(in oklab, var(--primary) 18%, var(--border));
@@ -982,7 +982,7 @@ html[data-theme-resolved='dark'] body:not(.landing-shell) .rounded-full.bg-slate
         var(--gradient-surface);
 }
 
-.spotlight-shell::before {
+body:not(.landing-shell) .spotlight-shell::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -994,7 +994,7 @@ html[data-theme-resolved='dark'] body:not(.landing-shell) .rounded-full.bg-slate
     pointer-events: none;
 }
 
-.spotlight-shell > * {
+body:not(.landing-shell) .spotlight-shell > * {
     position: relative;
     z-index: 1;
 }
@@ -1140,7 +1140,7 @@ html[data-theme-resolved='dark'] body:not(.landing-shell) .rounded-full.bg-slate
 }
 
 html[data-theme-resolved='dark'] .command-surface,
-html[data-theme-resolved='dark'] .spotlight-shell,
+html[data-theme-resolved='dark'] body:not(.landing-shell) .spotlight-shell,
 html[data-theme-resolved='dark'] .surface-band,
 html[data-theme-resolved='dark'] .catalog-hero,
 html[data-theme-resolved='dark'] .media-stage,
