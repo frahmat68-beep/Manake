@@ -105,47 +105,13 @@
             }
         }
 
-        .availability-surface {
-            animation: availabilitySurfaceIn 0.28s ease-out both;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-            backdrop-filter: blur(18px);
-        }
-
-        .availability-surface:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 26px -20px rgba(15, 23, 42, 0.42);
-            border-color: color-mix(in oklab, var(--primary) 18%, var(--border));
-        }
-
-        .availability-hero {
-            background:
-                radial-gradient(280px 160px at 8% 0%, color-mix(in oklab, var(--primary) 11%, transparent), transparent 72%),
-                radial-gradient(320px 180px at 100% 0%, color-mix(in oklab, var(--primary) 9%, transparent), transparent 76%),
-                var(--gradient-surface);
-        }
-
-        .availability-toolbar {
-            background: color-mix(in oklab, var(--surface) 94%, white);
-        }
-
-        html[data-theme-resolved='dark'] .availability-hero {
-            background:
-                radial-gradient(260px 150px at 8% 0%, color-mix(in oklab, var(--primary) 10%, transparent), transparent 72%),
-                radial-gradient(300px 170px at 100% 0%, color-mix(in oklab, var(--primary) 8%, transparent), transparent 76%),
-                linear-gradient(180deg, rgba(20, 31, 48, 0.96) 0%, rgba(25, 37, 57, 0.98) 100%);
-        }
-
-        html[data-theme-resolved='dark'] .availability-toolbar {
-            background: color-mix(in oklab, var(--surface) 90%, #0d1524);
-        }
-
         .board-input-group {
             position: relative;
             display: flex;
             align-items: center;
         }
 
-        .board-input-group i {
+        .board-input-group svg {
             position: absolute;
             left: 1rem;
             color: var(--text-soft);
@@ -153,45 +119,14 @@
             font-size: 0.875rem;
         }
 
-        .premium-input {
-            width: 100%;
-            height: 3rem;
-            padding-left: 2.75rem;
-            padding-right: 1rem;
-            border-radius: 1rem;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            appearance: none;
-            -webkit-appearance: none;
-        }
-
-        .premium-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 15%, transparent);
-        }
-
-        .premium-input::-webkit-calendar-picker-indicator {
-            cursor: pointer;
-            filter: var(--theme-picker-filter);
-        }
-
-        html[data-theme-resolved='dark'] {
-            --theme-picker-filter: invert(0.8);
-        }
-
         .board-cell {
-            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+            transition: all 0.2s ease;
             user-select: none;
         }
 
-        .board-cell:hover {
+        .board-cell:hover:not(:disabled) {
             transform: translateY(-1px);
-            box-shadow: 0 9px 20px -18px rgba(15, 23, 42, 0.48);
+            border-color: var(--primary-soft);
         }
 
         @keyframes boardRangePulse {
@@ -241,65 +176,14 @@
         }
 
         .board-item {
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            transition: all 0.2s ease;
         }
 
         .board-item:hover {
             transform: translateX(2px);
-            box-shadow: 0 10px 22px -19px rgba(15, 23, 42, 0.4);
-        }
-
-        .availability-pill {
-            display: inline-flex;
-            min-height: 2.25rem;
-            min-width: 7.25rem;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            padding: 0.5rem 1rem;
-            text-align: center;
-            font-size: 11px;
-            font-weight: 700;
-            line-height: 1;
-            white-space: nowrap;
-            letter-spacing: -0.01em;
-        }
-
-        .availability-pill--success {
-            background: color-mix(in oklab, var(--success) 18%, var(--surface));
-            color: color-mix(in oklab, var(--success) 84%, var(--text));
-            border: 1px solid color-mix(in oklab, var(--success) 20%, var(--border));
-        }
-
-        .availability-pill--danger {
-            background: color-mix(in oklab, var(--danger) 16%, var(--surface));
-            color: color-mix(in oklab, var(--danger) 86%, var(--text));
-            border: 1px solid color-mix(in oklab, var(--danger) 18%, var(--border));
-        }
-
-        .availability-pill--info {
-            background: color-mix(in oklab, var(--primary-soft) 78%, var(--surface));
-            color: var(--primary-strong);
-            border: 1px solid color-mix(in oklab, var(--primary) 18%, var(--border));
-        }
-
-        html[data-theme-resolved='dark'] .availability-pill--success {
-            background: color-mix(in oklab, var(--success) 24%, var(--surface));
-            color: color-mix(in oklab, var(--success) 52%, white 48%);
-        }
-
-        html[data-theme-resolved='dark'] .availability-pill--danger {
-            background: color-mix(in oklab, var(--danger) 24%, var(--surface));
-            color: color-mix(in oklab, var(--danger) 48%, white 52%);
-        }
-
-        html[data-theme-resolved='dark'] .availability-pill--info {
-            background: color-mix(in oklab, var(--primary-soft) 62%, var(--surface-2));
-            color: color-mix(in oklab, var(--primary) 42%, white 58%);
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .availability-surface,
             .board-cell,
             .board-item {
                 animation: none;
@@ -598,7 +482,7 @@
         x-on:keydown.escape.window="handleEscape()"
         x-on:pointerup.window="cancelDanglingSelection()"
     >
-        <section class="availability-surface availability-hero relative overflow-hidden rounded-3xl border border-slate-200 px-6 py-6 shadow-sm sm:px-7 sm:py-7">
+        <section class="mk-card p-6 sm:p-8 animate-fade-up">
             <div class="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                     <h1 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">{{ $availabilityTitle }}</h1>
@@ -607,7 +491,7 @@
                     </p>
                 </div>
 
-                <form method="GET" action="{{ route('availability.board') }}" class="availability-surface availability-toolbar command-surface grid w-full gap-3 rounded-2xl p-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] lg:max-w-3xl">
+                <form method="GET" action="{{ route('availability.board') }}" class="grid w-full gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] lg:max-w-3xl">
                     <div class="board-input-group sm:col-span-3 lg:col-span-1">
                         <svg class="absolute left-4 h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input
@@ -615,7 +499,7 @@
                             name="q"
                             value="{{ $search }}"
                             placeholder="{{ $availabilitySearchPlaceholder }}"
-                            class="premium-input"
+                            class="mk-input pl-11 py-3 text-sm"
                         >
                     </div>
                     <div class="board-input-group">
@@ -626,7 +510,7 @@
                             value="{{ $monthValue }}"
                             min="{{ $windowStartMonthValue }}"
                             max="{{ $windowEndMonthValue }}"
-                            class="premium-input"
+                            class="mk-input pl-11 py-3 text-sm"
                         >
                     </div>
                     <div class="board-input-group">
@@ -637,17 +521,17 @@
                             value="{{ $selectedDateValue }}"
                             min="{{ $windowStartValue }}"
                             max="{{ $windowEndValue }}"
-                            class="premium-input"
+                            class="mk-input pl-11 py-3 text-sm"
                         >
                     </div>
                     <div class="sm:col-span-3 flex flex-wrap items-center justify-between gap-3 pt-1">
                         <div class="flex gap-2">
-                             <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-slate-800 hover:shadow-lg focus:ring-4 focus:ring-slate-200 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">
+                             <button type="submit" class="mk-button-primary py-2.5 px-5 text-sm">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                                 {{ $availabilityShowButton }}
                             </button>
                             @if ($search !== '')
-                                <a href="{{ route('availability.board', ['month' => $monthValue, 'date' => $selectedDateValue]) }}" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 hover:shadow-md focus:ring-4 focus:ring-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                <a href="{{ route('availability.board', ['month' => $monthValue, 'date' => $selectedDateValue]) }}" class="mk-button-secondary py-2.5 px-5 text-sm">
                                     {{ $availabilityResetButton }}
                                 </a>
                             @endif
@@ -661,19 +545,19 @@
         </section>
 
         <section class="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-            <article class="availability-surface surface-band overflow-hidden rounded-3xl border border-slate-200 shadow-sm">
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-50/40 px-5 py-4">
+            <article class="mk-card overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-slate-50 px-5 py-4">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{{ $availabilityCalendarTitle }}</p>
                         <h2 class="mt-1 text-xl font-semibold text-slate-900">{{ $monthLabel }}</h2>
                         <p class="mt-1 text-[11px] text-slate-500 sm:hidden">{{ $availabilityDragHint }}</p>
                     </div>
-                    <div class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-2 py-1.5">
+                    <div class="inline-flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-2 py-1">
                         @if ($canGoPrev)
                             <a
                                 href="{{ route('availability.board', ['month' => $prevMonth, 'date' => $monthDate->copy()->subMonth()->startOfMonth()->toDateString(), 'q' => $search ?: null]) }}"
                                 data-ui-icon-button
-                                class="inline-flex h-9 w-9 items-center justify-center rounded-lg"
+                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold transition-all"
                                 aria-label="Bulan sebelumnya"
                             >
                                 ←
@@ -686,7 +570,7 @@
                             <a
                                 href="{{ route('availability.board', ['month' => $nextMonth, 'date' => $monthDate->copy()->addMonth()->startOfMonth()->toDateString(), 'q' => $search ?: null]) }}"
                                 data-ui-icon-button
-                                class="inline-flex h-9 w-9 items-center justify-center rounded-lg"
+                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold transition-all"
                                 aria-label="Bulan berikutnya"
                             >
                                 →
@@ -764,7 +648,7 @@
             </article>
 
             <div class="space-y-4">
-                <article class="availability-surface command-surface rounded-3xl border border-slate-200 p-5 shadow-sm">
+                <article class="mk-card p-6">
                     <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{{ $availabilitySelectedTitle }}</p>
                     <h2 class="mt-1 text-2xl font-semibold text-slate-900">{{ $selectedDateLabel }}</h2>
 
@@ -788,10 +672,10 @@
                     </div>
                 </article>
 
-                <article class="availability-surface surface-band rounded-3xl border border-slate-200 p-5 shadow-sm">
+                <article class="mk-card p-6">
                     <div class="flex items-center justify-between gap-2">
                         <h3 class="text-base font-semibold text-slate-900">{{ $availabilityReadyTitle }}</h3>
-                        <span class="availability-pill availability-pill--success shrink-0">
+                        <span class="mk-badge mk-badge-success shrink-0">
                             {{ $selectedFreeRows->count() }} {{ $availabilityCountEmptySuffix }}
                         </span>
                     </div>
@@ -800,7 +684,7 @@
                             <article class="board-item rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
                                 <div class="flex items-center justify-between gap-3">
                                     <p class="text-sm font-semibold text-slate-900">{{ $row['name'] }}</p>
-                                    <span class="availability-pill availability-pill--success shrink-0">
+                                    <span class="mk-badge mk-badge-success shrink-0">
                                         {{ strtr($availabilityMinLeftTemplate, [':qty' => (string) $row['selected_available']]) }}
                                     </span>
                                 </div>
@@ -817,10 +701,10 @@
         </section>
 
         <section class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-            <article class="availability-surface surface-band rounded-3xl border border-slate-200 p-5 shadow-sm">
+            <article class="mk-card p-6">
                 <div class="flex items-center justify-between gap-3">
                     <h2 class="text-lg font-semibold text-slate-900">{{ $availabilityBusyTitle }} di {{ $selectedDateLabel }}</h2>
-                    <span class="availability-pill availability-pill--danger shrink-0">{{ $selectedBusyRows->count() }} {{ $availabilityCountToolsSuffix }}</span>
+                    <span class="mk-badge mk-badge-danger shrink-0">{{ $selectedBusyRows->count() }} {{ $availabilityCountToolsSuffix }}</span>
                 </div>
                 <div class="mt-3 space-y-2">
                     @forelse ($selectedBusyRows->take(10) as $row)
@@ -841,10 +725,10 @@
                 </div>
             </article>
 
-            <article class="availability-surface surface-band rounded-3xl border border-slate-200 p-5 shadow-sm">
+            <article class="mk-card p-6">
                 <div class="flex items-center justify-between gap-3">
                     <h2 class="text-lg font-semibold text-slate-900">{{ $availabilityMonthlyTitle }}</h2>
-                    <span class="availability-pill availability-pill--info shrink-0">{{ $monthlySchedules->count() }} {{ $availabilityCountSchedulesSuffix }}</span>
+                    <span class="mk-badge mk-badge-info shrink-0">{{ $monthlySchedules->count() }} {{ $availabilityCountSchedulesSuffix }}</span>
                 </div>
                 <div class="mt-3 max-h-[29rem] space-y-2 overflow-y-auto pr-1">
                     @forelse ($monthlySchedules as $schedule)
@@ -880,8 +764,8 @@
         >
             <div class="absolute inset-0 bg-slate-950/55 backdrop-blur-[1px]"></div>
 
-            <div class="availability-surface surface-band relative z-10 w-full max-w-3xl max-h-[92vh] overflow-hidden rounded-2xl border border-slate-200 shadow-2xl sm:rounded-3xl">
-                <div class="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50/40 px-4 py-3 sm:px-5 sm:py-4">
+            <div class="mk-card relative z-10 w-full max-w-3xl max-h-[92vh] overflow-hidden">
+                <div class="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 sm:px-5 sm:py-4">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{{ $availabilityModalDateTitle }}</p>
                         <h2 class="mt-1 text-xl font-semibold text-slate-900" x-text="modalDateLabel"></h2>
@@ -950,8 +834,8 @@
         >
             <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-[1px]"></div>
 
-            <div class="availability-surface surface-band relative z-10 w-full max-w-4xl max-h-[92vh] overflow-hidden rounded-2xl border border-slate-200 shadow-2xl sm:rounded-3xl">
-                <div class="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50/40 px-4 py-3 sm:px-5 sm:py-4">
+            <div class="mk-card relative z-10 w-full max-w-4xl max-h-[92vh] overflow-hidden">
+                <div class="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 sm:px-5 sm:py-4">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{{ $availabilityRangeKicker }}</p>
                         <h2 class="mt-1 text-lg font-semibold text-slate-900">{{ $availabilityRangeTitle }}</h2>

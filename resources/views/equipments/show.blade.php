@@ -8,7 +8,7 @@
         ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
         : 'bg-amber-500/10 text-amber-600 border-amber-500/20';
     $imagePath = $equipment->image_path ?? $equipment->image;
-    $fallbackImage = 'https://images.unsplash.com/photo-1519183071298-a2962be96c68?auto=format&fit=crop&w=1200&q=80';
+    $fallbackImage = asset('MANAKE-FAV-M.png');
     $mainImage = site_media_url($imagePath) ?: $fallbackImage;
     $gallery = $mainImage ? [$mainImage] : [];
     $reservedUnits = (int) ($equipment->reserved_units ?? 0);
@@ -65,11 +65,11 @@
     <div class="bg-slate-50 min-h-screen">
         <section class="relative overflow-hidden pt-12 pb-8">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
-                <div class="glass-lg noise-overlay spotlight-shell rounded-[2.5rem] p-8 sm:p-10 border border-white/20 shadow-2xl animate-fade-up">
+                <div class="mk-card p-8 sm:p-10 animate-fade-up">
                     <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
                         <div class="max-w-3xl">
                             <div class="flex items-center gap-3 mb-4">
-                                <span class="glass-sm px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-blue-600 border border-blue-500/10">
+                                <span class="bg-blue-50 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-blue-600 border border-blue-100">
                                     {{ $equipment->category?->name ?? __('app.category.title') }}
                                 </span>
                                 <span class="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border {{ $statusClass }}">
@@ -83,7 +83,7 @@
                                 {{ __('app.product.meta') }}
                             </p>
                         </div>
-                        <a href="{{ route('catalog') }}" class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors bg-white/50 px-6 py-3 rounded-2xl border border-slate-200">
+                        <a href="{{ route('catalog') }}" class="mk-button-secondary py-3 px-6 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                             {{ __('app.actions.back_to_catalog') }}
                         </a>
@@ -105,12 +105,12 @@
                             }
                         }"
                         @mousemove="handleMouseMove"
-                        class="premium-card spotlight-shell noise-overlay rounded-[2.5rem] p-10 flex items-center justify-center bg-white/40 border border-white/20 shadow-2xl animate-fade-up"
+                        class="mk-card p-10 flex items-center justify-center animate-fade-up"
                     >
                         <img
                             src="{{ $mainImage }}"
                             alt="{{ $equipment->name }}"
-                            class="h-80 w-full object-contain sm:h-[450px] drop-shadow-2xl transition-transform duration-700 hover:scale-105"
+                            class="h-80 w-full object-contain sm:h-[450px] drop-shadow-xl transition-transform duration-700 hover:scale-[1.02]"
                             onerror="this.onerror=null;this.src='{{ $fallbackImage }}';"
                         >
                     </div>
@@ -118,11 +118,11 @@
                     @if (count($gallery) > 1)
                         <div class="grid grid-cols-4 gap-4 animate-fade-up" style="animation-delay: 100ms">
                             @foreach (array_slice($gallery, 1) as $image)
-                                <button class="premium-card noise-overlay rounded-2xl border border-white/20 bg-white/30 p-4 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group" type="button">
+                                <button class="mk-card p-4 hover:-translate-y-0.5 group" type="button">
                                     <img
                                         src="{{ $image }}"
                                         alt="Gallery {{ $equipment->name }}"
-                                        class="h-20 w-full object-contain transition-transform duration-500 group-hover:scale-110"
+                                        class="h-20 w-full object-contain transition-transform duration-500 group-hover:scale-105"
                                         onerror="this.onerror=null;this.src='{{ $fallbackImage }}';"
                                         loading="lazy"
                                     >
@@ -131,12 +131,12 @@
                         </div>
                     @endif
 
-                    <div class="premium-card noise-overlay rounded-[2.5rem] p-10 border border-white/20 bg-white/40 shadow-xl animate-fade-up" style="animation-delay: 200ms">
+                    <div class="mk-card p-10 animate-fade-up" style="animation-delay: 200ms">
                         <div class="flex items-center gap-4 mb-8">
                             <div class="h-12 w-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                             </div>
-                            <h3 class="text-2xl font-black tracking-tight text-slate-900">{{ __('app.product.specs') }}</h3>
+                            <h3 class="text-2xl font-bold tracking-tight text-slate-900">{{ __('app.product.specs') }}</h3>
                         </div>
 
                         @if ($specifications->isEmpty())
@@ -146,7 +146,7 @@
                         @else
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 @foreach ($specifications as $specification)
-                                    <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-white/50 transition-colors duration-300 border border-transparent hover:border-blue-100/50">
+                                    <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-50 transition-colors duration-300 border border-transparent hover:border-slate-100">
                                         <div class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50"></div>
                                         <span class="text-[15px] font-semibold text-slate-700 leading-relaxed">{{ $specification }}</span>
                                     </div>
@@ -159,35 +159,35 @@
                 <!-- Right Column: Pricing & Booking -->
                 <div class="space-y-8">
                     <!-- Pricing Card -->
-                    <div class="premium-card noise-overlay spotlight-shell rounded-[2.5rem] p-10 border border-white/20 bg-white/40 shadow-2xl animate-fade-up" style="animation-delay: 300ms">
+                    <div class="mk-card p-10 animate-fade-up" style="animation-delay: 300ms">
                         <div class="flex flex-col gap-6">
                             <div class="space-y-1">
-                                <p class="text-xs font-black uppercase tracking-[0.2em] text-blue-600/70">{{ __('app.product.price_per_day') }}</p>
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-600/70">{{ __('app.product.price_per_day') }}</p>
                                 <div class="flex items-baseline gap-2">
-                                    <span class="text-4xl font-black tracking-tighter text-slate-950">Rp {{ number_format($equipment->price_per_day, 0, ',', '.') }}</span>
+                                    <span class="text-4xl font-bold tracking-tighter text-slate-950">Rp {{ number_format($equipment->price_per_day, 0, ',', '.') }}</span>
                                     <span class="text-sm font-bold text-slate-400 uppercase tracking-widest">/ {{ __('app.product.per_day') }}</span>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-3 gap-4">
-                                <div class="bg-white/50 backdrop-blur-md rounded-2xl p-4 border border-white/60 text-center shadow-sm">
-                                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">{{ __('app.product.total_stock') }}</p>
-                                    <p class="mt-1 text-xl font-black text-slate-900">{{ $equipment->stock }}</p>
+                                <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 text-center">
+                                    <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400">{{ __('app.product.total_stock') }}</p>
+                                    <p class="mt-1 text-xl font-bold text-slate-900">{{ $equipment->stock }}</p>
                                 </div>
-                                <div class="bg-white/50 backdrop-blur-md rounded-2xl p-4 border border-white/60 text-center shadow-sm">
-                                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">{{ __('app.product.in_use') }}</p>
-                                    <p class="mt-1 text-xl font-black text-amber-600">{{ $reservedUnits }}</p>
+                                <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 text-center">
+                                    <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400">{{ __('app.product.in_use') }}</p>
+                                    <p class="mt-1 text-xl font-bold text-amber-600">{{ $reservedUnits }}</p>
                                 </div>
-                                <div class="bg-white/50 backdrop-blur-md rounded-2xl p-4 border border-white/60 text-center shadow-sm">
-                                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">{{ __('app.product.available_stock') }}</p>
-                                    <p class="mt-1 text-xl font-black {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}">{{ $availableUnits }}</p>
+                                <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 text-center">
+                                    <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400">{{ __('app.product.available_stock') }}</p>
+                                    <p class="mt-1 text-xl font-bold {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}">{{ $availableUnits }}</p>
                                 </div>
                             </div>
 
-                            <div class="bg-blue-50/50 rounded-3xl p-6 border border-blue-100/50">
+                            <div class="bg-blue-50/50 rounded-2xl p-6 border border-blue-100/50">
                                 <div class="flex items-center gap-3 mb-4">
                                     <div class="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></div>
-                                    <p class="text-[10px] font-black uppercase tracking-widest text-blue-600">{{ __('app.product.schedule_title') }}</p>
+                                    <p class="text-[10px] font-bold uppercase tracking-widest text-blue-600">{{ __('app.product.schedule_title') }}</p>
                                 </div>
                                 
                                 @if ($bookingRanges->isEmpty())
@@ -243,14 +243,14 @@
                         data-lock-dates="{{ $lockDates ? '1' : '0' }}"
                         data-locked-start="{{ $prefillStartDate }}"
                         data-locked-end="{{ $prefillEndDate }}"
-                        class="premium-card noise-overlay rounded-[2.5rem] p-10 border border-white/20 bg-white/40 shadow-2xl animate-fade-up" 
+                        class="mk-card p-10 animate-fade-up" 
                         style="animation-delay: 400ms"
                     >
-                        <h3 class="text-2xl font-black tracking-tight text-slate-900 mb-8">{{ __('app.product.rental_date') }}</h3>
+                        <h3 class="text-2xl font-bold tracking-tight text-slate-900 mb-8">{{ __('app.product.rental_date') }}</h3>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                             <div class="space-y-2">
-                                <label class="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">{{ __('app.product.start_date') }}</label>
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">{{ __('app.product.start_date') }}</label>
                                 <input
                                     id="start-date"
                                     type="date"
@@ -261,11 +261,11 @@
                                     value="{{ $prefillStartDate }}"
                                     required
                                     @readonly($lockDates)
-                                    class="w-full rounded-2xl border-slate-200 bg-slate-50/50 p-4 text-sm font-bold text-slate-900 focus:ring-4 ring-blue-500/10 transition-all duration-300 {{ $lockDates ? 'cursor-not-allowed bg-slate-100 text-slate-500 opacity-60' : '' }}"
+                                    class="mk-input {{ $lockDates ? 'cursor-not-allowed bg-slate-100 text-slate-500 opacity-60' : '' }}"
                                 >
                             </div>
                             <div class="space-y-2">
-                                <label class="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">{{ __('app.product.end_date') }}</label>
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">{{ __('app.product.end_date') }}</label>
                                 <input
                                     id="end-date"
                                     type="date"
@@ -276,7 +276,7 @@
                                     value="{{ $prefillEndDate }}"
                                     required
                                     @readonly($lockDates)
-                                    class="w-full rounded-2xl border-slate-200 bg-slate-50/50 p-4 text-sm font-bold text-slate-900 focus:ring-4 ring-blue-500/10 transition-all duration-300 {{ $lockDates ? 'cursor-not-allowed bg-slate-100 text-slate-500 opacity-60' : '' }}"
+                                    class="mk-input {{ $lockDates ? 'cursor-not-allowed bg-slate-100 text-slate-500 opacity-60' : '' }}"
                                 >
                             </div>
                         </div>
@@ -291,14 +291,14 @@
                         <div class="space-y-4 mb-8">
                             <div class="flex items-center justify-between rounded-2xl bg-white/50 px-6 py-4 text-sm border border-white/60">
                                 <span class="font-bold text-slate-500">{{ __('app.product.duration') }}</span>
-                                <span id="total-days" class="text-base font-black text-slate-950">-</span>
+                                <span id="total-days" class="text-base font-bold text-slate-950">-</span>
                             </div>
-                            <div class="flex items-center justify-between rounded-[1.5rem] bg-blue-600 px-6 py-5 text-sm text-white shadow-xl shadow-blue-600/20 relative overflow-hidden">
+                            <div class="flex items-center justify-between rounded-xl bg-blue-600 px-6 py-5 text-sm text-white relative overflow-hidden">
                                 <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50"></div>
                                 <span class="relative font-bold text-white/80">{{ __('app.product.estimate') }}</span>
-                                <span id="total-price" class="relative text-2xl font-black">Rp -</span>
+                                <span id="total-price" class="relative text-2xl font-bold">Rp -</span>
                             </div>
-                            <div id="availability-feedback" class="hidden rounded-2xl border-2 px-6 py-4 text-xs font-bold leading-relaxed whitespace-pre-line animate-fade-in"></div>
+                            <div id="availability-feedback" class="hidden rounded-xl border px-6 py-4 text-xs font-bold leading-relaxed whitespace-pre-line animate-fade-in"></div>
                         </div>
 
                         <div class="space-y-4">
@@ -307,12 +307,12 @@
                                     <a
                                         href="{{ route('login', ['reason' => 'cart']) }}"
                                         @click.prevent="window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: 'login' }))"
-                                        class="btn-primary w-full py-4 rounded-2xl font-black tracking-widest uppercase text-xs text-center shadow-blue-600/30"
+                                        class="mk-button-primary w-full text-center"
                                     >
                                         {{ __('ui.actions.login_to_add') }}
                                     </a>
                                 @else
-                                    <button type="button" disabled class="w-full py-4 rounded-2xl bg-slate-100 text-slate-400 font-bold border border-slate-200 cursor-not-allowed">
+                                    <button type="button" disabled class="w-full py-4 rounded-xl bg-slate-100 text-slate-400 font-bold border border-slate-200 cursor-not-allowed">
                                         {{ __('app.product.out_of_stock') }}
                                     </button>
                                 @endif
@@ -330,7 +330,7 @@
                                     <input type="hidden" name="price" value="{{ $equipment->price_per_day }}">
                                     
                                     <div class="space-y-2">
-                                        <label class="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Kuantitas</label>
+                                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Kuantitas</label>
                                         <div class="relative flex items-center">
                                             <button type="button" @click="qty = Math.max(1, qty - 1)" class="absolute left-2 h-11 w-11 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all active:scale-90">-</button>
                                             <input
@@ -340,7 +340,7 @@
                                                 min="1"
                                                 :max="maxQty"
                                                 x-model="qty"
-                                                class="no-spinner w-full rounded-2xl border-slate-200 bg-slate-50/50 py-4 text-center text-base font-black text-slate-950 focus:ring-4 ring-blue-500/10 transition-all"
+                                                class="mk-input no-spinner text-center font-bold text-base"
                                                 required
                                             >
                                             <button type="button" @click="qty = Math.min(maxQty, qty + 1)" class="absolute right-2 h-11 w-11 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all active:scale-90">+</button>
@@ -350,7 +350,7 @@
                                     <button
                                         id="add-to-cart-button"
                                         type="submit"
-                                        class="btn-primary w-full py-4 rounded-2xl font-black tracking-widest uppercase text-xs shadow-blue-600/30 disabled:opacity-50 disabled:translate-y-0"
+                                        class="mk-button-primary w-full disabled:opacity-50 disabled:translate-y-0"
                                         @disabled(! $canRent)
                                     >
                                         {{ $canRent ? __('ui.actions.add_to_cart') : __('app.product.out_of_stock') }}
