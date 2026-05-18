@@ -78,7 +78,7 @@
 
     <div
         x-data="catalogIdleHamburger({
-            enabled: {{ $idleHamburgerEnabled ? 'true' : 'false' }},
+            enabled: false,
             delay: {{ (int) $idleHamburgerDelayMs }},
             step: {{ (int) $idleHamburgerStepMs }},
             total: {{ (int) $categories->count() }},
@@ -90,23 +90,23 @@
         @touchstart.passive="stopGuide"
         class="bg-slate-50 min-h-screen"
     >
-        <section class="relative overflow-hidden pt-12 pb-8">
+        <section class="relative overflow-hidden pt-6 pb-4">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
-                <div class="mk-card p-8 sm:p-10 animate-fade-up">
+                <div class="mk-card p-6 sm:p-8">
                     <div class="flex flex-col gap-3">
                         <div class="max-w-3xl">
                             <p class="section-kicker font-bold tracking-widest uppercase text-blue-600/80">{{ __('ui.nav.catalog') }}</p>
-                            <h1 class="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl leading-tight">
+                            <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl leading-tight">
                                 {{ $catalogTitle }}
                             </h1>
-                            <p class="mt-4 text-base text-slate-600 dark:text-slate-400 sm:text-lg max-w-2xl leading-relaxed">
+                            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 sm:text-base max-w-2xl leading-relaxed">
                                 {{ $catalogSubtitle }}
                             </p>
                         </div>
                     </div>
 
                     <!-- Modern Search Bar -->
-                    <div class="max-w-2xl mt-8">
+                    <div class="max-w-2xl mt-6">
                         <form action="{{ route('catalog') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
                             <div class="relative flex-1">
                                 <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
@@ -121,19 +121,19 @@
                         </form>
                     </div>
 
-                    <div class="mt-10 pt-8 border-t border-slate-200/50 dark:border-slate-800/50">
-                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ $categoryLabel }}</p>
+                    <div class="mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
+                        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ $categoryLabel }}</p>
                             @if ($search !== '')
                                 <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="btn-secondary rounded-xl px-4 py-2 text-xs font-bold transition">
                                     {{ $catalogResetSearchLabel }}
                                 </a>
                             @endif
                         </div>
-                        <div class="mt-5 flex flex-wrap gap-3">
+                        <div class="mt-4 flex flex-wrap sm:flex-nowrap overflow-x-auto gap-3 pb-2 scrollbar-none">
                             <a
                                 href="{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}"
-                                class="rounded-full border px-6 py-2 text-xs font-bold tracking-tight transition-all duration-300 {{ $activeCategorySlug === '' ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400' }}"
+                                class="rounded-full border px-5 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === '' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400' }}"
                             >
                                 {{ $catalogAllCategoriesLabel }}
                             </a>
@@ -146,23 +146,9 @@
                                 @endphp
                                 <a
                                     href="{{ route('catalog', $categoryParams) }}"
-                                    class="relative rounded-full border px-6 py-2 text-xs font-bold tracking-tight transition-all duration-300 {{ $activeCategorySlug === $category->slug ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400' }}"
-                                    :class="showGuide && activeGuideIndex === {{ $loop->iteration }} ? 'pr-12 ring-4 ring-blue-500/10 border-blue-400' : ''"
+                                    class="relative rounded-full border px-5 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === $category->slug ? 'bg-blue-600 text-white border-blue-600' : 'bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400' }}"
                                 >
                                     {{ $category->name }}
-                                    <span
-                                        x-cloak
-                                        x-show="showGuide && activeGuideIndex === {{ $loop->iteration }}"
-                                        x-transition.opacity.duration.300ms
-                                        class="idle-hamburger-indicator pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-blue-500"
-                                        aria-hidden="true"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                                            <line x1="5" y1="7" x2="19" y2="7"></line>
-                                            <line x1="8" y1="12" x2="16" y2="12"></line>
-                                            <line x1="10" y1="17" x2="14" y2="17"></line>
-                                        </svg>
-                                    </span>
                                 </a>
                             @endforeach
                         </div>
@@ -248,70 +234,56 @@
                                         $el.style.setProperty('--y', (e.clientY - rect.top) + 'px');
                                     }
                                 }"
-                                @mousemove="handleMouseMove"
                                 @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')"
-                                class="mk-card group flex h-full flex-col overflow-hidden cursor-pointer animate-fade-up"
-                                style="animation-delay: {{ $loop->index * 50 }}ms"
+                                class="mk-card group flex h-full flex-col overflow-hidden cursor-pointer"
                             >
-                                <div class="relative aspect-[4/3] overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 p-6 flex items-center justify-center border-b border-slate-100 dark:border-slate-800/60">
-                                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                                <div class="relative aspect-[4/3] overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 p-5 flex items-center justify-center border-b border-slate-100 dark:border-slate-800/60">
                                     <img
                                         src="{{ $image }}"
                                         alt="{{ $item->name }}"
-                                        class="h-full w-full object-contain transition-all duration-700 group-hover:scale-105 drop-shadow-xl"
+                                        class="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02] drop-shadow-md"
                                         onerror="this.onerror=null;this.src='{{ $catalogFallbackImage }}';"
                                         loading="{{ $prioritizeImage ? 'eager' : 'lazy' }}"
                                         fetchpriority="{{ $prioritizeImage ? 'high' : 'auto' }}"
                                         decoding="async"
                                     >
                                     <div class="absolute inset-x-4 top-4 flex items-center justify-between pointer-events-none">
-                                        <span class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 border border-blue-500/10">
+                                        <span class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400 border border-blue-500/10">
                                             {{ $item->category?->name ?? __('app.category.title') }}
                                         </span>
-                                        <span class="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border {{ $statusClass }}">
-                                            {{ $statusLabel }}
+                                        <span class="mk-badge {{ $availableUnits > 0 ? 'mk-badge-success' : 'mk-badge-danger' }}">
+                                            {{ $availableUnits > 0 ? __('app.status.ready') : __('app.status.rented') }}
                                         </span>
                                     </div>
                                 </div>
 
-                                <div class="flex flex-1 flex-col p-7">
-                                    <h3 class="text-xl font-bold leading-tight text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 min-h-[3.5rem]">{{ $item->name }}</h3>
+                                <div class="flex flex-1 flex-col p-6">
+                                    <h3 class="text-lg font-bold leading-snug text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 min-h-[2.5rem]">{{ $item->name }}</h3>
                                     
-                                    <div class="mt-4 flex items-baseline gap-2">
-                                        <p class="text-2xl font-bold tracking-tight text-slate-950 dark:text-slate-50">
-                                            {{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}
-                                        </p>
-                                        <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">/ {{ __('app.product.per_day') }}</span>
+                                    <div class="mt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 pt-3">
+                                        <div class="flex items-baseline gap-1">
+                                            <p class="text-xl font-extrabold tracking-tight text-slate-950 dark:text-slate-50">
+                                                {{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}
+                                            </p>
+                                            <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">/ {{ __('app.product.per_day') }}</span>
+                                        </div>
+                                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                                            Tersedia: <span class="font-bold text-slate-800 dark:text-slate-200">{{ $availableUnits }} unit</span>
+                                        </span>
                                     </div>
 
-                                    <div class="mt-6 grid grid-cols-3 gap-3">
-                                        <div class="bg-slate-50 dark:bg-slate-900/40 rounded-xl p-3 border border-slate-100 dark:border-slate-800/60 text-center">
-                                            <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">{{ $catalogStockLabel }}</p>
-                                            <p class="mt-1 text-base font-bold text-slate-900 dark:text-slate-100">{{ $item->stock }}</p>
-                                        </div>
-                                        <div class="bg-slate-50 dark:bg-slate-900/40 rounded-xl p-3 border border-slate-100 dark:border-slate-800/60 text-center">
-                                            <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">{{ $catalogInUseLabel }}</p>
-                                            <p class="mt-1 text-base font-bold text-amber-600 dark:text-amber-500">{{ $reservedUnits }}</p>
-                                        </div>
-                                        <div class="bg-slate-50 dark:bg-slate-900/40 rounded-xl p-3 border border-slate-100 dark:border-slate-800/60 text-center">
-                                            <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">{{ $catalogAvailableLabel }}</p>
-                                            <p class="mt-1 text-base font-bold {{ $availableUnits > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">{{ $availableUnits }}</p>
-                                        </div>
-                                    </div>
-                                    <p class="mt-3 text-[10px] font-medium text-slate-400 dark:text-slate-500 text-center italic opacity-80">{{ $catalogAvailabilityNote }}</p>
-
-                                    <div class="mt-8 flex flex-col gap-3">
+                                    <div class="mt-6 flex flex-col gap-2">
                                         @auth
                                             @if ($canRent)
                                                 <button
                                                     type="button"
-                                                    class="mk-button-primary w-full py-3.5"
+                                                    class="mk-button-primary w-full py-3"
                                                     @click="quickOpen = true; quickQty = 1; quickStart = ''; quickEnd = '';"
                                                 >
                                                     {{ $catalogQuickOrderButton }}
                                                 </button>
                                             @else
-                                                <button type="button" disabled class="w-full py-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 font-bold border border-slate-200 dark:border-slate-800 cursor-not-allowed">
+                                                <button type="button" disabled class="w-full py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 font-bold border border-slate-200 dark:border-slate-800 cursor-not-allowed">
                                                     {{ $catalogOutOfStockButton }}
                                                 </button>
                                             @endif
@@ -322,12 +294,12 @@
                                                 <a
                                                     href="{{ route('login', ['reason' => 'cart']) }}"
                                                     @click.prevent="window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: 'login' }))"
-                                                    class="mk-button-primary w-full py-3.5 text-center"
+                                                    class="mk-button-primary w-full py-3 text-center"
                                                 >
                                                     {{ $catalogLoginToOrderButton }}
                                                 </a>
                                             @else
-                                                <button type="button" disabled class="w-full py-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 font-bold border border-slate-200 dark:border-slate-800 cursor-not-allowed">
+                                                <button type="button" disabled class="w-full py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 font-bold border border-slate-200 dark:border-slate-800 cursor-not-allowed">
                                                     {{ $catalogOutOfStockButton }}
                                                 </button>
                                             @endif
@@ -335,7 +307,7 @@
 
                                         <a
                                             href="{{ route('product.show', $item->slug) }}"
-                                            class="mk-button-secondary w-full py-3 text-center"
+                                            class="mk-button-secondary w-full py-2.5 text-center"
                                         >
                                             {{ __('app.actions.view_detail') }}
                                         </a>
