@@ -1,0 +1,12 @@
+> build
+> vite build && node tools/scripts/vercel-sync-dist.mjs && node tools/scripts/vercel-sync-storage.mjs
+
+vite v7.3.1 building client environment for production...
+transforming (1) resources/js/app.jstransforming (3) resources/css/app.csstransforming (23) node_modules/axios/lib/cancel/CanceledError.js✓ 55 modules transformed.
+rendering chunks (1)...rendering chunks (2)...rendering chunks (3)...computing gzip size (0)...computing gzip size (1)...computing gzip size (2)...computing gzip size (3)...computing gzip size (4)...public/build/manifest.json                0.53 kB │ gzip:  0.20 kB
+public/build/assets/theme-xrSB6bhG.css   69.70 kB │ gzip: 11.32 kB
+public/build/assets/app-BMEnzwM6.css    123.84 kB │ gzip: 18.14 kB
+public/build/assets/app-CBbTb_k3.js      83.04 kB │ gzip: 30.86 kB
+✓ built in 2.63s
+[vercel-sync-dist] Synced /Users/kiki/Documents/Web Develop/Website Manake/public/build -> /Users/kiki/Documents/Web Develop/Website Manake/dist
+[vercel-sync-storage] Synced /Users/kiki/Documents/Web Develop/Website Manake/storage/app/public -> /Users/kiki/Documents/Web Develop/Website Manake/public/storage
