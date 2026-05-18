@@ -80,6 +80,7 @@ return [
         'settings_identity' => 'Site identity',
         'settings_search' => 'Search appearance',
     ],
+    'auth' => [
         'login_page_title' => 'Login | Manake.Id',
         'login_heading' => 'Sign in to continue rental and payment.',
         'login_subheading' => 'Use your account email and password.',

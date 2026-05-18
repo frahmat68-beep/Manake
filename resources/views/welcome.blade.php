@@ -115,101 +115,15 @@
     <section class="noise-overlay relative overflow-hidden">
         <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:py-16">
             <div class="glass-lg rounded-[3rem] p-6 sm:p-10 lg:p-12 shadow-2xl relative z-10">
-                <div class="grid items-start gap-4 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:gap-6">
-                    <div class="min-w-0">
-                        <h1 class="max-w-3xl text-3xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-[3.5rem] tracking-tight"
-                            x-data="{ 
-                                titles: @js($heroRotatingPhrases->values()), 
-                                active: 0,
-                                init() { if (this.titles.length > 1) { setInterval(() => { this.active = (this.active + 1) % this.titles.length }, 2400) } }
-                            }">
-                            @if ($heroTitle)
-                                <span class="text-shimmer">{{ $heroTitle }}</span>
-                            @else
-                                {{ __('Rental equipment') }}
-                                <span class="hero-rotator-word text-shimmer min-w-[240px] sm:min-w-[320px]">
-                                    <template x-for="(title, index) in titles" :key="index">
-                                        <span 
-                                            x-show="active === index"
-                                            x-transition:enter="transition ease-out duration-500 delay-200"
-                                            x-transition:enter-start="opacity-0 translate-y-4"
-                                            x-transition:enter-end="opacity-100 translate-y-0"
-                                            x-transition:leave="transition ease-in duration-300 absolute inset-0"
-                                            x-transition:leave-start="opacity-100 translate-y-0"
-                                            x-transition:leave-end="opacity-0 -translate-y-4"
-                                            class="block whitespace-nowrap"
-                                            x-text="title"
-                                        ></span>
-                                    </template>
-                                </span>
-                                {{ __('yang siap produksi.') }}
-                            @endif
-                        </h1>
-                        <p class="mt-6 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-400">
-                            {{ $heroSubtitle ?: __('app.landing.hero_desc') }}
-                        </p>
-
-                        <div class="mt-8 max-w-2xl rounded-[2rem] border border-slate-200/50 glass p-5 shadow-xl sm:p-6 hover-glow transition-all duration-500">
-                            <div class="flex items-center justify-between gap-3">
-                                <div>
-                                    <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">{{ __('app.landing.snapshot_title') }}</p>
-                                    <h2 class="mt-1 text-xl font-bold text-slate-900 dark:text-white">{{ __('Rental Snapshot Saat Ini') }}</h2>
-                                </div>
-                                <a href="{{ route('availability.board') }}" class="hover-scale inline-flex items-center gap-1.5 rounded-full bg-blue-50 dark:bg-blue-900/30 px-4 py-1.5 text-xs font-bold text-blue-600 dark:text-blue-300 transition hover:bg-blue-100 dark:hover:bg-blue-900/50">
-                                    {{ __('Lihat board') }}
-                                    <span aria-hidden="true">→</span>
-                                </a>
-                            </div>
-
-                            @if ($guestRentalSnapshot->isNotEmpty())
-                                <div class="mt-4 grid gap-3 sm:grid-cols-2">
-                                    @foreach ($guestRentalSnapshot->take(4) as $item)
-                                        <article class="premium-card rounded-2xl px-4 py-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                                            <div class="flex items-start justify-between gap-3 relative z-10">
-                                                <div class="min-w-0">
-                                                    <p class="truncate text-sm font-bold text-slate-900 dark:text-white">{{ $item['name'] }}</p>
-                                                    <p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
-                                                        {{ $formatLandingDate($item['start_date'] ?? null) }}
-                                                        —
-                                                        {{ $formatLandingDate($item['end_date'] ?? null) }}
-                                                    </p>
-                                                </div>
-                                                <span class="shrink-0 rounded-full bg-blue-100 dark:bg-blue-900/50 px-2.5 py-1 text-xs font-bold text-blue-700 dark:text-blue-300">
-                                                    x{{ max((int) ($item['qty'] ?? 1), 1) }}
-                                                </span>
-                                            </div>
-                                        </article>
-                                    @endforeach
-                                </div>
-                            @else
-                                <div class="mt-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-4 text-sm leading-relaxed text-slate-500">
-                                    {{ __('Belum ada snapshot rental aktif. Cek availability board untuk melihat alat yang sedang dipakai dan unit yang masih siap disewa.') }}
-                                </div>
-                            @endif
-                        </div>
-
-                        @if ($isLoggedIn && $damageAlertOrder)
-                            <a href="{{ route('account.orders.show', $damageAlertOrder) }}" class="mt-4 block rounded-2xl border-2 border-rose-300 bg-rose-50 p-4 shadow-sm transition hover:border-rose-400">
-                                <div class="flex flex-wrap items-start justify-between gap-3">
-                                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">{{ __('app.landing.damage_alert_title') }}</p>
-                                    <span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-semibold text-rose-700">{{ __('app.landing.damage_alert_unpaid') }}</span>
-                                </div>
-                                <p class="mt-1 text-sm font-semibold text-rose-800">{{ __('app.landing.damage_alert_status') }}: {{ $damageStatusLabel }} • {{ __('app.landing.damage_alert_fee') }} {{ 'Rp ' . number_format($damageFeeAmount, 0, ',', '.') }}</p>
-                                <p class="mt-1 text-xs text-rose-700">{{ __('app.landing.damage_alert_payment_note') }}</p>
-                                @if (!empty($damageAlertOrder->additional_fee_note))
-                                    <p class="mt-2 rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs text-rose-700">{{ $damageAlertOrder->additional_fee_note }}</p>
-                                @endif
-                            </a>
-                        @endif
-                    </div>
-
-                    <div class="min-w-0 w-full lg:max-w-[43rem] lg:justify-self-end">
+                <div class="grid items-start gap-6 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12">
+                    <!-- Carousel (Left on Desktop, Bottom on Mobile) -->
+                    <div class="min-w-0 w-full lg:max-w-[43rem] lg:justify-self-end order-2 lg:order-1">
                         @if ($heroImage)
                             <div class="media-stage mb-3 overflow-hidden rounded-[1.75rem] p-2 shadow-sm">
                                 <img src="{{ $heroImage }}" alt="{{ $heroImageAlt }}" class="h-36 w-full rounded-[1.2rem] object-cover sm:h-52 lg:h-56">
                             </div>
                         @endif
-                        <div class="card w-full overflow-hidden rounded-[2.5rem] shadow-2xl border border-slate-200/50 glass-lg hover-glow transition-all duration-500">
+                        <div class="card w-full overflow-hidden rounded-[2.5rem] shadow-2xl border border-slate-200/50 dark:border-slate-800/50 glass-lg hover-glow transition-all duration-500">
                             <div class="border-b border-white/10 bg-gradient-to-r from-blue-700 to-blue-500 px-6 py-5 text-white relative overflow-hidden">
                                 <div class="absolute inset-0 bg-blue-600 opacity-20 noise-overlay"></div>
                                 <p class="relative z-10 text-xs font-bold uppercase tracking-[0.2em]">{{ $readyPanelTitle }}</p>
@@ -224,27 +138,43 @@
                                             $imagePath = data_get($product, 'image_path') ?? data_get($product, 'image');
                                             $image = site_media_url($imagePath) ?: $productFallbackImage;
                                             $price = data_get($product, 'price_per_day', data_get($product, 'price', 0));
+                                            $stock = data_get($product, 'stock', 0);
                                         @endphp
                                         <div class="swiper-slide">
-                                            <article class="surface-band flex h-full flex-col overflow-hidden rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                                                <div class="media-stage flex h-48 w-full items-center justify-center p-4 sm:h-60 lg:h-64 bg-slate-50/50">
-                                                    <img src="{{ $image }}" alt="{{ $name }}" class="h-full w-full object-contain hover-scale transition-transform duration-500" onerror="this.onerror=null;this.src='{{ $productFallbackImage }}';">
+                                            <a href="{{ route('product.show', $slug) }}" class="group block surface-band flex h-full flex-col overflow-hidden rounded-[2rem] border border-slate-200/60 dark:border-slate-800 bg-white/70 dark:bg-slate-900/50 shadow-sm transition-all duration-300 hover:border-blue-400/50 hover:shadow-[0_20px_45px_-12px_rgba(37,99,235,0.12)] hover:-translate-y-1.5">
+                                                <div class="media-stage relative flex h-48 w-full items-center justify-center p-6 bg-slate-50/50 dark:bg-slate-950/20 overflow-hidden">
+                                                    <div class="absolute inset-0 bg-gradient-to-tr from-blue-50/0 to-blue-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                                    <img src="{{ $image }}" alt="{{ $name }}" class="relative z-10 h-full w-full object-contain transform group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null;this.src='{{ $productFallbackImage }}';">
                                                 </div>
-                                                <div class="p-6">
-                                                    <div class="flex items-center justify-between gap-3">
-                                                        <p class="text-base font-bold text-slate-900 line-clamp-2">{{ $name }}</p>
-                                                        <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">{{ __('app.status.ready') }}</span>
+                                                <div class="flex flex-col flex-1 p-5 sm:p-6">
+                                                    <div class="flex items-start justify-between gap-3">
+                                                        <h3 class="text-base font-bold text-slate-900 dark:text-white line-clamp-2 tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{{ $name }}</h3>
                                                     </div>
-                                                    <p class="mt-3 text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('app.landing.start_from') }}</p>
-                                                    <p class="text-xl font-bold text-blue-600">Rp {{ number_format($price, 0, ',', '.') }}<span class="text-xs font-normal text-slate-400 ml-1">/{{ __('day') }}</span></p>
-                                                    <a href="{{ route('product.show', $slug) }}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-blue-600 hover:text-blue-700 transition-all hover:translate-x-1">
-                                                        {{ __('app.actions.view_detail') }} 
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                                        </svg>
-                                                    </a>
+                                                    <div class="mt-2.5 flex flex-wrap items-center gap-2">
+                                                        <span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950/40 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
+                                                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                                            Available
+                                                        </span>
+                                                        <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full">
+                                                            {{ $stock }} unit tersedia
+                                                        </span>
+                                                    </div>
+                                                    <div class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800 flex items-end justify-between">
+                                                        <div>
+                                                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ __('app.landing.start_from') }}</p>
+                                                            <p class="mt-0.5 text-lg font-extrabold text-slate-900 dark:text-white">
+                                                                Rp {{ number_format($price, 0, ',', '.') }}
+                                                                <span class="text-xs font-medium text-slate-400 dark:text-slate-500">/{{ __('day') }}</span>
+                                                            </p>
+                                                        </div>
+                                                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                                            </svg>
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                            </article>
+                                            </a>
                                         </div>
                                     @empty
                                         <div class="swiper-slide">
@@ -267,6 +197,96 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Text + Headline + CTA (Right on Desktop, Top on Mobile) -->
+                    <div class="min-w-0 order-1 lg:order-2">
+                        <h1 class="max-w-3xl text-3xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-[3.5rem] tracking-tight"
+                            x-data="{ 
+                                titles: @js($heroRotatingPhrases->values()), 
+                                active: 0,
+                                init() { if (this.titles.length > 1) { setInterval(() => { this.active = (this.active + 1) % this.titles.length }, 2400) } }
+                            }">
+                            @if ($heroTitle)
+                                <span class="text-shimmer">{{ $heroTitle }}</span>
+                            @else
+                                {{ __('Rental equipment') }}
+                                <span class="hero-rotator-word text-shimmer relative inline-block min-w-[240px] sm:min-w-[320px] text-left align-bottom overflow-hidden">
+                                    <template x-for="(title, index) in titles" :key="index">
+                                        <span 
+                                            x-show="active === index"
+                                            x-transition:enter="transition ease-out duration-500 delay-200"
+                                            x-transition:enter-start="opacity-0 translate-y-4"
+                                            x-transition:enter-end="opacity-100 translate-y-0"
+                                            x-transition:leave="transition ease-in duration-300 absolute inset-0"
+                                            x-transition:leave-start="opacity-100 translate-y-0"
+                                            x-transition:leave-end="opacity-0 -translate-y-4"
+                                            class="block whitespace-nowrap"
+                                            x-text="title"
+                                        ></span>
+                                    </template>
+                                </span>
+                                {{ __('yang siap produksi.') }}
+                            @endif
+                        </h1>
+                        <p class="mt-6 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-400">
+                            {{ $heroSubtitle ?: __('app.landing.hero_desc') }}
+                        </p>
+
+                        @if ($isLoggedIn && $damageAlertOrder)
+                            <a href="{{ route('account.orders.show', $damageAlertOrder) }}" class="mt-8 block rounded-2xl border-2 border-rose-300 bg-rose-50 p-4 shadow-sm transition hover:border-rose-400">
+                                <div class="flex flex-wrap items-start justify-between gap-3">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">{{ __('app.landing.damage_alert_title') }}</p>
+                                    <span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-semibold text-rose-700">{{ __('app.landing.damage_alert_unpaid') }}</span>
+                                </div>
+                                <p class="mt-1 text-sm font-semibold text-rose-800">{{ __('app.landing.damage_alert_status') }}: {{ $damageStatusLabel }} • {{ __('app.landing.damage_alert_fee') }} {{ 'Rp ' . number_format($damageFeeAmount, 0, ',', '.') }}</p>
+                                <p class="mt-1 text-xs text-rose-700">{{ __('app.landing.damage_alert_payment_note') }}</p>
+                                @if (!empty($damageAlertOrder->additional_fee_note))
+                                    <p class="mt-2 rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs text-rose-700">{{ $damageAlertOrder->additional_fee_note }}</p>
+                                @endif
+                            </a>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Rental Snapshot Row (Below Grid Columns) -->
+                <div class="mt-10 pt-8 border-t border-slate-200/40 dark:border-slate-800/40">
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">{{ __('app.landing.snapshot_title') }}</p>
+                            <h2 class="mt-1 text-xl font-bold text-slate-900 dark:text-white">{{ __('Rental Snapshot Saat Ini') }}</h2>
+                        </div>
+                        <a href="{{ route('availability.board') }}" class="hover-scale inline-flex items-center gap-1.5 rounded-full bg-blue-50 dark:bg-blue-900/30 px-4 py-1.5 text-xs font-bold text-blue-600 dark:text-blue-300 transition hover:bg-blue-100 dark:hover:bg-blue-900/50">
+                            {{ __('Lihat board') }}
+                            <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+
+                    @if ($guestRentalSnapshot->isNotEmpty())
+                        <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                            @foreach ($guestRentalSnapshot->take(4) as $item)
+                                <article class="premium-card rounded-2xl border border-slate-100 dark:border-slate-800/40 bg-white/50 dark:bg-slate-900/30 px-4 py-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+                                    <div class="flex items-start justify-between gap-3 relative z-10">
+                                        <div class="min-w-0">
+                                            <p class="truncate text-sm font-bold text-slate-900 dark:text-white">{{ $item['name'] }}</p>
+                                            <p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+                                                {{ __('app.landing.snapshot_rental_date') }}:
+                                                {{ $formatLandingDate($item['start_date'] ?? null) }}
+                                                —
+                                                {{ $formatLandingDate($item['end_date'] ?? null) }}
+                                            </p>
+                                        </div>
+                                        <span class="shrink-0 rounded-full bg-blue-100 dark:bg-blue-900/50 px-2.5 py-1 text-xs font-bold text-blue-700 dark:text-blue-300">
+                                            x{{ max((int) ($item['qty'] ?? 1), 1) }}
+                                        </span>
+                                    </div>
+                                </article>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="mt-6 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/10 px-5 py-5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                            {{ __('Belum ada snapshot rental aktif. Cek availability board untuk melihat alat yang sedang dipakai dan unit yang masih siap disewa.') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
