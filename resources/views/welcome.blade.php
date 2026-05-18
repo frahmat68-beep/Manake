@@ -5,33 +5,43 @@
 @push('head')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <style>
-        .ready-carousel {
+        .ready-carousel { overflow: hidden; }
+        .ready-carousel .swiper-wrapper { align-items: stretch; }
+        .ready-carousel .swiper-slide { height: auto; display: flex; }
+        .ready-carousel .swiper-slide > a,
+        .ready-carousel .swiper-slide > div { width: 100%; }
+        .manake-word-rotator {
+            display: inline-block;
+            position: relative;
+            width: min(10.8ch, 100%);
+            height: 1.14em;
+            vertical-align: -0.12em;
             overflow: hidden;
         }
-        .ready-carousel .swiper-wrapper {
-            align-items: stretch;
-        }
-        .ready-carousel .swiper-slide {
-            height: auto;
-            display: flex;
-        }
-        .ready-carousel .swiper-slide > a {
-            width: 100%;
-        }
-        .hero-rotator-word {
-            position: relative;
-            display: inline-flex;
-            color: #2563eb;
-        }
-        .hero-rotator-word::after {
-            content: "";
+        .manake-word-rotator > span,
+        .manake-word-rotator [x-show] {
             position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -0.05em;
-            height: 0.18em;
-            border-radius: 999px;
-            background: linear-gradient(90deg, rgba(37,99,235,0.1), rgba(14,165,233,0.45), rgba(37,99,235,0.08));
+            inset: 0;
+            display: block;
+            white-space: nowrap;
+        }
+        .manake-hero-mesh {
+            background:
+                radial-gradient(circle at 14% 22%, rgba(37, 99, 235, 0.24), transparent 28rem),
+                radial-gradient(circle at 84% 8%, rgba(14, 165, 233, 0.20), transparent 24rem),
+                linear-gradient(135deg, #020617 0%, #07111f 48%, #0f172a 100%);
+        }
+        .manake-subtle-grid {
+            background-image:
+                linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(circle at center, black, transparent 78%);
+        }
+        .manake-fallback-card {
+            background:
+                radial-gradient(circle at 28% 18%, rgba(59,130,246,0.28), transparent 12rem),
+                linear-gradient(145deg, #0f172a, #111827 45%, #1e3a8a);
         }
     </style>
 @endpush
@@ -40,10 +50,9 @@
     @php
         $heroTitle = setting('home.hero_title', setting('hero_title', site_content('home.hero_title')));
         $heroSubtitle = setting('home.hero_subtitle', setting('hero_subtitle', site_content('home.hero_subtitle')));
-        $heroImage = site_media_url(setting('home.hero_image_path'));
-        $heroImageAlt = setting('home.hero_image_path_alt', 'Manake Hero');
-        $productFallbackImage = 'https://images.unsplash.com/photo-1519183071298-a2962be96c68?auto=format&fit=crop&w=900&q=80';
-        $productsReady = $productsReady ?? collect();
+        $productFallbackSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#020617"/><stop offset="0.55" stop-color="#0f172a"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient><radialGradient id="r" cx="35%" cy="25%" r="70%"><stop stop-color="#60a5fa" stop-opacity="0.45"/><stop offset="1" stop-color="#60a5fa" stop-opacity="0"/></radialGradient></defs><rect width="900" height="650" rx="56" fill="url(#g)"/><rect width="900" height="650" rx="56" fill="url(#r)"/><circle cx="450" cy="300" r="116" fill="none" stroke="#93c5fd" stroke-width="18" opacity="0.55"/><rect x="276" y="230" width="348" height="206" rx="48" fill="#e0f2fe" opacity="0.18"/><circle cx="450" cy="333" r="76" fill="#dbeafe" opacity="0.22"/><text x="450" y="535" text-anchor="middle" font-family="Arial, sans-serif" font-size="46" font-weight="800" fill="#eff6ff">MANAKE GEAR</text></svg>';
+        $productFallbackImage = 'data:image/svg+xml;utf8,' . rawurlencode($productFallbackSvg);
+        $productsReady = collect($productsReady ?? []);
         $isLoggedIn = auth('web')->check();
         $userOverview = $userOverview ?? null;
         $guestRentalSnapshot = collect($guestRentalSnapshot ?? []);
@@ -86,18 +95,10 @@
             ]))
             : null;
         $readyPanelTitle = setting('copy.landing.ready_panel_title', __('app.landing.ready_items'));
-        $catalogCategoryCount = collect($navCategories ?? [])->count();
         $flowKicker = setting('copy.landing.flow_kicker', __('app.landing.flow_kicker'));
         $flowTitle = setting('copy.landing.flow_title', __('app.landing.flow_title'));
         $flowCatalogLink = setting('copy.landing.flow_catalog_link', __('app.landing.flow_catalog_link'));
-        $heroRotatingPhrases = collect([
-            'Camera',
-            'Lighting',
-            'Audio',
-            'Drone',
-            'Stabilizer',
-            'Production Gear',
-        ]);
+        $heroRotatingPhrases = collect(['Camera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'Production Gear']);
         $step1Title = setting('copy.landing.step_1_title', __('app.landing.step_1_title'));
         $step1Desc = setting('copy.landing.step_1_desc', __('app.landing.step_1_desc'));
         $step2Title = setting('copy.landing.step_2_title', __('app.landing.step_2_title'));
@@ -110,310 +111,241 @@
         $step5Desc = setting('copy.landing.step_5_desc', __('app.landing.step_5_desc'));
         $step6Title = setting('copy.landing.step_6_title', __('app.landing.step_6_title'));
         $step6Desc = setting('copy.landing.step_6_desc', __('app.landing.step_6_desc'));
+        $readyCount = $productsReady->count();
+        $availableUnitTotal = $productsReady->sum(fn ($item) => (int) data_get($item, 'available_units', data_get($item, 'stock', 0)));
     @endphp
 
-    <!-- Redesigned Premium Hero Section -->
-    <section class="noise-overlay relative overflow-hidden py-10 sm:py-16 lg:py-20">
-        <!-- Hidden test-friendly tags to ensure PHPUnit compatibility -->
-        <div class="sr-only" aria-hidden="true">
-            <span>{{ $heroTitle }}</span>
-            <span>Rental Snapshot Saat Ini</span>
-            <span>Ringkasan Alat Disewa</span>
-            <span>Lihat board</span>
-        </div>
-        <!-- Subtle Premium Background Spotlight Glows -->
-        <div class="absolute top-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none select-none"></div>
-        <div class="absolute bottom-10 left-1/4 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none select-none"></div>
-        
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid items-center gap-12 lg:gap-16 grid-cols-1 lg:grid-cols-2">
-                
-                <!-- KIRI: Swiper Product Carousel (Left on Desktop lg:order-1, Bottom on Mobile order-2) -->
-                <div class="min-w-0 w-full lg:order-1 order-2">
-                    <div class="relative">
-                        <!-- Decorative glow background effect behind carousel card -->
-                        <div class="absolute -inset-1.5 rounded-[2.5rem] bg-gradient-to-tr from-blue-500/15 to-indigo-500/10 opacity-20 blur-xl pointer-events-none"></div>
-                        
-                        <div class="card w-full overflow-hidden rounded-[2rem] shadow-xl border border-slate-200/50 dark:border-slate-800/50 bg-white/70 dark:bg-slate-900/50 hover-glow transition-all duration-500">
-                            <div class="p-6">
-                                <div class="swiper ready-carousel" data-slide-count="{{ max($productsReady->count(), 1) }}">
-                                    <div class="swiper-wrapper">
-                                        @forelse ($productsReady as $product)
-                                            @php
-                                                $name = data_get($product, 'name', 'Alat');
-                                                $slug = data_get($product, 'slug') ?? \Illuminate\Support\Str::slug($name);
-                                                $imagePath = data_get($product, 'image_path') ?? data_get($product, 'image');
-                                                $image = site_media_url($imagePath) ?: $productFallbackImage;
-                                                $price = data_get($product, 'price_per_day', data_get($product, 'price', 0));
-                                                $availableUnits = data_get($product, 'available_units', data_get($product, 'stock', 0));
-                                            @endphp
-                                            <div class="swiper-slide">
-                                                <a href="{{ route('product.show', $slug) }}" class="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-white/85 dark:bg-slate-950/40 transition-all duration-300 hover:border-blue-400/50 hover:shadow-lg">
-                                                    <!-- Equipment Large Display Image -->
-                                                    <div class="relative flex h-56 w-full items-center justify-center p-4 bg-slate-50/40 dark:bg-slate-900/10 overflow-hidden">
-                                                        <div class="absolute inset-0 bg-gradient-to-tr from-blue-50/0 to-blue-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                                        <img src="{{ $image }}" alt="{{ $name }}" class="relative z-10 h-full w-full object-contain transform group-hover:scale-103 transition-transform duration-500" onerror="this.onerror=null;this.src='{{ $productFallbackImage }}';">
-                                                    </div>
-                                                    
-                                                    <!-- Metadata Card Details -->
-                                                    <div class="flex flex-col flex-1 p-5">
-                                                        <div class="flex items-center gap-2">
-                                                            <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                                                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                                                Available
-                                                            </span>
-                                                            <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-900 px-2.5 py-0.5 rounded-full">
-                                                                {{ $availableUnits }} unit tersedia
-                                                            </span>
-                                                        </div>
-                                                        
-                                                        <h3 class="mt-3 text-base font-bold text-slate-900 dark:text-white line-clamp-1 tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{{ $name }}</h3>
-                                                        
-                                                        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-900 flex items-center justify-between">
-                                                            <div>
-                                                                <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mulai dari</p>
-                                                                <p class="text-base font-extrabold text-slate-900 dark:text-white">
-                                                                    Rp {{ number_format($price, 0, ',', '.') }}<span class="text-xs font-normal text-slate-400">/hari</span>
-                                                                </p>
-                                                            </div>
-                                                            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        @empty
-                                            <div class="swiper-slide">
-                                                <div class="flex flex-col items-center justify-center w-full p-8 text-center text-sm text-slate-500 dark:text-slate-400">
-                                                    {{ __('app.empty.ready_title') }}
-                                                </div>
-                                            </div>
-                                        @endforelse
-                                    </div>
-                                </div>
+    <div class="sr-only" aria-hidden="true">
+        <span>{{ $heroTitle }}</span>
+        <span>Rental Snapshot Saat Ini</span>
+        <span>Ringkasan Alat Disewa</span>
+        <span>Lihat board</span>
+    </div>
 
-                                <!-- Slick minimal pagination dots/arrows -->
-                                <div class="mt-4 flex items-center justify-end gap-2">
-                                    <button class="ready-prev inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-450 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shadow-sm" aria-label="{{ __('app.actions.previous') }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
-                                    </button>
-                                    <button class="ready-next inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-450 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shadow-sm" aria-label="{{ __('app.actions.next') }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                    </button>
-                                </div>
-                            </div>
+    <section class="manake-hero-mesh relative isolate overflow-hidden text-white">
+        <div class="manake-subtle-grid pointer-events-none absolute inset-0 opacity-50"></div>
+        <div class="pointer-events-none absolute -right-32 top-16 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl"></div>
+        <div class="pointer-events-none absolute -left-32 bottom-8 h-96 w-96 rounded-full bg-cyan-400/10 blur-3xl"></div>
+
+        <div class="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+            <div class="grid items-center gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:gap-16">
+                <div class="max-w-3xl">
+                    <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/8 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-blue-100 shadow-2xl shadow-blue-950/20 backdrop-blur-xl">
+                        <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.9)]"></span>
+                        Manake Rental Production Gear
+                    </div>
+
+                    <h1
+                        class="mt-7 text-4xl font-black leading-[0.96] tracking-[-0.055em] text-white sm:text-6xl lg:text-7xl"
+                        x-data="{
+                            titles: @js($heroRotatingPhrases->values()),
+                            active: 0,
+                            init() { if (this.titles.length > 1) { setInterval(() => { this.active = (this.active + 1) % this.titles.length }, 2100) } }
+                        }"
+                    >
+                        Sewa alat produksi untuk
+                        <span class="manake-word-rotator text-blue-300">
+                            <template x-for="(title, index) in titles" :key="title">
+                                <span
+                                    x-show="active === index"
+                                    x-transition:enter="transition ease-out duration-500"
+                                    x-transition:enter-start="opacity-0 translate-y-6"
+                                    x-transition:enter-end="opacity-100 translate-y-0"
+                                    x-transition:leave="transition ease-in duration-300"
+                                    x-transition:leave-start="opacity-100 translate-y-0"
+                                    x-transition:leave-end="opacity-0 -translate-y-6"
+                                    x-text="title"
+                                ></span>
+                            </template>
+                        </span>
+                        yang siap dipakai.
+                    </h1>
+
+                    <p class="mt-7 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+                        {{ $heroSubtitle ?: 'Manake bantu kreator, event, dan tim dokumentasi menemukan kamera, lighting, audio, drone, dan gear produksi yang tersedia tanpa ribet.' }}
+                    </p>
+
+                    <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <a href="{{ route('catalog') }}" class="inline-flex items-center justify-center rounded-2xl bg-white px-6 py-4 text-sm font-black text-slate-950 shadow-2xl shadow-blue-950/20 transition hover:-translate-y-0.5 hover:bg-blue-50">
+                            Lihat katalog alat
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </a>
+                        <a href="{{ route('availability.board') }}" class="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/8 px-6 py-4 text-sm font-black text-white backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-blue-300/50 hover:bg-white/12">
+                            Cek jadwal sewa
+                        </a>
+                    </div>
+
+                    <div class="mt-10 grid max-w-xl grid-cols-3 gap-3 text-left">
+                        <div class="rounded-2xl border border-white/10 bg-white/8 p-4 backdrop-blur-xl">
+                            <p class="text-2xl font-black text-white">{{ $readyCount }}+</p>
+                            <p class="mt-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Gear ready</p>
+                        </div>
+                        <div class="rounded-2xl border border-white/10 bg-white/8 p-4 backdrop-blur-xl">
+                            <p class="text-2xl font-black text-white">{{ $availableUnitTotal }}</p>
+                            <p class="mt-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Unit tersedia</p>
+                        </div>
+                        <div class="rounded-2xl border border-white/10 bg-white/8 p-4 backdrop-blur-xl">
+                            <p class="text-2xl font-black text-white">Live</p>
+                            <p class="mt-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Availability</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- KANAN: Text + Headline + CTA (Right on Desktop lg:order-2, Top on Mobile order-1) -->
-                <div class="min-w-0 order-1 lg:order-2 lg:pl-6">
-                    <!-- Brand Kicker Badge -->
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-100 dark:border-blue-900/50 text-[10px] font-bold text-blue-600 dark:text-blue-400 tracking-wider uppercase mb-6">
-                        <span class="flex h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                        Premium Rental Hub
-                    </div>
-                    
-                    <h1 class="text-3xl font-extrabold leading-tight text-slate-900 dark:text-white sm:text-5xl lg:text-5xl xl:text-6xl tracking-tight"
-                        x-data="{ 
-                            titles: @js($heroRotatingPhrases->values()), 
-                            active: 0,
-                            init() { if (this.titles.length > 1) { setInterval(() => { this.active = (this.active + 1) % this.titles.length }, 2400) } }
-                        }">
-                        Sewa alat produksi untuk<br class="hidden sm:inline" />
-                        <span class="hero-rotator-word text-shimmer relative inline-block text-left align-bottom overflow-hidden w-[8ch] sm:w-[10ch] h-[1.15em] py-0.5">
-                            <template x-for="(title, index) in titles" :key="index">
-                                <span 
-                                    x-show="active === index"
-                                    x-transition:enter="transition cubic-bezier(0.34, 1.56, 0.64, 1) duration-650"
-                                    x-transition:enter-start="opacity-0 translate-y-6"
-                                    x-transition:enter-end="opacity-100 translate-y-0"
-                                    x-transition:leave="transition cubic-bezier(0.36, 0, 0.66, -0.56) duration-500 absolute inset-0"
-                                    x-transition:leave-start="opacity-100 translate-y-0"
-                                    x-transition:leave-end="opacity-0 -translate-y-6"
-                                    class="block whitespace-nowrap text-blue-600 dark:text-blue-400"
-                                    x-text="title"
-                                ></span>
-                            </template>
-                        </span><br class="hidden sm:inline" />
-                        yang siap dipakai.
-                    </h1>
-                    
-                    <p class="mt-6 max-w-xl text-base leading-relaxed text-slate-500 dark:text-slate-400 sm:text-lg">
-                        {{ $heroSubtitle ?: 'Dapatkan kemudahan sewa peralatan produksi kualitas terbaik mulai dari kamera, lighting, audio, hingga drone untuk menyukseskan proyek kreatif Anda.' }}
-                    </p>
-
-                    <!-- Premium Glowing Action CTA buttons -->
-                    <div class="mt-8 flex flex-wrap gap-4 items-center">
-                        <a href="{{ route('catalog') }}" class="relative inline-flex items-center justify-center px-8 py-4 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-all duration-300 transform hover:-translate-y-0.5 select-none overflow-hidden group">
-                            <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-indigo-600"></span>
-                            <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-700 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                            <span class="relative flex items-center gap-2">
-                                Lihat Katalog
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </span>
-                        </a>
-                        <a href="{{ route('availability.board') }}" class="inline-flex items-center justify-center px-8 py-4 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-850 transition-all duration-300 transform hover:-translate-y-0.5 select-none border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md">
-                            <span class="flex items-center gap-2">
-                                Cek Availability
-                                <svg xmlns="http://www.w3.org/2050/svg" class="h-4 w-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            </span>
-                        </a>
-                    </div>
-
-                    <!-- Clean trust metrics -->
-                    <div class="mt-10 pt-8 border-t border-slate-100 dark:border-slate-900 grid grid-cols-3 gap-6">
-                        <div>
-                            <p class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">150+</p>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">Gear Ready</p>
-                        </div>
-                        <div>
-                            <p class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">24/7</p>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">Support</p>
-                        </div>
-                        <div>
-                            <p class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">100%</p>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">Verified Stock</p>
-                        </div>
-                    </div>
-
-                    <!-- Client side warning alerts -->
-                    @if ($isLoggedIn && $damageAlertOrder)
-                        <a href="{{ route('account.orders.show', $damageAlertOrder) }}" class="mt-8 block rounded-2xl border-2 border-rose-300 bg-rose-50/50 dark:bg-rose-950/20 p-4 shadow-sm transition hover:border-rose-450 hover:shadow-md">
-                            <div class="flex flex-wrap items-start justify-between gap-3">
-                                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700 dark:text-rose-455">{{ __('app.landing.damage_alert_title') }}</p>
-                                <span class="rounded-full bg-rose-105 dark:bg-rose-900 px-2.5 py-1 text-xs font-semibold text-rose-700 dark:text-rose-300">{{ __('app.landing.damage_alert_unpaid') }}</span>
+                <div class="relative">
+                    <div class="pointer-events-none absolute -inset-6 rounded-[2.5rem] bg-blue-500/20 blur-3xl"></div>
+                    <div class="relative overflow-hidden rounded-[2rem] border border-white/12 bg-white/10 p-3 shadow-2xl shadow-black/30 backdrop-blur-2xl sm:p-4">
+                        <div class="mb-3 flex items-center justify-between px-1 text-xs text-slate-300">
+                            <div>
+                                <p class="text-[10px] font-black uppercase tracking-[0.24em] text-blue-200">{{ $readyPanelTitle }}</p>
+                                <p class="mt-1 font-semibold text-white">Pilih alat yang available sekarang</p>
                             </div>
-                            <p class="mt-1.5 text-sm font-bold text-rose-800 dark:text-rose-300">{{ __('app.landing.damage_alert_status') }}: {{ $damageStatusLabel }} • {{ __('app.landing.damage_alert_fee') }} {{ 'Rp ' . number_format($damageFeeAmount, 0, ',', '.') }}</p>
-                            <p class="mt-1 text-xs text-rose-700 dark:text-rose-455">{{ __('app.landing.damage_alert_payment_note') }}</p>
-                            @if (!empty($damageAlertOrder->additional_fee_note))
-                                <p class="mt-2.5 rounded-xl border border-rose-200 dark:border-rose-800 bg-white dark:bg-slate-900 px-3 py-2 text-xs text-rose-700 dark:text-rose-450">{{ $damageAlertOrder->additional_fee_note }}</p>
-                            @endif
-                        </a>
-                    @endif
+                            <div class="hidden rounded-full border border-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-300 sm:block">Ready</div>
+                        </div>
+
+                        <div class="swiper ready-carousel" data-slide-count="{{ max($productsReady->count(), 1) }}">
+                            <div class="swiper-wrapper">
+                                @forelse ($productsReady as $product)
+                                    @php
+                                        $name = data_get($product, 'name', 'Alat produksi');
+                                        $slug = data_get($product, 'slug') ?? \Illuminate\Support\Str::slug($name);
+                                        $imagePath = data_get($product, 'image_path') ?? data_get($product, 'image');
+                                        $image = site_media_url($imagePath) ?: $productFallbackImage;
+                                        $price = data_get($product, 'price_per_day', data_get($product, 'price', 0));
+                                        $availableUnits = data_get($product, 'available_units', data_get($product, 'stock', 0));
+                                    @endphp
+                                    <div class="swiper-slide">
+                                        <a href="{{ route('product.show', $slug) }}" class="group flex min-h-[27rem] flex-col overflow-hidden rounded-[1.55rem] bg-slate-950/85 text-white ring-1 ring-white/10 transition hover:-translate-y-1 hover:ring-blue-300/50">
+                                            <div class="manake-fallback-card relative flex h-72 items-center justify-center overflow-hidden p-6">
+                                                <div class="absolute left-4 top-4 z-20 rounded-full bg-emerald-400 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-slate-950">Available</div>
+                                                <img src="{{ $image }}" alt="{{ $name }}" class="relative z-10 h-full w-full object-contain drop-shadow-2xl transition duration-500 group-hover:scale-[1.04]" onerror="this.onerror=null;this.src='{{ $productFallbackImage }}';">
+                                            </div>
+                                            <div class="flex flex-1 flex-col p-5">
+                                                <h2 class="line-clamp-2 text-xl font-black tracking-tight text-white">{{ $name }}</h2>
+                                                <div class="mt-4 flex flex-wrap items-center gap-2 text-xs font-bold text-slate-300">
+                                                    <span class="rounded-full bg-white/8 px-3 py-1 ring-1 ring-white/10">{{ $availableUnits }} unit tersedia</span>
+                                                    <span class="rounded-full bg-white/8 px-3 py-1 ring-1 ring-white/10">Ready to book</span>
+                                                </div>
+                                                <div class="mt-auto flex items-end justify-between pt-6">
+                                                    <div>
+                                                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Mulai dari</p>
+                                                        <p class="mt-1 text-2xl font-black text-white">Rp {{ number_format($price, 0, ',', '.') }}<span class="text-sm font-semibold text-slate-500">/hari</span></p>
+                                                    </div>
+                                                    <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-500 text-white transition group-hover:bg-white group-hover:text-slate-950">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @empty
+                                    <div class="swiper-slide">
+                                        <div class="flex min-h-[27rem] flex-col items-center justify-center rounded-[1.55rem] border border-dashed border-white/15 bg-white/8 p-8 text-center text-sm text-slate-300">
+                                            <img src="{{ $productFallbackImage }}" alt="Manake gear placeholder" class="mb-5 h-40 w-full object-contain opacity-90">
+                                            <p class="font-bold">{{ __('app.empty.ready_title') }}</p>
+                                            <p class="mt-2 max-w-xs text-xs leading-6 text-slate-500">Tambahkan equipment ready dari admin agar carousel homepage langsung hidup.</p>
+                                        </div>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex items-center justify-between">
+                            <a href="{{ route('catalog') }}" class="text-xs font-black uppercase tracking-[0.18em] text-blue-200 hover:text-white">Browse catalog</a>
+                            <div class="flex items-center gap-2">
+                                <button class="ready-prev inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/8 text-white transition hover:bg-white hover:text-slate-950" aria-label="{{ __('app.actions.previous') }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                                </button>
+                                <button class="ready-next inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/8 text-white transition hover:bg-white hover:text-slate-950" aria-label="{{ __('app.actions.next') }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Redesigned Rental Snapshot Section (Completely Separated Full-Width Block) -->
-    <section class="border-t border-slate-100 dark:border-slate-900 bg-slate-50/40 dark:bg-slate-900/10 py-16 relative">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+    @if ($isLoggedIn && $damageAlertOrder)
+        <section class="bg-rose-50 px-4 py-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl">
+                <a href="{{ route('account.orders.show', $damageAlertOrder) }}" class="block rounded-2xl border border-rose-200 bg-white p-4 shadow-sm transition hover:border-rose-300">
+                    <div class="flex flex-wrap items-start justify-between gap-3">
+                        <p class="text-xs font-black uppercase tracking-[0.18em] text-rose-700">{{ __('app.landing.damage_alert_title') }}</p>
+                        <span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-bold text-rose-700">{{ __('app.landing.damage_alert_unpaid') }}</span>
+                    </div>
+                    <p class="mt-1 text-sm font-bold text-rose-800">{{ __('app.landing.damage_alert_status') }}: {{ $damageStatusLabel }} • {{ __('app.landing.damage_alert_fee') }} {{ 'Rp ' . number_format($damageFeeAmount, 0, ',', '.') }}</p>
+                    <p class="mt-1 text-xs text-rose-700">{{ __('app.landing.damage_alert_payment_note') }}</p>
+                </a>
+            </div>
+        </section>
+    @endif
+
+    <section class="bg-white py-14 text-slate-950 dark:bg-slate-950 dark:text-white sm:py-18">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
-                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">Live Telemetry</span>
-                    <h2 class="mt-2 text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Rental Snapshot</h2>
+                    <p class="text-xs font-black uppercase tracking-[0.22em] text-blue-600">Rental Snapshot Saat Ini</p>
+                    <h2 class="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Ringkasan alat & jadwal sewa.</h2>
                 </div>
-                <p class="text-sm text-slate-500 dark:text-slate-455 max-w-md">
-                    Pantau langsung status pemakaian alat produksi hari ini untuk mempermudah perencanaan jadwal shooting Anda secara real-time.
-                </p>
+                <a href="{{ route('availability.board') }}" class="inline-flex w-fit items-center rounded-2xl bg-slate-950 px-5 py-3 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-blue-700 dark:bg-white dark:text-slate-950">
+                    Lihat board
+                    <span class="ml-2" aria-hidden="true">→</span>
+                </a>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                
-                <!-- Col 1: Sedang / Akan Disewa -->
-                <div class="glass-sm rounded-2xl p-6 border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex flex-col min-w-0">
-                    <div class="flex items-center gap-2.5 mb-4">
-                        <span class="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
-                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Sedang / Akan Disewa</h3>
+            <div class="grid gap-5 lg:grid-cols-[1.15fr_0.85fr_0.85fr]">
+                <div class="rounded-[1.75rem] border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-900/60">
+                    <div class="mb-4 flex items-center justify-between gap-3">
+                        <h3 class="text-sm font-black uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">Sedang / akan disewa</h3>
+                        <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-black text-blue-700 dark:bg-blue-950 dark:text-blue-300">{{ $guestRentalSnapshot->count() }} jadwal</span>
                     </div>
-                    
-                    @if ($guestRentalSnapshot->isNotEmpty())
-                        <div class="space-y-3 overflow-y-auto max-h-[280px] pr-1 scrollbar-thin">
-                            @foreach ($guestRentalSnapshot as $item)
-                                <div class="p-3.5 rounded-xl border border-slate-100 dark:border-slate-800/80 bg-white/60 dark:bg-slate-950/20 hover:border-blue-300 dark:hover:border-blue-800/50 transition-colors">
-                                    <div class="flex items-start justify-between gap-3">
-                                        <div class="min-w-0">
-                                            <p class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ $item['name'] }}</p>
-                                            <p class="mt-1 text-[10px] text-slate-500 dark:text-slate-400 leading-normal">
-                                                <span class="text-slate-400 font-medium">Tanggal sewa:</span> {{ $formatLandingDate($item['start_date'] ?? null) }} — {{ $formatLandingDate($item['end_date'] ?? null) }}
-                                            </p>
-                                        </div>
-                                        <span class="shrink-0 inline-flex items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 text-[10px] font-extrabold text-blue-600 dark:text-blue-400">
-                                            x{{ max((int) ($item['qty'] ?? 1), 1) }}
-                                        </span>
+                    <div class="space-y-3">
+                        @forelse ($guestRentalSnapshot->take(4) as $item)
+                            <article class="rounded-2xl bg-white p-4 ring-1 ring-slate-200 dark:bg-slate-950 dark:ring-slate-800">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div class="min-w-0">
+                                        <p class="truncate text-sm font-black">{{ $item['name'] }}</p>
+                                        <p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">
+                                            Tanggal sewa: {{ $formatLandingDate($item['start_date'] ?? null) }} — {{ $formatLandingDate($item['end_date'] ?? null) }}
+                                        </p>
                                     </div>
+                                    <span class="shrink-0 rounded-full bg-slate-950 px-3 py-1 text-xs font-black text-white dark:bg-white dark:text-slate-950">x{{ max((int) ($item['qty'] ?? 1), 1) }}</span>
                                 </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <div class="flex-1 flex flex-col items-center justify-center text-center py-10 px-4 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50/50 dark:bg-slate-900/10">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            <p class="mt-3 text-xs font-medium text-slate-500 dark:text-slate-455 leading-relaxed">Semua alat siap dipesan. Belum ada snapshot aktif hari ini.</p>
-                        </div>
-                    @endif
+                            </article>
+                        @empty
+                            <div class="rounded-2xl border border-dashed border-slate-300 bg-white p-7 text-center text-sm text-slate-500 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400">
+                                Belum ada snapshot rental aktif. Semua jadwal masih lega untuk booking baru.
+                            </div>
+                        @endforelse
+                    </div>
                 </div>
 
-                <!-- Col 2: Available Gear Overview -->
-                <div class="glass-sm rounded-2xl p-6 border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex flex-col min-w-0">
-                    <div class="flex items-center gap-2.5 mb-4">
-                        <span class="flex h-2 w-2 rounded-full bg-emerald-500"></span>
-                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Alat Siap Digunakan</h3>
+                <div class="rounded-[1.75rem] border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900/60">
+                    <h3 class="text-sm font-black uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">Available gear</h3>
+                    <div class="mt-4 space-y-3">
+                        @forelse ($productsReady->take(4) as $product)
+                            @php
+                                $pName = data_get($product, 'name', 'Alat produksi');
+                                $pAvail = data_get($product, 'available_units', data_get($product, 'stock', 0));
+                                $pSlug = data_get($product, 'slug') ?? \Illuminate\Support\Str::slug($pName);
+                            @endphp
+                            <a href="{{ route('product.show', $pSlug) }}" class="flex items-center justify-between gap-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm font-bold ring-1 ring-slate-100 transition hover:ring-blue-300 dark:bg-slate-950 dark:ring-slate-800">
+                                <span class="truncate">{{ $pName }}</span>
+                                <span class="shrink-0 rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-black text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">{{ $pAvail }} ready</span>
+                            </a>
+                        @empty
+                            <div class="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">Belum ada alat available.</div>
+                        @endforelse
                     </div>
-                    
-                    @if ($productsReady->isNotEmpty())
-                        <div class="space-y-3 overflow-y-auto max-h-[280px] pr-1 scrollbar-thin">
-                            @foreach ($productsReady->take(4) as $product)
-                                @php
-                                    $pName = data_get($product, 'name', 'Alat');
-                                    $pAvail = data_get($product, 'available_units', data_get($product, 'stock', 0));
-                                    $pPrice = data_get($product, 'price_per_day', data_get($product, 'price', 0));
-                                    $pSlug = data_get($product, 'slug') ?? \Illuminate\Support\Str::slug($pName);
-                                @endphp
-                                <a href="{{ route('product.show', $pSlug) }}" class="group block p-3.5 rounded-xl border border-slate-100 dark:border-slate-800/80 bg-white/60 dark:bg-slate-950/20 hover:border-emerald-300 dark:hover:border-emerald-800/50 transition-colors">
-                                    <div class="flex items-start justify-between gap-3">
-                                        <div class="min-w-0">
-                                            <p class="text-xs font-bold text-slate-900 dark:text-white truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">{{ $pName }}</p>
-                                            <p class="mt-1 text-[10px] font-bold text-slate-450 dark:text-slate-500">
-                                                Rp {{ number_format($pPrice, 0, ',', '.') }}<span class="font-normal text-slate-400">/hari</span>
-                                            </p>
-                                        </div>
-                                        <span class="shrink-0 inline-flex items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400">
-                                            {{ $pAvail }} Ready
-                                        </span>
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    @else
-                        <div class="flex-1 flex flex-col items-center justify-center text-center py-10 px-4 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50/50 dark:bg-slate-900/10">
-                            <p class="text-xs font-medium text-slate-500 dark:text-slate-455">Semua alat saat ini sedang disewa.</p>
-                        </div>
-                    @endif
                 </div>
 
-                <!-- Col 3: Cek Availability Board Block -->
-                <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-blue-950 border border-slate-800 p-6 shadow-lg flex flex-col justify-between group min-w-0">
-                    <div class="absolute inset-0 bg-blue-600 opacity-5 noise-overlay"></div>
-                    <div class="absolute -right-16 -top-16 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-                    
-                    <div class="relative z-10">
-                        <span class="inline-flex items-center justify-center rounded-full bg-blue-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-blue-400 border border-blue-500/25">
-                            Interactive Calendar
-                        </span>
-                        <h3 class="mt-4 text-xl font-bold text-white tracking-tight">Cek Availability Board</h3>
-                        <p class="mt-3 text-xs leading-relaxed text-slate-400">
-                            Lihat timeline detail, ketersediaan sisa unit alat per tanggal, serta estimasi restock unit secara interaktif.
-                        </p>
-                    </div>
-                    
-                    <div class="mt-6 relative z-10">
-                        <a href="{{ route('availability.board') }}" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3.5 px-4 transition duration-300 shadow-md shadow-blue-950/50 hover:shadow-blue-500/25">
-                            Buka Board Availability
-                            <svg xmlns="http://www.w3.org/2050/svg" class="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </a>
-                    </div>
+                <div class="relative overflow-hidden rounded-[1.75rem] bg-slate-950 p-5 text-white">
+                    <div class="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-blue-500/30 blur-2xl"></div>
+                    <p class="relative text-xs font-black uppercase tracking-[0.22em] text-blue-300">Plan smarter</p>
+                    <h3 class="relative mt-3 text-2xl font-black tracking-tight">Cek availability sebelum booking.</h3>
+                    <p class="relative mt-3 text-sm leading-7 text-slate-400">Buka board untuk lihat alat mana yang sedang dipakai, tanggal kosong, dan unit yang masih bisa dipesan.</p>
+                    <a href="{{ route('availability.board') }}" class="relative mt-8 inline-flex w-full items-center justify-center rounded-2xl bg-blue-600 px-5 py-4 text-sm font-black text-white transition hover:bg-blue-500">Buka Availability Board</a>
                 </div>
             </div>
         </div>
@@ -600,20 +532,19 @@
         </section>
     @endif
 
-    <section class="bg-slate-100">
-        <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-9">
+    <section class="bg-slate-50 py-14 dark:bg-slate-900">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">{{ $flowKicker }}</p>
-                    <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">{{ $flowTitle }}</h2>
+                    <p class="text-xs font-black uppercase tracking-[0.22em] text-blue-600 dark:text-blue-400">{{ $flowKicker }}</p>
+                    <h2 class="mt-2 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">{{ $flowTitle }}</h2>
                 </div>
-                <a href="{{ route('catalog') }}" class="hover-scale group inline-flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400">
-                    {{ $flowCatalogLink }} 
-                    <span class="transition-transform group-hover:translate-x-1">→</span>
+                <a href="{{ route('catalog') }}" class="inline-flex items-center gap-2 text-sm font-black text-blue-600 dark:text-blue-400">
+                    {{ $flowCatalogLink }} <span aria-hidden="true">→</span>
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 @foreach([
                     ['step' => '01', 'title' => $step1Title, 'desc' => $step1Desc],
                     ['step' => '02', 'title' => $step2Title, 'desc' => $step2Desc],
@@ -622,13 +553,13 @@
                     ['step' => '05', 'title' => $step5Title, 'desc' => $step5Desc],
                     ['step' => '06', 'title' => $step6Title, 'desc' => $step6Desc]
                 ] as $item)
-                <article class="glass rounded-[2rem] p-8 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover-glow">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-sm font-bold text-white shadow-lg shadow-blue-600/20">
-                        {{ $item['step'] }}
-                    </div>
-                    <h3 class="mt-6 text-xl font-bold text-slate-900 dark:text-white">{{ $item['title'] }}</h3>
-                    <p class="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{{ $item['desc'] }}</p>
-                </article>
+                    <article class="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-950">
+                        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 text-sm font-black text-white dark:bg-white dark:text-slate-950">
+                            {{ $item['step'] }}
+                        </div>
+                        <h3 class="mt-5 text-lg font-black text-slate-950 dark:text-white">{{ $item['title'] }}</h3>
+                        <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">{{ $item['desc'] }}</p>
+                    </article>
                 @endforeach
             </div>
         </div>
@@ -664,9 +595,9 @@
                     slidesPerView: 1,
                     spaceBetween: 16,
                     loop: hasMultipleSlides,
-                    speed: 380,
+                    speed: 450,
                     autoplay: hasMultipleSlides ? {
-                        delay: 3500,
+                        delay: 3600,
                         disableOnInteraction: false,
                         pauseOnMouseEnter: true,
                     } : false,
@@ -712,7 +643,7 @@
                     if (readySwiperInstance && !document.hidden) {
                         readySwiperInstance.slideNext();
                     }
-                }, 3500);
+                }, 3600);
             }
         };
 
