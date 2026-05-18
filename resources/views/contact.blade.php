@@ -15,7 +15,8 @@
         $contactAddressTitle = $contactAddressLines->first();
         $contactAddressRest = $contactAddressLines->slice(1);
         $defaultContactMapEmbed = '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.1428282443417!2d106.78129727614359!3d-6.3755559936147135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ef01a88d499d%3A0x15293a04b517553a!2sManake%20-%20Sewa%20HT%2C%20Alat%20Event%20dan%20Film!5e0!3m2!1sen!2sid!4v1771911840986!5m2!1sen!2sid" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
-        $contactMapEmbed = trusted_map_embed_iframe($defaultContactMapEmbed, $contactAddress);
+        $rawMapEmbed = setting('contact.map_embed') ?: $defaultContactMapEmbed;
+        $contactMapEmbed = trusted_map_embed_iframe($rawMapEmbed, $contactAddress);
 
         $contactWhatsappEntries = collect(preg_split('/\s*(?:\/|\||,)\s*/', (string) $contactWhatsapp))
             ->map(static fn ($item) => trim((string) $item))

@@ -6,6 +6,7 @@ return [
         'overview' => 'Riwayat',
         'catalog' => 'Katalog',
         'check_availability' => 'Cek Alat',
+        'availability_board' => 'Papan Ketersediaan',
         'category' => 'Kategori',
         'search_placeholder' => 'Cari kamera, lighting, audio...',
         'search_no_results' => 'Tidak ada hasil untuk ":query".',

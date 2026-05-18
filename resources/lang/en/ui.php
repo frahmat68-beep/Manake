@@ -6,6 +6,7 @@ return [
         'overview' => 'Overview',
         'catalog' => 'Catalog',
         'check_availability' => 'Check Gear',
+        'availability_board' => 'Availability Board',
         'category' => 'Categories',
         'search_placeholder' => 'Search cameras, lighting, audio...',
         'search_no_results' => 'No results for ":query".',

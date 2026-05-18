@@ -19,13 +19,13 @@
 
             <div class="grid gap-6 lg:grid-cols-2">
                 <article class="mk-card p-6">
-                    <h2 class="text-lg font-bold text-slate-900">{{ __('Yang Perlu Diisi di CMS') }}</h2>
+                    <h2 class="text-lg font-bold text-slate-900">{{ __('Mengapa Memilih Kami?') }}</h2>
                     <ul class="mt-4 space-y-2 text-sm text-slate-600">
-                        <li>{{ __('1. Profil singkat bisnis: fokus layanan dan area cakupan.') }}</li>
-                        <li>{{ __('2. Kontak aktif: WhatsApp, email, dan jam operasional.') }}</li>
-                        <li>{{ __('3. Alamat lengkap + embed maps agar titik lokasi jelas.') }}</li>
-                        <li>{{ __('4. Aturan sewa yang wajib dibaca sebelum checkout.') }}</li>
-                        <li>{{ __('5. Call-to-action utama: cara booking, pembayaran, dan pengembalian.') }}</li>
+                        <li><strong>{{ __('Alat Berkualitas Tinggi:') }}</strong> {{ __('Kamera, lighting, dan audio dirawat secara profesional untuk performa terbaik.') }}</li>
+                        <li><strong>{{ __('Proses Cepat & Mudah:') }}</strong> {{ __('Sistem booking online instan dengan penanggalan real-time yang akurat.') }}</li>
+                        <li><strong>{{ __('Keamanan Transaksi:') }}</strong> {{ __('Pembayaran aman terintegrasi otomatis menggunakan Midtrans Snap.') }}</li>
+                        <li><strong>{{ __('Reschedule Fleksibel:') }}</strong> {{ __('Kemudahan mengubah tanggal sewa sebelum pengambilan barang.') }}</li>
+                        <li><strong>{{ __('Dukungan Admin:') }}</strong> {{ __('Tim kami siap melayani koordinasi pickup, pengembalian, dan konsultasi alat.') }}</li>
                     </ul>
                 </article>
 
