@@ -7,16 +7,16 @@
     <div class="max-w-7xl mx-auto space-y-6">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-                <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">{{ __('Tabel') }}</p>
-                <h2 class="text-xl font-semibold text-slate-900 dark:text-white">{{ $table }}</h2>
+                <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">{{ __('Tabel') }}</p>
+                <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-50">{{ $table }}</h2>
             </div>
-            <a href="{{ route('admin.db.index') }}" class="text-sm text-slate-500 hover:text-blue-600 dark:text-slate-300">{{ __('← Kembali ke Daftar Tabel') }}</a>
+            <a href="{{ route('admin.db.index') }}" class="text-sm text-slate-500 hover:text-blue-600 dark:text-slate-400">{{ __('← Kembali ke Daftar Tabel') }}</a>
         </div>
 
-        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 dark:border-slate-800 dark:bg-slate-900">
+        <div class="mk-card rounded-2xl p-6">
             <form method="GET" class="grid grid-cols-1 md:grid-cols-[1fr,2fr,auto] gap-3">
                 <div>
-                    <label class="text-xs font-semibold text-slate-500 dark:text-slate-300">{{ __('Filter Kolom') }}</label>
+                    <label class="text-xs font-semibold text-slate-500 dark:text-slate-400">{{ __('Filter Kolom') }}</label>
                     <select name="column" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
                         <option value="">{{ __('Semua') }}</option>
                         @foreach ($columns as $column)
@@ -27,7 +27,7 @@
                     </select>
                 </div>
                 <div>
-                    <label class="text-xs font-semibold text-slate-500 dark:text-slate-300">{{ __('Cari') }}</label>
+                    <label class="text-xs font-semibold text-slate-500 dark:text-slate-400">{{ __('Cari') }}</label>
                     <input
                         type="text"
                         name="q"
@@ -42,7 +42,7 @@
             </form>
         </div>
 
-        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 dark:border-slate-800 dark:bg-slate-900">
+        <div class="mk-card rounded-2xl p-6">
             <div class="overflow-x-auto">
                 <table class="min-w-full text-sm">
                     <thead>
@@ -62,7 +62,7 @@
                                         $value = $rowArray[$column['Field']] ?? null;
                                         $display = is_null($value) ? '-' : (is_scalar($value) ? (string) $value : json_encode($value));
                                     @endphp
-                                    <td class="px-3 py-2 align-top break-all">{{ $display }}</td>
+                                    <td class="break-all px-3 py-2 align-top">{{ $display }}</td>
                                 @endforeach
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     @if ($primaryKey && isset($rowArray[$primaryKey]))
