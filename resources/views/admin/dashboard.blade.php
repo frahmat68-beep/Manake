@@ -258,7 +258,7 @@
                     </div>
                 </section>
 
-                <details class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                <details class="mk-card rounded-2xl p-5">
                     <summary class="cursor-pointer text-base font-semibold text-blue-700">
                         {{ __('Kalender Unit Disewa (Opsional)') }}
                     </summary>

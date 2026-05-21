@@ -265,15 +265,15 @@
                     </div>
 
                     <aside class="space-y-4">
-                        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                            <h3 class="text-sm font-semibold text-slate-900">{{ __('Syarat Pembayaran') }}</h3>
-                            <ul class="mt-3 list-disc space-y-2 pl-5 text-xs text-slate-600">
+                        <div class="mk-card rounded-2xl p-5">
+                            <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('Syarat Pembayaran') }}</h3>
+                            <ul class="mt-3 list-disc space-y-2 pl-5 text-xs text-slate-600 dark:text-slate-400">
                                 <li>{{ __('Profil lengkap dan valid.') }}</li>
                                 <li>{{ __('Email sudah terverifikasi.') }}</li>
                                 <li>{{ __('Nomor telepon sudah terverifikasi OTP.') }}</li>
                             </ul>
                         </div>
-                        <div class="rounded-2xl border border-blue-100 bg-blue-50 p-5 text-xs text-blue-700 shadow-sm">
+                        <div class="rounded-2xl border border-blue-100 bg-blue-50 p-5 text-xs text-blue-700 shadow-sm dark:border-blue-900/40 dark:bg-blue-950/30 dark:text-blue-300">
                             {{ __('Setelah simpan profil, kamu akan diarahkan ke verifikasi nomor telepon bila belum terverifikasi.') }}
                         </div>
                     </aside>
