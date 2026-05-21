@@ -19,7 +19,7 @@
     @stack('head')
     <style>[x-cloak] { display: none !important; }</style>
 </head>
-<body class="landing-shell antialiased selection:bg-blue-600/10 selection:text-blue-700">
+<body class="manake-shell landing-shell antialiased selection:bg-blue-600/10 selection:text-blue-700" data-manake-shell="landing">
     <header class="landing-header">
         <div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
             <a href="{{ route('home') }}" class="flex items-center gap-3" aria-label="{{ $brandName }}">

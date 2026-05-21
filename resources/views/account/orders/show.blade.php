@@ -173,20 +173,21 @@
 @endphp
 
 @section('content')
-    <section class="bg-slate-50">
-        <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <section class="manake-page">
+        <div class="manake-page-frame">
+            <div class="manake-card flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <h1 class="text-2xl font-semibold text-blue-700 sm:text-3xl">{{ $orderDetailTitle }}</h1>
-                    <p class="text-sm text-slate-500">{{ $orderDetailSubtitle }}</p>
+                    <p class="manake-kicker">{{ $orderOrderIdLabel }}</p>
+                    <h1 class="manake-display mt-2 text-3xl font-black text-slate-950 dark:text-white sm:text-4xl">{{ $orderDetailTitle }}</h1>
+                    <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{{ $orderDetailSubtitle }}</p>
                 </div>
-                <a href="{{ route('booking.history') }}" class="text-sm font-semibold text-slate-600 hover:text-blue-600">← {{ $orderDetailBackLabel }}</a>
+                <a href="{{ route('booking.history') }}" class="btn-secondary w-full sm:w-auto">← {{ $orderDetailBackLabel }}</a>
             </div>
         </div>
     </section>
 
-    <section class="bg-slate-100">
-        <div class="mx-auto max-w-6xl px-4 pb-12 sm:px-6">
+    <section class="manake-page pt-0">
+        <div class="manake-page-frame pb-12">
             <div id="payment-alert" class="hidden rounded-xl border px-4 py-3 text-sm"></div>
 
             @if (session('error'))

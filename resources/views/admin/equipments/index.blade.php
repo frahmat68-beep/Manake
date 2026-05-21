@@ -19,16 +19,16 @@
 
     <div class="max-w-7xl mx-auto space-y-6">
         @if (session('success'))
-            <div class="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="mk-card border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-300">
                 {{ session('success') }}
             </div>
         @endif
 
-        <section class="card rounded-2xl shadow-sm p-6">
+        <section class="mk-card p-6">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                    <h2 class="text-xl font-bold text-blue-700">{{ __('Daftar Alat & Inventaris') }}</h2>
-                    <p class="text-sm text-slate-500">{{ __('Kelola spesifikasi, harga sewa, dan pantau ketersediaan unit secara real-time.') }}</p>
+                    <h2 class="text-xl font-bold text-blue-700 dark:text-blue-400">{{ __('Daftar Alat & Inventaris') }}</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('Kelola spesifikasi, harga sewa, dan pantau ketersediaan unit secara real-time.') }}</p>
                 </div>
                 <div class="flex w-full gap-2 sm:w-auto">
                     <a
@@ -61,14 +61,14 @@
                         </a>
                     @endif
                 </div>
-                <div class="text-xs font-medium text-slate-500">
-                    {{ __('Menampilkan') }} <span class="font-semibold text-slate-700">{{ $equipments->total() }}</span> {{ __('alat') }}
+                <div class="text-xs font-medium text-slate-500 dark:text-slate-400">
+                    {{ __('Menampilkan') }} <span class="font-semibold text-slate-700 dark:text-slate-200">{{ $equipments->total() }}</span> {{ __('alat') }}
                 </div>
             </form>
 
-            <div class="mt-5 space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div class="mt-5 space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
                 <div class="flex flex-wrap items-center gap-4">
-                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">{{ __('Status') }}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">{{ __('Status') }}</p>
                     <div class="flex flex-wrap gap-2">
                         @foreach ($statusFilters as $filter)
                             @php
@@ -88,8 +88,8 @@
                     </div>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-slate-100">
-                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">{{ __('Kategori') }}</p>
+                <div class="flex flex-wrap items-center gap-4 border-t border-slate-100 pt-2 dark:border-slate-800">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">{{ __('Kategori') }}</p>
                     <div class="flex flex-wrap gap-2">
                         <a
                             href="{{ route('admin.equipments.index', array_filter([
@@ -117,10 +117,10 @@
             </div>
         </section>
 
-        <section class="card rounded-2xl shadow-sm overflow-hidden">
+        <section class="mk-card overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[1080px] text-sm">
-                    <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                    <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900/60 dark:text-slate-400">
                         <tr>
                             <th class="px-5 py-3 text-left font-semibold">{{ __('Alat') }}</th>
                             <th class="px-5 py-3 text-left font-semibold">{{ __('Slug') }}</th>
@@ -133,7 +133,7 @@
                             <th class="px-5 py-3 text-right">{{ __('Aksi') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                         @forelse ($equipments as $item)
                             @php
                                 $statusValue = $item->status ?? 'ready';
@@ -144,16 +144,16 @@
                                 $reservedUnits = (int) ($item->reserved_units ?? 0);
                                 $availableUnits = (int) $item->available_units;
                             @endphp
-                            <tr class="hover:bg-slate-50/70">
+                            <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-900/60">
                                 <td class="px-5 py-4 align-top">
-                                    <p class="max-w-[20rem] font-semibold leading-snug text-slate-900">{{ $item->name }}</p>
-                                    <p class="text-xs text-slate-500">{{ $item->category?->name ?? '-' }}</p>
+                                    <p class="max-w-[20rem] font-semibold leading-snug text-slate-900 dark:text-slate-50">{{ $item->name }}</p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ $item->category?->name ?? '-' }}</p>
                                 </td>
-                                <td class="px-5 py-4 align-top text-slate-600">
+                                <td class="px-5 py-4 align-top text-slate-600 dark:text-slate-400">
                                     <p class="max-w-[14rem] break-words">{{ $item->slug }}</p>
                                 </td>
-                                <td class="px-5 py-4 text-right align-top font-semibold whitespace-nowrap text-slate-900">{{ __('Rp') }} {{ number_format($item->price_per_day, 0, ',', '.') }}</td>
-                                <td class="px-5 py-4 text-center align-top font-semibold text-slate-900">{{ $item->stock }}</td>
+                                <td class="px-5 py-4 text-right align-top font-semibold whitespace-nowrap text-slate-900 dark:text-slate-50">{{ __('Rp') }} {{ number_format($item->price_per_day, 0, ',', '.') }}</td>
+                                <td class="px-5 py-4 text-center align-top font-semibold text-slate-900 dark:text-slate-50">{{ $item->stock }}</td>
                                 <td class="px-5 py-4 text-center align-top font-semibold text-amber-600">{{ $reservedUnits }}</td>
                                 <td class="px-5 py-4 text-center align-top">
                                     <span class="font-semibold {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}">
@@ -165,7 +165,7 @@
                                         {{ $statusLabel }}
                                     </span>
                                 </td>
-                                <td class="px-5 py-4 text-center align-top text-slate-500 whitespace-nowrap">{{ $item->updated_at?->format('d M Y') }}</td>
+                                <td class="px-5 py-4 text-center align-top text-slate-500 whitespace-nowrap dark:text-slate-400">{{ $item->updated_at?->format('d M Y') }}</td>
                                 <td class="px-5 py-4 align-top">
                                     <div class="flex justify-end gap-2">
                                         <a
@@ -177,7 +177,7 @@
                                         <form method="POST" action="{{ route('admin.equipments.destroy', $item->slug) }}" data-confirm="{{ __('ui.dialog.delete_admin_item') }}" data-confirm-title="{{ __('ui.dialog.title') }}" data-confirm-button="{{ __('ui.actions.remove') }}" data-cancel-button="{{ __('ui.dialog.cancel') }}" data-confirm-variant="danger">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="rounded-xl bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-100 transition">
+                                            <button class="rounded-xl bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:bg-rose-950/50">
                                                 {{ __('Hapus') }}
                                             </button>
                                         </form>
@@ -186,7 +186,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="px-5 py-8 text-center text-sm text-slate-500">
+                                <td colspan="9" class="px-5 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
                                     {{ __('Belum ada alat.') }}
                                 </td>
                             </tr>

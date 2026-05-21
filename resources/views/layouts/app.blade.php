@@ -128,7 +128,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased selection:bg-blue-600/10 selection:text-blue-600" data-manake-shell="app">
+<body class="manake-shell antialiased selection:bg-blue-600/10 selection:text-blue-600" data-manake-shell="app">
 @include('partials.page-loader')
 @php
     $isAuthenticated = auth('web')->check();

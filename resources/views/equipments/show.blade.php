@@ -62,10 +62,10 @@
 
 @section('content')
 
-    <div class="bg-slate-50 min-h-screen">
-        <section class="relative overflow-hidden pt-6 pb-4">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
-                <div class="mk-card p-6 sm:p-8">
+    <div class="manake-page">
+        <section class="manake-section">
+            <div class="manake-page-frame">
+                <div class="manake-card">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div class="max-w-3xl">
                             <div class="flex items-center gap-2.5 mb-3">
@@ -92,8 +92,8 @@
             </div>
         </section>
 
-        <section class="pb-24">
-            <div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 sm:px-6 lg:grid-cols-[1.1fr,0.9fr] lg:gap-8">
+        <section class="manake-section pb-24">
+            <div class="manake-page-frame grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr,0.9fr] lg:gap-8">
                 <!-- Left Column: Visual & Specs -->
                 <div class="space-y-6">
                     <div class="mk-card p-6">

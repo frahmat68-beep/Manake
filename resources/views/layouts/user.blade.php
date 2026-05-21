@@ -123,7 +123,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800">
+<body class="manake-shell">
     <div x-data="{ sidebarOpen: false }" class="min-h-screen">
         <div class="fixed inset-0 z-40 bg-slate-900/40 transition lg:hidden" x-show="sidebarOpen" x-cloak @click="sidebarOpen = false"></div>
 

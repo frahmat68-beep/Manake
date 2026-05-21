@@ -16,8 +16,8 @@
             </div>
 
             @if ($categories->isEmpty())
-                <div class="mk-card mt-8 p-10 text-center flex flex-col items-center justify-center">
-                    <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-950/55 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/40">
+                <div class="mk-card mt-8 flex flex-col items-center justify-center p-10 text-center">
+                    <div class="flex h-16 w-16 items-center justify-center rounded-2xl border border-blue-100 bg-blue-50 text-blue-600 dark:border-blue-900/40 dark:bg-blue-950/55 dark:text-blue-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 7h18" />
                             <path d="M5 7v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7" />
@@ -35,8 +35,8 @@
                     @foreach ($categories as $category)
                         <article class="mk-card group flex flex-col justify-between p-6">
                             <div>
-                                <h2 class="mk-title-card group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{{ $category->name }}</h2>
-                                <p class="mt-3 text-sm text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed">{{ $category->description ?: __('app.category.all_subtitle') }}</p>
+                                <h2 class="mk-title-card transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">{{ $category->name }}</h2>
+                                <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-500 dark:text-slate-400">{{ $category->description ?: __('app.category.all_subtitle') }}</p>
                             </div>
                             <div class="mt-6 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 pt-4">
                                 <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">{{ $category->equipments_count }} {{ __('ui.categories.count_suffix') }}</span>

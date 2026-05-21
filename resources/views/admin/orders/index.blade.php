@@ -4,17 +4,18 @@
 @section('page_title', __('Daftar Pesanan'))
 
 @section('content')
-    <div class="mx-auto max-w-7xl space-y-6">
+    <div class="space-y-6">
         @if (session('success'))
-            <div class="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="manake-card-soft px-4 py-3 text-sm text-emerald-700">
                 {{ session('success') }}
             </div>
         @endif
 
-        <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section class="manake-card">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <h2 class="text-lg font-semibold text-blue-700">{{ __('Daftar Pesanan') }}</h2>
+                    <p class="manake-kicker">{{ __('Pesanan') }}</p>
+                    <h2 class="manake-heading mt-2 text-2xl font-black text-slate-950 dark:text-white">{{ __('Daftar Pesanan') }}</h2>
                 </div>
             </div>
 
@@ -24,9 +25,9 @@
                     name="q"
                     value="{{ $search ?? '' }}"
                     placeholder="{{ __('Cari pesanan / email pengguna...') }}"
-                    class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                    class="manake-input"
                 >
-                <select name="status" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                <select name="status" class="manake-input">
                     <option value="">{{ __('Semua Status Pembayaran') }}</option>
                     <option value="pending" {{ ($status ?? '') === 'pending' ? 'selected' : '' }}>{{ __('Menunggu') }}</option>
                     <option value="paid" {{ ($status ?? '') === 'paid' ? 'selected' : '' }}>{{ __('Lunas') }}</option>
@@ -34,15 +35,18 @@
                     <option value="expired" {{ ($status ?? '') === 'expired' ? 'selected' : '' }}>{{ __('Kedaluwarsa') }}</option>
                     <option value="refunded" {{ ($status ?? '') === 'refunded' ? 'selected' : '' }}>{{ __('Refund') }}</option>
                 </select>
-                <button class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">{{ __('Terapkan') }}</button>
+                <button class="btn-primary">{{ __('Terapkan') }}</button>
             </form>
         </section>
 
         <section class="grid items-start gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)]">
-            <article class="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <article class="manake-card flex min-h-0 flex-col overflow-hidden p-0">
                 <div class="flex items-center justify-between gap-3">
                 <div>
-                    <h3 class="text-base font-semibold text-slate-900">{{ __('Arsip Bulanan') }}</h3>
+                    <div class="px-5 pt-5">
+                        <p class="manake-kicker">{{ __('Arsip') }}</p>
+                        <h3 class="manake-heading mt-2 text-xl font-black text-slate-950 dark:text-white">{{ __('Arsip Bulanan') }}</h3>
+                    </div>
                 </div>
             </div>
 
@@ -90,9 +94,12 @@
                 </div>
             </article>
 
-            <article class="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <article class="manake-card flex min-h-0 flex-col overflow-hidden p-0">
                 <div>
-                    <h3 class="text-base font-semibold text-slate-900">{{ __('Log Pesanan') }}</h3>
+                    <div class="px-5 pt-5">
+                        <p class="manake-kicker">{{ __('Log') }}</p>
+                        <h3 class="manake-heading mt-2 text-xl font-black text-slate-950 dark:text-white">{{ __('Log Pesanan') }}</h3>
+                    </div>
                 </div>
 
                 <div class="scroll-panel mt-4 h-[29rem] space-y-3 overflow-y-auto pr-1">
@@ -116,10 +123,10 @@
             </article>
         </section>
 
-        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <section class="manake-card overflow-hidden p-0">
             <div class="scroll-panel max-h-[34rem] overflow-auto">
                 <table class="min-w-[860px] w-full text-sm">
-                    <thead class="sticky top-0 z-10 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+                    <thead class="sticky top-0 z-10 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900 dark:text-slate-300">
                         <tr>
                             <th class="px-5 py-3">{{ __('Pesanan') }}</th>
                             <th class="px-5 py-3">{{ __('Pengguna') }}</th>

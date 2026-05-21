@@ -42,7 +42,7 @@
         </style>
         {{ $head ?? '' }}
     </head>
-    <body class="min-h-screen antialiased" data-manake-shell="auth">
+    <body class="manake-shell antialiased" data-manake-shell="auth">
         @include('partials.page-loader')
 
         @php

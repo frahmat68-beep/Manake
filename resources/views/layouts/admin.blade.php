@@ -131,7 +131,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen" data-admin-panel="true" data-manake-shell="admin">
+<body class="manake-shell" data-admin-panel="true" data-manake-shell="admin">
     @include('partials.page-loader')
     @php
         $activePage = $activePage ?? '';

@@ -51,182 +51,182 @@
 @section('content')
     <section x-data="{ contactModalOpen: false }" class="mk-section">
         <div class="mk-container space-y-6">
-            <div class="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm sm:p-8">
-            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-500">{{ $rulesKicker }}</p>
-            <h1 class="mt-2 text-3xl font-extrabold text-blue-700">{{ $rulesTitle }}</h1>
-            <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
-                {{ $rulesSubtitle }}
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h2 class="text-lg font-semibold">{{ __('ui.rental_rules.sections.booking_payment.title') }}</h2>
-                <ul class="mt-3 space-y-2 text-sm text-slate-600">
-                    <li>{{ __('ui.rental_rules.sections.booking_payment.point_1') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.booking_payment.point_2') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.booking_payment.point_3') }}</li>
-                </ul>
-            </article>
-
-            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h2 class="text-lg font-semibold">{{ __('ui.rental_rules.sections.availability.title') }}</h2>
-                <ul class="mt-3 space-y-2 text-sm text-slate-600">
-                    <li>{{ __('ui.rental_rules.sections.availability.point_1') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.availability.point_2') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.availability.point_3') }}</li>
-                </ul>
-            </article>
-
-            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h2 class="text-lg font-semibold">{{ __('ui.rental_rules.sections.reschedule.title') }}</h2>
-                <ul class="mt-3 space-y-2 text-sm text-slate-600">
-                    <li>{{ __('ui.rental_rules.sections.reschedule.point_1') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.reschedule.point_2') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.reschedule.point_3') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.reschedule.point_4') }}</li>
-                </ul>
-            </article>
-
-            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h2 class="text-lg font-semibold">{{ __('ui.rental_rules.sections.penalty.title') }}</h2>
-                <ul class="mt-3 space-y-2 text-sm text-slate-600">
-                    <li>{{ __('ui.rental_rules.sections.penalty.point_1') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.penalty.point_2') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.penalty.point_3') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.penalty.point_4') }}</li>
-                    <li>{{ __('ui.rental_rules.sections.penalty.point_5') }}</li>
-                </ul>
-            </article>
-        </div>
-
-        <article class="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
-            <h2 class="text-lg font-semibold text-blue-700">{{ __('ui.rental_rules.user_flow_title') }}</h2>
-            <p class="mt-2 text-sm leading-relaxed text-slate-600">{{ __('ui.rental_rules.user_flow_intro') }}</p>
-            <ol class="mt-4 space-y-2 text-sm text-slate-700">
-                <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_1') }}</li>
-                <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_2') }}</li>
-                <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_3') }}</li>
-                <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_4') }}</li>
-                <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_5') }}</li>
-                <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_6') }}</li>
-                <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_7') }}</li>
-            </ol>
-        </article>
-
-        <article class="rounded-2xl border border-blue-100 bg-blue-50 p-5 shadow-sm">
-            <h2 class="text-lg font-semibold">{{ $rulesOperationalTitle }}</h2>
-            <p class="mt-2 text-sm text-slate-600">
-                {{ __('ui.rental_rules.operational_note') }}
-            </p>
-            <div class="mt-4 flex flex-wrap gap-3">
-                <a href="{{ route('catalog') }}" class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">
-                    {{ $rulesPrimaryCta }}
-                </a>
-                <button
-                    type="button"
-                    @click="contactModalOpen = true"
-                    class="inline-flex items-center justify-center rounded-xl border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700 transition hover:border-blue-300 hover:bg-blue-50"
-                >
-                    {{ $rulesSecondaryCta }}
-                </button>
+            <div class="mk-card p-6 sm:p-8">
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ $rulesKicker }}</p>
+                <h1 class="mt-2 text-3xl font-extrabold text-slate-900 dark:text-slate-50">{{ $rulesTitle }}</h1>
+                <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    {{ $rulesSubtitle }}
+                </p>
             </div>
-        </article>
 
-        <div
-            x-cloak
-            x-show="contactModalOpen"
-            x-transition.opacity
-            class="fixed inset-0 z-[80] flex items-center justify-center bg-slate-900/60 p-4"
-            @click.self="contactModalOpen = false"
-            @keydown.escape.window="contactModalOpen = false"
-        >
-            <div class="w-full max-w-3xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl sm:p-6">
-                <div class="flex items-start justify-between gap-3">
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-500">{{ __('ui.contact.title') }}</p>
-                        <h2 class="mt-1 text-xl font-bold text-slate-900">{{ __('ui.contact.info_title') }}</h2>
-                        <p class="mt-2 text-sm text-slate-600">{{ __('ui.contact.subtitle') }}</p>
-                    </div>
+            <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                <article class="mk-card p-5">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.rental_rules.sections.booking_payment.title') }}</h2>
+                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                        <li>{{ __('ui.rental_rules.sections.booking_payment.point_1') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.booking_payment.point_2') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.booking_payment.point_3') }}</li>
+                    </ul>
+                </article>
+
+                <article class="mk-card p-5">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.rental_rules.sections.availability.title') }}</h2>
+                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                        <li>{{ __('ui.rental_rules.sections.availability.point_1') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.availability.point_2') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.availability.point_3') }}</li>
+                    </ul>
+                </article>
+
+                <article class="mk-card p-5">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.rental_rules.sections.reschedule.title') }}</h2>
+                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                        <li>{{ __('ui.rental_rules.sections.reschedule.point_1') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.reschedule.point_2') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.reschedule.point_3') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.reschedule.point_4') }}</li>
+                    </ul>
+                </article>
+
+                <article class="mk-card p-5">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.rental_rules.sections.penalty.title') }}</h2>
+                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                        <li>{{ __('ui.rental_rules.sections.penalty.point_1') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.penalty.point_2') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.penalty.point_3') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.penalty.point_4') }}</li>
+                        <li>{{ __('ui.rental_rules.sections.penalty.point_5') }}</li>
+                    </ul>
+                </article>
+            </div>
+
+            <article class="mk-card p-5">
+                <h2 class="text-lg font-semibold text-blue-700 dark:text-blue-400">{{ __('ui.rental_rules.user_flow_title') }}</h2>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{{ __('ui.rental_rules.user_flow_intro') }}</p>
+                <ol class="mt-4 space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_1') }}</li>
+                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_2') }}</li>
+                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_3') }}</li>
+                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_4') }}</li>
+                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_5') }}</li>
+                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_6') }}</li>
+                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_7') }}</li>
+                </ol>
+            </article>
+
+            <article class="mk-card bg-gradient-to-br from-blue-50 to-white p-5 dark:from-blue-950/35 dark:to-slate-950">
+                <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">{{ $rulesOperationalTitle }}</h2>
+                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                    {{ __('ui.rental_rules.operational_note') }}
+                </p>
+                <div class="mt-4 flex flex-wrap gap-3">
+                    <a href="{{ route('catalog') }}" class="mk-button-primary">
+                        {{ $rulesPrimaryCta }}
+                    </a>
                     <button
                         type="button"
-                        @click="contactModalOpen = false"
-                        class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:border-blue-200 hover:text-blue-600"
-                        aria-label="{{ __('ui.actions.close') }}"
+                        @click="contactModalOpen = true"
+                        class="mk-button-secondary"
                     >
-                        ✕
+                        {{ $rulesSecondaryCta }}
                     </button>
                 </div>
+            </article>
 
-                <div class="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <div class="space-y-1 text-sm leading-relaxed text-slate-700">
-                            @if ($contactAddressTitle)
-                                <p class="font-semibold text-slate-900">{{ $contactAddressTitle }}</p>
-                            @endif
-                            @foreach ($contactAddressRest as $addressLine)
-                                <p>{{ $addressLine }}</p>
-                            @endforeach
+            <div
+                x-cloak
+                x-show="contactModalOpen"
+                x-transition.opacity
+                class="fixed inset-0 z-[80] flex items-center justify-center bg-slate-900/60 p-4"
+                @click.self="contactModalOpen = false"
+                @keydown.escape.window="contactModalOpen = false"
+            >
+                <div class="w-full max-w-3xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl sm:p-6 dark:border-slate-800 dark:bg-slate-950">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('ui.contact.title') }}</p>
+                            <h2 class="mt-1 text-xl font-bold text-slate-900 dark:text-slate-50">{{ __('ui.contact.info_title') }}</h2>
+                            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ __('ui.contact.subtitle') }}</p>
                         </div>
+                        <button
+                            type="button"
+                            @click="contactModalOpen = false"
+                            class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:border-blue-200 hover:text-blue-600 dark:border-slate-800 dark:hover:border-blue-500/40"
+                            aria-label="{{ __('ui.actions.close') }}"
+                        >
+                            ✕
+                        </button>
+                    </div>
 
-                        <div class="mt-4">
-                            <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ __('ui.contact.labels.whatsapp') }}</p>
-                            <div class="mt-2 flex flex-wrap gap-2">
-                                @forelse ($contactWhatsappEntries as $whatsappNumber)
-                                    @php $whatsappHref = $buildWhatsappHref($whatsappNumber); @endphp
-                                    @if ($whatsappHref)
-                                        <a
-                                            href="{{ $whatsappHref }}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-                                        >
-                                            {{ $whatsappNumber }}
-                                        </a>
+                    <div class="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+                        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/60">
+                            <div class="space-y-1 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                                @if ($contactAddressTitle)
+                                    <p class="font-semibold text-slate-900 dark:text-slate-50">{{ $contactAddressTitle }}</p>
+                                @endif
+                                @foreach ($contactAddressRest as $addressLine)
+                                    <p>{{ $addressLine }}</p>
+                                @endforeach
+                            </div>
+
+                            <div class="mt-4">
+                                <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">{{ __('ui.contact.labels.whatsapp') }}</p>
+                                <div class="mt-2 flex flex-wrap gap-2">
+                                    @forelse ($contactWhatsappEntries as $whatsappNumber)
+                                        @php $whatsappHref = $buildWhatsappHref($whatsappNumber); @endphp
+                                        @if ($whatsappHref)
+                                            <a
+                                                href="{{ $whatsappHref }}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+                                            >
+                                                {{ $whatsappNumber }}
+                                            </a>
+                                        @else
+                                            <span class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white">
+                                                {{ $whatsappNumber }}
+                                            </span>
+                                        @endif
+                                    @empty
+                                        <span class="text-sm text-slate-700 dark:text-slate-300">{{ $contactWhatsapp }}</span>
+                                    @endforelse
+                                </div>
+                            </div>
+
+                            <div class="mt-4 space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                                <p>
+                                    <span class="font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.contact.labels.email') }}:</span>
+                                    <a href="mailto:{{ $contactEmail }}" class="break-all text-blue-700 hover:text-blue-800 dark:text-blue-400">{{ $contactEmail }}</a>
+                                </p>
+                                <p>
+                                    <span class="font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.contact.labels.instagram') }}:</span>
+                                    @if ($instagramUrl)
+                                        <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:text-blue-800 dark:text-blue-400">{{ $contactInstagram }}</a>
                                     @else
-                                        <span class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white">
-                                            {{ $whatsappNumber }}
-                                        </span>
+                                        {{ $contactInstagram }}
                                     @endif
-                                @empty
-                                    <span class="text-sm text-slate-700">{{ $contactWhatsapp }}</span>
-                                @endforelse
+                                </p>
                             </div>
                         </div>
 
-                        <div class="mt-4 space-y-2 text-sm text-slate-700">
-                            <p>
-                                <span class="font-semibold text-slate-900">{{ __('ui.contact.labels.email') }}:</span>
-                                <a href="mailto:{{ $contactEmail }}" class="break-all text-blue-700 hover:text-blue-800">{{ $contactEmail }}</a>
-                            </p>
-                            <p>
-                                <span class="font-semibold text-slate-900">{{ __('ui.contact.labels.instagram') }}:</span>
-                                @if ($instagramUrl)
-                                    <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:text-blue-800">{{ $contactInstagram }}</a>
+                        <div class="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950">
+                            <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.contact.map_title') }}</p>
+                            <div class="mt-2 overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800">
+                                @if ($contactMapEmbed)
+                                    <div class="[&>iframe]:h-[220px] [&>iframe]:w-full [&>iframe]:border-0">
+                                        {!! $contactMapEmbed !!}
+                                    </div>
                                 @else
-                                    {{ $contactInstagram }}
+                                    <div class="flex h-[220px] items-center justify-center px-3 text-center text-sm text-slate-500 dark:text-slate-400">
+                                        {{ __('ui.contact.map_empty') }}
+                                    </div>
                                 @endif
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="rounded-xl border border-slate-200 bg-white p-3">
-                        <p class="text-sm font-semibold text-slate-900">{{ __('ui.contact.map_title') }}</p>
-                        <div class="mt-2 overflow-hidden rounded-lg border border-slate-200">
-                            @if ($contactMapEmbed)
-                                <div class="[&>iframe]:h-[220px] [&>iframe]:w-full [&>iframe]:border-0">
-                                    {!! $contactMapEmbed !!}
-                                </div>
-                            @else
-                                <div class="flex h-[220px] items-center justify-center px-3 text-center text-sm text-slate-500">
-                                    {{ __('ui.contact.map_empty') }}
-                                </div>
-                            @endif
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </section>
 @endsection
