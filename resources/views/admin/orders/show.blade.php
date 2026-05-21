@@ -57,7 +57,7 @@
                 <h3 class="manake-heading text-lg font-black text-slate-950 dark:text-white">{{ __('Item Pesanan') }}</h3>
                 <div class="mt-4 space-y-3">
                     @forelse ($order->items as $item)
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-2xl border border-slate-200 p-4">
                             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
                                     <p class="font-semibold text-slate-900">{{ $item->equipment?->name ?? __('Alat') }}</p>
@@ -72,11 +72,11 @@
                 </div>
 
                 <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <div class="rounded-xl bg-slate-50 p-3 text-sm text-slate-600">
+                    <div class="rounded-2xl bg-slate-50 p-3 text-sm text-slate-600">
                         <p><span class="font-semibold text-slate-800">{{ __('Pembayaran:') }}</span> {{ $paymentLabel($order->status_pembayaran) }}</p>
                         <p class="mt-1"><span class="font-semibold text-slate-800">{{ __('Status Sewa:') }}</span> {{ $statusLabel($order->status_pesanan) }}</p>
                     </div>
-                    <div class="rounded-xl bg-slate-50 p-3 text-sm text-slate-600">
+                    <div class="rounded-2xl bg-slate-50 p-3 text-sm text-slate-600">
                         <p><span class="font-semibold text-slate-800">{{ __('Subtotal:') }}</span> {{ $formatIdr($order->total_amount) }}</p>
                         <p class="mt-1"><span class="font-semibold text-slate-800">{{ __('Biaya Tambahan:') }}</span> {{ $formatIdr($order->additional_fee ?? 0) }}</p>
                         <p class="mt-1"><span class="font-semibold text-slate-800">{{ __('Total Akhir:') }}</span> {{ $formatIdr($order->grand_total) }}</p>
@@ -107,7 +107,7 @@
 
                     <div>
                         <label class="text-xs font-semibold text-slate-500">{{ __('Status Pembayaran') }}</label>
-                        <select name="status_pembayaran" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                        <select name="status_pembayaran" class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                             @foreach (['pending', 'paid', 'failed', 'expired', 'refunded'] as $paymentStatus)
                                 @php
                                     $paymentStatusText = match ($paymentStatus) {
@@ -127,7 +127,7 @@
 
                     <div>
                         <label class="text-xs font-semibold text-slate-500">{{ __('Status Pesanan') }}</label>
-                        <select name="status_pesanan" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                        <select name="status_pesanan" class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
                             @foreach ($statusPesananOptions as $orderStatus)
                                 <option value="{{ $orderStatus }}" {{ $order->status_pesanan === $orderStatus ? 'selected' : '' }}>
                                     {{ $statusLabel($orderStatus) }}
@@ -144,7 +144,7 @@
                             step="1000"
                             name="additional_fee"
                             value="{{ old('additional_fee', (int) ($order->additional_fee ?? 0)) }}"
-                            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
+                            class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
                         >
                     </div>
 
@@ -155,7 +155,7 @@
                             name="additional_fee_note"
                             value="{{ old('additional_fee_note', $order->additional_fee_note) }}"
                             placeholder="{{ __('Contoh: Denda keterlambatan 1 hari') }}"
-                            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
+                            class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
                         >
                     </div>
 
@@ -165,13 +165,13 @@
                             name="admin_note"
                             rows="3"
                             placeholder="{{ __('Contoh: Barang ditemukan rusak pada bagian tombol record') }}"
-                            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
+                            class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
                         >{{ old('admin_note', $order->admin_note) }}</textarea>
                     </div>
 
                     <p class="text-xs text-slate-500">{{ __('Setiap perubahan status/biaya/catatan otomatis dikirim ke notifikasi pengguna.') }}</p>
 
-                    <button class="inline-flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
+                    <button class="inline-flex w-full items-center justify-center rounded-2xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
                         {{ __('Simpan & Kirim Notifikasi') }}
                     </button>
                 </form>
@@ -184,7 +184,7 @@
 
                     <div class="mt-3 space-y-2.5">
                         @forelse (($auditLogs ?? collect()) as $log)
-                            <article class="rounded-xl border border-slate-200 px-3 py-3">
+                            <article class="rounded-2xl border border-slate-200 px-3 py-3">
                                 <div class="flex items-start justify-between gap-3">
                                     <p class="text-xs font-semibold text-slate-800">{{ $log['summary'] }}</p>
                                     <span class="shrink-0 text-[11px] text-slate-400">{{ optional($log['created_at'])->format('d M H:i') }}</span>
@@ -192,7 +192,7 @@
                                 <p class="mt-1 text-[11px] text-slate-400">{{ $log['admin_name'] ?: __('Sistem') }}</p>
                             </article>
                         @empty
-                            <div class="rounded-xl border border-dashed border-slate-200 px-3 py-4 text-sm text-slate-500">
+                            <div class="rounded-2xl border border-dashed border-slate-200 px-3 py-4 text-sm text-slate-500">
                                 {{ __('Belum ada log untuk pesanan ini.') }}
                             </div>
                         @endforelse

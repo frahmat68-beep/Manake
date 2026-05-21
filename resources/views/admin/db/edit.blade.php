@@ -37,7 +37,7 @@
         </div>
 
         @if ($errors->any())
-            <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            <div class="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
                 {{ $errors->first() }}
             </div>
         @endif
@@ -66,14 +66,14 @@
                                 <textarea
                                     name="{{ $field }}"
                                     rows="3"
-                                    class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+                                    class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
                                 >{{ old($field, $value) }}</textarea>
                             @else
                                 <input
                                     type="{{ $inputType }}"
                                     name="{{ $field }}"
                                     value="{{ old($field, $value) }}"
-                                    class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+                                    class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
                                 >
                             @endif
                         </div>
@@ -86,7 +86,7 @@
                 <span>{{ __('Saya memahami perubahan ini akan langsung mengubah database.') }}</span>
             </label>
 
-            <button class="w-full rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition">
+            <button class="w-full rounded-2xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition">
                 {{ __('Simpan Data') }}
             </button>
         </form>
