@@ -9,6 +9,17 @@
     $guestRentalSnapshot = collect($guestRentalSnapshot ?? []);
     $recentUserOrders = collect($recentUserOrders ?? []);
     $isLoggedIn = auth('web')->check();
+    $footerWhatsapp = setting('footer.whatsapp', setting('social_whatsapp', site_content('footer.whatsapp', setting('footer_phone', '+62 812-3456-7890'))));
+    $footerWhatsappEntries = collect(preg_split('/\s*(?:\/|\||,)\s*/', (string) $footerWhatsapp))
+        ->map(static fn ($item) => trim((string) $item))
+        ->filter()
+        ->values();
+    $footerAddress = setting('footer.address', setting('footer_address', site_content('footer.address', __('app.footer.address_body'))));
+    $footerAddressLines = collect(preg_split('/\R+/', trim((string) $footerAddress)))
+        ->map(static fn ($line) => trim((string) $line))
+        ->filter()
+        ->values();
+    $footerAddressTitle = $footerAddressLines->first();
 
     $heroStats = [
         ['label' => __('Ready Items'), 'value' => $productsReady->count()],
@@ -48,19 +59,19 @@
                         Professional Rental Equipment
                     </div>
                     <h1 class="ui-title text-4xl font-black tracking-tight text-white sm:text-6xl">
-                    {{ $heroTitle ?: __('Rental gear that feels premium, fast, and simple.') }}
-                </h1>
+                        {{ $heroTitle ?: __('Rental gear that feels premium, fast, and simple.') }}
+                    </h1>
                     <p class="max-w-2xl text-lg leading-8 text-slate-300">
-                    {{ $heroSubtitle ?: __('Rent cameras, lighting, audio, drone, and production gear through a cleaner booking flow built for creators and production teams.') }}
-                </p>
+                        {{ $heroSubtitle ?: __('Rent cameras, lighting, audio, drone, and production gear through a cleaner booking flow built for creators and production teams.') }}
+                    </p>
 
                     <div class="flex flex-wrap gap-3">
                         <a href="{{ route('catalog') }}" class="btn-primary px-6 py-4 text-sm shadow-lg shadow-blue-600/20">
-                        {{ __('Browse Catalog') }}
-                    </a>
+                            {{ __('Browse Catalog') }}
+                        </a>
                         <a href="{{ route('availability.board') }}" class="btn-secondary border-white/15 bg-white/10 px-6 py-4 text-sm text-white backdrop-blur hover:bg-white/15">
-                        {{ __('Check Availability') }}
-                    </a>
+                            {{ __('Check Availability') }}
+                        </a>
                     </div>
 
                     <div class="flex flex-wrap gap-2 pt-2">
@@ -72,15 +83,13 @@
                     </div>
 
                     <div class="grid gap-3 sm:grid-cols-3">
-                    @foreach ($heroStats as $stat)
+                        @foreach ($heroStats as $stat)
                             <div class="rounded-[1.4rem] border border-white/10 bg-white/7 p-4 backdrop-blur">
                                 <p class="text-[10px] font-black uppercase tracking-[0.22em] text-slate-300">{{ $stat['label'] }}</p>
                                 <p class="mt-2 text-2xl font-black text-white">{{ $stat['value'] }}</p>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-
+                        @endforeach
+                    </div>
                 </div>
 
                 <div class="relative">
@@ -96,13 +105,34 @@
 
                         <div class="mt-5 grid gap-3 sm:grid-cols-2">
                             @foreach ($productsReady->take(4) as $item)
+                                @php
+                                    $itemImage = (string) data_get($item, 'image_url', '');
+                                    $hasRealImage = $itemImage !== '' && ! str_contains($itemImage, 'MANAKE-FAV-M.png');
+                                    $itemCategory = (string) data_get($item, 'category.name', __('Equipment'));
+                                    $itemCategoryInitial = mb_strtoupper(mb_substr($itemCategory !== '' ? $itemCategory : __('Equipment'), 0, 1));
+                                @endphp
                                 <a href="{{ route('product.show', $item->slug) }}" class="group overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/6 transition hover:-translate-y-1 hover:bg-white/10">
-                                    <div class="aspect-[4/3] overflow-hidden bg-slate-800">
-                                        <img src="{{ data_get($item, 'image_url', site_asset('MANAKE-FAV-M.png')) }}" alt="{{ data_get($item, 'name') }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]">
+                                    <div class="relative aspect-[4/3] overflow-hidden bg-slate-800">
+                                        @if ($hasRealImage)
+                                            <img src="{{ $itemImage }}" alt="{{ data_get($item, 'name') }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]">
+                                        @else
+                                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(37,99,235,0.86),_rgba(15,23,42,0.98)_62%)]"></div>
+                                            <div class="absolute inset-0 bg-[linear-gradient(135deg,rgba(59,130,246,0.18),transparent_35%,rgba(255,255,255,0.05)_50%,transparent_72%)]"></div>
+                                            <div class="absolute inset-0 flex items-center justify-center">
+                                                <div class="flex h-24 w-24 items-center justify-center rounded-[1.7rem] border border-white/10 bg-white/6 text-5xl font-black tracking-tight text-white/90 shadow-[0_18px_40px_rgba(15,23,42,0.28)] backdrop-blur">
+                                                    {{ $itemCategoryInitial }}
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/55 via-transparent to-transparent"></div>
+                                        <span class="absolute left-3 top-3 rounded-full border border-white/15 bg-slate-950/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-blue-100">
+                                            {{ __('Ready') }}
+                                        </span>
                                     </div>
-                                    <div class="p-4">
+                                    <div class="space-y-1 p-4">
                                         <p class="truncate text-sm font-bold text-white">{{ data_get($item, 'name') }}</p>
-                                        <p class="mt-1 text-xs text-slate-300">{{ __('Starting from') }} {{ 'Rp ' . number_format((int) data_get($item, 'price_per_day', 0), 0, ',', '.') }} / day</p>
+                                        <p class="truncate text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-300">{{ $itemCategory }}</p>
+                                        <p class="text-xs text-slate-300">{{ __('Starting from') }} {{ 'Rp ' . number_format((int) data_get($item, 'price_per_day', 0), 0, ',', '.') }} / day</p>
                                     </div>
                                 </a>
                             @endforeach
@@ -127,6 +157,51 @@
                         <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ $step['body'] }}</p>
                     </article>
                 @endforeach
+            </div>
+        </div>
+    </section>
+
+    <section class="ui-section">
+        <div class="ui-container">
+            <div class="ui-card grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+                <div>
+                    <div class="ui-kicker">{{ __('Location') }}</div>
+                    <h2 class="ui-heading mt-3 text-3xl font-black text-slate-950 dark:text-white">{{ __('Visit Manake Studio & Rental') }}</h2>
+                    <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ __('See the warehouse, pickup area, and service point before booking. We keep the location easy to find and easy to verify.') }}</p>
+                    <div class="mt-5 space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                        <p><span class="font-semibold text-slate-900 dark:text-white">{{ __('Address:') }}</span> {{ $footerAddressTitle ?? __('Manake Studio & Rental') }}</p>
+                        <p><span class="font-semibold text-slate-900 dark:text-white">{{ __('Support:') }}</span> {{ $footerWhatsappEntries->first() ?? $footerWhatsapp }}</p>
+                    </div>
+                </div>
+                <div class="overflow-hidden rounded-[1.75rem] border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900">
+                    <div class="relative min-h-[260px] overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.24),_transparent_32%),linear-gradient(135deg,rgba(15,23,42,0.96),rgba(30,41,59,0.92))] p-6 text-white">
+                        <div class="absolute inset-0 bg-[linear-gradient(120deg,transparent_0,rgba(255,255,255,0.05)_45%,transparent_70%)]"></div>
+                        <div class="relative flex h-full flex-col justify-between">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="space-y-2">
+                                    <p class="text-[10px] font-black uppercase tracking-[0.26em] text-blue-200">{{ __('Find us here') }}</p>
+                                    <h3 class="text-2xl font-black leading-tight text-white">{{ __('Manake Studio & Rental') }}</h3>
+                                </div>
+                                <span class="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-bold text-blue-100">{{ __('Jakarta / Depok Area') }}</span>
+                            </div>
+
+                            <div class="grid gap-3 sm:grid-cols-3">
+                                <div class="rounded-2xl border border-white/10 bg-white/8 p-4 backdrop-blur">
+                                    <p class="text-[10px] font-black uppercase tracking-[0.22em] text-blue-200">{{ __('Pickup') }}</p>
+                                    <p class="mt-2 text-sm font-bold text-white">{{ __('Fast handover counter') }}</p>
+                                </div>
+                                <div class="rounded-2xl border border-white/10 bg-white/8 p-4 backdrop-blur">
+                                    <p class="text-[10px] font-black uppercase tracking-[0.22em] text-blue-200">{{ __('Coverage') }}</p>
+                                    <p class="mt-2 text-sm font-bold text-white">{{ __('Events, creators, productions') }}</p>
+                                </div>
+                                <div class="rounded-2xl border border-white/10 bg-white/8 p-4 backdrop-blur">
+                                    <p class="text-[10px] font-black uppercase tracking-[0.22em] text-blue-200">{{ __('Access') }}</p>
+                                    <p class="mt-2 text-sm font-bold text-white">{{ __('Easy to verify before booking') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

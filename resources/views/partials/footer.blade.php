@@ -109,15 +109,22 @@
         <div>
             <h3 class="text-sm font-semibold text-white">{{ __('app.footer.location_title') }}</h3>
             <div class="mt-3 overflow-hidden rounded-2xl border border-blue-300/30 bg-blue-950/35">
-                @if (! empty($footerMapEmbed))
-                    <div class="min-h-[180px] [&>iframe]:h-[220px] [&>iframe]:w-full [&>iframe]:border-0">
-                        {!! $footerMapEmbed !!}
+                <div class="border-b border-blue-300/15 px-4 py-3">
+                    <p class="text-[10px] font-black uppercase tracking-[0.24em] text-blue-200">{{ __('app.footer.location_title') }}</p>
+                    <p class="mt-1 text-xs leading-relaxed text-blue-100/80">{{ $footerAddressTitle ?: __('Manake Studio & Rental') }}</p>
+                </div>
+                <div class="relative min-h-[180px] bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.16),_transparent_26%),linear-gradient(135deg,rgba(15,23,42,0.96),rgba(30,41,59,0.92))]">
+                    @if (! empty($footerMapEmbed))
+                        <div class="relative min-h-[220px] [&>iframe]:h-[220px] [&>iframe]:w-full [&>iframe]:border-0">
+                            {!! $footerMapEmbed !!}
+                        </div>
+                    @endif
+                    <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(15,23,42,0.24),transparent_40%)]"></div>
+                    <div class="pointer-events-none absolute bottom-3 left-3 right-3 flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-slate-950/55 px-3 py-2 text-xs text-blue-100/90 backdrop-blur">
+                        <span class="font-semibold">{{ $footerAddressTitle ?: __('Manake Studio & Rental') }}</span>
+                        <span class="rounded-full border border-white/10 bg-white/8 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-blue-200">{{ __('Open in maps') }}</span>
                     </div>
-                @else
-                    <div class="flex h-[220px] items-center justify-center px-4 text-center text-xs text-blue-100/85">
-                        {{ __('app.footer.location_empty') }}
-                    </div>
-                @endif
+                </div>
             </div>
         </div>
     </div>
