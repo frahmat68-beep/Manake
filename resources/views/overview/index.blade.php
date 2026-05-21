@@ -36,7 +36,7 @@
     </div>
 
     @if (session('error'))
-        <div class="mt-6 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-300">
+        <div class="mt-6 rounded-2xl border border-rose-200/80 bg-rose-50/80 px-4 py-3 text-sm text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-300">
             {{ session('error') }}
         </div>
     @endif
@@ -76,7 +76,7 @@
                                 $itemUnits = (int) ($order->items?->sum('qty') ?? 0);
                                 $canReschedule = $canRescheduleOrder($order);
                             @endphp
-                            <article class="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-950">
+                            <article class="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
                                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                     <div>
                                         <p class="break-all text-sm font-semibold text-blue-700 dark:text-blue-400">{{ $orderNumber }}</p>
@@ -110,7 +110,7 @@
                     </div>
                 @else
                     <div class="flex h-full items-center">
-                        <div class="w-full rounded-xl border border-dashed border-slate-200/80 bg-slate-50/70 p-6 text-center dark:border-slate-800 dark:bg-slate-900/60">
+                        <div class="w-full rounded-2xl border border-dashed border-slate-200/80 bg-slate-50/70 p-6 text-center dark:border-slate-800 dark:bg-slate-900/60">
                             <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ __('ui.overview.empty_active_title') }}</p>
                             <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">{{ __('ui.overview.empty_active_body') }}</p>
                             <a href="{{ route('catalog') }}" class="btn-primary mt-4 inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-semibold">
@@ -197,7 +197,7 @@
     >
         <div class="absolute inset-0 bg-slate-950/55" data-close-invoice-modal></div>
 
-        <div class="relative z-10 flex h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-2xl">
+        <div class="relative z-10 flex h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-2xl">
             <div class="flex items-center justify-between bg-blue-600 px-4 py-3 text-white sm:px-5">
                 <div>
                     <h3 id="order-invoice-modal-title" class="text-base font-semibold sm:text-lg">
