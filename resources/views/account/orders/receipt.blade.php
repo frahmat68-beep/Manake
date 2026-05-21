@@ -994,7 +994,7 @@
 
                     <details class="more-details">
                         <summary>{{ __('ui.invoice.sections.more_details') }}</summary>
-                        <div class="meta-list" style="margin-top: 8px;">
+                        <div class="meta-list mt-2">
                             <div class="meta-row">
                                 <span>{{ __('ui.invoice.meta.printed_at') }}</span>
                                 <span>{{ $formatDate($printedAt) }}</span>
