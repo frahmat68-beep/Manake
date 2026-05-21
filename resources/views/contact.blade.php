@@ -87,13 +87,13 @@
                     </div>
 
                     <div class="mt-5 grid gap-3 sm:grid-cols-2">
-                        <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+                        <div class="rounded-2xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
                             <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ __('ui.contact.labels.email') }}</p>
                             <a href="mailto:{{ $contactEmail }}" class="mt-1 block break-all text-sm font-bold text-slate-800 hover:text-blue-700">
                                 {{ $contactEmail }}
                             </a>
                         </div>
-                        <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+                        <div class="rounded-2xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
                             <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ __('ui.contact.labels.instagram') }}</p>
                             @if ($instagramUrl)
                                 <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="mt-1 block text-sm font-bold text-slate-800 hover:text-blue-700">
@@ -108,7 +108,7 @@
 
                 <div class="mk-card p-6">
                     <h2 class="text-lg font-bold text-slate-900">{{ __('ui.contact.map_title') }}</h2>
-                    <div class="mt-4 overflow-hidden rounded-xl border border-slate-200">
+                    <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200/80">
                         @if ($contactMapEmbed)
                             <div class="[&>iframe]:h-[280px] [&>iframe]:w-full [&>iframe]:border-0">
                                 {!! $contactMapEmbed !!}
@@ -124,4 +124,3 @@
         </div>
     </section>
 @endsection
-

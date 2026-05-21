@@ -20,12 +20,12 @@
             <div class="grid gap-6 lg:grid-cols-2">
                 <article class="mk-card p-6">
                     <h2 class="text-lg font-bold text-slate-900">{{ __('Mengapa Memilih Kami?') }}</h2>
-                    <ul class="mt-4 space-y-2 text-sm text-slate-600">
-                        <li><strong>{{ __('Alat Berkualitas Tinggi:') }}</strong> {{ __('Kamera, lighting, dan audio dirawat secara profesional untuk performa terbaik.') }}</li>
-                        <li><strong>{{ __('Proses Cepat & Mudah:') }}</strong> {{ __('Sistem booking online instan dengan penanggalan real-time yang akurat.') }}</li>
-                        <li><strong>{{ __('Keamanan Transaksi:') }}</strong> {{ __('Pembayaran aman terintegrasi otomatis menggunakan Midtrans Snap.') }}</li>
-                        <li><strong>{{ __('Reschedule Fleksibel:') }}</strong> {{ __('Kemudahan mengubah tanggal sewa sebelum pengambilan barang.') }}</li>
-                        <li><strong>{{ __('Dukungan Admin:') }}</strong> {{ __('Tim kami siap melayani koordinasi pickup, pengembalian, dan konsultasi alat.') }}</li>
+                    <ul class="mt-4 space-y-3 text-sm text-slate-600">
+                        <li class="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3"><strong class="text-slate-900">{{ __('Alat Berkualitas Tinggi:') }}</strong> {{ __('Kamera, lighting, dan audio dirawat secara profesional untuk performa terbaik.') }}</li>
+                        <li class="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3"><strong class="text-slate-900">{{ __('Proses Cepat & Mudah:') }}</strong> {{ __('Sistem booking online instan dengan penanggalan real-time yang akurat.') }}</li>
+                        <li class="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3"><strong class="text-slate-900">{{ __('Keamanan Transaksi:') }}</strong> {{ __('Pembayaran aman terintegrasi otomatis menggunakan Midtrans Snap.') }}</li>
+                        <li class="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3"><strong class="text-slate-900">{{ __('Reschedule Fleksibel:') }}</strong> {{ __('Kemudahan mengubah tanggal sewa sebelum pengambilan barang.') }}</li>
+                        <li class="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3"><strong class="text-slate-900">{{ __('Dukungan Admin:') }}</strong> {{ __('Tim kami siap melayani koordinasi pickup, pengembalian, dan konsultasi alat.') }}</li>
                     </ul>
                 </article>
 
@@ -48,4 +48,3 @@
         </div>
     </section>
 @endsection
-
