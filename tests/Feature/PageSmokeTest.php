@@ -48,8 +48,8 @@ class PageSmokeTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Rental Snapshot Saat Ini');
-        $response->assertSee('Lihat board');
+        $response->assertSee('Professional Rental Equipment');
+        $response->assertSee('Browse Catalog');
     }
 
     public function test_login_page_uses_relative_logo_assets(): void

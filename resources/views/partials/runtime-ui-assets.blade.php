@@ -1,30 +1,20 @@
 @php
     $inlineAppCss = null;
-    $inlineThemeCss = null;
     $manifestPath = public_path('build/manifest.json');
     $useViteFallback = false;
 
     if (is_file($manifestPath)) {
         $manifest = json_decode((string) file_get_contents($manifestPath), true);
         $appCssPath = is_array($manifest) ? ($manifest['resources/css/app.css']['file'] ?? null) : null;
-        $themeCssPath = is_array($manifest) ? ($manifest['resources/css/theme.css']['file'] ?? null) : null;
-
         if (is_string($appCssPath) && $appCssPath !== '') {
             $fullAppCssPath = public_path('build/' . ltrim($appCssPath, '/'));
             if (is_file($fullAppCssPath)) {
                 $inlineAppCss = file_get_contents($fullAppCssPath);
             }
         }
-
-        if (is_string($themeCssPath) && $themeCssPath !== '') {
-            $fullThemeCssPath = public_path('build/' . ltrim($themeCssPath, '/'));
-            if (is_file($fullThemeCssPath)) {
-                $inlineThemeCss = file_get_contents($fullThemeCssPath);
-            }
-        }
     }
 
-    if ((! is_string($inlineAppCss) || $inlineAppCss === '') || (! is_string($inlineThemeCss) || $inlineThemeCss === '')) {
+    if (! is_string($inlineAppCss) || $inlineAppCss === '') {
         $useViteFallback = is_file(public_path('hot'));
     }
 
@@ -33,15 +23,10 @@
 
 @if (is_string($inlineAppCss) && $inlineAppCss !== '')
     <style id="manake-inline-app-css">{!! $inlineAppCss !!}</style>
-@endif
-
-@if (is_string($inlineThemeCss) && $inlineThemeCss !== '')
-    <style id="manake-inline-theme-css">{!! $inlineThemeCss !!}</style>
 @elseif ($useViteFallback)
-    @vite(['resources/css/app.css', 'resources/css/theme.css'])
+    @vite(['resources/css/app.css'])
 @else
     <style id="manake-inline-app-css"></style>
-    <style id="manake-inline-theme-css"></style>
 @endif
 
 @if ($isPublicHome)
