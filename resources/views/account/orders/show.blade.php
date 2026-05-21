@@ -191,20 +191,20 @@
             <div id="payment-alert" class="hidden rounded-xl border px-4 py-3 text-sm"></div>
 
             @if (session('error'))
-                <div class="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                <div class="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-300">
                     {{ session('error') }}
                 </div>
             @endif
 
             @if (session('success'))
-                <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-300">
                     {{ session('success') }}
                 </div>
             @endif
 
             @if ($rescheduleConflictPopupMessage)
                 <div id="reschedule-conflict-popup" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/55 px-4">
-                    <div class="w-full max-w-md rounded-2xl border border-rose-200 bg-white p-5 shadow-2xl">
+                    <div class="w-full max-w-md rounded-2xl border border-rose-200 bg-white p-5 shadow-2xl dark:border-rose-900/40 dark:bg-slate-950">
                         <div class="flex items-start justify-between gap-3">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-600">{{ $orderScheduleUnavailableTitle }}</p>
@@ -219,7 +219,7 @@
                                 ×
                             </button>
                         </div>
-                        <p class="mt-3 rounded-xl border border-rose-100 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+                        <p class="mt-3 rounded-xl border border-rose-100 bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-300">
                             {{ $rescheduleConflictPopupMessage }}
                         </p>
                         <div class="mt-4 flex justify-end">
@@ -248,7 +248,7 @@
 
             <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr,340px]">
                 <div class="space-y-6">
-                    <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <article class="mk-card rounded-2xl p-6">
                         <div class="flex flex-wrap items-start justify-between gap-4">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-[0.08em] text-blue-500">{{ $orderNumberLabel }}</p>
@@ -286,7 +286,7 @@
                         </div>
                     </article>
 
-                    <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <article class="mk-card rounded-2xl p-6">
                         <h2 class="text-lg font-semibold text-blue-700">{{ $orderProgressTitle }}</h2>
                         <div class="mt-4 space-y-3">
                             @foreach ($timeline as $step)
@@ -322,7 +322,7 @@
                         @endif
                     </article>
 
-                    <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <article class="mk-card rounded-2xl p-6">
                         <h2 class="text-lg font-semibold text-blue-700">{{ $orderItemsTitle }}</h2>
                         <div class="mt-4 space-y-3">
                             @forelse ($order->items as $item)
@@ -347,7 +347,7 @@
                     </article>
 
                     @if (\Illuminate\Support\Facades\Schema::hasTable('order_notifications') && $order->relationLoaded('notifications') && $order->notifications->isNotEmpty())
-                        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                        <article class="mk-card rounded-2xl p-6">
                             <h2 class="text-lg font-semibold text-slate-900">{{ $orderNotificationsTitle }}</h2>
                             <div class="mt-4 space-y-3">
                                 @foreach ($order->notifications as $notification)
@@ -362,7 +362,7 @@
                     @endif
                 </div>
 
-                <aside class="h-fit space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <aside class="h-fit space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-950">
                     <h2 class="text-lg font-semibold text-blue-700">{{ $orderPaymentTitle }}</h2>
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between text-slate-600">

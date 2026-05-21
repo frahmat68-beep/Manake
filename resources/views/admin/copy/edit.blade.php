@@ -194,23 +194,23 @@
 @section('content')
     <div class="mx-auto max-w-7xl space-y-6">
         @if (session('success'))
-            <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="mk-card border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-300">
                 {{ session('success') }}
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            <div class="mk-card border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-300">
                 {{ $errors->first() }}
             </div>
         @endif
 
-        <section class="card rounded-2xl p-6 shadow-sm">
+        <section class="mk-card p-6">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                    <h2 class="text-xl font-semibold text-slate-900">{{ __($sectionMeta['label']) }}</h2>
-                    <p class="mt-1 text-sm text-slate-600">{{ __($sectionMeta['description']) }}</p>
-                    <p class="mt-1 text-xs text-slate-500">{{ __('Semua field di halaman ini khusus edit teks yang tampil ke pengguna. Field sudah dirapikan per kontainer tampilan supaya lebih mudah dikelola.') }}</p>
+                    <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-50">{{ __($sectionMeta['label']) }}</h2>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{{ __($sectionMeta['description']) }}</p>
+                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ __('Semua field di halaman ini khusus edit teks yang tampil ke pengguna. Field sudah dirapikan per kontainer tampilan supaya lebih mudah dikelola.') }}</p>
                 </div>
                 <a href="{{ route('admin.dashboard') }}" class="btn-secondary inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition">
                     {{ __('Kembali ke Dashboard') }}
@@ -219,8 +219,8 @@
         </section>
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-[260px,1fr]">
-            <aside class="card h-fit rounded-2xl p-4 shadow-sm">
-                <p class="px-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{{ __('Halaman Pengguna') }}</p>
+            <aside class="mk-card h-fit rounded-2xl p-4">
+                <p class="px-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">{{ __('Halaman Pengguna') }}</p>
                 <nav class="mt-3 space-y-1">
                     @foreach ($sections as $sectionKey => $meta)
                         <a
@@ -233,7 +233,7 @@
                 </nav>
             </aside>
 
-            <section class="card rounded-2xl p-6 shadow-sm">
+            <section class="mk-card rounded-2xl p-6">
                 @php
                     $fieldsByContainer = collect($sectionMeta['fields'])
                         ->map(function ($meta, $fieldName) {
@@ -258,11 +258,11 @@
                     @csrf
 
                     @if ($fieldsByContainer->count() > 1)
-                        <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{{ __('Navigasi Kontainer') }}</p>
+                        <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900/60">
+                            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{{ __('Navigasi Kontainer') }}</p>
                             <div class="mt-2 flex flex-wrap gap-2">
                                 @foreach ($containerAnchors as $container => $anchorId)
-                                    <a href="#{{ $anchorId }}" class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                                    <a href="#{{ $anchorId }}" class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
                                         {{ __($container) }}
                                     </a>
                                 @endforeach
@@ -271,10 +271,10 @@
                     @endif
 
                     @foreach ($fieldsByContainer as $container => $containerFields)
-                        <article id="{{ $containerAnchors[$container] }}" class="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5 scroll-mt-28">
+                        <article id="{{ $containerAnchors[$container] }}" class="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5 scroll-mt-28 dark:border-slate-800 dark:bg-slate-900/60">
                             <div class="mb-4 flex items-center justify-between gap-3">
-                                <h3 class="text-sm font-semibold text-blue-700">{{ __($container) }}</h3>
-                                <span class="rounded-full bg-blue-100 px-2.5 py-1 text-[11px] font-semibold text-blue-700">{{ $containerFields->count() }} {{ __('isian') }}</span>
+                                <h3 class="text-sm font-semibold text-blue-700 dark:text-blue-400">{{ __($container) }}</h3>
+                                <span class="rounded-full bg-blue-100 px-2.5 py-1 text-[11px] font-semibold text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">{{ $containerFields->count() }} {{ __('isian') }}</span>
                             </div>
 
                             <div class="space-y-5">
@@ -290,13 +290,13 @@
                                     <div>
                                         <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                                             <div>
-                                                <label for="{{ $fieldName }}" class="text-sm font-semibold text-slate-900">{{ __($meta['label']) }}</label>
+                                                <label for="{{ $fieldName }}" class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __($meta['label']) }}</label>
                                                 @if (!empty($meta['location']))
-                                                    <p class="text-xs text-slate-500">{{ __('Lokasi tampil:') }} {{ __($meta['location']) }}</p>
+                                                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Lokasi tampil:') }} {{ __($meta['location']) }}</p>
                                                 @endif
                                             </div>
                                             @if ($usingFallback)
-                                                <span class="inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold text-amber-700">
+                                                <span class="inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
                                                     {{ __('Sedang pakai teks default') }}
                                                 </span>
                                             @endif
@@ -307,7 +307,7 @@
                                                 id="{{ $fieldName }}"
                                                 name="{{ $fieldName }}"
                                                 rows="{{ $isTranslationMap ? 12 : 4 }}"
-                                                class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none {{ $isTranslationMap ? 'font-mono leading-relaxed' : '' }}"
+                                                class="input mt-2 w-full rounded-xl px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none {{ $isTranslationMap ? 'font-mono leading-relaxed' : '' }}"
                                             >{{ $currentValue }}</textarea>
                                         @else
                                             <input
@@ -315,16 +315,16 @@
                                                 name="{{ $fieldName }}"
                                                 type="text"
                                                 value="{{ $currentValue }}"
-                                                class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                                                class="input mt-2 w-full rounded-xl px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                                             >
                                         @endif
 
                                         @if ($isTranslationMap)
-                                            <p class="mt-1 text-[11px] text-slate-500">
+                                            <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
                                                 {!! __('Format: <code>translation.key = Teks Baru</code>. Satu baris satu key. Contoh: <code>ui.nav.my_orders = Riwayat Sewa</code>.') !!}
                                             </p>
                                         @else
-                                            <p class="mt-1 text-[11px] text-slate-400">{{ __('Kosongkan field jika mau balik ke teks default bawaan sistem.') }}</p>
+                                            <p class="mt-1 text-[11px] text-slate-400 dark:text-slate-500">{{ __('Kosongkan field jika mau balik ke teks default bawaan sistem.') }}</p>
                                         @endif
                                     </div>
                                 @endforeach
@@ -332,8 +332,8 @@
                         </article>
                     @endforeach
 
-                    <div class="flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                        <p class="text-xs text-slate-500">{{ __('Perubahan langsung tampil di halaman pengguna setelah disimpan.') }}</p>
+                    <div class="flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800">
+                        <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Perubahan langsung tampil di halaman pengguna setelah disimpan.') }}</p>
                         <button type="submit" class="btn-primary inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition">
                             {{ __('Simpan Teks Halaman') }}
                         </button>
