@@ -23,7 +23,7 @@
     <header class="landing-header">
         <div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
             <a href="{{ route('home') }}" class="flex items-center gap-3" aria-label="{{ $brandName }}">
-                <x-brand.image light="MANAKE-FAV-M.png" dark="MANAKE-FAV-M.png" :alt="$brandName" img-class="h-10 w-10 object-contain" />
+                <x-brand.image light="manake-logo-blue.png" dark="manake-logo-blue.png" :alt="$brandName" img-class="h-10 w-auto" />
                 <span class="hidden text-base font-black tracking-tight text-slate-950 sm:inline">{{ $brandName }}</span>
             </a>
 
