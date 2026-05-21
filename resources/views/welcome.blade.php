@@ -36,60 +36,79 @@
     @endif
 
     <section class="ui-section pt-6 sm:pt-8 lg:pt-10">
-        <div class="ui-container grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-            <div class="space-y-6">
-                <div class="ui-kicker">{{ __('Professional Rental Equipment') }}</div>
-                <h1 class="ui-title text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-6xl">
+        <div class="ui-container overflow-hidden rounded-[2rem] border border-slate-200/80 bg-slate-950 text-white shadow-[0_30px_80px_rgba(15,23,42,0.22)]">
+            <div class="relative isolate grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.08fr_0.92fr] lg:p-10">
+                <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.16),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(14,165,233,0.14),_transparent_24%)]"></div>
+                <div class="pointer-events-none absolute -right-24 top-8 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"></div>
+                <div class="pointer-events-none absolute -left-28 bottom-0 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl"></div>
+
+                <div class="relative space-y-6">
+                    <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/8 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-blue-100 backdrop-blur">
+                        <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                        Professional Rental Equipment
+                    </div>
+                    <h1 class="ui-title text-4xl font-black tracking-tight text-white sm:text-6xl">
                     {{ $heroTitle ?: __('Rental gear that feels premium, fast, and simple.') }}
                 </h1>
-                <p class="max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+                    <p class="max-w-2xl text-lg leading-8 text-slate-300">
                     {{ $heroSubtitle ?: __('Rent cameras, lighting, audio, drone, and production gear through a cleaner booking flow built for creators and production teams.') }}
                 </p>
 
-                <div class="flex flex-wrap gap-3">
-                    <a href="{{ route('catalog') }}" class="btn-primary px-6 py-4 text-sm shadow-lg shadow-blue-600/15">
+                    <div class="flex flex-wrap gap-3">
+                        <a href="{{ route('catalog') }}" class="btn-primary px-6 py-4 text-sm shadow-lg shadow-blue-600/20">
                         {{ __('Browse Catalog') }}
                     </a>
-                    <a href="{{ route('availability.board') }}" class="btn-secondary px-6 py-4 text-sm">
+                        <a href="{{ route('availability.board') }}" class="btn-secondary border-white/15 bg-white/10 px-6 py-4 text-sm text-white backdrop-blur hover:bg-white/15">
                         {{ __('Check Availability') }}
                     </a>
-                </div>
-
-                <div class="grid gap-3 sm:grid-cols-3">
-                    @foreach ($heroStats as $stat)
-                        <div class="ui-card-soft p-4">
-                            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{{ $stat['label'] }}</p>
-                            <p class="mt-2 text-2xl font-black text-slate-950 dark:text-white">{{ $stat['value'] }}</p>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="ui-panel-solid overflow-hidden p-4">
-                <div class="rounded-[1.4rem] bg-slate-950 p-5 text-white">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-blue-200">{{ __('Today') }}</p>
-                            <h2 class="mt-2 text-xl font-black">{{ __('Ready to book') }}</h2>
-                        </div>
-                        <span class="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-bold text-blue-100">{{ $productsReady->count() }} {{ __('items') }}</span>
                     </div>
 
-                    <div class="mt-5 space-y-3">
-                        @foreach ($productsReady->take(4) as $item)
-                            <a href="{{ route('product.show', $item->slug) }}" class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 transition hover:bg-white/10">
-                                <div class="h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-slate-800">
-                                    <img src="{{ data_get($item, 'image_url', site_asset('MANAKE-FAV-M.png')) }}" alt="{{ data_get($item, 'name') }}" class="h-full w-full object-cover">
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <p class="truncate text-sm font-bold">{{ data_get($item, 'name') }}</p>
-                                    <p class="mt-1 text-xs text-slate-300">{{ __('Starting from') }} {{ 'Rp ' . number_format((int) data_get($item, 'price_per_day', 0), 0, ',', '.') }} / day</p>
-                                </div>
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        @foreach (collect($navCategories ?? [])->take(4) as $category)
+                            <a href="{{ route('category.show', $category->slug) }}" class="rounded-full border border-white/10 bg-white/8 px-4 py-2 text-xs font-bold text-white/90 backdrop-blur transition hover:bg-white/15">
+                                {{ $category->name }}
                             </a>
                         @endforeach
                     </div>
+
+                    <div class="grid gap-3 sm:grid-cols-3">
+                    @foreach ($heroStats as $stat)
+                            <div class="rounded-[1.4rem] border border-white/10 bg-white/7 p-4 backdrop-blur">
+                                <p class="text-[10px] font-black uppercase tracking-[0.22em] text-slate-300">{{ $stat['label'] }}</p>
+                                <p class="mt-2 text-2xl font-black text-white">{{ $stat['value'] }}</p>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-            </div>
+
+                </div>
+
+                <div class="relative">
+                    <div class="absolute -inset-4 rounded-[2rem] bg-blue-500/15 blur-2xl"></div>
+                    <div class="relative rounded-[2rem] border border-white/10 bg-white/8 p-4 shadow-2xl backdrop-blur-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] font-black uppercase tracking-[0.26em] text-blue-200">{{ __('Today') }}</p>
+                                <h2 class="mt-2 text-xl font-black text-white">{{ __('Ready to book') }}</h2>
+                            </div>
+                            <span class="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-bold text-blue-100">{{ $productsReady->count() }} {{ __('items') }}</span>
+                        </div>
+
+                        <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                            @foreach ($productsReady->take(4) as $item)
+                                <a href="{{ route('product.show', $item->slug) }}" class="group overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/6 transition hover:-translate-y-1 hover:bg-white/10">
+                                    <div class="aspect-[4/3] overflow-hidden bg-slate-800">
+                                        <img src="{{ data_get($item, 'image_url', site_asset('MANAKE-FAV-M.png')) }}" alt="{{ data_get($item, 'name') }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]">
+                                    </div>
+                                    <div class="p-4">
+                                        <p class="truncate text-sm font-bold text-white">{{ data_get($item, 'name') }}</p>
+                                        <p class="mt-1 text-xs text-slate-300">{{ __('Starting from') }} {{ 'Rp ' . number_format((int) data_get($item, 'price_per_day', 0), 0, ',', '.') }} / day</p>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
         </div>
     </section>
 
