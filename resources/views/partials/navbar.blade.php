@@ -37,7 +37,7 @@
         <div class="flex h-16 items-center justify-between gap-3">
             <div class="flex min-w-0 items-center gap-6">
                 <a href="/" class="inline-flex shrink-0 items-center">
-                    <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" :alt="$brandName" img-class="h-8 w-auto" />
+                    <x-brand.image light="manake-logo-blue.png" dark="manake-logo-blue.png" :alt="$brandName" img-class="h-8 w-auto" />
                 </a>
 
                 <div class="hidden items-center gap-5 text-sm font-semibold text-slate-600 lg:flex">

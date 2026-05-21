@@ -3,7 +3,7 @@
         <div class="manake-loader-card" role="presentation">
             <x-brand.image
                 light="MANAKE-FAV-M.png"
-                dark="MANAKE-FAV-M-white.png"
+                dark="MANAKE-FAV-M.png"
                 :alt="site_setting('brand.name', 'Manake')"
                 img-class="manake-loader-mark"
             />

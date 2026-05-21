@@ -5,7 +5,7 @@
         <div class="flex items-center gap-8">
             <!-- LOGO -->
             <a href="/" class="flex items-center gap-3">
-                <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" alt="Manake" img-class="h-8 w-auto" />
+                <x-brand.image light="manake-logo-blue.png" dark="manake-logo-blue.png" alt="Manake" img-class="h-8 w-auto" />
             </a>
 
             <!-- MENU -->

@@ -82,7 +82,7 @@
         <a href="{{ route('admin.dashboard') }}" class="manake-sidebar-brand-link inline-flex items-center overflow-hidden transition-all duration-300" :class="sidebarCollapsed ? 'w-10' : 'w-full'">
             <x-brand.image
                 light="manake-logo-blue.png"
-                dark="manake-logo-white.png"
+                dark="manake-logo-blue.png"
                 :alt="$brandName"
                 img-class="h-8 w-auto min-w-[32px]"
             />

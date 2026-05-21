@@ -18,7 +18,7 @@
 <div class="w-full max-w-md rounded-2xl bg-slate-800 p-8 shadow-xl">
     <div class="text-center mb-6">
         <div class="mb-4 flex justify-center">
-            <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" alt="Manake" img-class="h-12 w-auto" />
+            <x-brand.image light="manake-logo-blue.png" dark="manake-logo-blue.png" alt="Manake" img-class="h-12 w-auto" />
         </div>
         <h2 class="text-xl font-semibold text-white">Login Admin</h2>
     </div>

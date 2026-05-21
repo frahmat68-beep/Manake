@@ -71,7 +71,7 @@ class PageSmokeTest extends TestCase
         $response->assertOk();
         $response->assertSee('data-theme-preference="dark"', false);
         $response->assertSee('data-theme-resolved="dark"', false);
-        $response->assertSee('/assets/public/manake-logo-white.png?v=', false);
+        $response->assertSee('/assets/public/manake-logo-blue.png?v=', false);
     }
 
     public function test_core_shell_pages_do_not_depend_on_runtime_cdn_assets(): void

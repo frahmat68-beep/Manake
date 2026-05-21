@@ -78,7 +78,7 @@
             <span class="manake-sidebar-brand__mark" aria-hidden="true">
                 <x-brand.image
                     light="MANAKE-FAV-M.png"
-                    dark="MANAKE-FAV-M-white.png"
+                    dark="MANAKE-FAV-M.png"
                     :alt="$brandName"
                     img-class="manake-brand-mark-image"
                 />
@@ -86,7 +86,7 @@
             <span class="manake-sidebar-brand__wordmark">
                 <x-brand.image
                     light="manake-logo-blue.png"
-                    dark="manake-logo-white.png"
+                    dark="manake-logo-blue.png"
                     :alt="$brandName"
                     img-class="manake-brand-wordmark-image"
                 />

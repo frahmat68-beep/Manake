@@ -56,7 +56,7 @@
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center justify-center mb-8 hover:scale-105 transition-transform" data-skip-loader="true">
                     @php
-                        $logoFile = ($initialThemeResolved === 'dark') ? 'manake-logo-white.png' : 'manake-logo-blue.png';
+                        $logoFile = 'manake-logo-blue.png';
                     @endphp
                     <img src="{{ site_asset($logoFile) }}" alt="{{ $brandName }}" class="h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(37,99,235,0.3)]" />
                 </a>
