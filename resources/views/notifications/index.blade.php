@@ -63,9 +63,9 @@
                     </a>
                 @endif
             @empty
-                <div class="card rounded-2xl border border-dashed p-8 text-center">
-                    <p class="text-sm font-semibold text-slate-700">{{ __('app.notifications.empty') }}</p>
-                    <p class="mt-2 text-sm text-slate-500">{{ __('ui.notifications_page.empty_note') }}</p>
+                <div class="mk-card rounded-2xl border border-dashed border-slate-200 p-8 text-center dark:border-slate-800">
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ __('app.notifications.empty') }}</p>
+                    <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{{ __('ui.notifications_page.empty_note') }}</p>
                 </div>
             @endforelse
         </section>
