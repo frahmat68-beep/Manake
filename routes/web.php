@@ -34,17 +34,6 @@ use App\Http\Controllers\Admin\WebsiteSettingsController as AdminWebsiteSettings
 |--------------------------------------------------------------------------
 */
 
-if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'build/') !== false && !str_starts_with($_SERVER['REQUEST_URI'], '/debug-build')) {
-    echo json_encode([
-        'uri' => $_SERVER['REQUEST_URI'],
-        'script_name' => $_SERVER['SCRIPT_NAME'] ?? null,
-        'path_info' => $_SERVER['PATH_INFO'] ?? null,
-        'query_string' => $_SERVER['QUERY_STRING'] ?? null,
-        'matched' => 'early_intercept'
-    ]);
-    exit;
-}
-
 
 Route::get('/assets/public/{path}', [AssetController::class, 'public'])
     ->where('path', '.*')
