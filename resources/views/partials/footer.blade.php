@@ -43,7 +43,7 @@
     $footerMapEmbed = trusted_map_embed_iframe($footerMapRaw, $footerAddress);
 @endphp
 
-<footer class="bg-gradient-to-br from-slate-950 via-slate-900 to-blue-900 text-blue-100">
+<footer id="contact" class="bg-gradient-to-br from-slate-950 via-slate-900 to-blue-900 text-blue-100">
     <div class="mx-auto grid max-w-7xl gap-8 px-6 py-12 lg:grid-cols-[1.2fr,1fr,1.2fr]">
         <div>
             <h3 class="text-sm font-semibold text-white">{{ __('app.footer.about_title') }}</h3>
