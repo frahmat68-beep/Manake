@@ -8,6 +8,10 @@
     $recentUserOrders = collect($recentUserOrders ?? []);
 
     $dynamicCategories = collect(['Camera', 'Lighting', 'Audio', 'HT', 'Drone', 'Stabilizer']);
+    $navCategories = collect($navCategories ?? [])->pluck('name')->filter()->take(6)->values();
+    if ($navCategories->isEmpty()) {
+        $navCategories = collect(['Aksesoris', 'Audio', 'Camera', 'Lens', 'Lighting', 'Monitor & Wireless Control']);
+    }
 
     $featuredProducts = $productsReady->take(6)->values();
     $heroBackdropUrl = site_asset('images/hero-bg.jpg');
@@ -110,7 +114,7 @@
     <section id="categories" class="border-y border-slate-200/70 bg-white py-12">
         <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
             <div class="flex items-center gap-3 overflow-hidden whitespace-nowrap text-slate-400">
-                @foreach (array_merge($dynamicCategories->all(), $dynamicCategories->all()) as $category)
+                @foreach (array_merge($navCategories->all(), $navCategories->all()) as $category)
                     <div class="flex items-center gap-3 shrink-0 px-4 py-2">
                         <span class="text-sm font-semibold uppercase tracking-[0.24em]">{{ $category }}</span>
                         <span class="h-1.5 w-1.5 rounded-full bg-slate-300"></span>
@@ -134,10 +138,7 @@
                 </a>
             </div>
 
-            <div
-                x-data="{ start: 0 }"
-                class="mt-10 overflow-hidden"
-            >
+            <div class="mt-10 overflow-hidden">
                 <div class="flex gap-5 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     @forelse ($featuredProducts->take(6) as $item)
                         @php
