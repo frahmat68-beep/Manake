@@ -43,13 +43,14 @@ class PageSmokeTest extends TestCase
         }
     }
 
-    public function test_home_page_renders_ui_reset_placeholder(): void
+    public function test_home_page_renders_v0_cinematic_indonesian_hero(): void
     {
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('MANAKE UI RESET');
-        $response->assertSee('Ready for v0 rebuild');
+        $response->assertSee('Rental Peralatan Profesional');
+        $response->assertSee('Sewa');
+        $response->assertSee('terbaik, kapan saja.');
     }
 
     public function test_login_page_uses_relative_logo_assets(): void
