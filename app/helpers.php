@@ -462,8 +462,30 @@ if (! function_exists('site_media_url')) {
                 // This is much faster and more reliable than routing through controller
                 // We bypass this on Vercel to force dynamic rendering via AssetController since Vercel's
                 // static file router does not serve untracked/ignored static files in public/storage
-                $isVercel = isset($_SERVER['VERCEL']) || env('VERCEL') || (request() && str_contains(request()->getHost(), 'vercel.app'));
-                if (!$isVercel && !app()->runningUnitTests() && str_contains($absolutePath, public_path('storage/'))) {
+                $isVercel = isset($_SERVER['VERCEL'])
+                    || isset($_SERVER['LAMBDA_TASK_ROOT'])
+                    || isset($_SERVER['NOW_REGION'])
+                    || env('VERCEL')
+                    || (request() && (
+                        str_contains(request()->getHost(), 'vercel.app')
+                        || str_contains(request()->getHost(), 'now.sh')
+                    ));
+
+                $isLocal = false;
+                if (request()) {
+                    $host = request()->getHost();
+                    if (in_array($host, ['127.0.0.1', 'localhost'], true)
+                        || str_starts_with($host, '127.0.0.1:')
+                        || str_starts_with($host, 'localhost:')
+                        || str_ends_with($host, '.test')
+                        || str_ends_with($host, '.local')
+                    ) {
+                        $isLocal = true;
+                    }
+                }
+
+                $useDirectAsset = $isLocal && !$isVercel && !app()->runningUnitTests();
+                if ($useDirectAsset && str_contains($absolutePath, public_path('storage/'))) {
                     return asset('storage/' . $normalizedPath);
                 }
 
