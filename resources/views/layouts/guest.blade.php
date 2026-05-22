@@ -53,7 +53,7 @@
         <div class="flex min-h-screen w-full bg-[#0A0A0B] text-[#E8E8EC]">
             <!-- Left Side: Image / Showcase (hidden on mobile) -->
             <div class="relative hidden w-1/2 lg:block">
-                <img src="{{ asset('images/camera-arri.jpg') }}" alt="Cinematic Camera" class="absolute inset-0 h-full w-full object-cover">
+                <img src="{{ site_asset('images/camera-arri.jpg') }}" alt="Cinematic Camera" class="absolute inset-0 h-full w-full object-cover">
                 <!-- Gradient Overlay -->
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/60 to-[#0A0A0B]/20"></div>
                 <div class="absolute inset-0 bg-[#D4A843]/10 mix-blend-overlay"></div>

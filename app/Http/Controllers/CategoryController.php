@@ -6,8 +6,10 @@ use App\Models\Category;
 use App\Models\Equipment;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -36,6 +38,11 @@ class CategoryController extends Controller
         $recentUserOrders = collect();
         $damageAlertOrder = null;
         $guestRentalSnapshot = collect();
+        $homeRentalStats = [
+            'rented_today' => 0,
+            'available_items' => 0,
+            'upcoming_bookings' => 0,
+        ];
         $canResolveUsage = schema_table_exists_cached('order_items') && schema_table_exists_cached('orders');
 
         if (schema_table_exists_cached('categories')) {
@@ -46,7 +53,9 @@ class CategoryController extends Controller
 
         if (schema_table_exists_cached('equipments')) {
             $productsReady = Cache::remember('home:products_ready:v2', now()->addSeconds(45), function () use ($canResolveUsage) {
-                $equipmentQuery = Equipment::query()->orderBy('updated_at', 'desc');
+                $equipmentQuery = Equipment::query()
+                    ->with('category:id,name,slug')
+                    ->orderBy('updated_at', 'desc');
                 if ($canResolveUsage) {
                     $equipmentQuery->withSum('activeOrderItems as reserved_units', 'qty');
                 }
@@ -60,8 +69,24 @@ class CategoryController extends Controller
                 return $equipmentQuery
                     ->get()
                     ->filter(fn ($equipment) => (int) ($equipment->available_units ?? $equipment->stock ?? 0) > 0)
-                    ->take(8)
+                    ->take(16)
                     ->values();
+            });
+
+            $homeRentalStats['available_items'] = Cache::remember('home:available_items_count:v1', now()->addSeconds(45), function () use ($canResolveUsage) {
+                $equipmentQuery = Equipment::query()->orderBy('id');
+                if ($canResolveUsage) {
+                    $equipmentQuery->withSum('activeOrderItems as reserved_units', 'qty');
+                }
+
+                if (schema_column_exists_cached('equipments', 'status')) {
+                    $equipmentQuery->where('status', 'ready');
+                }
+
+                return $equipmentQuery
+                    ->get()
+                    ->filter(fn ($equipment) => (int) ($equipment->available_units ?? $equipment->stock ?? 0) > 0)
+                    ->count();
             });
         }
 
@@ -164,12 +189,12 @@ class CategoryController extends Controller
                             return null;
                         }
 
-                        $startDateString = $startDate instanceof \Carbon\CarbonInterface
+                        $startDateString = $startDate instanceof CarbonInterface
                             ? $startDate->toDateString()
-                            : \Carbon\Carbon::parse($startDate)->toDateString();
-                        $endDateString = $endDate instanceof \Carbon\CarbonInterface
+                            : Carbon::parse($startDate)->toDateString();
+                        $endDateString = $endDate instanceof CarbonInterface
                             ? $endDate->toDateString()
-                            : \Carbon\Carbon::parse($endDate)->toDateString();
+                            : Carbon::parse($endDate)->toDateString();
 
                         return [
                             'equipment_id' => (int) ($item->equipment_id ?? 0),
@@ -184,7 +209,7 @@ class CategoryController extends Controller
                             return false;
                         }
 
-                        return \Carbon\Carbon::parse((string) ($item['end_date'] ?? ''))->startOfDay()->gte($today);
+                        return Carbon::parse((string) ($item['end_date'] ?? ''))->startOfDay()->gte($today);
                     })
                     ->groupBy(function (array $item) {
                         return implode('|', [
@@ -204,23 +229,36 @@ class CategoryController extends Controller
                         ];
                     })
                     ->sortBy(function (array $item) {
-                        $startDate = \Carbon\Carbon::parse((string) ($item['start_date'] ?? now()->toDateString()))->timestamp;
+                        $startDate = Carbon::parse((string) ($item['start_date'] ?? now()->toDateString()))->timestamp;
 
-                        return $startDate . '|' . strtolower((string) ($item['name'] ?? ''));
+                        return $startDate.'|'.strtolower((string) ($item['name'] ?? ''));
                     })
                     ->take(5)
                     ->values();
             });
+
+            $homeRentalStats['rented_today'] = (int) $guestRentalSnapshot
+                ->filter(function (array $item) {
+                    $today = now()->toDateString();
+
+                    return (string) ($item['start_date'] ?? '') <= $today
+                        && (string) ($item['end_date'] ?? '') >= $today;
+                })
+                ->sum('qty');
+
+            $homeRentalStats['upcoming_bookings'] = (int) $guestRentalSnapshot
+                ->filter(fn (array $item): bool => (string) ($item['start_date'] ?? '') > now()->toDateString())
+                ->count();
         }
 
-        return view('welcome', compact('category', 'productsReady', 'userOverview', 'recentUserOrders', 'damageAlertOrder', 'guestRentalSnapshot'));
+        return view('welcome', compact('category', 'productsReady', 'userOverview', 'recentUserOrders', 'damageAlertOrder', 'guestRentalSnapshot', 'homeRentalStats'));
     }
 
     public function show(string $slug)
     {
         $category = null;
         $products = collect();
-        $equipments = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 12);
+        $equipments = new LengthAwarePaginator([], 0, 12);
         $canResolveUsage = schema_table_exists_cached('order_items') && schema_table_exists_cached('orders');
 
         if (schema_table_exists_cached('categories')) {

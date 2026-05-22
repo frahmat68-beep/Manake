@@ -1,21 +1,21 @@
 <?php
 
+use App\Http\Middleware\AdminAuthenticate;
+use App\Http\Middleware\AdminSuper;
+use App\Http\Middleware\DisableAuthenticatedCache;
+use App\Http\Middleware\EnsureAuthenticatedForAccountFeature;
+use App\Http\Middleware\EnsureOtpVerified;
+use App\Http\Middleware\EnsureProfileCompleted;
+use App\Http\Middleware\ForceHttps;
+use App\Http\Middleware\ResolveRuntimeUrls;
+use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\SecurityHeaders;
+use App\Http\Middleware\SetLocale;
+use App\Http\Middleware\SetTheme;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use App\Http\Middleware\EnsureOtpVerified;
-use App\Http\Middleware\EnsureProfileCompleted;
-use App\Http\Middleware\RoleMiddleware;
-use App\Http\Middleware\AdminAuthenticate;
-use App\Http\Middleware\SetLocale;
-use App\Http\Middleware\SetTheme;
-use App\Http\Middleware\ForceHttps;
-use App\Http\Middleware\DisableAuthenticatedCache;
-use App\Http\Middleware\SecurityHeaders;
-use App\Http\Middleware\ResolveRuntimeUrls;
-use App\Http\Middleware\AdminSuper;
-use App\Http\Middleware\EnsureAuthenticatedForAccountFeature;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 $isValidAppKey = static function (?string $value): bool {
@@ -34,7 +34,7 @@ $isValidAppKey = static function (?string $value): bool {
 };
 
 $setRuntimeEnv = static function (string $key, string $value): void {
-    putenv($key . '=' . $value);
+    putenv($key.'='.$value);
     $_ENV[$key] = $value;
     $_SERVER[$key] = $value;
 };
@@ -50,32 +50,24 @@ if ($isVercelRuntime) {
     $appUrl = $sanitizeEnv(getenv('APP_URL'));
     $vercelUrl = $sanitizeEnv(getenv('VERCEL_URL'));
     if ($appUrl === '' && $vercelUrl !== '') {
-        $setRuntimeEnv('APP_URL', 'https://' . $vercelUrl);
+        $setRuntimeEnv('APP_URL', 'https://'.$vercelUrl);
     }
 
     $appKey = getenv('APP_KEY');
     if (! $isValidAppKey(is_string($appKey) ? $appKey : null)) {
-        $seed = implode('|', array_filter([
-            $sanitizeEnv(getenv('VERCEL_PROJECT_ID')) ?: null,
-            $sanitizeEnv(getenv('VERCEL_ENV')) ?: null,
-            $vercelUrl ?: null,
-            'manake',
-        ]));
-
-        $fallbackAppKey = 'base64:' . base64_encode(hash('sha256', 'manake-app-key|' . $seed, true));
-        $setRuntimeEnv('APP_KEY', $fallbackAppKey);
+        throw new RuntimeException('APP_KEY must be configured with a valid 32-byte key before running Manake on Vercel.');
     }
 
-    $vercelStoragePath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'manake-storage';
+    $vercelStoragePath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'manake-storage';
 
     foreach ([
         $vercelStoragePath,
-        $vercelStoragePath . '/framework',
-        $vercelStoragePath . '/framework/cache',
-        $vercelStoragePath . '/framework/cache/data',
-        $vercelStoragePath . '/framework/sessions',
-        $vercelStoragePath . '/framework/views',
-        $vercelStoragePath . '/logs',
+        $vercelStoragePath.'/framework',
+        $vercelStoragePath.'/framework/cache',
+        $vercelStoragePath.'/framework/cache/data',
+        $vercelStoragePath.'/framework/sessions',
+        $vercelStoragePath.'/framework/views',
+        $vercelStoragePath.'/logs',
     ] as $directory) {
         if (! is_dir($directory)) {
             @mkdir($directory, 0775, true);
@@ -83,12 +75,12 @@ if ($isVercelRuntime) {
     }
 
     $setRuntimeEnv('LARAVEL_STORAGE_PATH', $vercelStoragePath);
-    $setRuntimeEnv('VIEW_COMPILED_PATH', $vercelStoragePath . '/framework/views');
-    $setRuntimeEnv('APP_SERVICES_CACHE', $vercelStoragePath . '/framework/cache/services.php');
-    $setRuntimeEnv('APP_PACKAGES_CACHE', $vercelStoragePath . '/framework/cache/packages.php');
-    $setRuntimeEnv('APP_CONFIG_CACHE', $vercelStoragePath . '/framework/cache/config.php');
-    $setRuntimeEnv('APP_ROUTES_CACHE', $vercelStoragePath . '/framework/cache/routes-v7.php');
-    $setRuntimeEnv('APP_EVENTS_CACHE', $vercelStoragePath . '/framework/cache/events.php');
+    $setRuntimeEnv('VIEW_COMPILED_PATH', $vercelStoragePath.'/framework/views');
+    $setRuntimeEnv('APP_SERVICES_CACHE', $vercelStoragePath.'/framework/cache/services.php');
+    $setRuntimeEnv('APP_PACKAGES_CACHE', $vercelStoragePath.'/framework/cache/packages.php');
+    $setRuntimeEnv('APP_CONFIG_CACHE', $vercelStoragePath.'/framework/cache/config.php');
+    $setRuntimeEnv('APP_ROUTES_CACHE', $vercelStoragePath.'/framework/cache/routes-v7.php');
+    $setRuntimeEnv('APP_EVENTS_CACHE', $vercelStoragePath.'/framework/cache/events.php');
 }
 
 $app = Application::configure(basePath: dirname(__DIR__))
@@ -133,10 +125,10 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })
 
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(function (\Throwable $exception, Request $request) {
+        $exceptions->render(function (Throwable $exception, Request $request) {
             if (getenv('VERCEL') !== false) {
                 $debugKey = env('DEBUG_KEY');
-                $hasValidDebugKey = !empty($debugKey) && (
+                $hasValidDebugKey = ! empty($debugKey) && (
                     $request->query('_debug') === $debugKey ||
                     $request->header('X-Manake-Debug') === $debugKey
                 );
@@ -147,7 +139,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
                         'error_class' => get_class($exception),
                         'error_file' => $exception->getFile(),
                         'error_line' => $exception->getLine(),
-                        'error_trace' => collect($exception->getTrace())->map(fn($t) => [
+                        'error_trace' => collect($exception->getTrace())->map(fn ($t) => [
                             'file' => $t['file'] ?? null,
                             'line' => $t['line'] ?? null,
                             'function' => $t['function'] ?? null,
@@ -164,6 +156,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
 
                 return null;
             }
+
             return null;
         });
 

@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT_DIR"
+
+export APP_ENV=testing
+export DB_CONNECTION=sqlite
+export DB_DATABASE="${DB_DATABASE:-database/database.sqlite}"
+export CACHE_STORE=array
+export SESSION_DRIVER=array
+export QUEUE_CONNECTION=sync
+export MAIL_MAILER=array
+
+mkdir -p database
+touch "$DB_DATABASE"
 
 echo "==> composer dump-autoload"
 composer dump-autoload

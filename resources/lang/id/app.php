@@ -308,7 +308,7 @@ return [
         'rules_link' => 'Aturan Sewa & Kebijakan',
         'rules_note' => 'Pelajari aturan pemesanan, reschedule, buffer, dan denda operasional.',
         'copyright' => '2026 Manake Rental. Semua hak dilindungi.',
-        'tagline' => 'Platform rental peralatan profesional.',
+        'tagline' => 'Platform sewa alat produksi premium.',
     ],
     'categories' => [
         'camera' => 'Kamera',

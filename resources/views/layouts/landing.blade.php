@@ -4,22 +4,16 @@
     $brandName = site_setting('brand.name', 'Manake');
     $isHomepage = request()->routeIs('home');
     $homeUrl = route('home');
-    $navClass = $isHomepage
-        ? 'text-sm font-medium text-white/65 transition hover:text-white'
-        : 'text-sm font-medium text-slate-600 transition hover:text-slate-950';
+    $navClass = 'text-sm font-medium text-white/65 transition hover:text-white';
     $headerClass = $isHomepage
-        ? 'fixed inset-x-0 top-0 z-50 bg-transparent transition-all duration-300'
-        : 'sticky top-0 z-40 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/90';
+        ? 'fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-slate-950/92 backdrop-blur-xl transition-all duration-300'
+        : 'sticky top-0 z-40 border-b border-white/10 bg-slate-950/95 text-white backdrop-blur-xl';
     $containerClass = $isHomepage
         ? 'mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:px-10'
-        : 'ui-container flex items-center justify-between gap-4 py-4';
-    $brandLightLogo = $isHomepage ? 'manake-logo-white.png' : 'manake-logo-blue.png';
-    $authLinkClass = $isHomepage
-        ? 'text-sm font-medium text-white/65 transition hover:text-white'
-        : 'text-sm font-medium text-slate-600 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white';
-    $mobileMenuButtonClass = $isHomepage
-        ? 'inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white lg:hidden'
-        : 'inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-900 shadow-sm lg:hidden dark:border-slate-800 dark:bg-slate-900 dark:text-white';
+        : 'mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:px-10';
+    $brandLightLogo = 'manake-logo-white.png';
+    $authLinkClass = 'text-sm font-medium text-white/65 transition hover:text-white';
+    $mobileMenuButtonClass = 'inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white lg:hidden';
     $menuHref = static fn (string $anchor): string => $isHomepage ? '#'.ltrim($anchor, '#') : $homeUrl.'#'.ltrim($anchor, '#');
 @endphp
 <!DOCTYPE html>
@@ -43,7 +37,7 @@
     <header
         x-data="{ open: false, scrolled: false, init() { this.scrolled = window.scrollY > 24; window.addEventListener('scroll', () => { this.scrolled = window.scrollY > 24 }, { passive: true }) } }"
         class="{{ $headerClass }}"
-        :class="{'bg-slate-950/90 backdrop-blur-xl border-b border-white/10': scrolled && {{ $isHomepage ? 'true' : 'false' }}, 'bg-transparent': !scrolled && {{ $isHomepage ? 'true' : 'false' }}}"
+        :class="{'shadow-2xl shadow-black/20': scrolled}"
     >
         <div class="{{ $containerClass }}">
             <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0" aria-label="{{ $brandName }}">
@@ -51,11 +45,11 @@
             </a>
 
             <nav class="hidden flex-1 items-center justify-center gap-8 lg:flex" aria-label="{{ __('Navigasi utama') }}">
-                <a href="{{ $menuHref('#equipment') }}" class="{{ $navClass }}">{{ __('Peralatan') }}</a>
-                <a href="{{ $menuHref('#categories') }}" class="{{ $navClass }}">{{ __('Kategori') }}</a>
+                <a href="{{ $menuHref('#equipment') }}" class="{{ $navClass }}">{{ __('Equipment') }}</a>
+                <a href="{{ $menuHref('#categories') }}" class="{{ $navClass }}">{{ __('Categories') }}</a>
                 <a href="{{ $menuHref('#about') }}" class="{{ $navClass }}">{{ __('Tentang Kami') }}</a>
                 <a href="{{ $menuHref('#cara-sewa') }}" class="{{ $navClass }}">{{ __('Cara Sewa') }}</a>
-                <a href="{{ $menuHref('#contact') }}" class="{{ $navClass }}">{{ __('Kontak') }}</a>
+                <a href="{{ $menuHref('#contact') }}" class="{{ $navClass }}">{{ __('Contact') }}</a>
             </nav>
 
             <div class="ml-auto hidden items-center gap-4 sm:flex">
@@ -85,11 +79,11 @@
             <div class="ui-container pb-4">
                 <div class="rounded-lg border border-white/10 bg-slate-950/95 p-4 shadow-2xl shadow-black/30 backdrop-blur-xl">
                     <nav class="grid gap-2">
-                        <a href="{{ $menuHref('#equipment') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Peralatan') }}</a>
-                        <a href="{{ $menuHref('#categories') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Kategori') }}</a>
+                        <a href="{{ $menuHref('#equipment') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Equipment') }}</a>
+                        <a href="{{ $menuHref('#categories') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Categories') }}</a>
                         <a href="{{ $menuHref('#about') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Tentang Kami') }}</a>
                         <a href="{{ $menuHref('#cara-sewa') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Cara Sewa') }}</a>
-                        <a href="{{ $menuHref('#contact') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Kontak') }}</a>
+                        <a href="{{ $menuHref('#contact') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Contact') }}</a>
                     </nav>
                     <div class="mt-4 flex items-center gap-3 border-t border-white/10 pt-4">
                         <a href="{{ route('login') }}" class="text-sm text-white/65">{{ __('Masuk') }}</a>

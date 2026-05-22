@@ -308,7 +308,7 @@ return [
         'rules_link' => 'Rental Rules & Policies',
         'rules_note' => 'Read booking, reschedule, buffer, and penalty rules before renting.',
         'copyright' => '2026 Manake Rental. All rights reserved.',
-        'tagline' => 'Professional rental equipment platform.',
+        'tagline' => 'Premium production gear rental platform.',
     ],
     'categories' => [
         'camera' => 'Camera',

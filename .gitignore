@@ -18,6 +18,7 @@
 /public/storage
 /test-results
 /storage/*.key
+/tools/infra/*.key
 /storage/pail
 /storage/phpstan
 /vendor

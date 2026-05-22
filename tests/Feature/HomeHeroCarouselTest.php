@@ -131,7 +131,7 @@ class HomeHeroCarouselTest extends TestCase
         $response->assertDontSee('Perhatian Tagihan Tambahan');
         $response->assertDontSee('id="damage-fee-popup"', false);
         $response->assertDontSee('data-damage-popup-pay', false);
-        $response->assertSee('Rental Peralatan Profesional');
+        $response->assertSee('Sewa');
     }
 
     public function test_home_hides_damage_fee_alert_after_damage_payment_is_paid(): void
@@ -215,11 +215,11 @@ class HomeHeroCarouselTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Ringkasan Live');
-        $response->assertSee('Aktivitas rental saat ini.');
+        $response->assertSee('Live Snapshot');
+        $response->assertSee('Kategori');
         $response->assertSee('HT Wlan UHF');
         $response->assertSee('3');
-        $response->assertSee('Item Tersedia');
+        $response->assertSee('Item tersedia');
     }
 
     public function test_home_rental_snapshot_renders_for_logged_in_user(): void
@@ -227,8 +227,8 @@ class HomeHeroCarouselTest extends TestCase
         $response = $this->actingAs(User::factory()->create())->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Ringkasan Live');
-        $response->assertSee('Aktivitas rental saat ini.');
+        $response->assertSee('Live Snapshot');
+        $response->assertSee('Kategori');
         $response->assertDontSee('Pending Bayar');
         $response->assertDontSee('Siap Diambil');
         $response->assertDontSee('Sedang Disewa');

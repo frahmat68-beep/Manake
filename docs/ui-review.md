@@ -70,10 +70,16 @@ Before merging, inspect screenshots for:
 
 ## Lighthouse
 
-Run Lighthouse CI locally after the app is available on `http://127.0.0.1:3000`:
+Run Lighthouse locally. The script starts a temporary Laravel server on `http://127.0.0.1:3000` when nothing is already available:
 
 ```bash
 npm run lighthouse
+```
+
+To audit another URL:
+
+```bash
+LIGHTHOUSE_URL=https://example.com npm run lighthouse
 ```
 
 Recommended thresholds:

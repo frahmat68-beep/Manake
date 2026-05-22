@@ -7,7 +7,7 @@ Dokumen ini merangkum langkah deployment aman untuk Manake Rental.
 Jalankan terlebih dahulu:
 
 ```bash
-bash scripts/doctor.sh
+bash tools/scripts/doctor.sh
 ```
 
 Script ini akan:
@@ -22,7 +22,7 @@ Script ini akan:
 Jalankan:
 
 ```bash
-bash scripts/deploy-production.sh
+bash tools/scripts/deploy-production.sh
 ```
 
 Pastikan `.env` berisi:

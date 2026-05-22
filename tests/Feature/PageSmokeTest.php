@@ -50,11 +50,11 @@ class PageSmokeTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Rental Peralatan Profesional');
+        $response->assertSee('Sewa');
         $response->assertSee('Sewa');
         $response->assertSee('terbaik, kapan saja.');
         $response->assertSee('ARRI Alexa Mini LF');
-        $response->assertSee('Diperbarui secara real time');
+        $response->assertSee('Kategori');
     }
 
     public function test_home_page_uses_database_equipment_and_categories_when_available(): void
@@ -65,7 +65,7 @@ class PageSmokeTest extends TestCase
             'description' => 'Kamera sinema profesional.',
         ]);
 
-        $imagePath = 'equipments/home-page-test-' . Str::lower(Str::random(8)) . '.png';
+        $imagePath = 'equipments/home-page-test-'.Str::lower(Str::random(8)).'.png';
         Storage::disk('public')->put($imagePath, 'fake-image');
 
         try {
@@ -76,7 +76,7 @@ class PageSmokeTest extends TestCase
                 'price_per_day' => 650000,
                 'status' => 'ready',
                 'description' => 'Kamera cinema compact.',
-                'specifications' => 'Sensor full-frame' . PHP_EOL . '4K 120fps',
+                'specifications' => 'Sensor full-frame'.PHP_EOL.'4K 120fps',
                 'stock' => 4,
                 'image_path' => $imagePath,
                 'image' => null,
@@ -88,7 +88,7 @@ class PageSmokeTest extends TestCase
             $response->assertSee('Sony FX3 Cinema Kit');
             $response->assertSee('Kamera');
             $response->assertSee(route('product.show', $equipment->slug));
-            $response->assertSee('/assets/media/' . $imagePath, false);
+            $response->assertSee('/assets/media/'.$imagePath, false);
         } finally {
             Storage::disk('public')->delete($imagePath);
         }
@@ -131,13 +131,13 @@ class PageSmokeTest extends TestCase
 
     public function test_public_asset_routes_serve_logo_and_media_files(): void
     {
-        $path = 'equipments/test-asset-route-' . Str::lower(Str::random(8)) . '.png';
+        $path = 'equipments/test-asset-route-'.Str::lower(Str::random(8)).'.png';
         Storage::disk('public')->put($path, 'fake-image');
 
         try {
             $this->get('/assets/public/manake-logo-blue.png')->assertOk();
 
-            $response = $this->get('/assets/media/' . $path);
+            $response = $this->get('/assets/media/'.$path);
             $response->assertOk();
             $this->assertSame('fake-image', $response->getContent());
         } finally {

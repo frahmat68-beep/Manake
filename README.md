@@ -60,7 +60,7 @@ Contoh:
 ```env
 SUPER_ADMIN_EMAIL=frahmat68@gmail.com
 SUPER_ADMIN_NAME=Fikri Rachmat
-SUPERADMIN_PASSWORD=ChangeMe123!
+SUPER_ADMIN_PASSWORD=ChangeMe123!
 ```
 
 ## Health Check Script
@@ -68,7 +68,7 @@ SUPERADMIN_PASSWORD=ChangeMe123!
 Gunakan script berikut sebelum release:
 
 ```bash
-bash scripts/doctor.sh
+bash tools/scripts/doctor.sh
 ```
 
 Script akan menjalankan:
@@ -86,7 +86,7 @@ Script akan menjalankan:
 Opsional skip build frontend:
 
 ```bash
-SKIP_FRONTEND_BUILD=1 bash scripts/doctor.sh
+SKIP_FRONTEND_BUILD=1 bash tools/scripts/doctor.sh
 ```
 
 ## CI/CD
@@ -100,7 +100,7 @@ Workflow GitHub Actions ada di `.github/workflows/ci.yml` dengan alur:
 - Queue/scheduler smoke-check (`php artisan queue:work --once`, `php artisan schedule:run`)
 - Build frontend (`npm run build`)
 - Upload artifact `public/build`
-- Jalankan `bash scripts/doctor.sh` sebagai **pre-deploy gate**
+- Jalankan `bash tools/scripts/doctor.sh` sebagai **pre-deploy gate**
 
 ## Deployment Checklist
 
@@ -152,7 +152,7 @@ Keterangan OTP:
 Gunakan script berikut di server produksi:
 
 ```bash
-bash scripts/deploy-production.sh
+bash tools/scripts/deploy-production.sh
 ```
 
 Script ini menjalankan:
@@ -166,7 +166,7 @@ Script ini menjalankan:
 Untuk validasi saja (tanpa deployment penuh), gunakan:
 
 ```bash
-bash scripts/deploy-check.sh
+bash tools/scripts/deploy-check.sh
 ```
 
 ## Security & Audit

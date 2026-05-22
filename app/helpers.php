@@ -4,6 +4,7 @@ use App\Models\AuditLog;
 use App\Models\SiteContent;
 use App\Models\SiteMedia;
 use App\Models\SiteSetting;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
@@ -28,7 +29,7 @@ if (! function_exists('site_public_media_candidates')) {
                     $candidates[] = [$diskPath, dirname($diskPath)];
                 }
             }
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             // Fall through to bundled/public path checks.
         }
 
@@ -57,7 +58,7 @@ if (! function_exists('schema_table_exists_cached')) {
         if (app()->runningUnitTests()) {
             try {
                 return Schema::hasTable($table);
-            } catch (\Throwable $exception) {
+            } catch (Throwable $exception) {
                 return false;
             }
         }
@@ -74,14 +75,14 @@ if (! function_exists('schema_table_exists_cached')) {
                 now()->addMinutes(10),
                 fn () => Schema::hasTable($table)
             );
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             // Immediate fallback to direct check if cache fails
             try {
                 $result = Schema::hasTable($table);
                 $tableExistsCache[$cacheKey] = $result;
 
                 return $result;
-            } catch (\Throwable $inner) {
+            } catch (Throwable $inner) {
                 $tableExistsCache[$cacheKey] = false;
 
                 return false;
@@ -104,7 +105,7 @@ if (! function_exists('schema_column_exists_cached')) {
         if (app()->runningUnitTests()) {
             try {
                 return Schema::hasColumn($table, $column);
-            } catch (\Throwable $exception) {
+            } catch (Throwable $exception) {
                 return false;
             }
         }
@@ -121,13 +122,13 @@ if (! function_exists('schema_column_exists_cached')) {
                 now()->addMinutes(10),
                 fn () => Schema::hasColumn($table, $column)
             );
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             try {
                 $result = Schema::hasColumn($table, $column);
                 $columnExistsCache[$cacheKey] = $result;
 
                 return $result;
-            } catch (\Throwable $inner) {
+            } catch (Throwable $inner) {
                 $columnExistsCache[$cacheKey] = false;
 
                 return false;
@@ -202,18 +203,38 @@ if (! function_exists('site_setting_raw')) {
             return null;
         }
 
-        $cached = Cache::remember("site_setting:{$key}", 3600, function () use ($key) {
-            return [
-                'resolved' => true,
-                'value' => SiteSetting::query()->where('key', $key)->value('value'),
-            ];
-        });
+        $settings = site_settings_map();
 
-        if (is_array($cached) && array_key_exists('resolved', $cached)) {
-            return $cached['value'] ?? null;
+        if (array_key_exists($key, $settings)) {
+            return $settings[$key];
         }
 
-        return $cached;
+        return null;
+    }
+}
+
+if (! function_exists('site_settings_map')) {
+    function site_settings_map(): array
+    {
+        static $settings = null;
+
+        if (is_array($settings)) {
+            return $settings;
+        }
+
+        if (! schema_table_exists_cached('site_settings')) {
+            $settings = [];
+
+            return $settings;
+        }
+
+        $settings = Cache::remember('site_settings:all:v1', 3600, function (): array {
+            return SiteSetting::query()
+                ->pluck('value', 'key')
+                ->all();
+        });
+
+        return is_array($settings) ? $settings : [];
     }
 }
 
@@ -374,6 +395,8 @@ if (! function_exists('trusted_map_normalize_url')) {
 if (! function_exists('site_setting_forget')) {
     function site_setting_forget(string|array $keys): void
     {
+        Cache::forget('site_settings:all:v1');
+
         foreach ((array) $keys as $key) {
             Cache::forget("site_setting:{$key}");
             Cache::forget("site_content:{$key}");
@@ -404,14 +427,14 @@ if (! function_exists('site_media_delete')) {
 
         try {
             Storage::disk($disk ?: site_media_disk())->delete(ltrim($normalizedPath, '/'));
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             // Ignore missing disk/files and keep request flow stable.
         }
     }
 }
 
 if (! function_exists('site_media_store_uploaded_file')) {
-    function site_media_store_uploaded_file(\Illuminate\Http\UploadedFile $file, string $directory, ?string $disk = null): string
+    function site_media_store_uploaded_file(UploadedFile $file, string $directory, ?string $disk = null): string
     {
         return $file->store($directory, $disk ?: site_media_disk());
     }
@@ -511,7 +534,7 @@ if (! function_exists('site_media_url')) {
             }
 
             return $resolvedStorage->url($normalizedPath);
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             return null;
         }
     }

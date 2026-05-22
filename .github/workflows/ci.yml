@@ -160,4 +160,4 @@ jobs:
                   php artisan key:generate --force
 
             - name: Doctor Pre-Deployment Check
-              run: bash scripts/doctor.sh
+              run: bash tools/scripts/doctor.sh

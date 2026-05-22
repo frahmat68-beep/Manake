@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT_DIR"
 
 echo "==> Starting production deployment routine"
@@ -17,7 +17,7 @@ if [[ "${SKIP_MAINTENANCE_MODE:-0}" != "1" ]]; then
 fi
 
 echo "==> Validate production environment and warm cache"
-bash scripts/deploy-check.sh
+bash tools/scripts/deploy-check.sh
 
 echo "==> Install PHP dependencies for production"
 composer install --optimize-autoloader --no-dev
