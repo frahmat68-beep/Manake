@@ -50,37 +50,77 @@
             $compactAuthShowcaseText = $asideText ?: null;
         @endphp
 
-        <div class="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#0A0A0B] px-4 py-10 text-[#E8E8EC]">
-            <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(212,168,67,0.12),transparent_28%),radial-gradient(circle_at_bottom,_rgba(212,168,67,0.06),transparent_22%)]"></div>
-            <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,11,0.88),rgba(10,10,11,0.7))]"></div>
-
-            <div class="relative z-10 w-full max-w-sm rounded-lg border border-[#1A1A1E] bg-[#111113] p-8 shadow-[0_0_80px_-20px_rgba(212,168,67,0.18)]">
-                <a href="{{ route('home') }}" class="mb-8 flex items-center justify-center transition-transform hover:scale-105" data-skip-loader="true">
-                    <x-brand.image
-                        light="manake-logo-blue.png"
-                        dark="manake-logo-blue.png"
-                        alt="{{ $brandName }}"
-                        img-class="h-16 w-auto object-contain"
-                        :swap-in-dark="false"
-                    />
-                </a>
-
-                @if ($heading ?? null)
-                    <h2 class="text-3xl font-extrabold tracking-tighter !text-white mb-8 text-center">
-                        {{ $heading }}
-                    </h2>
-                @endif
-
-                <div class="flex w-full flex-col gap-4">
-                    {{ $slot }}
+        <div class="flex min-h-screen w-full bg-[#0A0A0B] text-[#E8E8EC]">
+            <!-- Left Side: Image / Showcase (hidden on mobile) -->
+            <div class="relative hidden w-1/2 lg:block">
+                <img src="{{ asset('images/camera-arri.jpg') }}" alt="Cinematic Camera" class="absolute inset-0 h-full w-full object-cover">
+                <!-- Gradient Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/60 to-[#0A0A0B]/20"></div>
+                <div class="absolute inset-0 bg-[#D4A843]/10 mix-blend-overlay"></div>
+                
+                <!-- Showcase Content -->
+                <div class="absolute bottom-16 left-16 right-16 z-10">
+                    <h1 class="font-serif text-5xl font-bold tracking-tight text-white mb-6">
+                        {{ $compactAuthShowcaseTitle ?? 'Create Your Vision.' }}
+                    </h1>
+                    @if ($compactAuthShowcaseText)
+                        <p class="text-lg text-[#A0A0A8] max-w-xl">
+                            {{ $compactAuthShowcaseText }}
+                        </p>
+                    @else
+                        <p class="text-lg text-[#A0A0A8] max-w-xl">
+                            Rent premium cinematic equipment for your next masterpiece. From ARRI cameras to professional lighting setups.
+                        </p>
+                    @endif
+                    
+                    @if(count($asidePoints) > 0)
+                        <ul class="mt-8 space-y-3">
+                            @foreach($asidePoints as $point)
+                            <li class="flex items-center gap-3 text-white font-medium">
+                                <svg class="h-5 w-5 text-[#D4A843]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                {{ $point }}
+                            </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             </div>
-            
-            @if ($showBackHome)
-                <a href="{{ $backUrl }}" class="relative z-10 mt-6 inline-flex w-fit items-center justify-center text-sm font-semibold text-[#A0A0A8] transition hover:text-[#D4A843]" data-skip-loader="true">
-                    &larr; {{ $backLabel }}
-                </a>
-            @endif
+
+            <!-- Right Side: Form -->
+            <div class="relative flex w-full flex-col justify-center px-6 py-12 lg:w-1/2 sm:px-16 md:px-24">
+                <!-- Add a subtle background glow for mobile where there's no left side image -->
+                <div class="pointer-events-none absolute inset-0 lg:hidden bg-[radial-gradient(circle_at_top,_rgba(212,168,67,0.12),transparent_28%),radial-gradient(circle_at_bottom,_rgba(212,168,67,0.06),transparent_22%)]"></div>
+
+                <div class="mx-auto w-full max-w-md relative z-10">
+                    <a href="{{ route('home') }}" class="mb-12 flex items-center transition-transform hover:scale-105 w-fit" data-skip-loader="true">
+                        <x-brand.image
+                            light="manake-logo-white.png"
+                            dark="manake-logo-white.png"
+                            alt="{{ $brandName }}"
+                            img-class="h-10 w-auto object-contain"
+                            :swap-in-dark="false"
+                        />
+                    </a>
+
+                    @if ($heading ?? null)
+                        <h2 class="text-3xl font-bold tracking-tight text-white mb-8 font-serif">
+                            {{ $heading }}
+                        </h2>
+                    @endif
+
+                    <div class="flex w-full flex-col gap-5">
+                        {{ $slot }}
+                    </div>
+                    
+                    @if ($showBackHome ?? true)
+                        <a href="{{ $backUrl }}" class="mt-10 inline-flex w-fit items-center text-sm font-semibold text-[#A0A0A8] transition hover:text-[#D4A843]" data-skip-loader="true">
+                            &larr; {{ $backLabel }}
+                        </a>
+                    @endif
+                </div>
+            </div>
         </div>
 
         @include('partials.theme-toggle')

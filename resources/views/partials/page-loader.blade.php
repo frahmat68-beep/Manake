@@ -12,6 +12,34 @@
     </div>
 </div>
 
+<style>
+    .manake-page-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background-color: #020617; /* slate-950 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .manake-page-loader.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+    .manake-loader-mark {
+        height: 4rem;
+        width: 4rem;
+        animation: manake-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes manake-pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: .5; transform: scale(0.95); }
+    }
+</style>
 <noscript>
     <style>
         #manake-page-loader {

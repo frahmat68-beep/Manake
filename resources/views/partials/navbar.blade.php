@@ -187,13 +187,13 @@
                             <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#D4A843] text-xs font-semibold text-[#0A0A0B]">
                                 {{ strtoupper(substr(auth()->user()->display_name ?? 'U', 0, 1)) }}
                             </span>
-                            <span class="max-w-[120px] truncate text-sm font-semibold text-slate-700">{{ auth()->user()->display_name ?? __('app.user.generic') }}</span>
+                            <span class="max-w-[120px] truncate text-sm font-semibold text-[#E8E8EC]">{{ auth()->user()->display_name ?? __('app.user.generic') }}</span>
                         </button>
                         <div x-cloak x-show="userOpen" x-transition.origin.top.right class="absolute right-0 mt-2 w-52 rounded-xl border border-[#1A1A1E] bg-[#111113] py-2 shadow-lg">
                             <a href="{{ route('cart') }}" data-ui-menu-item class="block px-4 py-2 text-sm">{{ __('ui.nav.cart') }}</a>
                             <a href="{{ route('booking.history') }}" data-ui-menu-item class="block px-4 py-2 text-sm">{{ __('ui.nav.my_orders') }}</a>
                             <a href="{{ route('profile.complete') }}" data-ui-menu-item class="block px-4 py-2 text-sm">{{ __('ui.nav.my_profile') }}</a>
-                            <div class="my-1 h-px bg-slate-100"></div>
+                            <div class="my-1 h-px bg-[#1A1A1E]"></div>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" data-ui-menu-item class="w-full px-4 py-2 text-left text-sm">{{ __('ui.nav.logout') }}</button>
@@ -236,7 +236,7 @@
         <div x-cloak x-show="mobileOpen" x-transition class="pb-4 lg:hidden">
             <div class="card space-y-3 rounded-2xl p-3">
                     <div class="rounded-xl bg-[#111113] p-3">
-                    <p class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">{{ __('ui.nav.category') }}</p>
+                    <p class="text-[11px] font-semibold uppercase tracking-widest text-[#A0A0A8]">{{ __('ui.nav.category') }}</p>
                     <div class="mt-2 grid grid-cols-2 gap-2">
                         @forelse ($categories as $cat)
                             <a href="{{ $cat['url'] }}" class="btn-secondary rounded-xl px-3 py-2 text-center text-sm font-semibold transition">
@@ -266,12 +266,12 @@
                             {{ __('ui.nav.notifications') }}
                         </button>
                     </div>
-                    <div x-cloak x-show="notifOpen" x-transition class="space-y-2 rounded-xl border border-slate-200 bg-white p-3">
-                        <p class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">{{ __('ui.nav.notifications') }}</p>
+                    <div x-cloak x-show="notifOpen" x-transition class="space-y-2 rounded-xl border border-[#1A1A1E] bg-[#111113] p-3">
+                        <p class="text-[11px] font-semibold uppercase tracking-widest text-[#A0A0A8]">{{ __('ui.nav.notifications') }}</p>
                         @foreach ($notificationItems as $notification)
-                            <article class="rounded-xl border border-slate-200 px-3 py-2">
-                                <p class="text-xs font-semibold text-slate-800">{{ $notification['title'] }}</p>
-                                <p class="mt-1 text-xs text-slate-600">{{ $notification['body'] }}</p>
+                            <article class="rounded-xl border border-[#1A1A1E] px-3 py-2">
+                                <p class="text-xs font-semibold text-[#E8E8EC]">{{ $notification['title'] }}</p>
+                                <p class="mt-1 text-xs text-[#A0A0A8]">{{ $notification['body'] }}</p>
                             </article>
                         @endforeach
                     </div>

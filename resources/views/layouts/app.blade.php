@@ -242,9 +242,9 @@
     />
 
     <div class="lg:pl-24">
-        <header class="manake-topbar-shell glass-lg sticky top-0 z-30 border-b border-slate-200/50" data-manake-topbar="app">
+        <header class="manake-topbar-shell sticky top-0 z-30 border-b border-[#1A1A1E] bg-[#0A0A0B]/95 backdrop-blur-xl" data-manake-topbar="app">
             <div class="mx-auto flex w-full max-w-[1320px] flex-wrap items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6 sm:py-3">
-                <button data-ui-icon-button class="order-1 hover-scale inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl lg:hidden transition-all hover:bg-slate-100" type="button" @click="sidebarOpen = true" aria-label="{{ __('ui.nav.toggle_menu') }}">
+                <button data-ui-icon-button class="order-1 hover-scale inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl lg:hidden transition-all hover:bg-[#1A1A1E] text-white" type="button" @click="sidebarOpen = true" aria-label="{{ __('ui.nav.toggle_menu') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="4" y1="7" x2="20" y2="7" />
                         <line x1="4" y1="12" x2="20" y2="12" />
@@ -257,9 +257,9 @@
                     method="GET"
                     action="{{ route('catalog') }}"
                     data-search-suggest-url="{{ route('search.suggestions') }}"
-                    class="command-surface command-surface--search relative order-3 w-full rounded-2xl sm:order-2 sm:flex-1 sm:max-w-xl transition-all focus-within:ring-4 focus-within:ring-amber-500/10 focus-within:border-amber-500/50"
+                    class="command-surface command-surface--search relative order-3 w-full rounded-2xl sm:order-2 sm:flex-1 sm:max-w-xl transition-all border border-[#1A1A1E] bg-[#111113] focus-within:ring-2 focus-within:ring-[#D4A843]/30 focus-within:border-[#D4A843]"
                 >
-                    <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#66666C]">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M8.5 3.5a5 5 0 1 0 0 10 5 5 0 0 0 0-10ZM2 8.5a6.5 6.5 0 1 1 11.158 4.157l3.092 3.093a1 1 0 0 1-1.414 1.414l-3.093-3.092A6.5 6.5 0 0 1 2 8.5Z" clip-rule="evenodd" />
                         </svg>
@@ -271,11 +271,11 @@
                         value="{{ $searchQuery }}"
                         placeholder="{{ __('ui.nav.search_placeholder') }}"
                         autocomplete="off"
-                        class="w-full rounded-2xl border-0 bg-transparent py-3 pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+                        class="w-full rounded-2xl border-0 bg-transparent py-3 pl-9 pr-3 text-sm text-white placeholder-[#66666C] focus:outline-none focus:ring-0"
                     >
                     <div
                         id="global-catalog-search-dropdown"
-                        class="absolute left-0 right-auto top-[calc(100%+0.6rem)] z-50 hidden overflow-hidden rounded-2xl border border-slate-200/50 glass-lg shadow-2xl animate-fade-up"
+                        class="absolute left-0 right-auto top-[calc(100%+0.6rem)] z-50 hidden overflow-hidden rounded-2xl border border-[#1A1A1E] bg-[#111113] shadow-2xl animate-fade-up"
                     ></div>
                 </form>
 
@@ -285,7 +285,7 @@
                             <button
                                 type="button"
                                 data-ui-icon-button
-                                class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl transition"
+                                class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl transition text-white hover:bg-[#1A1A1E]"
                                 @click="notifOpen = !notifOpen"
                                 :aria-expanded="notifOpen.toString()"
                                 aria-label="{{ __('ui.nav.notifications') }}"
@@ -298,10 +298,10 @@
                                     x-cloak
                                     x-show="notifCount > 0"
                                     x-text="notifBadge()"
-                                    class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D4A843] px-1 text-[10px] font-bold leading-none text-[#0A0A0B] ring-2 ring-white dark:ring-slate-900"
+                                    class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D4A843] px-1 text-[10px] font-bold leading-none text-[#0A0A0B]"
                                 ></span>
                             </button>
-                            <div x-cloak x-show="notifOpen" x-transition.origin.top.right class="card absolute right-0 mt-2 w-[22rem] max-w-[calc(100vw-2rem)] rounded-2xl p-4 shadow-2xl glass-lg">
+                            <div x-cloak x-show="notifOpen" x-transition.origin.top.right class="card absolute right-0 mt-2 w-[22rem] max-w-[calc(100vw-2rem)] rounded-2xl p-4 shadow-2xl border border-[#1A1A1E] bg-[#111113]">
                                 <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#D4A843]">{{ __('ui.nav.notifications') }}</p>
                                 <div class="mt-3 max-h-72 space-y-2 overflow-y-auto pr-1">
                                     @forelse ($notificationItems as $notification)
@@ -313,32 +313,32 @@
                                         <a
                                             href="{{ $notificationTargetUrl }}"
                                             data-read="{{ $notificationUnread ? '0' : '1' }}"
-                                            class="block rounded-xl border border-slate-200/50 p-3 transition hover:border-amber-400/50 hover:bg-amber-50/50"
+                                            class="block rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] p-3 transition hover:border-[#D4A843] hover:bg-[#1A1A1E]"
                                             @click.prevent="openNotification($event, '{{ $notificationTargetUrl }}', '{{ $notificationReadUrl }}', {{ $notificationUnread ? 'true' : 'false' }})"
                                         >
                                             <div class="flex items-start justify-between gap-2">
-                                                <p class="text-xs font-bold text-slate-900">{{ $notification['title'] }}</p>
+                                                <p class="text-xs font-bold text-[#E8E8EC]">{{ $notification['title'] }}</p>
                                                 @if (!empty($notification['is_new']))
                                                     <span class="mt-1 inline-flex h-2 w-2 rounded-full bg-[#D4A843] shadow-[0_0_8px_rgba(212,168,67,0.5)]"></span>
                                                 @endif
                                             </div>
-                                            <p class="mt-1 text-xs leading-relaxed text-slate-600 line-clamp-2">{{ $notification['body'] }}</p>
+                                            <p class="mt-1 text-xs leading-relaxed text-[#A0A0A8] line-clamp-2">{{ $notification['body'] }}</p>
                                             @if (!empty($notification['time']))
-                                                <p class="mt-2 text-[10px] font-medium text-slate-400 uppercase tracking-wider">{{ $notification['time'] }}</p>
+                                                <p class="mt-2 text-[10px] font-medium text-[#66666C] uppercase tracking-wider">{{ $notification['time'] }}</p>
                                             @endif
                                         </a>
                                     @empty
                                         <div class="flex flex-col items-center justify-center py-8 text-center">
-                                            <div class="rounded-full bg-slate-50 p-3 text-slate-300">
+                                            <div class="rounded-full bg-[#1A1A1E] p-3 text-[#66666C]">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.4-1.4a2 2 0 0 1-.6-1.4V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5" />
                                                 </svg>
                                             </div>
-                                            <p class="mt-3 text-xs font-medium text-slate-400">{{ __('app.notifications.empty') }}</p>
+                                            <p class="mt-3 text-xs font-medium text-[#A0A0A8]">{{ __('app.notifications.empty') }}</p>
                                         </div>
                                     @endforelse
                                 </div>
-                                <a href="{{ route('notifications') }}" class="mt-4 block rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-center text-xs font-bold text-[#D4A843] transition hover:bg-amber-50 hover:text-[#e0ba5d]" @click="notifOpen = false">
+                                <a href="{{ route('notifications') }}" class="mt-4 block rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-2.5 text-center text-xs font-bold text-[#D4A843] transition hover:bg-[#1A1A1E] hover:text-[#e0ba5d]" @click="notifOpen = false">
                                     {{ __('ui.nav.view_all') }}
                                 </a>
                             </div>
@@ -347,7 +347,7 @@
                         <button
                             type="button"
                             data-ui-icon-button
-                            class="inline-flex h-10 w-10 items-center justify-center rounded-xl transition"
+                            class="inline-flex h-10 w-10 items-center justify-center rounded-xl transition text-white hover:bg-[#1A1A1E]"
                             aria-label="{{ __('ui.nav.notifications') }}"
                             title="{{ __('ui.nav.notifications') }}"
                             @click="openAuthModal('login')"
@@ -363,7 +363,7 @@
                         <a
                             href="{{ route('cart') }}"
                             data-ui-icon-button
-                            class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl transition"
+                            class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl transition text-white hover:bg-[#1A1A1E]"
                             aria-label="{{ __('ui.nav.cart') }}"
                             title="{{ __('ui.nav.cart') }}"
                         >
@@ -373,7 +373,7 @@
                                 <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6" />
                             </svg>
                             @if (($cartCount ?? 0) > 0)
-                                <span class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D4A843] px-1 text-[10px] font-bold text-[#0A0A0B] ring-2 ring-white dark:ring-slate-900">
+                                <span class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D4A843] px-1 text-[10px] font-bold text-[#0A0A0B]">
                                     {{ $cartCount > 99 ? '99+' : $cartCount }}
                                 </span>
                             @endif
@@ -382,7 +382,7 @@
                         <button
                             type="button"
                             data-ui-icon-button
-                            class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl transition"
+                            class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl transition text-white hover:bg-[#1A1A1E]"
                             aria-label="{{ __('ui.nav.cart') }}"
                             title="{{ __('ui.nav.cart') }}"
                             @click="openAuthModal('login')"
