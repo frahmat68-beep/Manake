@@ -57,6 +57,17 @@ Route::get('/debug-build', function () {
     ]);
 });
 
+Route::fallback(function (\Illuminate\Http\Request $request) {
+    return response()->json([
+        'message' => 'FALLBACK ROUTE HIT',
+        'url' => $request->url(),
+        'fullUrl' => $request->fullUrl(),
+        'path' => $request->path(),
+        'method' => $request->method(),
+        'server' => $request->server(),
+    ]);
+});
+
 Route::get('/build/{path}', function ($path) {
     return "IT MATCHED BUILD ROUTE WITH PATH: " . $path;
 })
