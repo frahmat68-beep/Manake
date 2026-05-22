@@ -57,7 +57,9 @@ Route::get('/debug-build', function () {
     ]);
 });
 
-Route::get('/build/{path}', [AssetController::class, 'build'])
+Route::get('/build/{path}', function ($path) {
+    return "IT MATCHED BUILD ROUTE WITH PATH: " . $path;
+})
     ->where('path', '.*')
     ->name('assets.build');
 
