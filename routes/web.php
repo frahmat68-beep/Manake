@@ -41,37 +41,7 @@ Route::get('/assets/public/{path}', [AssetController::class, 'public'])
 Route::get('/assets/media/{path}', [AssetController::class, 'media'])
     ->where('path', '.*')
     ->name('assets.media');
-Route::get('/debug-build', function () {
-    $filePath = public_path('build/assets/app-CsLnBG3b.css');
-    return response()->json([
-        'build' => is_dir(public_path('build')) ? scandir(public_path('build')) : 'not a dir',
-        'assets' => is_dir(public_path('build/assets')) ? scandir(public_path('build/assets')) : 'not a dir',
-        'manifest' => is_file(public_path('build/manifest.json')) ? file_get_contents(public_path('build/manifest.json')) : 'no manifest',
-        'public_path_css' => $filePath,
-        'realpath_css' => realpath($filePath),
-        'is_file' => is_file($filePath),
-        'file_exists' => file_exists($filePath),
-        'base_path' => base_path(),
-        'realpath_build' => realpath(public_path('build')),
-        'starts_with' => str_starts_with(realpath($filePath) ?: '', realpath(public_path('build')) . DIRECTORY_SEPARATOR),
-        'dir_sep' => DIRECTORY_SEPARATOR
-    ]);
-});
-
-Route::fallback(function (\Illuminate\Http\Request $request) {
-    return response()->json([
-        'message' => 'FALLBACK ROUTE HIT',
-        'url' => $request->url(),
-        'fullUrl' => $request->fullUrl(),
-        'path' => $request->path(),
-        'method' => $request->method(),
-        'server' => $request->server(),
-    ]);
-});
-
-Route::get('/build/{path}', function ($path) {
-    return "IT MATCHED BUILD ROUTE WITH PATH: " . $path;
-})
+Route::get('/build/{path}', [AssetController::class, 'build'])
     ->where('path', '.*')
     ->name('assets.build');
 
