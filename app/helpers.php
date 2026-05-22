@@ -460,7 +460,10 @@ if (! function_exists('site_media_url')) {
 
                 // If file is directly accessible in public/storage, return direct asset URL
                 // This is much faster and more reliable than routing through controller
-                if (!app()->runningUnitTests() && str_contains($absolutePath, public_path('storage/'))) {
+                // We bypass this on Vercel to force dynamic rendering via AssetController since Vercel's
+                // static file router does not serve untracked/ignored static files in public/storage
+                $isVercel = isset($_SERVER['VERCEL']) || env('VERCEL') || (request() && str_contains(request()->getHost(), 'vercel.app'));
+                if (!$isVercel && !app()->runningUnitTests() && str_contains($absolutePath, public_path('storage/'))) {
                     return asset('storage/' . $normalizedPath);
                 }
 
