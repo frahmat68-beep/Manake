@@ -1,12 +1,7 @@
 @extends('layouts.landing')
 
 @php
-    $statusValue = $equipment->status ?? ($equipment->stock > 0 ? 'ready' : 'unavailable');
-    $statusKey = $statusValue === 'ready' ? 'ready' : 'rented';
-    $statusLabel = $statusKey === 'ready' ? __('app.status.ready') : __('app.status.rented');
-    $statusClass = $statusKey === 'ready'
-        ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
-        : 'bg-amber-500/10 text-amber-600 border-amber-500/20';
+    $statusValue = (string) ($equipment->status ?? ($equipment->stock > 0 ? 'ready' : 'unavailable'));
     $imagePath = $equipment->image_path ?? $equipment->image;
     $fallbackImage = site_asset('MANAKE-FAV-M.png');
     $mainImage = site_media_url($imagePath) ?: $fallbackImage;
@@ -14,6 +9,22 @@
     $reservedUnits = (int) ($equipment->reserved_units ?? 0);
     $availableUnits = (int) $equipment->available_units;
     $canRent = $statusValue === 'ready' && (int) $equipment->stock > 0;
+    $statusLabel = match ($statusValue) {
+        'maintenance' => 'Maintenance',
+        'unavailable' => 'Tidak Tersedia',
+        'ready' => $availableUnits > 0 ? 'Tersedia' : 'Penuh / Sedang Disewa',
+        default => $availableUnits > 0 ? 'Tersedia' : 'Tidak Tersedia',
+    };
+    $statusClass = match ($statusValue) {
+        'maintenance' => 'bg-amber-500/10 text-amber-600 border-amber-500/20',
+        'unavailable' => 'bg-rose-500/10 text-rose-600 border-rose-500/20',
+        'ready' => $availableUnits > 0
+            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+            : 'bg-amber-500/10 text-amber-600 border-amber-500/20',
+        default => $availableUnits > 0
+            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+            : 'bg-rose-500/10 text-rose-600 border-rose-500/20',
+    };
     $bookingRanges = collect($bookingRanges ?? []);
     $specificationSource = trim((string) ($equipment->specifications ?? $equipment->description ?? ''));
     $specifications = collect(preg_split('/\\r\\n|\\r|\\n/', $specificationSource ?: ''))
@@ -72,8 +83,8 @@
                                 <span class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400 border border-blue-500/10">
                                     {{ $equipment->category?->name ?? __('app.category.title') }}
                                 </span>
-                                <span class="mk-badge {{ $availableUnits > 0 ? 'mk-badge-success' : 'mk-badge-danger' }}">
-                                    {{ $availableUnits > 0 ? __('app.status.ready') : __('app.status.rented') }}
+                                <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
+                                    {{ $statusLabel }}
                                 </span>
                             </div>
                             <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl leading-tight">

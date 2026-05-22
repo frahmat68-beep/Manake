@@ -4,19 +4,137 @@
 
 @php
     $heroCategories = ['Kamera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'HT'];
-    $equipmentItems = [
+    $fallbackEquipmentCards = collect([
         ['name' => 'ARRI Alexa Mini LF', 'category' => 'Kamera', 'available' => true, 'price' => 1200000, 'image' => site_asset('images/camera-arri.jpg')],
         ['name' => 'Aputure 600d Pro', 'category' => 'Lighting', 'available' => true, 'price' => 350000, 'image' => site_asset('images/lighting-aputure.jpg')],
         ['name' => 'RODE NTG5 Boom Kit', 'category' => 'Audio', 'available' => false, 'price' => 180000, 'image' => site_asset('images/audio-rode.jpg')],
         ['name' => 'DJI Mavic 3 Cine', 'category' => 'Drone', 'available' => true, 'price' => 800000, 'image' => site_asset('images/drone-dji.jpg')],
         ['name' => 'DJI Ronin 4D', 'category' => 'Stabilizer', 'available' => true, 'price' => 650000, 'image' => site_asset('images/stabilizer-ronin.jpg')],
         ['name' => 'Motorola DP4800e Kit', 'category' => 'HT', 'available' => true, 'price' => 120000, 'image' => site_asset('images/ht-motorola.jpg')],
+    ]);
+    $fallbackMarqueeCategories = collect(['Kamera', 'Lighting', 'Audio', 'HT / Walkie', 'Drone', 'Stabilizer']);
+    $fallbackSnapshot = [
+        'rented_today' => 23,
+        'available_items' => 481,
+        'upcoming_bookings' => 14,
+    ];
+    $fallbackImageByCategory = [
+        'kamera' => site_asset('images/camera-arri.jpg'),
+        'lighting' => site_asset('images/lighting-aputure.jpg'),
+        'audio' => site_asset('images/audio-rode.jpg'),
+        'drone' => site_asset('images/drone-dji.jpg'),
+        'stabilizer' => site_asset('images/stabilizer-ronin.jpg'),
+        'ht' => site_asset('images/ht-motorola.jpg'),
+        'walkie' => site_asset('images/ht-motorola.jpg'),
+    ];
+    $resolveStatusLabel = static function (string $statusValue, int $availableUnits): string {
+        $normalized = strtolower(trim($statusValue));
+
+        return match ($normalized) {
+            'maintenance' => 'Maintenance',
+            'unavailable' => 'Tidak Tersedia',
+            'ready' => $availableUnits > 0 ? 'Tersedia' : 'Penuh / Sedang Disewa',
+            default => $availableUnits > 0 ? 'Tersedia' : 'Tidak Tersedia',
+        };
+    };
+    $resolveStatusClasses = static function (string $statusValue, int $availableUnits): string {
+        $normalized = strtolower(trim($statusValue));
+
+        return match ($normalized) {
+            'maintenance' => 'border-amber-500/20 bg-amber-950/75 text-amber-300',
+            'unavailable' => 'border-rose-400/30 bg-rose-950/75 text-rose-300',
+            'ready' => $availableUnits > 0
+                ? 'border-emerald-400/30 bg-emerald-950/75 text-emerald-300'
+                : 'border-amber-400/30 bg-amber-950/75 text-amber-200',
+            default => $availableUnits > 0
+                ? 'border-emerald-400/30 bg-emerald-950/75 text-emerald-300'
+                : 'border-rose-400/30 bg-rose-950/75 text-rose-300',
+        };
+    };
+    $resolveEquipmentImage = static function ($equipment, string $fallbackCategory = '') use ($fallbackImageByCategory) {
+        $imagePath = data_get($equipment, 'image_path') ?: data_get($equipment, 'image');
+        $imageUrl = site_media_url($imagePath);
+
+        if ($imageUrl) {
+            return $imageUrl;
+        }
+
+        $categoryName = trim((string) data_get($equipment, 'category.name', $fallbackCategory));
+        $normalizedCategory = strtolower(trim($categoryName));
+
+        foreach ($fallbackImageByCategory as $needle => $fallback) {
+            if (str_contains($normalizedCategory, $needle)) {
+                return $fallback;
+            }
+        }
+
+        return site_asset('MANAKE-FAV-M.png');
+    };
+    $realEquipmentItems = collect($productsReady ?? [])
+        ->filter()
+        ->values()
+        ->map(static function ($equipment) use ($resolveEquipmentImage, $resolveStatusLabel, $resolveStatusClasses) {
+            $statusValue = (string) data_get($equipment, 'status', 'ready');
+            $stock = (int) data_get($equipment, 'stock', 0);
+            $availableUnits = (int) data_get($equipment, 'available_units', $stock);
+            $reservedUnits = (int) data_get($equipment, 'reserved_units', max($stock - $availableUnits, 0));
+            $categoryName = (string) data_get($equipment, 'category.name', 'Peralatan');
+
+            return [
+                'name' => (string) data_get($equipment, 'name', 'Equipment'),
+                'slug' => (string) data_get($equipment, 'slug', ''),
+                'category' => $categoryName,
+                'status' => $statusValue,
+                'status_label' => $resolveStatusLabel($statusValue, $availableUnits),
+                'status_class' => $resolveStatusClasses($statusValue, $availableUnits),
+                'available_units' => $availableUnits,
+                'reserved_units' => $reservedUnits,
+                'stock' => $stock,
+                'price' => (int) data_get($equipment, 'price_per_day', 0),
+                'image' => $resolveEquipmentImage($equipment, $categoryName),
+                'url' => route('product.show', (string) data_get($equipment, 'slug', '')),
+            ];
+        });
+    $equipmentItems = $realEquipmentItems->isNotEmpty() ? $realEquipmentItems : $fallbackEquipmentCards;
+    $marqueeCategories = collect($navCategories ?? [])
+        ->map(fn ($category) => trim((string) data_get($category, 'name', '')))
+        ->filter()
+        ->values();
+    if ($marqueeCategories->isEmpty()) {
+        $marqueeCategories = $fallbackMarqueeCategories;
+    }
+    $marqueeCategories = $marqueeCategories->concat($marqueeCategories)->take(max(12, $marqueeCategories->count() * 2))->values();
+    $guestRentalSnapshotItems = collect($guestRentalSnapshot ?? [])->filter();
+    $realRentedToday = (int) $guestRentalSnapshotItems->sum('qty');
+    $realAvailableItems = (int) $realEquipmentItems->count();
+    $realUpcomingBookings = (int) collect($recentUserOrders ?? [])->count();
+    $snapshotNumbers = [
+        'rented_today' => $realRentedToday > 0 ? $realRentedToday : $fallbackSnapshot['rented_today'],
+        'available_items' => $realAvailableItems > 0 ? $realAvailableItems : $fallbackSnapshot['available_items'],
+        'upcoming_bookings' => $realUpcomingBookings > 0 ? $realUpcomingBookings : $fallbackSnapshot['upcoming_bookings'],
     ];
     $footerAbout = 'Platform rental peralatan media profesional untuk sutradara, sinematografer, dan kreator konten. Gear kelas sinema, kapan saja.';
     $footerLinks = [
-        'Peralatan' => ['Kamera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'HT / Walkie'],
-        'Perusahaan' => ['Tentang Kami', 'Cara Sewa', 'Harga', 'Kontak'],
-        'Dukungan' => ['FAQ', 'Kebijakan Rental', 'Asuransi', 'Syarat & Ketentuan'],
+        'Peralatan' => [
+            ['label' => 'Kamera', 'href' => route('category.show', 'kamera')],
+            ['label' => 'Lighting', 'href' => route('category.show', 'lighting')],
+            ['label' => 'Audio', 'href' => route('category.show', 'audio')],
+            ['label' => 'Drone', 'href' => route('category.show', 'drone')],
+            ['label' => 'Stabilizer', 'href' => route('category.show', 'stabilizer')],
+            ['label' => 'HT / Walkie', 'href' => route('category.show', 'ht-walkie')],
+        ],
+        'Perusahaan' => [
+            ['label' => 'Tentang Kami', 'href' => route('about')],
+            ['label' => 'Cara Sewa', 'href' => '#cara-sewa'],
+            ['label' => 'Harga', 'href' => route('catalog')],
+            ['label' => 'Kontak', 'href' => '#contact'],
+        ],
+        'Dukungan' => [
+            ['label' => 'FAQ', 'href' => route('rental.rules')],
+            ['label' => 'Kebijakan Rental', 'href' => route('rental.rules')],
+            ['label' => 'Asuransi', 'href' => route('rental.rules')],
+            ['label' => 'Syarat & Ketentuan', 'href' => route('rental.rules')],
+        ],
     ];
 @endphp
 
@@ -97,7 +215,7 @@
 
         <section id="categories" class="border-y border-[#1A1A1E] bg-[#111113] py-0 overflow-hidden">
             <div class="flex w-max animate-[marquee_30s_linear_infinite] items-center whitespace-nowrap">
-                @foreach (array_merge(['Kamera','Lighting','Audio','HT / Walkie','Drone','Stabilizer'], ['Kamera','Lighting','Audio','HT / Walkie','Drone','Stabilizer']) as $category)
+                @foreach ($marqueeCategories as $category)
                     <div class="flex items-center gap-3 px-10 py-5 text-[#A0A0A8]">
                         <span class="text-sm font-medium tracking-[0.22em] uppercase">{{ $category }}</span>
                         <span class="h-1.5 w-1.5 rounded-full bg-[#1A1A1E]"></span>
@@ -123,30 +241,42 @@
                 <div class="overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     <div class="flex gap-5 min-w-max">
                         @foreach ($equipmentItems as $item)
+                            @php
+                                $isAvailable = (bool) data_get($item, 'available', data_get($item, 'available_units', 0) > 0);
+                                $itemUrl = data_get($item, 'url', route('catalog'));
+                                $itemName = (string) data_get($item, 'name', 'Equipment');
+                                $itemCategory = (string) data_get($item, 'category', 'Peralatan');
+                                $itemPrice = (int) data_get($item, 'price', data_get($item, 'price_per_day', 0));
+                                $itemImage = (string) data_get($item, 'image', site_asset('MANAKE-FAV-M.png'));
+                                $itemStatusValue = (string) data_get($item, 'status', ($isAvailable ? 'ready' : 'unavailable'));
+                                $itemAvailableUnits = (int) data_get($item, 'available_units', $isAvailable ? 1 : 0);
+                                $itemStatusLabel = (string) data_get($item, 'status_label', $resolveStatusLabel($itemStatusValue, $itemAvailableUnits));
+                                $itemStatusClass = (string) data_get($item, 'status_class', $resolveStatusClasses($itemStatusValue, $itemAvailableUnits));
+                            @endphp
                             <article class="group w-[285px] overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#111113]">
                                 <div class="relative aspect-[4/3] overflow-hidden bg-[#111113]">
-                                    <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]">
+                                    <img src="{{ $itemImage }}" alt="{{ $itemName }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" onerror="this.onerror=null;this.src='{{ site_asset('MANAKE-FAV-M.png') }}';">
                                     <div class="absolute left-3 top-3 rounded-sm border border-white/10 bg-[#0A0A0B]/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E8E8EC]">
-                                        {{ $item['category'] }}
+                                        {{ $itemCategory }}
                                     </div>
-                                    <div class="absolute right-3 top-3 rounded-sm border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] {{ $item['available'] ? 'border-emerald-400/30 bg-emerald-950/75 text-emerald-300' : 'border-rose-400/30 bg-rose-950/75 text-rose-300' }}">
-                                        {{ $item['available'] ? 'Tersedia' : 'Sedang Disewa' }}
+                                    <div class="absolute right-3 top-3 rounded-sm border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] {{ $itemStatusClass }}">
+                                        {{ $itemStatusLabel }}
                                     </div>
                                 </div>
                                 <div class="flex flex-1 flex-col gap-3 p-5">
                                     <div>
-                                        <h3 class="text-sm font-semibold leading-snug text-[#E8E8EC]">{{ $item['name'] }}</h3>
+                                        <h3 class="text-sm font-semibold leading-snug text-[#E8E8EC]">{{ $itemName }}</h3>
                                         <p class="mt-1 text-xs text-[#A0A0A8]">
-                                            Rp {{ number_format($item['price'], 0, ',', '.') }} / hari
+                                            Rp {{ number_format($itemPrice, 0, ',', '.') }} / hari
                                         </p>
                                     </div>
                                     <div class="mt-auto">
-                                        <button class="inline-flex w-full items-center justify-center gap-2 rounded-md px-4 py-2.5 text-xs font-semibold {{ $item['available'] ? 'bg-[#D4A843] text-[#0A0A0B] transition hover:bg-[#e0ba5d]' : 'cursor-not-allowed bg-[#1A1A1E] text-[#A0A0A8]' }}" {{ $item['available'] ? '' : 'disabled' }}>
-                                            {{ $item['available'] ? 'Sewa Sekarang' : 'Beritahu Saya' }}
-                                            @if($item['available'])
+                                        <a href="{{ $itemUrl }}" class="inline-flex w-full items-center justify-center gap-2 rounded-md px-4 py-2.5 text-xs font-semibold {{ $isAvailable ? 'bg-[#D4A843] text-[#0A0A0B] transition hover:bg-[#e0ba5d]' : 'cursor-pointer bg-[#1A1A1E] text-[#A0A0A8] transition hover:text-[#E8E8EC]' }}">
+                                            {{ $isAvailable ? 'Lihat Detail' : 'Lihat Detail' }}
+                                            @if($isAvailable)
                                                 <span aria-hidden="true">→</span>
                                             @endif
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </article>
@@ -199,9 +329,9 @@
 
                 <div class="grid gap-5 md:grid-cols-3">
                     @foreach ([
-                        ['label' => 'Disewa Hari Ini', 'value' => '23', 'color' => 'text-[#D4A843]'],
-                        ['label' => 'Item Tersedia', 'value' => '481', 'color' => 'text-emerald-400'],
-                        ['label' => 'Pemesanan Mendatang', 'value' => '14', 'color' => 'text-sky-400'],
+                        ['label' => 'Disewa Hari Ini', 'value' => (string) $snapshotNumbers['rented_today'], 'color' => 'text-[#D4A843]'],
+                        ['label' => 'Item Tersedia', 'value' => (string) $snapshotNumbers['available_items'], 'color' => 'text-emerald-400'],
+                        ['label' => 'Pemesanan Mendatang', 'value' => (string) $snapshotNumbers['upcoming_bookings'], 'color' => 'text-sky-400'],
                     ] as $stat)
                         <div class="relative overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#0A0A0B] p-8">
                             <p class="text-sm text-[#A0A0A8]">{{ $stat['label'] }}</p>
@@ -262,7 +392,7 @@
                             <h3 class="text-sm font-semibold text-[#E8E8EC]">{{ $heading }}</h3>
                             <ul class="mt-4 space-y-2 text-sm text-[#A0A0A8]">
                                 @foreach ($links as $link)
-                                    <li><a href="#" class="transition hover:text-[#E8E8EC]">{{ $link }}</a></li>
+                                    <li><a href="{{ $link['href'] }}" class="transition hover:text-[#E8E8EC]">{{ $link['label'] }}</a></li>
                                 @endforeach
                             </ul>
                         </div>

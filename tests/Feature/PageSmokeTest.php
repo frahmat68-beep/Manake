@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Admin;
+use App\Models\Category;
+use App\Models\Equipment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -43,7 +45,7 @@ class PageSmokeTest extends TestCase
         }
     }
 
-    public function test_home_page_renders_v0_cinematic_indonesian_hero(): void
+    public function test_home_page_renders_v0_cinematic_indonesian_hero_with_empty_database(): void
     {
         $response = $this->get(route('home'));
 
@@ -51,6 +53,45 @@ class PageSmokeTest extends TestCase
         $response->assertSee('Rental Peralatan Profesional');
         $response->assertSee('Sewa');
         $response->assertSee('terbaik, kapan saja.');
+        $response->assertSee('ARRI Alexa Mini LF');
+        $response->assertSee('Diperbarui secara real time');
+    }
+
+    public function test_home_page_uses_database_equipment_and_categories_when_available(): void
+    {
+        $category = Category::query()->create([
+            'name' => 'Kamera',
+            'slug' => 'kamera',
+            'description' => 'Kamera sinema profesional.',
+        ]);
+
+        $imagePath = 'equipments/home-page-test-' . Str::lower(Str::random(8)) . '.png';
+        Storage::disk('public')->put($imagePath, 'fake-image');
+
+        try {
+            $equipment = Equipment::query()->create([
+                'category_id' => $category->id,
+                'name' => 'Sony FX3 Cinema Kit',
+                'slug' => 'sony-fx3-cinema-kit',
+                'price_per_day' => 650000,
+                'status' => 'ready',
+                'description' => 'Kamera cinema compact.',
+                'specifications' => 'Sensor full-frame' . PHP_EOL . '4K 120fps',
+                'stock' => 4,
+                'image_path' => $imagePath,
+                'image' => null,
+            ]);
+
+            $response = $this->get(route('home'));
+
+            $response->assertOk();
+            $response->assertSee('Sony FX3 Cinema Kit');
+            $response->assertSee('Kamera');
+            $response->assertSee(route('product.show', $equipment->slug));
+            $response->assertSee('/assets/media/' . $imagePath, false);
+        } finally {
+            Storage::disk('public')->delete($imagePath);
+        }
     }
 
     public function test_login_page_uses_relative_logo_assets(): void
@@ -101,6 +142,19 @@ class PageSmokeTest extends TestCase
         } finally {
             Storage::disk('public')->delete($path);
         }
+    }
+
+    public function test_product_detail_page_loads_for_public_equipment(): void
+    {
+        $equipment = Equipment::factory()->create([
+            'status' => 'ready',
+            'stock' => 3,
+            'image_path' => null,
+            'image' => null,
+        ]);
+
+        $this->get(route('product.show', $equipment->slug))->assertOk();
+        $this->get(route('catalog'))->assertOk();
     }
 
     public function test_admin_pages_render_without_exception_for_authenticated_admin(): void

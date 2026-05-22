@@ -2,6 +2,33 @@
 
 @section('title', $category->name . ' - ' . config('app.name'))
 
+@php
+    $resolvePublicStatusLabel = static function (string $statusValue, int $availableUnits): string {
+        $normalized = strtolower(trim($statusValue));
+
+        return match ($normalized) {
+            'maintenance' => 'Maintenance',
+            'unavailable' => 'Tidak Tersedia',
+            'ready' => $availableUnits > 0 ? 'Tersedia' : 'Penuh / Sedang Disewa',
+            default => $availableUnits > 0 ? 'Tersedia' : 'Tidak Tersedia',
+        };
+    };
+    $resolvePublicStatusClass = static function (string $statusValue, int $availableUnits): string {
+        $normalized = strtolower(trim($statusValue));
+
+        return match ($normalized) {
+            'maintenance' => 'border-amber-500/20 bg-amber-950/75 text-amber-300',
+            'unavailable' => 'border-rose-400/30 bg-rose-950/75 text-rose-300',
+            'ready' => $availableUnits > 0
+                ? 'border-emerald-400/30 bg-emerald-950/75 text-emerald-300'
+                : 'border-amber-400/30 bg-amber-950/75 text-amber-200',
+            default => $availableUnits > 0
+                ? 'border-emerald-400/30 bg-emerald-950/75 text-emerald-300'
+                : 'border-rose-400/30 bg-rose-950/75 text-rose-300',
+        };
+    };
+@endphp
+
 @section('content')
     <section class="mk-section bg-slate-50/50 dark:bg-slate-950/20">
         <div class="mk-container">
@@ -56,9 +83,10 @@
                         <div class="relative aspect-[4/3] overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 p-6 flex items-center justify-center border-b border-slate-100 dark:border-slate-800/60">
                             <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                             <img 
-                                src="{{ $item->image_path ? site_media_url($item->image_path) : config('placeholders.equipment') }}" 
+                                src="{{ site_media_url($item->image_path ?: $item->image) ?: config('placeholders.equipment') }}" 
                                 alt="{{ $item->name }}" 
                                 class="h-full w-full object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-xl"
+                                onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';"
                             >
                             
                             {{-- Availability Chip --}}
@@ -66,17 +94,14 @@
                                 $stock = (int) $item->stock;
                                 $reservedUnits = (int) ($item->active_order_items_sum_qty ?? 0);
                                 $available = max(0, $stock - $reservedUnits);
+                                $statusValue = (string) ($item->status ?? ($available > 0 ? 'ready' : 'unavailable'));
+                                $statusLabel = $resolvePublicStatusLabel($statusValue, $available);
+                                $statusClass = $resolvePublicStatusClass($statusValue, $available);
                             @endphp
                             <div class="absolute left-5 top-5">
-                                @if($available > 0)
-                                    <span class="rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400 shadow-sm border border-emerald-500/10">
-                                        {{ __('Tersedia') }}
-                                    </span>
-                                @else
-                                    <span class="rounded-full bg-rose-500/90 dark:bg-rose-600/90 backdrop-blur-md px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-white shadow-sm border border-rose-500/10">
-                                        {{ __('Tersewa') }}
-                                    </span>
-                                @endif
+                                <span class="rounded-full backdrop-blur-md px-3 py-1.5 text-[9px] font-black uppercase tracking-widest shadow-sm border {{ $statusClass }}">
+                                    {{ $statusLabel }}
+                                </span>
                             </div>
                         </div>
 

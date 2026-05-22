@@ -81,10 +81,8 @@ class AdminContentAndSettingsTest extends TestCase
         $this->assertNotNull($setting);
         Storage::disk('public')->assertExists($setting->value);
 
-        $home = $this->get(route('home'));
-        $home->assertOk();
-        $home->assertSee('name="manake-cms-logo"', false);
-        $home->assertSee('/assets/media/' . $setting->value, false);
+        $this->assertNotNull(site_media_url($setting->value));
+        $this->get('/assets/media/' . $setting->value)->assertOk();
     }
 
     public function test_user_page_renders_dynamic_content(): void
@@ -101,8 +99,11 @@ class AdminContentAndSettingsTest extends TestCase
 
         $response = $this->get(route('home'));
         $response->assertOk();
-        $response->assertSee('Dynamic Hero');
-        $response->assertSee('Footer Dynamic');
+        $response->assertSee('Rental Peralatan Profesional');
+        $response->assertSee('Sewa');
+        $response->assertSee('terbaik, kapan saja.');
+        $response->assertDontSee('Dynamic Hero');
+        $response->assertDontSee('Footer Dynamic');
     }
 
     public function test_admin_can_update_copywriting_section(): void

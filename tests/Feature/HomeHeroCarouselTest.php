@@ -16,7 +16,7 @@ class HomeHeroCarouselTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_home_ready_carousel_loads_ready_items_from_all_categories(): void
+    public function test_home_featured_equipment_section_loads_ready_items_from_all_categories(): void
     {
         $camera = Category::create([
             'name' => 'Camera',
@@ -49,12 +49,14 @@ class HomeHeroCarouselTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
+        $response->assertSee('Peralatan Unggulan');
         $response->assertSee('Sony A7 III');
         $response->assertSee('Zoom H6');
-        $response->assertSee('data-slide-count="2"', false);
+        $response->assertSee(route('product.show', 'sony-a7-iii'));
+        $response->assertSee(route('product.show', 'zoom-h6'));
     }
 
-    public function test_home_ready_carousel_includes_fit_image_and_single_slide_fallback_logic(): void
+    public function test_home_featured_equipment_cards_render_with_object_contain_images(): void
     {
         $camera = Category::create([
             'name' => 'Camera',
@@ -74,8 +76,7 @@ class HomeHeroCarouselTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('object-contain', false);
-        $response->assertSee('watchOverflow: true', false);
-        $response->assertDontSee('cloneNode(true)', false);
+        $response->assertSee('Lihat Detail');
     }
 
     public function test_home_uses_relative_storage_urls_for_ready_item_images(): void
@@ -104,7 +105,7 @@ class HomeHeroCarouselTest extends TestCase
         $response->assertDontSee('http://127.0.0.1:8000/storage/equipments/home-relative-path.png', false);
     }
 
-    public function test_home_shows_damage_fee_alert_and_popup_when_additional_fee_is_outstanding(): void
+    public function test_home_page_does_not_render_old_damage_fee_banner_copy(): void
     {
         $user = User::factory()->create();
 
@@ -127,10 +128,10 @@ class HomeHeroCarouselTest extends TestCase
         $response = $this->actingAs($user)->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Perhatian Tagihan Tambahan');
-        $response->assertSee('Rp 100.000');
-        $response->assertSee('id="damage-fee-popup"', false);
-        $response->assertSee('data-damage-popup-pay', false);
+        $response->assertDontSee('Perhatian Tagihan Tambahan');
+        $response->assertDontSee('id="damage-fee-popup"', false);
+        $response->assertDontSee('data-damage-popup-pay', false);
+        $response->assertSee('Rental Peralatan Profesional');
     }
 
     public function test_home_hides_damage_fee_alert_after_damage_payment_is_paid(): void
@@ -171,7 +172,7 @@ class HomeHeroCarouselTest extends TestCase
         $response->assertDontSee('id="damage-fee-popup"', false);
     }
 
-    public function test_home_guest_rental_overview_shows_reserved_items_with_date_and_quantity(): void
+    public function test_home_rental_snapshot_shows_live_counts_for_guest(): void
     {
         $category = Category::create([
             'name' => 'Audio',
@@ -214,18 +215,20 @@ class HomeHeroCarouselTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Ringkasan Alat Disewa');
+        $response->assertSee('Ringkasan Live');
+        $response->assertSee('Aktivitas rental saat ini.');
         $response->assertSee('HT Wlan UHF');
-        $response->assertSee('x3');
-        $response->assertSee('Tanggal sewa:');
+        $response->assertSee('3');
+        $response->assertSee('Item Tersedia');
     }
 
-    public function test_home_logged_in_user_uses_rental_overview_without_stat_cards(): void
+    public function test_home_rental_snapshot_renders_for_logged_in_user(): void
     {
         $response = $this->actingAs(User::factory()->create())->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Ringkasan Alat Disewa');
+        $response->assertSee('Ringkasan Live');
+        $response->assertSee('Aktivitas rental saat ini.');
         $response->assertDontSee('Pending Bayar');
         $response->assertDontSee('Siap Diambil');
         $response->assertDontSee('Sedang Disewa');

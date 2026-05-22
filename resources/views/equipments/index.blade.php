@@ -34,7 +34,7 @@
 @endpush
 
 @section('content')
-    @php
+@php
         $groups = collect($groupedEquipments ?? []);
         $categories = collect($categories ?? []);
         $activeCategorySlug = $activeCategorySlug ?? '';
@@ -74,6 +74,30 @@
         $idleHamburgerEnabled = ! in_array($idleHamburgerEnabledRaw, ['0', 'false', 'off', 'no', 'tidak'], true);
         $idleHamburgerDelayMs = max(1000, min(12000, (int) setting('catalog.idle_hamburger_delay_ms', 2200)));
         $idleHamburgerStepMs = max(500, min(4000, (int) setting('catalog.idle_hamburger_step_ms', 900)));
+        $resolvePublicStatusLabel = static function (string $statusValue, int $availableUnits): string {
+            $normalized = strtolower(trim($statusValue));
+
+            return match ($normalized) {
+                'maintenance' => 'Maintenance',
+                'unavailable' => 'Tidak Tersedia',
+                'ready' => $availableUnits > 0 ? 'Tersedia' : 'Penuh / Sedang Disewa',
+                default => $availableUnits > 0 ? 'Tersedia' : 'Tidak Tersedia',
+            };
+        };
+        $resolvePublicStatusClass = static function (string $statusValue, int $availableUnits): string {
+            $normalized = strtolower(trim($statusValue));
+
+            return match ($normalized) {
+                'maintenance' => 'bg-amber-500/10 text-amber-600 border-amber-500/20',
+                'unavailable' => 'bg-rose-500/10 text-rose-600 border-rose-500/20',
+                'ready' => $availableUnits > 0
+                    ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+                    : 'bg-amber-500/10 text-amber-600 border-amber-500/20',
+                default => $availableUnits > 0
+                    ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+                    : 'bg-rose-500/10 text-rose-600 border-rose-500/20',
+            };
+        };
     @endphp
 
     <div
@@ -191,18 +215,15 @@
                         <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                             @foreach ($items as $item)
                             @php
-                                $statusValue = $item->status ?? ($item->stock > 0 ? 'ready' : 'unavailable');
-                                $statusKey = $statusValue === 'ready' ? 'ready' : 'rented';
-                                $statusLabel = $statusKey === 'ready' ? __('app.status.ready') : __('app.status.rented');
-                                $statusClass = $statusKey === 'ready'
-                                    ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
-                                    : 'bg-amber-500/10 text-amber-600 border-amber-500/20';
+                                $statusValue = (string) ($item->status ?? ($item->stock > 0 ? 'ready' : 'unavailable'));
                                 $imagePath = $item->image_path ?? $item->image;
                                 $image = site_media_url($imagePath) ?: $catalogFallbackImage;
                                 $prioritizeImage = ($loop->parent?->first ?? false) && $loop->index < 3;
                                 $reservedUnits = (int) ($item->reserved_units ?? 0);
                                 $availableUnits = (int) $item->available_units;
                                 $canRent = $statusValue === 'ready' && (int) $item->stock > 0;
+                                $statusLabel = $resolvePublicStatusLabel($statusValue, $availableUnits);
+                                $statusClass = $resolvePublicStatusClass($statusValue, $availableUnits);
                             @endphp
 
                             <article
@@ -251,8 +272,8 @@
                                         <span class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400 border border-blue-500/10">
                                             {{ $item->category?->name ?? __('app.category.title') }}
                                         </span>
-                                        <span class="mk-badge {{ $availableUnits > 0 ? 'mk-badge-success' : 'mk-badge-danger' }}">
-                                            {{ $availableUnits > 0 ? __('app.status.ready') : __('app.status.rented') }}
+                                        <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
+                                            {{ $statusLabel }}
                                         </span>
                                     </div>
                                 </div>
