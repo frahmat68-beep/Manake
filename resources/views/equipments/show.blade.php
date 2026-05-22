@@ -16,14 +16,14 @@
         default => $availableUnits > 0 ? 'Tersedia' : 'Tidak Tersedia',
     };
     $statusClass = match ($statusValue) {
-        'maintenance' => 'bg-amber-500/10 text-amber-600 border-amber-500/20',
-        'unavailable' => 'bg-rose-500/10 text-rose-600 border-rose-500/20',
+        'maintenance' => 'border-amber-500/20 bg-amber-950/75 text-amber-300',
+        'unavailable' => 'border-rose-500/20 bg-rose-950/75 text-rose-300',
         'ready' => $availableUnits > 0
-            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
-            : 'bg-amber-500/10 text-amber-600 border-amber-500/20',
+            ? 'border-emerald-500/20 bg-emerald-950/75 text-emerald-300'
+            : 'border-amber-500/20 bg-amber-950/75 text-amber-200',
         default => $availableUnits > 0
-            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
-            : 'bg-rose-500/10 text-rose-600 border-rose-500/20',
+            ? 'border-emerald-500/20 bg-emerald-950/75 text-emerald-300'
+            : 'border-rose-500/20 bg-rose-950/75 text-rose-300',
     };
     $bookingRanges = collect($bookingRanges ?? []);
     $specificationSource = trim((string) ($equipment->specifications ?? $equipment->description ?? ''));
@@ -76,25 +76,25 @@
     <div class="manake-page">
         <section class="manake-section">
             <div class="manake-page-frame">
-                <div class="manake-card">
+                <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div class="max-w-3xl">
                             <div class="flex items-center gap-2.5 mb-3">
-                                <span class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400 border border-blue-500/10">
+                                <span class="rounded-full border border-[#1A1A1E] bg-[#111113]/95 px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-[#D4A843] backdrop-blur-md">
                                     {{ $equipment->category?->name ?? __('app.category.title') }}
                                 </span>
                                 <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
                                     {{ $statusLabel }}
                                 </span>
                             </div>
-                            <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl leading-tight">
+                            <h1 class="text-2xl font-extrabold leading-tight tracking-tight text-[#E8E8EC] sm:text-3xl">
                                 {{ $equipment->name }}
                             </h1>
-                            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 sm:text-base max-w-2xl leading-relaxed">
+                            <p class="mt-2 max-w-2xl text-sm leading-relaxed text-[#A0A0A8] sm:text-base">
                                 {{ __('app.product.meta') }}
                             </p>
                         </div>
-                        <a href="{{ route('catalog') }}" class="mk-button-secondary py-2.5 px-5 text-xs shrink-0 self-start sm:self-auto">
+                        <a href="{{ route('catalog') }}" class="inline-flex shrink-0 self-start rounded-md border border-[#1A1A1E] bg-[#111113] px-5 py-2.5 text-xs font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] sm:self-auto">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                             {{ __('app.actions.back_to_catalog') }}
                         </a>
@@ -107,8 +107,8 @@
             <div class="manake-page-frame grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr,0.9fr] lg:gap-8">
                 <!-- Left Column: Visual & Specs -->
                 <div class="space-y-6">
-                    <div class="mk-card p-6">
-                        <div class="relative w-full aspect-[4/3] sm:aspect-[16/10] flex items-center justify-center rounded-xl bg-slate-50 dark:bg-slate-900/30 overflow-hidden">
+                    <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6">
+                        <div class="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-md bg-[#0A0A0B] sm:aspect-[16/10]">
                             <img
                                 src="{{ $mainImage }}"
                                 alt="{{ $equipment->name }}"
@@ -134,24 +134,24 @@
                         </div>
                     @endif
 
-                    <div class="mk-card p-6 sm:p-8">
+                    <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8">
                         <div class="flex items-center gap-3.5 mb-6">
-                            <div class="h-10 w-10 rounded-xl bg-blue-600 flex items-center justify-center text-white">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#D4A843] text-[#0A0A0B]">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                             </div>
-                            <h3 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">{{ __('app.product.specs') }}</h3>
+                            <h3 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('app.product.specs') }}</h3>
                         </div>
 
                         @if ($specifications->isEmpty())
-                            <div class="bg-slate-50/50 dark:bg-slate-900/30 rounded-2xl p-6 text-center border border-slate-100 dark:border-slate-800/60">
-                                <p class="text-slate-500 dark:text-slate-400 font-medium text-sm">{{ __('app.product.spec_unavailable') }}</p>
+                            <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-6 text-center">
+                                <p class="text-sm font-medium text-[#A0A0A8]">{{ __('app.product.spec_unavailable') }}</p>
                             </div>
                         @else
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 @foreach ($specifications as $specification)
-                                    <div class="flex items-start gap-3 p-3.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors duration-300 border border-transparent hover:border-slate-100 dark:hover:border-slate-800/60">
-                                        <div class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500"></div>
-                                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 leading-relaxed">{{ $specification }}</span>
+                                    <div class="flex items-start gap-3 rounded-md border border-transparent p-3.5 transition-colors duration-300 hover:border-[#1A1A1E] hover:bg-[#0A0A0B]">
+                                        <div class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4A843]"></div>
+                                        <span class="text-sm font-semibold leading-relaxed text-[#E8E8EC]">{{ $specification }}</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -162,28 +162,28 @@
                 <!-- Right Column: Pricing & Booking -->
                 <div class="space-y-6">
                     <!-- Pricing Card -->
-                    <div class="mk-card p-6 sm:p-8">
+                    <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8">
                         <div class="flex flex-col gap-5">
                             <div class="space-y-1">
-                                <p class="text-[9px] font-extrabold uppercase tracking-[0.15em] text-blue-600/80">{{ __('app.product.price_per_day') }}</p>
+                                <p class="text-[9px] font-extrabold uppercase tracking-[0.15em] text-[#D4A843]/80">{{ __('app.product.price_per_day') }}</p>
                                 <div class="flex items-baseline gap-1.5">
-                                    <span class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">Rp {{ number_format($equipment->price_per_day, 0, ',', '.') }}</span>
-                                    <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">/ {{ __('app.product.per_day') }}</span>
+                                    <span class="text-3xl font-extrabold tracking-tight text-[#E8E8EC]">Rp {{ number_format($equipment->price_per_day, 0, ',', '.') }}</span>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-[#A0A0A8]">/ {{ __('app.product.per_day') }}</span>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-3 gap-3">
-                                <div class="mk-card-soft p-3 text-center">
-                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">{{ __('app.product.total_stock') }}</p>
-                                    <p class="mt-1.5 text-lg font-extrabold text-slate-900 dark:text-slate-100">{{ $equipment->stock }}</p>
+                                <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-3 text-center">
+                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#A0A0A8]">{{ __('app.product.total_stock') }}</p>
+                                    <p class="mt-1.5 text-lg font-extrabold text-[#E8E8EC]">{{ $equipment->stock }}</p>
                                 </div>
-                                <div class="mk-card-soft p-3 text-center">
-                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">{{ __('app.product.in_use') }}</p>
-                                    <p class="mt-1.5 text-lg font-extrabold text-amber-600 dark:text-amber-500">{{ $reservedUnits }}</p>
+                                <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-3 text-center">
+                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#A0A0A8]">{{ __('app.product.in_use') }}</p>
+                                    <p class="mt-1.5 text-lg font-extrabold text-[#D4A843]">{{ $reservedUnits }}</p>
                                 </div>
-                                <div class="mk-card-soft p-3 text-center">
-                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">{{ __('app.product.available_stock') }}</p>
-                                    <p class="mt-1.5 text-lg font-extrabold {{ $availableUnits > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">{{ $availableUnits }}</p>
+                                <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-3 text-center">
+                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#A0A0A8]">{{ __('app.product.available_stock') }}</p>
+                                    <p class="mt-1.5 text-lg font-extrabold {{ $availableUnits > 0 ? 'text-emerald-400' : 'text-rose-400' }}">{{ $availableUnits }}</p>
                                 </div>
                             </div>
 

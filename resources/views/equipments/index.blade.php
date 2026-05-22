@@ -112,18 +112,18 @@
         @mousemove.passive="markPointerMove"
         @mouseleave="markPointerLeave"
         @touchstart.passive="stopGuide"
-        class="bg-slate-50 min-h-screen"
+        class="min-h-screen bg-[#0A0A0B] text-[#E8E8EC]"
     >
         <section class="relative overflow-hidden pt-6 pb-4">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
-                <div class="mk-card p-6 sm:p-8">
+                <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl sm:p-8">
                     <div class="flex flex-col gap-3">
                         <div class="max-w-3xl">
-                            <p class="section-kicker font-bold tracking-widest uppercase text-blue-600/80">{{ __('ui.nav.catalog') }}</p>
-                            <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl leading-tight">
+                            <p class="section-kicker font-bold tracking-widest uppercase text-[#D4A843]/80">{{ __('ui.nav.catalog') }}</p>
+                            <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-[#E8E8EC] sm:text-4xl leading-tight">
                                 {{ $catalogTitle }}
                             </h1>
-                            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 sm:text-base max-w-2xl leading-relaxed">
+                            <p class="mt-2 text-sm text-[#A0A0A8] sm:text-base max-w-2xl leading-relaxed">
                                 {{ $catalogSubtitle }}
                             </p>
                         </div>
@@ -133,23 +133,23 @@
                     <div class="max-w-2xl mt-6">
                         <form action="{{ route('catalog') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
                             <div class="relative flex-1">
-                                <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                                <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#66666C]">
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                                 </span>
                                 <input type="text" name="q" value="{{ $search }}" placeholder="Cari kamera, lighting, drone, audio..." 
-                                       class="mk-input pl-12 py-3.5">
+                                       class="mk-input pl-12 py-3.5 bg-[#0A0A0B] border-[#1A1A1E] text-[#E8E8EC] placeholder:text-[#66666C] focus:border-[#D4A843] focus:ring-[#D4A843]/20">
                             </div>
-                            <button type="submit" class="mk-button-primary py-3.5 px-6">
+                            <button type="submit" class="rounded-md bg-[#D4A843] px-6 py-3.5 font-bold text-[#0A0A0B] transition hover:bg-[#e0ba5d]">
                                 <span>Cari</span>
                             </button>
                         </form>
                     </div>
 
-                    <div class="mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
+                    <div class="mt-8 border-t border-[#1A1A1E] pt-6">
                         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ $categoryLabel }}</p>
+                            <p class="text-xs font-bold uppercase tracking-wider text-[#A0A0A8]">{{ $categoryLabel }}</p>
                             @if ($search !== '')
-                                <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="btn-secondary rounded-xl px-4 py-2 text-xs font-bold transition">
+                                <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="inline-flex rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-2 text-xs font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/30 hover:text-[#D4A843]">
                                     {{ $catalogResetSearchLabel }}
                                 </a>
                             @endif
@@ -157,7 +157,7 @@
                         <div class="mt-4 flex flex-wrap sm:flex-nowrap overflow-x-auto gap-3 pb-2 scrollbar-none">
                             <a
                                 href="{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}"
-                                class="rounded-full border px-5 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === '' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400' }}"
+                                class="rounded-full border px-5 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === '' ? 'bg-[#D4A843] text-[#0A0A0B] border-[#D4A843]' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] hover:border-[#D4A843]/40 hover:text-[#E8E8EC]' }}"
                             >
                                 {{ $catalogAllCategoriesLabel }}
                             </a>
@@ -170,7 +170,7 @@
                                 @endphp
                                 <a
                                     href="{{ route('catalog', $categoryParams) }}"
-                                    class="relative rounded-full border px-5 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === $category->slug ? 'bg-blue-600 text-white border-blue-600' : 'bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400' }}"
+                                    class="relative rounded-full border px-5 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === $category->slug ? 'bg-[#D4A843] text-[#0A0A0B] border-[#D4A843]' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] hover:border-[#D4A843]/40 hover:text-[#E8E8EC]' }}"
                                 >
                                     {{ $category->name }}
                                 </a>
@@ -256,9 +256,9 @@
                                     }
                                 }"
                                 @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')"
-                                class="mk-card group flex h-full flex-col overflow-hidden cursor-pointer"
+                                class="group flex h-full cursor-pointer flex-col overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#111113]"
                             >
-                                <div class="relative aspect-[4/3] overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 p-5 flex items-center justify-center border-b border-slate-100 dark:border-slate-800/60">
+                                <div class="relative aspect-[4/3] overflow-hidden bg-[#0A0A0B] p-5 flex items-center justify-center border-b border-[#1A1A1E]">
                                     <img
                                         src="{{ $image }}"
                                         alt="{{ $item->name }}"
@@ -269,7 +269,7 @@
                                         decoding="async"
                                     >
                                     <div class="absolute inset-x-4 top-4 flex items-center justify-between pointer-events-none">
-                                        <span class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400 border border-blue-500/10">
+                                        <span class="rounded-full border border-[#1A1A1E] bg-[#111113]/95 px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-[#D4A843] backdrop-blur-md">
                                             {{ $item->category?->name ?? __('app.category.title') }}
                                         </span>
                                         <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
@@ -279,17 +279,17 @@
                                 </div>
 
                                 <div class="flex flex-1 flex-col p-6">
-                                    <h3 class="text-lg font-bold leading-snug text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 min-h-[2.5rem]">{{ $item->name }}</h3>
+                                    <h3 class="min-h-[2.5rem] text-lg font-bold leading-snug text-[#E8E8EC] transition-colors duration-300 group-hover:text-[#D4A843]">{{ $item->name }}</h3>
                                     
-                                    <div class="mt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 pt-3">
+                                    <div class="mt-3 flex items-center justify-between border-t border-[#1A1A1E] pt-3">
                                         <div class="flex items-baseline gap-1">
-                                            <p class="text-xl font-extrabold tracking-tight text-slate-950 dark:text-slate-50">
+                                            <p class="text-xl font-extrabold tracking-tight text-[#E8E8EC]">
                                                 {{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}
                                             </p>
-                                            <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">/ {{ __('app.product.per_day') }}</span>
+                                            <span class="text-[9px] font-bold uppercase tracking-widest text-[#A0A0A8]">/ {{ __('app.product.per_day') }}</span>
                                         </div>
-                                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                                            Tersedia: <span class="font-bold text-slate-800 dark:text-slate-200">{{ $availableUnits }} unit</span>
+                                        <span class="text-xs font-semibold text-[#A0A0A8]">
+                                            Tersedia: <span class="font-bold text-[#E8E8EC]">{{ $availableUnits }} unit</span>
                                         </span>
                                     </div>
 
@@ -304,7 +304,7 @@
                                                     {{ $catalogQuickOrderButton }}
                                                 </button>
                                             @else
-                                                <button type="button" disabled class="w-full py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 font-bold border border-slate-200 dark:border-slate-800 cursor-not-allowed">
+                                                <button type="button" disabled class="w-full rounded-md border border-[#1A1A1E] bg-[#0A0A0B] py-3 font-bold text-[#66666C] cursor-not-allowed">
                                                     {{ $catalogOutOfStockButton }}
                                                 </button>
                                             @endif
@@ -315,12 +315,12 @@
                                                 <a
                                                     href="{{ route('login', ['reason' => 'cart']) }}"
                                                     @click.prevent="window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: 'login' }))"
-                                                    class="mk-button-primary w-full py-3 text-center"
+                                                    class="w-full rounded-md bg-[#D4A843] py-3 text-center font-bold text-[#0A0A0B] transition hover:bg-[#e0ba5d]"
                                                 >
                                                     {{ $catalogLoginToOrderButton }}
                                                 </a>
                                             @else
-                                                <button type="button" disabled class="w-full py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 font-bold border border-slate-200 dark:border-slate-800 cursor-not-allowed">
+                                                <button type="button" disabled class="w-full rounded-md border border-[#1A1A1E] bg-[#0A0A0B] py-3 font-bold text-[#66666C] cursor-not-allowed">
                                                     {{ $catalogOutOfStockButton }}
                                                 </button>
                                             @endif
@@ -328,7 +328,7 @@
 
                                         <a
                                             href="{{ route('product.show', $item->slug) }}"
-                                            class="mk-button-secondary w-full py-2.5 text-center"
+                                            class="w-full rounded-md border border-[#1A1A1E] bg-[#111113] py-2.5 text-center font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]"
                                         >
                                             {{ __('app.actions.view_detail') }}
                                         </a>
@@ -344,25 +344,25 @@
                                                 x-transition:enter="transition ease-out duration-300"
                                                 x-transition:enter-start="opacity-0 scale-95"
                                                 x-transition:enter-end="opacity-100 scale-100"
-                                                class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md"
+                                                class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#0A0A0B]/80 backdrop-blur-md"
                                                 @click.self="quickOpen = false"
                                                 @keydown.escape.window="quickOpen = false"
                                             >
-                                                <div class="mk-card w-full max-w-lg p-8 sm:p-10 overflow-hidden relative">
-                                                    <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 blur-[60px] rounded-full"></div>
+                                                <div class="relative w-full max-w-lg overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#111113] p-8 sm:p-10">
+                                                    <div class="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#D4A843]/10 blur-[60px]"></div>
                                                     
                                                     <div class="relative flex items-start justify-between gap-6">
                                                         <div class="flex-1">
-                                                            <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full border border-blue-100 mb-3">
-                                                                <span class="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                                                                <span class="text-[10px] font-bold uppercase tracking-widest text-blue-600">{{ $catalogQuickOrderTitle }}</span>
+                                                            <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1">
+                                                                <span class="h-1.5 w-1.5 rounded-full bg-[#D4A843] animate-pulse"></span>
+                                                                <span class="text-[10px] font-bold uppercase tracking-widest text-[#D4A843]">{{ $catalogQuickOrderTitle }}</span>
                                                             </div>
-                                                            <h4 class="text-2xl font-bold tracking-tight text-slate-950">{{ $item->name }}</h4>
-                                                            <p class="mt-2 text-sm font-medium text-slate-500 leading-relaxed">{{ $catalogQuickOrderHint }}</p>
+                                                            <h4 class="text-2xl font-bold tracking-tight text-[#E8E8EC]">{{ $item->name }}</h4>
+                                                            <p class="mt-2 text-sm font-medium leading-relaxed text-[#A0A0A8]">{{ $catalogQuickOrderHint }}</p>
                                                         </div>
                                                         <button
                                                             type="button"
-                                                            class="h-10 w-10 flex items-center justify-center rounded-full bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 hover:border-slate-300 transition-all duration-300 active:scale-90"
+                                                            class="h-10 w-10 flex items-center justify-center rounded-full border border-[#1A1A1E] bg-[#0A0A0B] text-[#A0A0A8] transition-all duration-300 hover:border-[#D4A843]/40 hover:text-[#E8E8EC] active:scale-90"
                                                             @click="quickOpen = false"
                                                         >
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -422,7 +422,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="grid grid-cols-2 gap-4 rounded-2xl bg-blue-600 p-6 text-white overflow-hidden relative">
+                                                        <div class="relative grid grid-cols-2 gap-4 overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#D4A843] p-6 text-[#0A0A0B]">
                                                             <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50"></div>
                                                             <div class="relative">
                                                                 <p class="text-[10px] font-bold uppercase tracking-widest text-white/70">{{ $catalogQuickDurationLabel }}</p>
@@ -457,13 +457,13 @@
                         </div>
                     </div>
                 @empty
-                    <div class="mk-card p-16 text-center animate-fade-up">
-                        <div class="mx-auto w-24 h-24 rounded-full bg-slate-50 flex items-center justify-center mb-6 border border-slate-100">
-                            <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-16 text-center animate-fade-up">
+                        <div class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full border border-[#1A1A1E] bg-[#0A0A0B]">
+                            <svg class="w-10 h-10 text-[#66666C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                         </div>
-                        <h3 class="text-2xl font-bold text-slate-900 tracking-tight">{{ $emptyTitle }}</h3>
-                        <p class="mt-4 text-base font-medium text-slate-500 max-w-sm mx-auto leading-relaxed">{{ $emptySubtitle }}</p>
-                        <a href="{{ route('catalog') }}" class="mt-8 mk-button-primary inline-flex px-8 py-4">
+                        <h3 class="text-2xl font-bold tracking-tight text-[#E8E8EC]">{{ $emptyTitle }}</h3>
+                        <p class="mx-auto mt-4 max-w-sm text-base font-medium leading-relaxed text-[#A0A0A8]">{{ $emptySubtitle }}</p>
+                        <a href="{{ route('catalog') }}" class="mt-8 inline-flex rounded-md bg-[#D4A843] px-8 py-4 text-sm font-black text-[#0A0A0B]">
                             Refresh Katalog
                         </a>
                     </div>

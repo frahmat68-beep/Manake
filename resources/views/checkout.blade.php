@@ -43,20 +43,20 @@
         $checkoutMsgGenericError = __('ui.checkout.messages.generic_error');
     @endphp
 
-    <div class="manake-page">
+    <div class="manake-page bg-[#0A0A0B] text-[#E8E8EC]">
         <div class="manake-page-frame space-y-8">
-            <header class="manake-card animate-fade-up">
+            <header class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl animate-fade-up sm:p-8">
                 <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                     <div class="max-w-3xl">
-                        <p class="manake-kicker">{{ __('Checkout') }}</p>
-                        <h1 class="manake-display mt-3 text-4xl font-black text-slate-950 dark:text-white sm:text-5xl">
+                        <p class="text-xs font-black uppercase tracking-[0.2em] text-[#D4A843]">{{ __('Checkout') }}</p>
+                        <h1 class="mt-3 font-serif text-4xl font-black text-[#E8E8EC] sm:text-5xl">
                             {{ $checkoutTitle }}
                         </h1>
-                        <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+                        <p class="mt-3 max-w-2xl text-sm leading-7 text-[#A0A0A8] sm:text-base">
                             {{ $checkoutSubtitle }}
                         </p>
                     </div>
-                    <a href="{{ route('cart') }}" class="btn-secondary w-full lg:w-auto">
+                    <a href="{{ route('cart') }}" class="inline-flex w-full items-center justify-center rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-5 py-3 font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] lg:w-auto">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
@@ -67,18 +67,18 @@
 
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
                 <div class="lg:col-span-8 space-y-8">
-                    <div id="checkout-alert" class="hidden rounded-2xl border px-5 py-4 text-sm font-semibold"></div>
+                    <div id="checkout-alert" class="hidden rounded-md border px-5 py-4 text-sm font-semibold"></div>
 
-                    <article class="manake-card animate-fade-up">
-                        <h2 class="manake-heading flex items-center gap-3 text-2xl font-black text-slate-950 dark:text-white">
-                            <span class="h-8 w-1.5 rounded-full bg-blue-600"></span>
+                    <article class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl animate-fade-up sm:p-8">
+                        <h2 class="flex items-center gap-3 text-2xl font-black text-[#E8E8EC]">
+                            <span class="h-8 w-1.5 rounded-full bg-[#D4A843]"></span>
                             {{ $checkoutDetailTitle }}
                         </h2>
 
                         @if ($isCartEmpty)
-                            <div class="mt-8 rounded-2xl border border-dashed border-slate-300 px-6 py-12 text-center dark:border-slate-700">
-                                <p class="text-lg font-semibold text-slate-500 dark:text-slate-400">{{ $checkoutEmptyCart }}</p>
-                                <a href="{{ route('catalog') }}" class="btn-primary mt-6">
+                            <div class="mt-8 rounded-md border border-dashed border-[#1A1A1E] px-6 py-12 text-center">
+                                <p class="text-lg font-semibold text-[#A0A0A8]">{{ $checkoutEmptyCart }}</p>
+                                <a href="{{ route('catalog') }}" class="mt-6 inline-flex rounded-md bg-[#D4A843] px-5 py-3 font-bold text-[#0A0A0B]">
                                     {{ __('app.actions.back_to_catalog') }}
                                 </a>
                             </div>
@@ -90,69 +90,69 @@
                                         $endDate = ! empty($item['rental_end_date']) ? \Carbon\Carbon::parse($item['rental_end_date']) : null;
                                         $lineEstimate = (int) ($item['estimated_total'] ?? ((int) ($item['price'] ?? 0) * (int) ($item['qty'] ?? 1)));
                                     @endphp
-                                    <div class="manake-card-soft flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+                                    <div class="flex flex-col gap-4 rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-5 sm:flex-row sm:items-center sm:justify-between">
                                         <div class="flex items-center gap-4">
-                                            <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl bg-white p-2 shadow-sm dark:bg-slate-950/70">
-                                                <img src="{{ $item['image'] ?? config('placeholders.equipment') }}" alt="{{ $item['name'] }}" class="h-full w-full object-contain">
+                                            <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-[#1A1A1E] bg-[#111113] p-2 shadow-sm">
+                                                <img src="{{ site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment') }}" alt="{{ $item['name'] }}" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
                                             </div>
                                             <div>
-                                                <p class="text-lg font-black text-slate-950 dark:text-white">{{ $item['name'] }}</p>
-                                                <p class="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                                                <p class="text-lg font-black text-[#E8E8EC]">{{ $item['name'] }}</p>
+                                                <p class="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">
                                                     {{ strtr($checkoutQtyTemplate, [
                                                         ':qty' => (string) ($item['qty'] ?? 0),
                                                         ':price' => $formatIdr((int) ($item['price'] ?? 0)),
                                                     ]) }}
                                                 </p>
                                                 @if ($startDate && $endDate)
-                                                    <span class="manake-badge manake-badge-info mt-3">
+                                                    <span class="mt-3 inline-flex rounded-full border border-[#1A1A1E] bg-[#111113] px-3 py-1 text-[10px] font-black uppercase tracking-widest text-[#D4A843]">
                                                         {{ $startDate->translatedFormat('d M') }} - {{ $endDate->translatedFormat('d M Y') }}
                                                     </span>
                                                 @else
-                                                    <p class="mt-2 text-xs font-semibold text-rose-600">{{ $checkoutInvalidDateNote }}</p>
+                                                    <p class="mt-2 text-xs font-semibold text-rose-400">{{ $checkoutInvalidDateNote }}</p>
                                                 @endif
                                             </div>
                                         </div>
-                                        <p class="text-xl font-black tracking-tight text-slate-950 dark:text-white">{{ $formatIdr($lineEstimate) }}</p>
+                                        <p class="text-xl font-black tracking-tight text-[#E8E8EC]">{{ $formatIdr($lineEstimate) }}</p>
                                     </div>
                                 @endforeach
                             </div>
 
                             <form id="checkout-form" class="mt-10 space-y-8">
                                 @csrf
-                                <div class="manake-card-soft p-6">
-                                    <h3 class="manake-heading mb-5 flex items-center gap-3 text-xl font-black text-slate-950 dark:text-white">
-                                        <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-6">
+                                    <h3 class="mb-5 flex items-center gap-3 text-xl font-black text-[#E8E8EC]">
+                                        <svg class="h-6 w-6 text-[#D4A843]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                         {{ $checkoutProfileTitle }}
                                     </h3>
                                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div>
-                                            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{{ $checkoutProfileNameLabel }}</label>
+                                            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-[#A0A0A8]">{{ $checkoutProfileNameLabel }}</label>
                                             <input type="text" value="{{ $profile?->full_name ?? '-' }}" class="manake-input" disabled>
                                         </div>
                                         <div>
-                                            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{{ $checkoutProfilePhoneLabel }}</label>
+                                            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-[#A0A0A8]">{{ $checkoutProfilePhoneLabel }}</label>
                                             <input type="text" value="{{ $profile?->phone ?? '-' }}" class="manake-input" disabled>
                                         </div>
                                         <div class="md:col-span-2">
-                                            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{{ $checkoutProfileAddressLabel }}</label>
+                                            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-[#A0A0A8]">{{ $checkoutProfileAddressLabel }}</label>
                                             <textarea rows="3" class="manake-textarea" disabled>{{ $profile?->address_text ?? $profile?->address ?? '-' }}</textarea>
                                         </div>
                                     </div>
-                                    <div class="mt-5 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-950/60 sm:flex-row sm:items-center sm:justify-between">
-                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400">{{ $checkoutProfileHint }}</p>
-                                        <a href="{{ route('profile.complete') }}" class="text-xs font-black uppercase tracking-[0.18em] text-blue-600 hover:text-blue-700">
+                                    <div class="mt-5 flex flex-col gap-3 rounded-md border border-[#1A1A1E] bg-[#111113] p-4 sm:flex-row sm:items-center sm:justify-between">
+                                        <p class="text-xs font-semibold text-[#A0A0A8]">{{ $checkoutProfileHint }}</p>
+                                        <a href="{{ route('profile.complete') }}" class="text-xs font-black uppercase tracking-[0.18em] text-[#D4A843] hover:text-[#e0ba5d]">
                                             {{ $checkoutProfileUpdateLinkLabel }}
                                         </a>
                                     </div>
                                 </div>
 
                                 <div class="space-y-4">
-                                    <label class="flex cursor-pointer items-start gap-4 rounded-2xl border border-slate-200 bg-white/70 p-5 dark:border-slate-700 dark:bg-slate-950/50">
-                                        <input type="checkbox" name="confirm_profile" class="mt-1 h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500" required>
-                                        <span class="text-sm font-semibold leading-7 text-slate-600 dark:text-slate-300">{{ $checkoutConfirmProfile }}</span>
+                                    <label class="flex cursor-pointer items-start gap-4 rounded-md border border-[#1A1A1E] bg-[#111113] p-5">
+                                        <input type="checkbox" name="confirm_profile" class="mt-1 h-5 w-5 rounded border-[#1A1A1E] text-[#D4A843] focus:ring-[#D4A843]" required>
+                                        <span class="text-sm font-semibold leading-7 text-[#A0A0A8]">{{ $checkoutConfirmProfile }}</span>
                                     </label>
 
-                                    <button type="submit" id="checkout-submit" class="btn-primary w-full py-4 text-base">
+                                    <button type="submit" id="checkout-submit" class="w-full rounded-md bg-[#D4A843] py-4 text-base font-black text-[#0A0A0B] transition hover:bg-[#e0ba5d]">
                                         {{ $checkoutSubmitButton }}
                                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -163,55 +163,55 @@
                         @endif
                     </article>
 
-                    <article class="manake-card flex items-center gap-5">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white">
+                    <article class="flex items-center gap-5 rounded-md border border-[#1A1A1E] bg-[#111113] p-5">
+                        <div class="flex h-14 w-14 items-center justify-center rounded-md bg-[#D4A843] text-[#0A0A0B]">
                             <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.041 11.955 11.955 0 013 12c0 5.391 3.991 9.928 9 10.822 5.009-.894 9-5.43 9-10.822 0-2.08-.528-4.047-1.455-5.764z"></path></svg>
                         </div>
                         <div>
-                            <h3 class="text-xl font-black text-slate-950 dark:text-white">{{ $checkoutPaymentTitle }}</h3>
-                            <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">{{ $checkoutPaymentNote }}</p>
+                            <h3 class="text-xl font-black text-[#E8E8EC]">{{ $checkoutPaymentTitle }}</h3>
+                            <p class="mt-1 text-sm leading-7 text-[#A0A0A8]">{{ $checkoutPaymentNote }}</p>
                         </div>
                     </article>
                 </div>
 
                 <aside class="lg:col-span-4">
                     <div class="sticky top-6 space-y-6 animate-fade-up" style="animation-delay: 200ms">
-                        <article class="manake-card overflow-hidden bg-slate-950 text-white">
-                            <div class="absolute right-0 top-0 h-40 w-40 translate-x-1/3 -translate-y-1/3 rounded-full bg-blue-500/20 blur-3xl"></div>
+                        <article class="relative overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 text-[#E8E8EC] shadow-2xl">
+                            <div class="absolute right-0 top-0 h-40 w-40 translate-x-1/3 -translate-y-1/3 rounded-full bg-[#D4A843]/20 blur-3xl"></div>
                             <div class="relative z-10">
                                 <h2 class="manake-heading flex items-center gap-3 text-2xl font-black">
-                                    <svg class="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                    <svg class="h-6 w-6 text-[#D4A843]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                                     {{ $checkoutSummaryTitle }}
                                 </h2>
 
                                 <div class="mt-6 space-y-3 border-t border-white/10 pt-6">
-                                    <div class="flex items-center justify-between text-sm text-slate-300">
+                                    <div class="flex items-center justify-between text-sm text-[#A0A0A8]">
                                         <span>{{ $checkoutSummarySubtotal }}</span>
                                         <span class="font-bold text-white">{{ $formatIdr($subtotalPerDay ?? 0) }}</span>
                                     </div>
-                                    <div class="flex items-center justify-between text-sm text-slate-300">
+                                    <div class="flex items-center justify-between text-sm text-[#A0A0A8]">
                                         <span>{{ $checkoutSummaryEstimate }}</span>
                                         <span class="font-bold text-white">{{ $formatIdr($estimatedSubtotal) }}</span>
                                     </div>
-                                    <div class="flex items-center justify-between text-sm text-slate-300">
+                                    <div class="flex items-center justify-between text-sm text-[#A0A0A8]">
                                         <span>{{ $checkoutSummaryTax }}</span>
                                         <span class="font-bold text-white">{{ $formatIdr($taxAmount) }}</span>
                                     </div>
                                     <div class="mt-4 border-t border-white/10 pt-4">
-                                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">{{ $checkoutSummaryTotal }}</p>
-                                        <p class="mt-2 text-4xl font-black tracking-tight text-white" id="summary-total-side">{{ $formatIdr($estimatedTotal) }}</p>
+                                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#D4A843]">{{ $checkoutSummaryTotal }}</p>
+                                        <p class="mt-2 text-4xl font-black tracking-tight text-[#E8E8EC]" id="summary-total-side">{{ $formatIdr($estimatedTotal) }}</p>
                                     </div>
                                 </div>
 
                                 <div class="mt-6 space-y-3">
                                     @foreach ($cartItems as $item)
-                                        <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3">
-                                            <div class="h-10 w-10 flex-shrink-0 rounded-lg bg-white/10 p-1.5">
-                                                <img src="{{ $item['image'] ?? config('placeholders.equipment') }}" alt="" class="h-full w-full object-contain">
+                                        <div class="flex items-center gap-3 rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-3">
+                                            <div class="h-10 w-10 flex-shrink-0 rounded-md bg-[#111113] p-1.5">
+                                                <img src="{{ site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment') }}" alt="" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
                                             </div>
                                             <div class="min-w-0 flex-1">
                                                 <p class="truncate text-[11px] font-black uppercase tracking-wider">{{ $item['name'] }}</p>
-                                                <p class="text-[10px] font-semibold text-slate-400">{{ (int) ($item['qty'] ?? 0) }} Unit</p>
+                                                <p class="text-[10px] font-semibold text-[#A0A0A8]">{{ (int) ($item['qty'] ?? 0) }} Unit</p>
                                             </div>
                                         </div>
                                     @endforeach
@@ -220,7 +220,7 @@
                         </article>
 
                         <div class="manake-card text-center">
-                            <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">{{ __('Security Verified by Midtrans Snap') }}</p>
+                            <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#A0A0A8]">{{ __('Security Verified by Midtrans Snap') }}</p>
                         </div>
                     </div>
                 </aside>

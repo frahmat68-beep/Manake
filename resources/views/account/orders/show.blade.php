@@ -32,11 +32,11 @@
     $grandTotal = $rentalGrandTotal + ($isDamageFeePaid ? $additionalFee : 0);
 
     $statusMeta = match ($paymentStatus) {
-        'paid' => ['label' => __('ui.invoice.status.paid'), 'badge' => 'bg-blue-100 text-blue-700'],
+        'paid' => ['label' => __('ui.invoice.status.paid'), 'badge' => 'border border-emerald-500/20 bg-emerald-950/75 text-emerald-300'],
         'failed' => ['label' => __('ui.invoice.status.failed'), 'badge' => 'bg-rose-100 text-rose-700'],
-        'expired' => ['label' => __('ui.invoice.status.expired'), 'badge' => 'bg-slate-200 text-slate-700'],
-        'refunded' => ['label' => __('ui.invoice.status.refunded'), 'badge' => 'bg-indigo-100 text-indigo-700'],
-        default => ['label' => __('ui.invoice.status.pending'), 'badge' => 'bg-amber-100 text-amber-700'],
+        'expired' => ['label' => __('ui.invoice.status.expired'), 'badge' => 'border border-slate-500/20 bg-slate-950/75 text-slate-300'],
+        'refunded' => ['label' => __('ui.invoice.status.refunded'), 'badge' => 'border border-indigo-500/20 bg-indigo-950/75 text-indigo-300'],
+        default => ['label' => __('ui.invoice.status.pending'), 'badge' => 'border border-amber-500/20 bg-amber-950/75 text-amber-300'],
     };
 
     $statusLabel = fn ($status) => match ($status) {
@@ -175,36 +175,36 @@
 @section('content')
     <section class="manake-page">
         <div class="manake-page-frame">
-            <div class="manake-card flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <p class="manake-kicker">{{ $orderOrderIdLabel }}</p>
-                    <h1 class="manake-display mt-2 text-3xl font-black text-slate-950 dark:text-white sm:text-4xl">{{ $orderDetailTitle }}</h1>
-                    <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{{ $orderDetailSubtitle }}</p>
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-[#D4A843]">{{ $orderOrderIdLabel }}</p>
+                    <h1 class="mt-2 font-serif text-3xl font-black text-[#E8E8EC] sm:text-4xl">{{ $orderDetailTitle }}</h1>
+                    <p class="mt-2 text-sm text-[#A0A0A8]">{{ $orderDetailSubtitle }}</p>
                 </div>
-                <a href="{{ route('booking.history') }}" class="btn-secondary w-full sm:w-auto">← {{ $orderDetailBackLabel }}</a>
+                <a href="{{ route('booking.history') }}" class="inline-flex w-full items-center justify-center rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-4 py-3 font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] sm:w-auto">← {{ $orderDetailBackLabel }}</a>
             </div>
         </div>
     </section>
 
     <section class="manake-page pt-0">
         <div class="manake-page-frame pb-12">
-            <div id="payment-alert" class="hidden rounded-xl border px-4 py-3 text-sm"></div>
+            <div id="payment-alert" class="hidden rounded-md border px-4 py-3 text-sm"></div>
 
             @if (session('error'))
-                <div class="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-300">
+                <div class="mt-4 rounded-md border border-rose-500/20 bg-rose-950/70 px-4 py-3 text-sm text-rose-300">
                     {{ session('error') }}
                 </div>
             @endif
 
             @if (session('success'))
-                <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-300">
+                <div class="mt-4 rounded-md border border-emerald-500/20 bg-emerald-950/70 px-4 py-3 text-sm text-emerald-300">
                     {{ session('success') }}
                 </div>
             @endif
 
             @if ($rescheduleConflictPopupMessage)
                 <div id="reschedule-conflict-popup" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/55 px-4">
-                    <div class="w-full max-w-md rounded-2xl border border-rose-200 bg-white p-5 shadow-2xl dark:border-rose-900/40 dark:bg-slate-950">
+                    <div class="w-full max-w-md rounded-lg border border-[#1A1A1E] bg-[#111113] p-5 shadow-2xl">
                         <div class="flex items-start justify-between gap-3">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-600">{{ $orderScheduleUnavailableTitle }}</p>
@@ -213,20 +213,20 @@
                             <button
                                 type="button"
                                 data-close-reschedule-popup
-                                class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-rose-200 hover:text-rose-600"
+                                class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#1A1A1E] text-[#A0A0A8] transition hover:border-rose-500/20 hover:text-rose-300"
                                 aria-label="{{ $orderPopupCloseAria }}"
                             >
                                 ×
                             </button>
                         </div>
-                        <p class="mt-3 rounded-xl border border-rose-100 bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-300">
+                        <p class="mt-3 rounded-md border border-rose-500/20 bg-rose-950/70 px-3 py-2 text-sm text-rose-300">
                             {{ $rescheduleConflictPopupMessage }}
                         </p>
                         <div class="mt-4 flex justify-end">
                             <button
                                 type="button"
                                 data-close-reschedule-popup
-                                class="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600"
+                            class="inline-flex items-center justify-center rounded-md border border-[#1A1A1E] px-4 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]"
                             >
                                 {{ $orderPopupCloseButton }}
                             </button>
@@ -236,28 +236,28 @@
             @endif
 
             @if ($hasDamageFeeOutstanding)
-                <div class="mt-4 rounded-2xl border-2 border-rose-300 bg-rose-50 px-5 py-4">
-                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">{{ $orderAdditionalFeeRequiredTitle }}</p>
-                    <p class="mt-1 text-lg font-semibold text-rose-800">{{ strtr($orderAdditionalFeeRequiredDesc, [':fee' => $formatIdr($additionalFee)]) }}</p>
-                    <p class="mt-1 text-sm text-rose-700">{{ $orderAdditionalFeeRequiredTaxNote }}</p>
+                <div class="mt-4 rounded-md border border-rose-500/20 bg-rose-950/70 px-5 py-4">
+                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-rose-300">{{ $orderAdditionalFeeRequiredTitle }}</p>
+                    <p class="mt-1 text-lg font-semibold text-rose-200">{{ strtr($orderAdditionalFeeRequiredDesc, [':fee' => $formatIdr($additionalFee)]) }}</p>
+                    <p class="mt-1 text-sm text-rose-300">{{ $orderAdditionalFeeRequiredTaxNote }}</p>
                     @if ($order->additional_fee_note)
-                        <p class="mt-2 rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs text-rose-700">{{ $order->additional_fee_note }}</p>
+                        <p class="mt-2 rounded-md border border-rose-500/20 bg-[#0A0A0B] px-3 py-2 text-xs text-rose-300">{{ $order->additional_fee_note }}</p>
                     @endif
                 </div>
             @endif
 
             <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr,340px]">
                 <div class="space-y-6">
-                    <article class="mk-card rounded-2xl p-6">
+                    <article class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6">
                         <div class="flex flex-wrap items-start justify-between gap-4">
                             <div>
-                                <p class="text-xs font-semibold uppercase tracking-[0.08em] text-blue-500">{{ $orderNumberLabel }}</p>
+                                <p class="text-xs font-semibold uppercase tracking-[0.08em] text-[#D4A843]">{{ $orderNumberLabel }}</p>
                                 <div class="mt-1 flex items-center gap-2">
-                                    <p id="order-number-text" class="text-lg font-semibold text-blue-700">{{ $order->order_number ?? ('ORD-' . $order->id) }}</p>
+                                    <p id="order-number-text" class="text-lg font-semibold text-[#E8E8EC]">{{ $order->order_number ?? ('ORD-' . $order->id) }}</p>
                                     <button
                                         type="button"
                                         id="copy-order-number"
-                                        class="inline-flex items-center rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:text-blue-600"
+                                        class="inline-flex items-center rounded-md border border-[#1A1A1E] px-2 py-1 text-xs font-semibold text-[#A0A0A8] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]"
                                     >
                                         {{ $orderCopyReceipt }}
                                     </button>
@@ -269,25 +269,25 @@
                         </div>
 
                         <div class="mt-5 grid grid-cols-1 gap-3 text-sm sm:grid-cols-3">
-                            <div class="rounded-2xl bg-slate-50 px-4 py-3">
-                                <p class="text-xs text-slate-500">{{ $orderOrderIdLabel }}</p>
-                                <p class="mt-1 font-semibold text-slate-800">#{{ $order->id }}</p>
+                            <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-4 py-3">
+                                <p class="text-xs text-[#A0A0A8]">{{ $orderOrderIdLabel }}</p>
+                                <p class="mt-1 font-semibold text-[#E8E8EC]">#{{ $order->id }}</p>
                             </div>
-                            <div class="rounded-2xl bg-slate-50 px-4 py-3">
-                                <p class="text-xs text-slate-500">{{ $orderRentalPeriodLabel }}</p>
-                                <p class="mt-1 font-semibold text-slate-800">
+                            <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-4 py-3">
+                                <p class="text-xs text-[#A0A0A8]">{{ $orderRentalPeriodLabel }}</p>
+                                <p class="mt-1 font-semibold text-[#E8E8EC]">
                                     {{ optional($order->rental_start_date)->format('d M Y') }} - {{ optional($order->rental_end_date)->format('d M Y') }}
                                 </p>
                             </div>
-                            <div class="rounded-2xl bg-slate-50 px-4 py-3">
-                                <p class="text-xs text-slate-500">{{ $orderRentalStatusLabel }}</p>
-                                <p class="mt-1 font-semibold text-slate-800">{{ $statusLabel($orderStatus) }}</p>
+                            <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-4 py-3">
+                                <p class="text-xs text-[#A0A0A8]">{{ $orderRentalStatusLabel }}</p>
+                                <p class="mt-1 font-semibold text-[#E8E8EC]">{{ $statusLabel($orderStatus) }}</p>
                             </div>
                         </div>
                     </article>
 
-                    <article class="mk-card rounded-2xl p-6">
-                        <h2 class="text-lg font-semibold text-blue-700">{{ $orderProgressTitle }}</h2>
+                    <article class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6">
+                        <h2 class="text-lg font-semibold text-[#D4A843]">{{ $orderProgressTitle }}</h2>
                         <div class="mt-4 space-y-3">
                             @foreach ($timeline as $step)
                                 @php
