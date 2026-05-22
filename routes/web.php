@@ -40,6 +40,9 @@ Route::get('/assets/public/{path}', [AssetController::class, 'public'])
 Route::get('/assets/media/{path}', [AssetController::class, 'media'])
     ->where('path', '.*')
     ->name('assets.media');
+Route::get('/build/{path}', [AssetController::class, 'build'])
+    ->where('path', '.*')
+    ->name('assets.build');
 
 Route::get('/', [CategoryController::class, 'home'])->name('home');
 
