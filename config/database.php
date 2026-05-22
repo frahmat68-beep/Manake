@@ -13,7 +13,7 @@ $hasManagedPgsqlEnv = $detectedPgsqlUrl !== null
     || env('POSTGRES_HOST')
     || env('SUPABASE_DB_HOST');
 
-$defaultDbConnection = env('DB_CONNECTION', $hasManagedPgsqlEnv ? 'pgsql' : 'sqlite');
+$defaultDbConnection = env('DB_CONNECTION', 'pgsql');
 $defaultPgsqlSslMode = $hasManagedPgsqlEnv ? 'require' : 'prefer';
 
 return [
@@ -48,7 +48,7 @@ return [
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DB_SQLITE_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'database' => env('DB_SQLITE_DATABASE', ':memory:'),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
             'busy_timeout' => null,
@@ -135,7 +135,7 @@ return [
         'supabase' => [
             'driver' => 'pgsql',
             'url' => env('SUPABASE_DB_URL') ?: null,
-            'host' => env('SUPABASE_DB_HOST') ?: '127.0.0.1',
+            'host' => env('SUPABASE_DB_HOST') ?: null,
             'port' => env('SUPABASE_DB_PORT') ?: '5432',
             'database' => env('SUPABASE_DB_DATABASE') ?: 'postgres',
             'username' => env('SUPABASE_DB_USERNAME') ?: 'postgres',
@@ -145,6 +145,21 @@ return [
             'prefix_indexes' => true,
             'search_path' => env('SUPABASE_DB_SCHEMA') ?: 'public',
             'sslmode' => env('SUPABASE_DB_SSLMODE') ?: 'require',
+        ],
+
+        'singapore_backup' => [
+            'driver' => 'pgsql',
+            'url' => env('SINGAPORE_BACKUP_DB_URL') ?: null,
+            'host' => env('SINGAPORE_BACKUP_DB_HOST') ?: null,
+            'port' => env('SINGAPORE_BACKUP_DB_PORT') ?: '5432',
+            'database' => env('SINGAPORE_BACKUP_DB_DATABASE') ?: 'manake_backup',
+            'username' => env('SINGAPORE_BACKUP_DB_USERNAME') ?: 'postgres',
+            'password' => env('SINGAPORE_BACKUP_DB_PASSWORD', ''),
+            'charset' => env('SINGAPORE_BACKUP_DB_CHARSET') ?: 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => env('SINGAPORE_BACKUP_DB_SCHEMA') ?: 'public',
+            'sslmode' => env('SINGAPORE_BACKUP_DB_SSLMODE') ?: 'require',
         ],
 
         'sqlsrv' => [

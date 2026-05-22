@@ -14,8 +14,8 @@ if (! function_exists('site_public_media_candidates')) {
     {
         $normalizedPath = ltrim($path, '/');
         $candidates = [
-            [public_path('storage/' . $normalizedPath), public_path('storage')],
-            [base_path('storage/app/public/' . $normalizedPath), base_path('storage/app/public')],
+            [public_path('storage/'.$normalizedPath), public_path('storage')],
+            [base_path('storage/app/public/'.$normalizedPath), base_path('storage/app/public')],
         ];
 
         try {
@@ -79,9 +79,11 @@ if (! function_exists('schema_table_exists_cached')) {
             try {
                 $result = Schema::hasTable($table);
                 $tableExistsCache[$cacheKey] = $result;
+
                 return $result;
             } catch (\Throwable $inner) {
                 $tableExistsCache[$cacheKey] = false;
+
                 return false;
             }
         }
@@ -123,9 +125,11 @@ if (! function_exists('schema_column_exists_cached')) {
             try {
                 $result = Schema::hasColumn($table, $column);
                 $columnExistsCache[$cacheKey] = $result;
+
                 return $result;
             } catch (\Throwable $inner) {
                 $columnExistsCache[$cacheKey] = false;
+
                 return false;
             }
         }
@@ -139,9 +143,9 @@ if (! function_exists('schema_exists_cache_key')) {
     {
         $connection = (string) config('database.default', 'default');
         $database = (string) config("database.connections.{$connection}.database", 'default');
-        $signature = $connection . '|' . $database . '|' . $table . '|' . ((string) $column);
+        $signature = $connection.'|'.$database.'|'.$table.'|'.((string) $column);
 
-        return 'schema_exists:' . $type . ':' . sha1($signature);
+        return 'schema_exists:'.$type.':'.sha1($signature);
     }
 }
 
@@ -309,7 +313,7 @@ if (! function_exists('trusted_map_embed_url')) {
 
         $fallback = trim((string) $fallbackAddress);
         if ($fallback !== '') {
-            return 'https://www.google.com/maps?q=' . rawurlencode($fallback) . '&output=embed';
+            return 'https://www.google.com/maps?q='.rawurlencode($fallback).'&output=embed';
         }
 
         return null;
@@ -325,7 +329,7 @@ if (! function_exists('trusted_map_embed_iframe')) {
             return null;
         }
 
-        return '<iframe src="' . e($embedUrl) . '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>';
+        return '<iframe src="'.e($embedUrl).'" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>';
     }
 }
 
@@ -360,7 +364,7 @@ if (! function_exists('trusted_map_normalize_url')) {
                 return preg_replace('/^http:/i', 'https:', $candidate);
             }
 
-            return 'https://www.google.com/maps?q=' . rawurlencode($candidate) . '&output=embed';
+            return 'https://www.google.com/maps?q='.rawurlencode($candidate).'&output=embed';
         }
 
         return null;
@@ -444,7 +448,7 @@ if (! function_exists('site_media_url')) {
 
         $resolvedDisk = $disk ?: site_media_disk();
         $normalizedPath = ltrim($path, '/');
-        
+
         // Remove storage/ prefix if it exists to prevent double prefixing
         if (str_starts_with($normalizedPath, 'storage/')) {
             $normalizedPath = substr($normalizedPath, 8);
@@ -465,7 +469,7 @@ if (! function_exists('site_media_url')) {
                 $isVercel = isset($_SERVER['VERCEL'])
                     || isset($_SERVER['LAMBDA_TASK_ROOT'])
                     || isset($_SERVER['NOW_REGION'])
-                    || env('VERCEL')
+                    || (bool) config('app.vercel', false)
                     || (request() && (
                         str_contains(request()->getHost(), 'vercel.app')
                         || str_contains(request()->getHost(), 'now.sh')
@@ -484,9 +488,9 @@ if (! function_exists('site_media_url')) {
                     }
                 }
 
-                $useDirectAsset = $isLocal && !$isVercel && !app()->runningUnitTests();
+                $useDirectAsset = $isLocal && ! $isVercel && ! app()->runningUnitTests();
                 if ($useDirectAsset && str_contains($absolutePath, public_path('storage/'))) {
-                    return asset('storage/' . $normalizedPath);
+                    return asset('storage/'.$normalizedPath);
                 }
 
                 $version = '1';
