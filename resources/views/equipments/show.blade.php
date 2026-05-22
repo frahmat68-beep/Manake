@@ -16,14 +16,14 @@
         default => $availableUnits > 0 ? 'Tersedia' : 'Tidak Tersedia',
     };
     $statusClass = match ($statusValue) {
-        'maintenance' => 'border-amber-500/20 bg-amber-950/75 text-amber-300',
-        'unavailable' => 'border-rose-500/20 bg-rose-950/75 text-rose-300',
+        'maintenance' => 'border-amber-400/35 bg-amber-950/80 text-amber-200',
+        'unavailable' => 'border-rose-400/35 bg-rose-950/80 text-rose-200',
         'ready' => $availableUnits > 0
-            ? 'border-emerald-500/20 bg-emerald-950/75 text-emerald-300'
-            : 'border-amber-500/20 bg-amber-950/75 text-amber-200',
+            ? 'border-emerald-400/35 bg-emerald-950/80 text-emerald-200'
+            : 'border-amber-400/35 bg-amber-950/80 text-amber-200',
         default => $availableUnits > 0
-            ? 'border-emerald-500/20 bg-emerald-950/75 text-emerald-300'
-            : 'border-rose-500/20 bg-rose-950/75 text-rose-300',
+            ? 'border-emerald-400/35 bg-emerald-950/80 text-emerald-200'
+            : 'border-rose-400/35 bg-rose-950/80 text-rose-200',
     };
     $bookingRanges = collect($bookingRanges ?? []);
     $specificationSource = trim((string) ($equipment->specifications ?? $equipment->description ?? ''));
@@ -79,11 +79,11 @@
                 <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div class="max-w-3xl">
-                            <div class="flex items-center gap-2.5 mb-3">
-                                <span class="rounded-full border border-[#1A1A1E] bg-[#111113]/95 px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-[#D4A843] backdrop-blur-md">
+                            <div class="flex flex-wrap items-center gap-2.5 mb-3">
+                                <span class="rounded-full border border-[#1A1A1E] bg-[#111113]/95 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#D4A843] backdrop-blur-md">
                                     {{ $equipment->category?->name ?? __('app.category.title') }}
                                 </span>
-                                <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
+                                <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
                                     {{ $statusLabel }}
                                 </span>
                             </div>
@@ -106,7 +106,7 @@
         <section class="manake-section pb-24">
             <div class="manake-page-frame grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr,0.9fr] lg:gap-8">
                 <!-- Left Column: Visual & Specs -->
-                <div class="space-y-6">
+                <div class="order-2 space-y-6 lg:order-1">
                     <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6">
                         <div class="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-md bg-[#0A0A0B] sm:aspect-[16/10]">
                             <img
@@ -160,7 +160,7 @@
                 </div>
 
                 <!-- Right Column: Pricing & Booking -->
-                <div class="space-y-6">
+                <div class="order-1 space-y-6 lg:order-2 lg:sticky lg:top-24">
                     <!-- Pricing Card -->
                     <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8">
                         <div class="flex flex-col gap-5">
@@ -168,7 +168,7 @@
                                 <p class="text-[9px] font-extrabold uppercase tracking-[0.15em] text-[#D4A843]/80">{{ __('app.product.price_per_day') }}</p>
                                 <div class="flex items-baseline gap-1.5">
                                     <span class="text-3xl font-extrabold tracking-tight text-[#E8E8EC]">Rp {{ number_format($equipment->price_per_day, 0, ',', '.') }}</span>
-                                    <span class="text-xs font-bold uppercase tracking-wider text-[#A0A0A8]">/ {{ __('app.product.per_day') }}</span>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-[#A0A0A8]">{{ __('app.product.per_day') }}</span>
                                 </div>
                             </div>
 
@@ -189,14 +189,14 @@
 
                             <div class="mk-card-soft p-5">
                                 <div class="flex items-center gap-2 mb-3.5">
-                                    <div class="h-1.5 w-1.5 rounded-full bg-[#111113]0 animate-pulse"></div>
-                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#D4A843] dark:text-[#A0A0A8]">{{ __('app.product.schedule_title') }}</p>
+                                    <div class="h-1.5 w-1.5 rounded-full bg-[#D4A843] animate-pulse"></div>
+                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#D4A843]">{{ __('app.product.schedule_title') }}</p>
                                 </div>
                                 
                                 @if ($bookingRanges->isEmpty())
-                                    <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 italic">{{ __('app.product.no_active_schedule') }}</p>
+                                    <p class="text-xs font-semibold text-[#A0A0A8] italic">{{ __('app.product.no_active_schedule') }}</p>
                                 @else
-                                    <p class="mb-3 text-[11px] font-medium text-slate-500 dark:text-slate-400 leading-relaxed">{{ __('app.product.blocked_schedule_note') }}</p>
+                                    <p class="mb-3 text-[11px] font-medium text-[#A0A0A8] leading-relaxed">{{ __('app.product.blocked_schedule_note') }}</p>
                                     <div class="space-y-2">
                                         @foreach ($bookingRanges as $range)
                                             @php
@@ -217,11 +217,11 @@
                                                 $endDate = \Carbon\Carbon::parse($range['end_date'])->translatedFormat('d M Y');
                                                 $dateText = $startDate === $endDate ? $startDate : ($startDate . ' - ' . $endDate);
                                             @endphp
-                                            <div class="flex items-center gap-2.5 p-2.5 bg-[#111113] dark:bg-slate-900/60 rounded-xl border border-[#1A1A1E] dark:border-slate-800/40 shadow-sm">
+                                            <div class="flex items-center gap-2.5 p-2.5 bg-[#111113] rounded-xl border border-[#1A1A1E] shadow-sm">
                                                 <div class="h-1.5 w-1.5 shrink-0 rounded-full {{ $rangeDotClass }}"></div>
                                                 <div class="flex-1 min-w-0">
-                                                    <p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{{ $dateText }}</p>
-                                                    <p class="text-[9px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-tight truncate mt-0.5">
+                                                    <p class="text-xs font-bold text-[#E8E8EC] truncate">{{ $dateText }}</p>
+                                                    <p class="text-[9px] font-extrabold text-[#A0A0A8] uppercase tracking-tight truncate mt-0.5">
                                                         {{ $rangeLabel }} 
                                                         @if (($range['qty'] ?? 0) > 0) • Qty {{ $range['qty'] }} @endif
                                                         @if (($range['reason'] ?? null)) • {{ $range['reason'] }} @endif
@@ -231,7 +231,7 @@
                                         @endforeach
                                     </div>
                                 @endif
-                                <p class="mt-3.5 text-[9px] font-semibold text-slate-400 dark:text-slate-500 text-center italic">{{ __('app.product.checkout_reject_note') }}</p>
+                                <p class="mt-3.5 text-[9px] font-semibold text-[#A0A0A8] text-center italic">{{ __('app.product.checkout_reject_note') }}</p>
                             </div>
                         </div>
                     </div>
@@ -248,11 +248,11 @@
                         data-locked-end="{{ $prefillEndDate }}"
                         class="mk-card p-6 sm:p-8"
                     >
-                        <h3 class="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-6">{{ __('app.product.rental_date') }}</h3>
+                        <h3 class="text-lg font-bold tracking-tight text-[#E8E8EC] mb-6">{{ __('app.product.rental_date') }}</h3>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                             <div class="space-y-1.5">
-                                <label class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 ml-0.5">{{ __('app.product.start_date') }}</label>
+                                <label class="text-[10px] font-extrabold uppercase tracking-wider text-[#A0A0A8] ml-0.5">{{ __('app.product.start_date') }}</label>
                                 <input
                                     id="start-date"
                                     type="date"
@@ -263,11 +263,11 @@
                                     value="{{ $prefillStartDate }}"
                                     required
                                     @readonly($lockDates)
-                                    class="mk-input {{ $lockDates ? 'cursor-not-allowed bg-slate-100 text-slate-400 opacity-60' : '' }}"
+                                    class="mk-input {{ $lockDates ? 'cursor-not-allowed opacity-60' : '' }}"
                                 >
                             </div>
                             <div class="space-y-1.5">
-                                <label class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 ml-0.5">{{ __('app.product.end_date') }}</label>
+                                <label class="text-[10px] font-extrabold uppercase tracking-wider text-[#A0A0A8] ml-0.5">{{ __('app.product.end_date') }}</label>
                                 <input
                                     id="end-date"
                                     type="date"
@@ -278,29 +278,29 @@
                                     value="{{ $prefillEndDate }}"
                                     required
                                     @readonly($lockDates)
-                                    class="mk-input {{ $lockDates ? 'cursor-not-allowed bg-slate-100 text-slate-400 opacity-60' : '' }}"
+                                    class="mk-input {{ $lockDates ? 'cursor-not-allowed opacity-60' : '' }}"
                                 >
                             </div>
                         </div>
 
                         @if ($lockDates)
-                            <div class="mb-6 p-3.5 bg-[#111113] dark:bg-[#111113] rounded-xl border border-[#1A1A1E] dark:border-[#1A1A1E] text-[10px] font-extrabold text-[#D4A843] dark:text-[#A0A0A8] flex items-center gap-2.5">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m0 0v2m0-2h2m-2 0H10m4-6a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
+                            <div class="mb-6 p-3.5 bg-[#111113] rounded-xl border border-[#1A1A1E] text-[10px] font-extrabold text-[#D4A843] flex items-center gap-2.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m0 0v2m0-2h2m-2 0H10m4-6a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
                                 {{ __('Tanggal sewa dikunci mengikuti pesanan di cart. Untuk ubah tanggal, edit dulu item di cart.') }}
                             </div>
                         @endif
 
                         <div class="space-y-3.5 mb-6">
-                            <div class="flex items-center justify-between rounded-xl bg-[#111113]/50 dark:bg-slate-900/30 px-4.5 py-3 text-xs border border-[#1A1A1E] dark:border-slate-800/40">
-                                <span class="font-bold text-slate-400 dark:text-slate-500">{{ __('app.product.duration') }}</span>
-                                <span id="total-days" class="font-extrabold text-[#E8E8EC] dark:text-slate-50 text-sm">-</span>
+                            <div class="flex items-center justify-between rounded-xl bg-[#111113]/50 px-4 py-3 text-xs border border-[#1A1A1E]">
+                                <span class="font-bold text-[#A0A0A8]">{{ __('app.product.duration') }}</span>
+                                <span id="total-days" class="font-extrabold text-[#E8E8EC] text-sm">-</span>
                             </div>
-                            <div class="flex items-center justify-between rounded-xl bg-[#D4A843] px-4.5 py-4 text-xs text-[#0A0A0B] relative overflow-hidden">
+                            <div class="flex items-center justify-between rounded-xl bg-[#D4A843] px-4 py-4 text-xs text-[#0A0A0B] relative overflow-hidden">
                                 <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50"></div>
                                 <span class="relative font-bold text-[#0A0A0B]/80">{{ __('app.product.estimate') }}</span>
                                 <span id="total-price" class="relative text-xl font-extrabold">Rp -</span>
                             </div>
-                            <div id="availability-feedback" class="hidden rounded-xl border px-4.5 py-3 text-[11px] font-bold leading-relaxed whitespace-pre-line animate-fade-in"></div>
+                            <div id="availability-feedback" class="hidden rounded-xl border px-4 py-3 text-[11px] font-bold leading-relaxed whitespace-pre-line animate-fade-in"></div>
                         </div>
 
                         <div class="space-y-3.5">
@@ -314,11 +314,11 @@
                                         {{ __('ui.actions.login_to_add') }}
                                     </a>
                                 @else
-                                    <button type="button" disabled class="w-full py-3.5 rounded-xl bg-slate-100 text-slate-400 font-bold border border-slate-200 cursor-not-allowed text-sm">
+                                    <button type="button" disabled class="w-full py-3.5 rounded-xl bg-[#111113] text-[#66666C] font-bold border border-[#1A1A1E] cursor-not-allowed text-sm">
                                         {{ __('app.product.out_of_stock') }}
                                     </button>
                                 @endif
-                                <p class="text-[9px] font-extrabold text-slate-400 dark:text-slate-500 text-center uppercase tracking-wider">{{ __('app.messages.login_to_cart') }}</p>
+                                <p class="text-[9px] font-extrabold text-[#A0A0A8] text-center uppercase tracking-wider">{{ __('app.messages.login_to_cart') }}</p>
                             @endguest
 
                             @auth
@@ -332,9 +332,9 @@
                                     <input type="hidden" name="price" value="{{ $equipment->price_per_day }}">
                                     
                                     <div class="space-y-1.5">
-                                        <label class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 ml-0.5">Kuantitas</label>
+                                        <label class="text-[10px] font-extrabold uppercase tracking-wider text-[#A0A0A8] ml-0.5">Kuantitas</label>
                                         <div class="relative flex items-center">
-                                            <button type="button" @click="qty = Math.max(1, qty - 1)" class="absolute left-1.5 h-9 w-9 flex items-center justify-center rounded-lg bg-[#111113] dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 transition-all active:scale-95 text-sm font-bold">-</button>
+                                            <button type="button" @click="qty = Math.max(1, qty - 1)" class="absolute left-1.5 h-9 w-9 flex items-center justify-center rounded-lg border border-[#1A1A1E] bg-[#111113] text-[#E8E8EC] hover:border-[#D4A843]/40 transition-all active:scale-95 text-sm font-bold">-</button>
                                             <input
                                                 id="rent-qty"
                                                 type="number"
@@ -345,7 +345,7 @@
                                                 class="mk-input no-spinner text-center font-extrabold text-sm h-12"
                                                 required
                                             >
-                                            <button type="button" @click="qty = Math.min(maxQty, qty + 1)" class="absolute right-1.5 h-9 w-9 flex items-center justify-center rounded-lg bg-[#111113] dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 transition-all active:scale-95 text-sm font-bold">+</button>
+                                            <button type="button" @click="qty = Math.min(maxQty, qty + 1)" class="absolute right-1.5 h-9 w-9 flex items-center justify-center rounded-lg border border-[#1A1A1E] bg-[#111113] text-[#E8E8EC] hover:border-[#D4A843]/40 transition-all active:scale-95 text-sm font-bold">+</button>
                                         </div>
                                     </div>
 
@@ -358,7 +358,7 @@
                                         {{ $canRent ? __('ui.actions.add_to_cart') : __('app.product.out_of_stock') }}
                                     </button>
                                 </form>
-                                <p class="text-[9px] font-extrabold text-slate-400 dark:text-slate-500 text-center uppercase tracking-wider">{{ __('app.product.note') }}</p>
+                                <p class="text-[9px] font-extrabold text-[#A0A0A8] text-center uppercase tracking-wider">{{ __('app.product.note') }}</p>
                             @endauth
                         </div>
                     </div>
@@ -420,11 +420,11 @@
                 if (!availabilityFeedback) return;
                 const classes = {
                     info: 'border-[#1A1A1E] bg-[#111113] text-[#A0A0A8]',
-                    success: 'border-emerald-100 bg-emerald-50/80 text-emerald-750 dark:border-emerald-900/30 dark:bg-emerald-950/20 dark:text-emerald-400',
-                    warning: 'border-amber-100 bg-amber-50/80 text-amber-750 dark:border-amber-900/30 dark:bg-amber-950/20 dark:text-amber-400',
-                    error: 'border-rose-100 bg-rose-50/80 text-rose-750 dark:border-rose-900/30 dark:bg-rose-950/20 dark:text-rose-400',
+                    success: 'border-emerald-400/35 bg-emerald-950/70 text-emerald-200',
+                    warning: 'border-amber-400/35 bg-amber-950/70 text-amber-200',
+                    error: 'border-rose-400/35 bg-rose-950/70 text-rose-200',
                 };
-                availabilityFeedback.className = `rounded-xl border px-4.5 py-3 text-[11px] font-bold leading-relaxed whitespace-pre-line animate-fade-in ${classes[tone] || classes.info}`;
+                availabilityFeedback.className = `rounded-xl border px-4 py-3 text-[11px] font-bold leading-relaxed whitespace-pre-line animate-fade-in ${classes[tone] || classes.info}`;
                 availabilityFeedback.textContent = message;
                 availabilityFeedback.classList.remove('hidden');
             };

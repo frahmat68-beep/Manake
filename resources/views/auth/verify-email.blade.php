@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="hidden bg-gradient-to-br from-[#0A0A0B] via-[#111113] to-[#0A0A0B] p-8 text-[#E8E8EC] md:block">
-                        <x-brand.image light="manake-logo-blue.png" dark="manake-logo-blue.png" alt="Manake" img-class="h-12 w-auto" />
+                        <x-brand.image light="manake-logo-white.png" dark="manake-logo-white.png" alt="Manake" img-class="h-12 w-auto" />
                         <h3 class="mt-6 text-2xl font-semibold leading-tight">Cek email untuk aktivasi akun.</h3>
                         <p class="mt-3 text-sm text-[#A0A0A8]">
                             Setelah verifikasi selesai, kamu bisa lanjut isi profil, pembayaran, dan pantau progres pesanan secara realtime.

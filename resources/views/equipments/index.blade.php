@@ -88,14 +88,14 @@
             $normalized = strtolower(trim($statusValue));
 
             return match ($normalized) {
-                'maintenance' => 'bg-amber-500/10 text-amber-600 border-amber-500/20',
-                'unavailable' => 'bg-rose-500/10 text-rose-600 border-rose-500/20',
+                'maintenance' => 'border-amber-400/35 bg-amber-950/80 text-amber-200',
+                'unavailable' => 'border-rose-400/35 bg-rose-950/80 text-rose-200',
                 'ready' => $availableUnits > 0
-                    ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
-                    : 'bg-amber-500/10 text-amber-600 border-amber-500/20',
+                    ? 'border-emerald-400/35 bg-emerald-950/80 text-emerald-200'
+                    : 'border-amber-400/35 bg-amber-950/80 text-amber-200',
                 default => $availableUnits > 0
-                    ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
-                    : 'bg-rose-500/10 text-rose-600 border-rose-500/20',
+                    ? 'border-emerald-400/35 bg-emerald-950/80 text-emerald-200'
+                    : 'border-rose-400/35 bg-rose-950/80 text-rose-200',
             };
         };
     @endphp
@@ -154,7 +154,7 @@
                                 </a>
                             @endif
                         </div>
-                        <div class="mt-4 flex flex-wrap sm:flex-nowrap overflow-x-auto gap-3 pb-2 scrollbar-none">
+                        <div class="mt-4 flex flex-wrap gap-3 pb-1">
                             <a
                                 href="{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}"
                                 class="rounded-full border px-5 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === '' ? 'bg-[#D4A843] text-[#0A0A0B] border-[#D4A843]' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] hover:border-[#D4A843]/40 hover:text-[#E8E8EC]' }}"
@@ -269,10 +269,10 @@
                                         decoding="async"
                                     >
                                     <div class="absolute inset-x-4 top-4 flex items-center justify-between pointer-events-none">
-                                        <span class="rounded-full border border-[#1A1A1E] bg-[#111113]/95 px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-[#D4A843] backdrop-blur-md">
+                                        <span class="rounded-full border border-[#1A1A1E] bg-[#111113]/95 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#D4A843] backdrop-blur-md">
                                             {{ $item->category?->name ?? __('app.category.title') }}
                                         </span>
-                                        <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
+                                        <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
                                             {{ $statusLabel }}
                                         </span>
                                     </div>
@@ -286,7 +286,7 @@
                                             <p class="text-xl font-extrabold tracking-tight text-[#E8E8EC]">
                                                 {{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}
                                             </p>
-                                            <span class="text-[9px] font-bold uppercase tracking-widest text-[#A0A0A8]">/ {{ __('app.product.per_day') }}</span>
+                                            <span class="text-[9px] font-bold uppercase tracking-widest text-[#A0A0A8]">{{ __('app.product.per_day') }}</span>
                                         </div>
                                         <span class="text-xs font-semibold text-[#A0A0A8]">
                                             Tersedia: <span class="font-bold text-[#E8E8EC]">{{ $availableUnits }} unit</span>
@@ -408,7 +408,7 @@
                                                         <div class="space-y-2">
                                                             <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">{{ $catalogQuickQtyLabel }}</label>
                                                             <div class="relative flex items-center">
-                                                                <button type="button" @click="quickQty = Math.max(1, quickQty - 1)" class="absolute left-2 h-10 w-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all active:scale-90">-</button>
+                                                                <button type="button" @click="quickQty = Math.max(1, quickQty - 1)" class="absolute left-2 h-10 w-10 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#111113] text-[#E8E8EC] hover:border-[#D4A843]/40 transition-all active:scale-90">-</button>
                                                                 <input
                                                                     type="number"
                                                                     name="qty"
@@ -418,7 +418,7 @@
                                                                     class="mk-input no-spinner text-center"
                                                                     required
                                                                 >
-                                                                <button type="button" @click="quickQty = Math.min(maxQty, quickQty + 1)" class="absolute right-2 h-10 w-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all active:scale-90">+</button>
+                                                                <button type="button" @click="quickQty = Math.min(maxQty, quickQty + 1)" class="absolute right-2 h-10 w-10 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#111113] text-[#E8E8EC] hover:border-[#D4A843]/40 transition-all active:scale-90">+</button>
                                                             </div>
                                                         </div>
 

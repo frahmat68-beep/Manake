@@ -11,11 +11,11 @@
             </div>
         @endif
 
-        <section class="manake-card">
+        <section class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.9)]">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <p class="manake-kicker">{{ __('Pesanan') }}</p>
-                    <h2 class="manake-heading mt-2 text-2xl font-black text-slate-950 dark:text-white">{{ __('Daftar Pesanan') }}</h2>
+                    <h2 class="manake-heading mt-2 text-2xl font-black text-[#E8E8EC]">{{ __('Daftar Pesanan') }}</h2>
                 </div>
             </div>
 
@@ -40,20 +40,16 @@
         </section>
 
         <section class="grid items-start gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)]">
-            <article class="manake-card flex min-h-0 flex-col overflow-hidden p-0">
-                <div class="flex items-center justify-between gap-3">
-                <div>
-                    <div class="px-5 pt-5">
-                        <p class="manake-kicker">{{ __('Arsip') }}</p>
-                        <h3 class="manake-heading mt-2 text-xl font-black text-slate-950 dark:text-white">{{ __('Arsip Bulanan') }}</h3>
-                    </div>
+            <article class="flex min-h-0 flex-col overflow-hidden rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-0 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.9)]">
+                <div class="px-5 pt-5">
+                    <p class="manake-kicker">{{ __('Arsip') }}</p>
+                    <h3 class="manake-heading mt-2 text-xl font-black text-[#E8E8EC]">{{ __('Arsip Bulanan') }}</h3>
                 </div>
-            </div>
 
                 <div class="scroll-panel mt-4 h-[29rem] overflow-y-auto pr-1">
                     <div class="grid gap-3 md:grid-cols-2">
                     @forelse (($monthlyRecaps ?? collect()) as $recap)
-                        <article class="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-900/60">
+                        <article class="rounded-2xl border border-white/10 bg-white/5 p-4">
                             <div class="flex items-start justify-between gap-3">
                                 <div>
                                     <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $recap['label'] }}</p>
@@ -62,31 +58,31 @@
                                 <span class="status-chip status-chip-success">{{ $recap['orders_count'] }} {{ __('pesanan') }}</span>
                             </div>
                             <div class="mt-3 grid grid-cols-2 gap-2">
-                                <div class="rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-950">
-                                    <p class="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">{{ __('Unit') }}</p>
-                                    <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-slate-100">{{ $recap['units_total'] }}</p>
+                                <div class="rounded-xl border border-white/10 bg-[#0A0A0B] px-3 py-2">
+                                    <p class="text-[11px] uppercase tracking-wide text-[#A0A0A8]">{{ __('Unit') }}</p>
+                                    <p class="mt-1 text-sm font-semibold text-[#E8E8EC]">{{ $recap['units_total'] }}</p>
                                 </div>
-                                <div class="rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-950">
-                                    <p class="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">{{ __('Total') }}</p>
-                                    <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-slate-100">{{ __('Rp') }} {{ number_format((int) $recap['revenue_total'], 0, ',', '.') }}</p>
+                                <div class="rounded-xl border border-white/10 bg-[#0A0A0B] px-3 py-2">
+                                    <p class="text-[11px] uppercase tracking-wide text-[#A0A0A8]">{{ __('Total') }}</p>
+                                    <p class="mt-1 text-sm font-semibold text-[#E8E8EC]">{{ __('Rp') }} {{ number_format((int) $recap['revenue_total'], 0, ',', '.') }}</p>
                                 </div>
                             </div>
                             @if (! empty($recap['latest_orders']))
-                                <div class="scroll-panel mt-3 max-h-[8.75rem] space-y-2 overflow-y-auto border-t border-slate-200 pt-3 pr-1 dark:border-slate-800">
+                                <div class="scroll-panel mt-3 max-h-[8.75rem] space-y-2 overflow-y-auto border-t border-white/10 pt-3 pr-1">
                                     @foreach ($recap['latest_orders'] as $archivedOrder)
-                                        <a href="{{ route('admin.orders.show', $archivedOrder['id']) }}" class="block rounded-xl border border-slate-200 bg-white px-3 py-2 transition hover:border-blue-200 dark:border-slate-800 dark:bg-slate-950">
-                                            <p class="truncate text-xs font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400">
+                                        <a href="{{ route('admin.orders.show', $archivedOrder['id']) }}" class="block rounded-xl border border-white/10 bg-[#0A0A0B] px-3 py-2 transition hover:border-[#D4A843]/40">
+                                            <p class="truncate text-xs font-semibold text-[#D4A843]">
                                                 {{ $archivedOrder['archive_label'] }}
                                             </p>
-                                            <p class="mt-1 truncate text-[11px] text-slate-600 dark:text-slate-400">{{ $archivedOrder['customer_name'] }}</p>
-                                            <p class="mt-1 truncate text-[11px] text-slate-500 dark:text-slate-500">{{ $archivedOrder['order_number'] }}</p>
+                                            <p class="mt-1 truncate text-[11px] text-[#A0A0A8]">{{ $archivedOrder['customer_name'] }}</p>
+                                            <p class="mt-1 truncate text-[11px] text-[#66666C]">{{ $archivedOrder['order_number'] }}</p>
                                         </a>
                                     @endforeach
                                 </div>
                             @endif
                         </article>
                     @empty
-                        <div class="rounded-2xl border border-dashed border-slate-200 px-4 py-5 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400 md:col-span-2">
+                        <div class="rounded-2xl border border-dashed border-white/10 px-4 py-5 text-sm text-[#A0A0A8] md:col-span-2">
                             {{ __('Belum ada arsip bulanan.') }}
                         </div>
                     @endforelse
@@ -94,28 +90,26 @@
                 </div>
             </article>
 
-            <article class="manake-card flex min-h-0 flex-col overflow-hidden p-0">
-                <div>
-                    <div class="px-5 pt-5">
-                        <p class="manake-kicker">{{ __('Log') }}</p>
-                        <h3 class="manake-heading mt-2 text-xl font-black text-slate-950 dark:text-white">{{ __('Log Pesanan') }}</h3>
-                    </div>
+            <article class="flex min-h-0 flex-col overflow-hidden rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-0 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.9)]">
+                <div class="px-5 pt-5">
+                    <p class="manake-kicker">{{ __('Log') }}</p>
+                    <h3 class="manake-heading mt-2 text-xl font-black text-[#E8E8EC]">{{ __('Log Pesanan') }}</h3>
                 </div>
 
                 <div class="scroll-panel mt-4 h-[29rem] space-y-3 overflow-y-auto pr-1">
                     @forelse (($orderLogs ?? collect()) as $log)
-                        <article class="rounded-xl border border-slate-200 px-3 py-3 dark:border-slate-800 dark:bg-slate-950">
+                        <article class="rounded-xl border border-white/10 bg-[#0A0A0B] px-3 py-3">
                             <div class="flex items-start justify-between gap-3">
                                 <div class="min-w-0">
-                                    <p class="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{{ $log['order_number'] ?? __('Pesanan') }}</p>
-                                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ $log['summary'] }}</p>
+                                    <p class="truncate text-sm font-semibold text-[#E8E8EC]">{{ $log['order_number'] ?? __('Pesanan') }}</p>
+                                    <p class="mt-1 text-xs text-[#A0A0A8]">{{ $log['summary'] }}</p>
                                 </div>
-                                <span class="shrink-0 text-[11px] text-slate-400 dark:text-slate-500">{{ optional($log['created_at'])->format('d M H:i') }}</span>
+                                <span class="shrink-0 text-[11px] text-[#66666C]">{{ optional($log['created_at'])->format('d M H:i') }}</span>
                             </div>
-                            <p class="mt-2 text-[11px] text-slate-400 dark:text-slate-500">{{ $log['admin_name'] ?: __('Sistem') }}</p>
+                            <p class="mt-2 text-[11px] text-[#66666C]">{{ $log['admin_name'] ?: __('Sistem') }}</p>
                         </article>
                     @empty
-                        <div class="rounded-2xl border border-dashed border-slate-200 px-4 py-5 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
+                        <div class="rounded-2xl border border-dashed border-white/10 px-4 py-5 text-sm text-[#A0A0A8]">
                             {{ __('Belum ada log pesanan.') }}
                         </div>
                     @endforelse
@@ -123,10 +117,10 @@
             </article>
         </section>
 
-        <section class="manake-card overflow-hidden p-0">
+        <section class="overflow-hidden rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-0 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.9)]">
             <div class="scroll-panel max-h-[34rem] overflow-auto">
                 <table class="min-w-[860px] w-full text-sm">
-                    <thead class="sticky top-0 z-10 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900 dark:text-slate-300">
+                    <thead class="sticky top-0 z-10 bg-[#0A0A0B] text-left text-xs uppercase tracking-wide text-[#A0A0A8]">
                         <tr>
                             <th class="px-5 py-3">{{ __('Pesanan') }}</th>
                             <th class="px-5 py-3">{{ __('Pengguna') }}</th>
@@ -136,7 +130,7 @@
                             <th class="px-5 py-3 text-right">{{ __('Aksi') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="divide-y divide-white/10">
                         @forelse ($orders as $order)
                             @php
                                 $paymentBadge = match($order->status_pembayaran) {
@@ -169,29 +163,29 @@
                             @endphp
                             <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-900/60">
                                 <td class="px-5 py-4">
-                                    <p class="font-semibold text-slate-900 dark:text-slate-50">{{ $order->order_number ?? ('ORD-' . $order->id) }}</p>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ $order->created_at?->format('d M Y H:i') }}</p>
+                                    <p class="font-semibold text-[#E8E8EC]">{{ $order->order_number ?? ('ORD-' . $order->id) }}</p>
+                                    <p class="text-xs text-[#A0A0A8]">{{ $order->created_at?->format('d M Y H:i') }}</p>
                                 </td>
                                 <td class="px-5 py-4">
-                                    <p class="font-semibold text-slate-800 dark:text-slate-100">{{ $order->user?->name ?? '-' }}</p>
-                                    <p class="text-sm text-slate-600 dark:text-slate-400">{{ $order->user?->email ?? '-' }}</p>
+                                    <p class="font-semibold text-[#E8E8EC]">{{ $order->user?->name ?? '-' }}</p>
+                                    <p class="text-sm text-[#A0A0A8]">{{ $order->user?->email ?? '-' }}</p>
                                 </td>
-                                <td class="px-5 py-4 font-semibold text-slate-800 dark:text-slate-100">{{ __('Rp') }} {{ number_format((int) ($order->grand_total ?? $order->total_amount), 0, ',', '.') }}</td>
+                                <td class="px-5 py-4 font-semibold text-[#E8E8EC]">{{ __('Rp') }} {{ number_format((int) ($order->grand_total ?? $order->total_amount), 0, ',', '.') }}</td>
                                 <td class="px-5 py-4">
                                     <span class="status-chip {{ $paymentBadge }}">
                                         {{ $paymentStatusLabel }}
                                     </span>
                                 </td>
-                                <td class="px-5 py-4 text-slate-600 dark:text-slate-400">{{ $orderStatusLabel }}</td>
+                                <td class="px-5 py-4 text-[#A0A0A8]">{{ $orderStatusLabel }}</td>
                                 <td class="px-5 py-4 text-right">
-                                    <a href="{{ route('admin.orders.show', $order) }}" class="inline-flex rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:text-blue-600 dark:border-slate-800 dark:text-slate-300 dark:hover:border-blue-500/40 dark:hover:text-blue-300">
+                                    <a href="{{ route('admin.orders.show', $order) }}" class="inline-flex rounded-xl border border-white/10 px-3 py-1.5 text-xs font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
                                         {{ __('Detail') }}
                                     </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-5 py-10 text-center text-sm text-slate-500 dark:text-slate-400">{{ __('Belum ada pesanan.') }}</td>
+                                <td colspan="6" class="px-5 py-10 text-center text-sm text-[#A0A0A8]">{{ __('Belum ada pesanan.') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

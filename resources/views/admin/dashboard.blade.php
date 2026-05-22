@@ -22,54 +22,54 @@
         $actionableCount = $ordersCollection->filter(fn ($order) => in_array((string) ($order->status_pesanan ?? ''), ['lunas', 'barang_diambil'], true))->count();
     @endphp
 
-    <div class="space-y-5">
+    <div class="space-y-6">
         @if (session('success'))
-            <div class="manake-card-soft px-4 py-3 text-sm text-emerald-700">
+            <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
                 {{ session('success') }}
             </div>
         @endif
 
         @if (session('error'))
-            <div class="manake-card-soft px-4 py-3 text-sm text-rose-700">
+            <div class="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-700 dark:text-rose-300">
                 {{ session('error') }}
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="manake-card-soft px-4 py-3 text-sm text-rose-700">
+            <div class="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-700 dark:text-rose-300">
                 {{ $errors->first() }}
             </div>
         @endif
 
-        <section class="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-[repeat(4,minmax(0,1fr))_minmax(0,1.2fr)]">
-            <article class="manake-card">
-                <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">{{ __('Siap Diambil') }}</p>
-                <p class="mt-2 text-3xl font-extrabold text-blue-600">{{ (int) ($summary['ready_pickup'] ?? 0) }}</p>
+        <section class="grid grid-cols-2 gap-4 xl:grid-cols-[repeat(4,minmax(0,1fr))_minmax(0,1.2fr)]">
+            <article class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5 shadow-[0_18px_50px_-35px_rgba(0,0,0,0.85)]">
+                <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#A0A0A8]">{{ __('Siap Diambil') }}</p>
+                <p class="mt-3 text-3xl font-black text-sky-300">{{ (int) ($summary['ready_pickup'] ?? 0) }}</p>
             </article>
-            <article class="manake-card">
-                <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">{{ __('Sedang Disewa') }}</p>
-                <p class="mt-2 text-3xl font-extrabold text-amber-500">{{ (int) ($summary['on_rent'] ?? 0) }}</p>
+            <article class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5 shadow-[0_18px_50px_-35px_rgba(0,0,0,0.85)]">
+                <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#A0A0A8]">{{ __('Sedang Disewa') }}</p>
+                <p class="mt-3 text-3xl font-black text-amber-300">{{ (int) ($summary['on_rent'] ?? 0) }}</p>
             </article>
-            <article class="manake-card">
-                <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">{{ __('Sudah Kembali') }}</p>
-                <p class="mt-2 text-3xl font-extrabold text-emerald-600">{{ (int) ($summary['returned'] ?? 0) }}</p>
+            <article class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5 shadow-[0_18px_50px_-35px_rgba(0,0,0,0.85)]">
+                <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#A0A0A8]">{{ __('Sudah Kembali') }}</p>
+                <p class="mt-3 text-3xl font-black text-emerald-300">{{ (int) ($summary['returned'] ?? 0) }}</p>
             </article>
-            <article class="manake-card">
-                <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">{{ __('Kasus Rusak') }}</p>
-                <p class="mt-2 text-3xl font-extrabold text-rose-600">{{ (int) ($summary['damaged'] ?? 0) }}</p>
+            <article class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5 shadow-[0_18px_50px_-35px_rgba(0,0,0,0.85)]">
+                <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#A0A0A8]">{{ __('Kasus Rusak') }}</p>
+                <p class="mt-3 text-3xl font-black text-rose-300">{{ (int) ($summary['damaged'] ?? 0) }}</p>
             </article>
-            <article class="manake-card col-span-2 lg:col-span-1">
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ __('Prioritas Hari Ini') }}</p>
-                <p class="mt-2 text-3xl font-semibold text-slate-900">{{ $actionableCount }}</p>
-                <p class="mt-1 text-xs text-slate-500">{{ __('Pesanan yang butuh konfirmasi diambil/dikembalikan.') }}</p>
+            <article class="col-span-2 rounded-[1.35rem] border border-[#1A1A1E] bg-gradient-to-br from-[#111113] via-[#0A0A0B] to-[#111113] p-5 shadow-[0_18px_50px_-35px_rgba(0,0,0,0.9)] lg:col-span-1">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#D4A843]">{{ __('Prioritas Hari Ini') }}</p>
+                <p class="mt-3 text-3xl font-black text-[#E8E8EC]">{{ $actionableCount }}</p>
+                <p class="mt-1 text-xs leading-6 text-[#A0A0A8]">{{ __('Pesanan yang butuh konfirmasi diambil/dikembalikan.') }}</p>
                 <div class="mt-4 flex flex-wrap gap-2">
-                    <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-blue-700">
+                    <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center justify-center rounded-xl bg-[#D4A843] px-3 py-2 text-xs font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]">
                         {{ __('Buka Semua Pesanan') }}
                     </a>
-                    <a href="{{ route('admin.equipments.index') }}" class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600">
+                    <a href="{{ route('admin.equipments.index') }}" class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
                         {{ __('Cek Stok Alat') }}
                     </a>
-                    <a href="{{ route('availability.board') }}" class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600">
+                    <a href="{{ route('availability.board') }}" class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
                         {{ __('Kalender Ketersediaan') }}
                     </a>
                 </div>
@@ -77,46 +77,46 @@
         </section>
 
         <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <article class="manake-card">
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ __('Uang Masuk') }}</p>
-                <p class="mt-2 text-2xl font-semibold text-slate-900">{{ $formatIdr($financialSummary['cash_in'] ?? 0) }}</p>
-                <p class="mt-1 text-xs text-slate-500">{{ __('Total pembayaran sukses (termasuk fee tambahan).') }}</p>
+            <article class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#A0A0A8]">{{ __('Uang Masuk') }}</p>
+                <p class="mt-3 text-2xl font-black text-[#E8E8EC]">{{ $formatIdr($financialSummary['cash_in'] ?? 0) }}</p>
+                <p class="mt-1 text-xs leading-6 text-[#A0A0A8]">{{ __('Total pembayaran sukses (termasuk fee tambahan).') }}</p>
             </article>
-            <article class="manake-card">
-                <p class="text-xs font-semibold uppercase tracking-wide text-blue-500">{{ __('Pendapatan Sewa') }}</p>
-                <p class="mt-2 text-2xl font-semibold text-blue-700">{{ $formatIdr($financialSummary['revenue'] ?? 0) }}</p>
-                <p class="mt-1 text-xs text-blue-600">{{ __('Akumulasi subtotal pesanan lunas.') }}</p>
+            <article class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300">{{ __('Pendapatan Sewa') }}</p>
+                <p class="mt-3 text-2xl font-black text-[#E8E8EC]">{{ $formatIdr($financialSummary['revenue'] ?? 0) }}</p>
+                <p class="mt-1 text-xs leading-6 text-[#A0A0A8]">{{ __('Akumulasi subtotal pesanan lunas.') }}</p>
             </article>
-            <article class="manake-card">
-                <p class="text-xs font-semibold uppercase tracking-wide text-amber-600">{{ __('Pajak Terkumpul') }}</p>
-                <p class="mt-2 text-2xl font-semibold text-amber-700">{{ $formatIdr($financialSummary['tax'] ?? 0) }}</p>
-                <p class="mt-1 text-xs text-amber-700">{{ __('Estimasi PPN 11% dari pendapatan sewa.') }}</p>
+            <article class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-amber-300">{{ __('Pajak Terkumpul') }}</p>
+                <p class="mt-3 text-2xl font-black text-[#E8E8EC]">{{ $formatIdr($financialSummary['tax'] ?? 0) }}</p>
+                <p class="mt-1 text-xs leading-6 text-[#A0A0A8]">{{ __('Estimasi PPN 11% dari pendapatan sewa.') }}</p>
             </article>
-            <article class="manake-card">
-                <p class="text-xs font-semibold uppercase tracking-wide text-rose-500">{{ __('Fee Kerusakan') }}</p>
-                <p class="mt-2 text-2xl font-semibold text-rose-700">{{ $formatIdr($financialSummary['damage_fee'] ?? 0) }}</p>
-                <p class="mt-1 text-xs text-rose-600">{{ __('Biaya tambahan yang sudah berhasil dibayar.') }}</p>
+            <article class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-rose-300">{{ __('Fee Kerusakan') }}</p>
+                <p class="mt-3 text-2xl font-black text-[#E8E8EC]">{{ $formatIdr($financialSummary['damage_fee'] ?? 0) }}</p>
+                <p class="mt-1 text-xs leading-6 text-[#A0A0A8]">{{ __('Biaya tambahan yang sudah berhasil dibayar.') }}</p>
             </article>
         </section>
 
         <section class="grid gap-5 xl:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
-            <section class="manake-card">
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+            <section class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] shadow-[0_18px_50px_-36px_rgba(0,0,0,0.9)]">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-5 py-4">
                     <div>
-                        <h2 class="text-lg font-bold text-blue-700">{{ __('Pesanan Perlu Tindakan') }}</h2>
-                        <p class="text-xs text-slate-500">{{ __('Daftar pesanan aktif yang membutuhkan konfirmasi operasional.') }}</p>
+                        <h2 class="text-lg font-semibold text-[#E8E8EC]">{{ __('Pesanan Perlu Tindakan') }}</h2>
+                        <p class="text-xs text-[#A0A0A8]">{{ __('Daftar pesanan aktif yang membutuhkan konfirmasi operasional.') }}</p>
                     </div>
-                    <a href="{{ route('admin.orders.index') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-700">
+                    <a href="{{ route('admin.orders.index') }}" class="text-sm font-semibold text-[#D4A843] hover:text-[#e0ba5d]">
                         {{ __('Kelola di halaman Pesanan →') }}
                     </a>
                 </div>
 
                 @if ($ordersCollection->isEmpty())
-                    <div class="px-5 py-8 text-sm text-slate-500">
+                    <div class="px-5 py-8 text-sm text-[#A0A0A8]">
                         {{ __('Tidak ada pesanan operasional untuk ditindaklanjuti saat ini.') }}
                     </div>
                 @else
-                    <div class="divide-y divide-slate-100">
+                    <div class="divide-y divide-white/10">
                         @foreach ($ordersCollection as $order)
                             @php
                                 $badge = $statusBadge($order->status_pesanan);
@@ -135,12 +135,12 @@
                                             <p class="text-base font-semibold text-slate-900">{{ $order->order_number ?? ('ORD-' . $order->id) }}</p>
                                             <span class="status-chip {{ $badge['class'] }}">{{ $badge['label'] }}</span>
                                         </div>
-                                        <p class="mt-1 text-sm text-slate-600">
+                                        <p class="mt-1 text-sm text-[#A0A0A8]">
                                             {{ $order->user?->name ?? '-' }} •
                                             {{ optional($order->rental_start_date)->format('d M Y') }} - {{ optional($order->rental_end_date)->format('d M Y') }}
                                         </p>
                                         @if ($itemsLabel !== '')
-                                            <p class="mt-1 text-xs text-slate-500">
+                                            <p class="mt-1 text-xs text-[#66666C]">
                                                 {{ __('Alat:') }} {{ $itemsLabel }}@if($order->items->count() > 2) +{{ $order->items->count() - 2 }} {{ __('lainnya') }} @endif
                                             </p>
                                         @endif
@@ -161,7 +161,7 @@
                                                 </button>
                                             </form>
                                         @else
-                                            <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-slate-400">
+                                            <div class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-xs font-semibold text-[#66666C]">
                                                 @if ($isOnRent || $isClosed)
                                                     {{ __('Sudah Diambil') }}
                                                 @else
@@ -184,7 +184,7 @@
                                                 </button>
                                             </form>
                                         @else
-                                            <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-slate-400">
+                                            <div class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-xs font-semibold text-[#66666C]">
                                                 @if ($order->status_pesanan === 'barang_kembali')
                                                     {{ __('Sudah Kembali') }}
                                                 @elseif ($order->status_pesanan === 'barang_rusak')
@@ -209,7 +209,7 @@
                                                 </button>
                                             </form>
                                         @else
-                                            <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-slate-400">
+                                            <div class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-xs font-semibold text-[#66666C]">
                                                 @if ($order->status_pesanan === 'barang_rusak')
                                                     {{ __('Sudah Ditandai') }}
                                                 @else
@@ -221,11 +221,11 @@
                                 </div>
 
                                 <div class="mt-3 flex flex-wrap items-center gap-2">
-                                    <a href="{{ route('admin.orders.show', $order) }}" class="inline-flex rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600">
+                                    <a href="{{ route('admin.orders.show', $order) }}" class="inline-flex rounded-xl border border-white/10 px-3 py-1.5 text-xs font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
                                         {{ __('Detail Pesanan') }}
                                     </a>
                                     @if ($isReadyPickup && ! $canConfirmPickupNow && $pickupOpenAt)
-                                        <p class="rounded-xl border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs text-amber-700">
+                                        <p class="rounded-xl border border-amber-500/20 bg-amber-500/10 px-3 py-1.5 text-xs text-amber-200">
                                             {{ __('Tombol "Diambil" aktif mulai') }} {{ $pickupOpenAt->format('d M Y') }} (H-1).
                                         </p>
                                     @endif
@@ -237,22 +237,22 @@
             </section>
 
             <div class="space-y-4">
-                <section class="manake-card">
-                    <h3 class="text-base font-semibold text-blue-700">{{ __('Alur Operasional Singkat') }}</h3>
-                    <ul class="mt-3 space-y-2 text-sm text-slate-600">
+                <section class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.9)]">
+                    <h3 class="text-base font-semibold text-[#E8E8EC]">{{ __('Alur Operasional Singkat') }}</h3>
+                    <ul class="mt-3 space-y-2 text-sm text-[#A0A0A8]">
                         <li>{{ __('1. Status') }} <span class="font-semibold">{{ __('Siap Diambil') }}</span> {{ __('bisa dikonfirmasi mulai H-1.') }}</li>
                         <li>{{ __('2. Setelah diambil, ubah ke') }} <span class="font-semibold">{{ __('Konfirmasi Kembali') }}</span> {{ __('saat unit kembali.') }}</li>
                         <li>{{ __('3. Gunakan') }} <span class="font-semibold">{{ __('Tandai Rusak') }}</span> {{ __('jika ada kerusakan saat pengembalian.') }}</li>
                     </ul>
                 </section>
 
-                <section class="manake-card">
+                <section class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.9)]">
                     <div class="flex items-center justify-between gap-3">
                         <div>
-                            <h3 class="text-base font-semibold text-blue-700">{{ __('Rekap & Log Pesanan') }}</h3>
-                            <p class="text-xs text-slate-500">{{ __('Arsip bulanan dan jejak perubahan dipusatkan di menu Pesanan.') }}</p>
+                            <h3 class="text-base font-semibold text-[#E8E8EC]">{{ __('Rekap & Log Pesanan') }}</h3>
+                            <p class="text-xs text-[#A0A0A8]">{{ __('Arsip bulanan dan jejak perubahan dipusatkan di menu Pesanan.') }}</p>
                         </div>
-                        <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-700">
+                        <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-[#D4A843] hover:text-[#e0ba5d]">
                             {{ __('Buka Pesanan') }}
                         </a>
                     </div>

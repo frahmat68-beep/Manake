@@ -38,15 +38,14 @@
 
         return 'tel:' . $sanitized;
     };
-    $defaultFooterMapEmbed = '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.142828244342!2d106.78129727579194!3d-6.375555993614689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ef01a88d499d%3A0x15293a04b517553a!2sManake%20-%20Sewa%20HT%2C%20Alat%20Event%20dan%20Film!5e0!3m2!1sen!2sid!4v1776856962246!5m2!1sen!2sid" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
-    $footerMapRaw = $defaultFooterMapEmbed;
-    $footerMapEmbed = trusted_map_embed_iframe($footerMapRaw, $footerAddress);
+    $footerMapUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($footerAddress ?: 'Manake Studio & Rental');
+    $footerMapPreview = $footerAddressTitle ?: __('Manake Studio & Rental');
 @endphp
 
 <footer id="contact" class="border-t border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC]">
     <div class="mx-auto grid max-w-7xl gap-8 px-6 py-12 lg:grid-cols-[1.1fr,1fr,1.2fr]">
         <div>
-            <x-brand.image light="manake-logo-blue.png" dark="manake-logo-blue.png" alt="Manake" img-class="h-12 w-auto" class="mb-5 inline-flex" />
+            <x-brand.image light="manake-logo-white.png" dark="manake-logo-white.png" alt="Manake" img-class="h-12 w-auto" class="mb-5 inline-flex" />
             <p class="mt-3 max-w-md text-sm leading-relaxed text-[#A0A0A8]">{{ $footerAbout }}</p>
             <div class="mt-5">
                 <p class="text-sm font-semibold text-[#E8E8EC]">{{ setting('footer.rules_title', __('app.footer.rules_title')) }}</p>
@@ -111,18 +110,19 @@
             <div class="mt-3 overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#111113]">
                 <div class="border-b border-[#1A1A1E] px-4 py-3">
                     <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[#D4A843]">{{ __('app.footer.location_title') }}</p>
-                    <p class="mt-1 text-xs leading-relaxed text-[#A0A0A8]">{{ $footerAddressTitle ?: __('Manake Studio & Rental') }}</p>
+                    <p class="mt-1 text-xs leading-relaxed text-[#A0A0A8]">{{ $footerMapPreview }}</p>
                 </div>
-                <div class="relative min-h-[180px] bg-[radial-gradient(circle_at_top_left,_rgba(212,168,67,0.12),_transparent_26%),linear-gradient(135deg,rgba(10,10,11,0.98),rgba(17,17,19,0.96))]">
-                    @if (! empty($footerMapEmbed))
-                        <div class="relative min-h-[220px] [&>iframe]:h-[220px] [&>iframe]:w-full [&>iframe]:border-0">
-                            {!! $footerMapEmbed !!}
+                <div class="relative min-h-[180px] bg-[radial-gradient(circle_at_top_left,_rgba(212,168,67,0.12),_transparent_26%),linear-gradient(135deg,rgba(10,10,11,0.98),rgba(17,17,19,0.96))] p-4">
+                    <div class="flex h-full min-h-[188px] flex-col justify-between rounded-md border border-[#1A1A1E] bg-[#0A0A0B]/60 p-4">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[#D4A843]">{{ __('Lokasi') }}</p>
+                            <p class="mt-3 max-w-sm text-sm leading-relaxed text-[#E8E8EC]">{{ $footerAddressTitle ?: __('Manake Studio & Rental') }}</p>
+                            <p class="mt-2 max-w-sm text-xs leading-relaxed text-[#A0A0A8]">{{ $footerAddressRest->implode(' ') }}</p>
                         </div>
-                    @endif
-                    <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(15,23,42,0.24),transparent_40%)]"></div>
-                    <div class="pointer-events-none absolute bottom-3 left-3 right-3 flex items-center justify-between gap-3 rounded-md border border-[#1A1A1E] bg-[#0A0A0B]/75 px-3 py-2 text-xs text-[#E8E8EC] backdrop-blur">
-                        <span class="font-semibold">{{ $footerAddressTitle ?: __('Manake Studio & Rental') }}</span>
-                        <span class="rounded-full border border-[#1A1A1E] bg-[#111113] px-2 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#D4A843]">{{ __('Open in maps') }}</span>
+                        <a href="{{ $footerMapUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex w-fit items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#D4A843] transition hover:border-[#D4A843]/40 hover:text-[#E8E8EC]">
+                            {{ __('Open in maps') }}
+                            <span aria-hidden="true">↗</span>
+                        </a>
                     </div>
                 </div>
             </div>

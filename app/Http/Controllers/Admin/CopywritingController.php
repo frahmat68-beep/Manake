@@ -38,6 +38,7 @@ class CopywritingController extends Controller
             $storedKey = $this->storedSettingKey($baseKey, $locale, $fallbackLocale);
             if (array_key_exists($storedKey, $rawSettings)) {
                 $settings[$baseKey] = $rawSettings[$storedKey];
+
                 continue;
             }
 
@@ -67,7 +68,7 @@ class CopywritingController extends Controller
 
         foreach ($sectionMeta['fields'] as $fieldName => $meta) {
             $max = (int) ($meta['max'] ?? ($meta['type'] === 'textarea' ? 4000 : 255));
-            $rules[$fieldName] = ['nullable', 'string', 'max:' . $max];
+            $rules[$fieldName] = ['nullable', 'string', 'max:'.$max];
         }
 
         $validated = $request->validate($rules);
@@ -93,8 +94,8 @@ class CopywritingController extends Controller
             site_setting_forget([
                 $storedKey,
                 (string) $meta['key'],
-                (string) $meta['key'] . '.id',
-                (string) $meta['key'] . '.en',
+                (string) $meta['key'].'.id',
+                (string) $meta['key'].'.en',
             ]);
         }
 
@@ -112,7 +113,7 @@ class CopywritingController extends Controller
 
     private function storedSettingKey(string $baseKey, string $locale, string $fallbackLocale): string
     {
-        if ($locale === '' || $locale === $fallbackLocale) {
+        if ($locale === '') {
             return $baseKey;
         }
 

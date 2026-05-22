@@ -13,6 +13,13 @@
     $containerClass = $isHomepage
         ? 'mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:px-10'
         : 'ui-container flex items-center justify-between gap-4 py-4';
+    $brandLightLogo = $isHomepage ? 'manake-logo-white.png' : 'manake-logo-blue.png';
+    $authLinkClass = $isHomepage
+        ? 'text-sm font-medium text-white/65 transition hover:text-white'
+        : 'text-sm font-medium text-slate-600 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white';
+    $mobileMenuButtonClass = $isHomepage
+        ? 'inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white lg:hidden'
+        : 'inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-900 shadow-sm lg:hidden dark:border-slate-800 dark:bg-slate-900 dark:text-white';
     $menuHref = static fn (string $anchor): string => $isHomepage ? '#'.ltrim($anchor, '#') : $homeUrl.'#'.ltrim($anchor, '#');
 @endphp
 <!DOCTYPE html>
@@ -22,7 +29,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="@yield('meta_description', site_setting('seo.meta_description', setting('meta_description', 'Manake Rental menyediakan rental alat produksi profesional: kamera, lighting, drone, dan audio.')))">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', site_setting('seo.meta_title', setting('meta_title', setting('site_name', 'Manake.Id'))))</title>
+    <title>@yield('title', site_setting('seo.meta_title', setting('meta_title', setting('site_name', 'Manake'))))</title>
     <link rel="icon" type="image/png" href="{{ site_asset('MANAKE-FAV-M.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +39,7 @@
     @stack('head')
     <style>[x-cloak]{display:none!important;}</style>
 </head>
-<body class="ui-shell landing-shell antialiased selection:bg-amber-500/20 selection:text-amber-200">
+<body class="ui-shell landing-shell antialiased selection:bg-amber-500/20 selection:text-amber-200" data-manake-shell="landing">
     <header
         x-data="{ open: false, scrolled: false, init() { this.scrolled = window.scrollY > 24; window.addEventListener('scroll', () => { this.scrolled = window.scrollY > 24 }, { passive: true }) } }"
         class="{{ $headerClass }}"
@@ -40,13 +47,7 @@
     >
         <div class="{{ $containerClass }}">
             <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0" aria-label="{{ $brandName }}">
-                <span class="flex h-8 w-8 items-center justify-center rounded-md bg-amber-500 text-slate-950 shadow-sm">
-                    <svg viewBox="0 0 24 24" fill="none" class="h-4.5 w-4.5" aria-hidden="true">
-                        <path d="M4.5 7.5h5l1.5-2h2l1.5 2h5a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-16a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                        <circle cx="12" cy="12" r="3.4" stroke="currentColor" stroke-width="1.8"/>
-                    </svg>
-                </span>
-                <span class="text-sm font-semibold tracking-[0.38em] text-white">{{ strtoupper($brandName) }}</span>
+                <x-brand.image :light="$brandLightLogo" dark="manake-logo-white.png" :alt="$brandName" img-class="h-8 w-auto" />
             </a>
 
             <nav class="hidden flex-1 items-center justify-center gap-8 lg:flex" aria-label="{{ __('Navigasi utama') }}">
@@ -58,14 +59,14 @@
             </nav>
 
             <div class="ml-auto hidden items-center gap-4 sm:flex">
-                <a href="{{ route('login') }}" class="text-sm font-medium text-white/65 transition hover:text-white">{{ __('Masuk') }}</a>
+                <a href="{{ route('login') }}" class="{{ $authLinkClass }}">{{ __('Masuk') }}</a>
                 <a href="{{ $menuHref('#equipment') }}" class="inline-flex items-center rounded-md bg-amber-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-400">
                     {{ __('Lihat Peralatan') }}
                 </a>
             </div>
 
             <button
-                class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white lg:hidden"
+                class="{{ $mobileMenuButtonClass }}"
                 @click="open = !open"
                 :aria-expanded="open.toString()"
                 aria-label="{{ __('Buka navigasi') }}"

@@ -438,10 +438,10 @@
     $issuedAt = $order->paid_at ?: $order->updated_at;
     $printedAt = $generatedAt ?? now();
 
-    $logoPath = public_path('manake-logo-blue.png');
+    $logoPath = public_path('manake-logo-white.png');
     $logoUrl = file_exists($logoPath)
         ? ('data:image/png;base64,' . base64_encode(file_get_contents($logoPath)))
-        : site_asset('manake-logo-blue.png');
+        : site_asset('manake-logo-white.png');
 
     $paymentPayload = [];
     if (! empty($order->payment?->payload_json)) {

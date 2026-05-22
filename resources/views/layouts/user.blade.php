@@ -136,7 +136,7 @@
             @endphp
             <div class="flex items-center justify-between">
                 <a href="/" class="inline-flex items-center text-[#E8E8EC]">
-                    <x-brand.image light="manake-logo-blue.png" dark="manake-logo-blue.png" :alt="$brandName" img-class="h-8 w-auto" />
+                    <x-brand.image light="manake-logo-white.png" dark="manake-logo-white.png" :alt="$brandName" img-class="h-8 w-auto" />
                 </a>
                 <button class="lg:hidden text-[#A0A0A8]" @click="sidebarOpen = false" aria-label="{{ __('ui.actions.close') }}">
                     ✕

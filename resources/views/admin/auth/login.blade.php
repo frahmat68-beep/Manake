@@ -1,5 +1,5 @@
 <x-guest-layout
-    :page-title="__('ui.admin.admin_login') . ' | Manake.Id'"
+    :page-title="__('ui.admin.admin_login') . ' | Manake'"
     :eyebrow="null"
     :heading="__('ui.admin.admin_login')"
     :subheading="__('ui.admin.login_hint')"

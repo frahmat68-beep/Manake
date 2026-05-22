@@ -1,5 +1,5 @@
 <x-guest-layout
-    :page-title="__('app.auth.reset_password_button') . ' | Manake.Id'"
+    :page-title="__('app.auth.reset_password_button') . ' | Manake'"
     :eyebrow="null"
     :heading="__('app.auth.reset_password_button')"
     :subheading="__('ui.auth.forgot_help')"

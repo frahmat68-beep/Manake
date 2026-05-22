@@ -85,8 +85,8 @@
             </span>
             <span class="manake-sidebar-brand__wordmark">
                 <x-brand.image
-                    light="manake-logo-blue.png"
-                    dark="manake-logo-blue.png"
+                    light="manake-logo-white.png"
+                    dark="manake-logo-white.png"
                     :alt="$brandName"
                     img-class="manake-brand-wordmark-image"
                 />

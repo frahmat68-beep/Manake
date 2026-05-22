@@ -61,6 +61,7 @@
                         dark="manake-logo-blue.png"
                         alt="{{ $brandName }}"
                         img-class="h-16 w-auto object-contain"
+                        :swap-in-dark="false"
                     />
                 </a>
 

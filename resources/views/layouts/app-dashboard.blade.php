@@ -136,7 +136,7 @@
                     $brandName = site_setting('brand.name', 'Manake');
                 @endphp
                 <a href="/" class="inline-flex items-center text-slate-900">
-                    <x-brand.image light="manake-logo-blue.png" dark="manake-logo-blue.png" :alt="$brandName" img-class="h-8 w-auto" />
+                    <x-brand.image light="manake-logo-white.png" dark="manake-logo-white.png" :alt="$brandName" img-class="h-8 w-auto" />
                 </a>
                 <button class="lg:hidden text-slate-500" @click="sidebarOpen = false" aria-label="{{ __('ui.actions.close') }}">
                     ✕

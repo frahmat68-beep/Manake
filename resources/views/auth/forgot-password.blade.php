@@ -1,5 +1,5 @@
 <x-guest-layout
-    :page-title="__('ui.auth.forgot_title') . ' | Manake.Id'"
+    :page-title="__('ui.auth.forgot_title') . ' | Manake'"
     :eyebrow="null"
     :heading="__('ui.auth.forgot_title')"
     :subheading="null"

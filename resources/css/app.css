@@ -235,11 +235,11 @@
         min-height: 100vh;
     }
 
-    [data-manake-shell="landing"],
-    [data-manake-shell="auth"],
-    [data-manake-shell="public"],
-    [data-manake-shell="user"],
-    [data-manake-shell="app"] {
+    [data-manake-shell='landing'],
+    [data-manake-shell='auth'],
+    [data-manake-shell='public'],
+    [data-manake-shell='user'],
+    [data-manake-shell='app'] {
         --ui-primary: 212 168 67;
         --ui-primary-strong: 224 186 93;
         --ui-accent: 212 168 67;
@@ -248,54 +248,54 @@
         --ui-danger: 248 113 113;
     }
 
-    [data-manake-shell="landing"] .btn-primary,
-    [data-manake-shell="auth"] .btn-primary,
-    [data-manake-shell="public"] .btn-primary,
-    [data-manake-shell="user"] .btn-primary,
-    [data-manake-shell="app"] .btn-primary {
+    [data-manake-shell='landing'] .btn-primary,
+    [data-manake-shell='auth'] .btn-primary,
+    [data-manake-shell='public'] .btn-primary,
+    [data-manake-shell='user'] .btn-primary,
+    [data-manake-shell='app'] .btn-primary {
         background: linear-gradient(135deg, rgb(var(--ui-primary)) 0%, rgb(var(--ui-primary-strong)) 100%);
         color: rgb(10 10 11);
         box-shadow: 0 14px 30px rgba(212, 168, 67, 0.22);
     }
 
-    [data-manake-shell="landing"] .btn-secondary,
-    [data-manake-shell="auth"] .btn-secondary,
-    [data-manake-shell="public"] .btn-secondary,
-    [data-manake-shell="user"] .btn-secondary,
-    [data-manake-shell="app"] .btn-secondary {
+    [data-manake-shell='landing'] .btn-secondary,
+    [data-manake-shell='auth'] .btn-secondary,
+    [data-manake-shell='public'] .btn-secondary,
+    [data-manake-shell='user'] .btn-secondary,
+    [data-manake-shell='app'] .btn-secondary {
         background: rgba(17, 17, 19, 0.9);
         color: rgb(var(--ui-text));
         border-color: rgba(26, 26, 30, 1);
     }
 
-    [data-manake-shell="landing"] .btn-primary:hover,
-    [data-manake-shell="auth"] .btn-primary:hover,
-    [data-manake-shell="public"] .btn-primary:hover,
-    [data-manake-shell="user"] .btn-primary:hover,
-    [data-manake-shell="app"] .btn-primary:hover,
-    [data-manake-shell="landing"] .btn-secondary:hover,
-    [data-manake-shell="auth"] .btn-secondary:hover,
-    [data-manake-shell="public"] .btn-secondary:hover,
-    [data-manake-shell="user"] .btn-secondary:hover,
-    [data-manake-shell="app"] .btn-secondary:hover {
+    [data-manake-shell='landing'] .btn-primary:hover,
+    [data-manake-shell='auth'] .btn-primary:hover,
+    [data-manake-shell='public'] .btn-primary:hover,
+    [data-manake-shell='user'] .btn-primary:hover,
+    [data-manake-shell='app'] .btn-primary:hover,
+    [data-manake-shell='landing'] .btn-secondary:hover,
+    [data-manake-shell='auth'] .btn-secondary:hover,
+    [data-manake-shell='public'] .btn-secondary:hover,
+    [data-manake-shell='user'] .btn-secondary:hover,
+    [data-manake-shell='app'] .btn-secondary:hover {
         transform: translateY(-1px);
     }
 
-    [data-manake-shell="landing"] .ui-input,
-    [data-manake-shell="auth"] .ui-input,
-    [data-manake-shell="public"] .ui-input,
-    [data-manake-shell="user"] .ui-input,
-    [data-manake-shell="app"] .ui-input,
-    [data-manake-shell="landing"] .ui-select,
-    [data-manake-shell="auth"] .ui-select,
-    [data-manake-shell="public"] .ui-select,
-    [data-manake-shell="user"] .ui-select,
-    [data-manake-shell="app"] .ui-select,
-    [data-manake-shell="landing"] .ui-textarea,
-    [data-manake-shell="auth"] .ui-textarea,
-    [data-manake-shell="public"] .ui-textarea,
-    [data-manake-shell="user"] .ui-textarea,
-    [data-manake-shell="app"] .ui-textarea {
+    [data-manake-shell='landing'] .ui-input,
+    [data-manake-shell='auth'] .ui-input,
+    [data-manake-shell='public'] .ui-input,
+    [data-manake-shell='user'] .ui-input,
+    [data-manake-shell='app'] .ui-input,
+    [data-manake-shell='landing'] .ui-select,
+    [data-manake-shell='auth'] .ui-select,
+    [data-manake-shell='public'] .ui-select,
+    [data-manake-shell='user'] .ui-select,
+    [data-manake-shell='app'] .ui-select,
+    [data-manake-shell='landing'] .ui-textarea,
+    [data-manake-shell='auth'] .ui-textarea,
+    [data-manake-shell='public'] .ui-textarea,
+    [data-manake-shell='user'] .ui-textarea,
+    [data-manake-shell='app'] .ui-textarea {
         background: rgb(10 10 11);
         border-color: rgb(26 26 30);
         color: rgb(var(--ui-text));
@@ -305,5 +305,96 @@
     .landing-main {
         position: relative;
         z-index: 1;
+    }
+
+    .manake-page {
+        min-height: 100vh;
+        background: rgb(10 10 11);
+        color: rgb(232 232 236);
+    }
+
+    .manake-section {
+        background: rgb(10 10 11);
+        padding-block: 1.5rem;
+    }
+
+    .manake-page-frame {
+        width: min(1280px, calc(100vw - 2rem));
+        margin-inline: auto;
+    }
+
+    .mk-card,
+    .mk-card-soft {
+        border: 1px solid rgb(26 26 30);
+        background: rgb(17 17 19);
+        color: rgb(232 232 236);
+        border-radius: 0.5rem;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+    }
+
+    .mk-card-soft {
+        background: rgb(10 10 11);
+        box-shadow: none;
+    }
+
+    .mk-input {
+        width: 100%;
+        border-radius: 0.5rem;
+        border: 1px solid rgb(38 38 43);
+        background: rgb(10 10 11);
+        color: rgb(232 232 236);
+        padding: 0.85rem 1rem;
+        outline: none;
+        transition:
+            border-color 150ms ease,
+            box-shadow 150ms ease,
+            background-color 150ms ease;
+    }
+
+    .mk-input::placeholder {
+        color: rgb(130 130 140);
+    }
+
+    .mk-input:focus {
+        border-color: rgb(212 168 67);
+        box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.18);
+    }
+
+    .mk-button-primary,
+    .mk-button-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border-radius: 0.5rem;
+        border: 1px solid transparent;
+        font-weight: 800;
+        transition:
+            transform 150ms ease,
+            border-color 150ms ease,
+            background-color 150ms ease,
+            color 150ms ease;
+    }
+
+    .mk-button-primary {
+        background: rgb(212 168 67);
+        color: rgb(10 10 11);
+        box-shadow: 0 16px 34px rgba(212, 168, 67, 0.18);
+    }
+
+    .mk-button-primary:hover {
+        background: rgb(224 186 93);
+        transform: translateY(-1px);
+    }
+
+    .mk-button-secondary {
+        background: rgb(10 10 11);
+        border-color: rgb(38 38 43);
+        color: rgb(232 232 236);
+    }
+
+    .mk-button-secondary:hover {
+        border-color: rgba(212, 168, 67, 0.45);
+        color: rgb(212 168 67);
     }
 }

@@ -5,7 +5,7 @@
 
 @php
     $logoPath = $settings['brand.logo_path'] ?? null;
-    $logoUrl = $logoPath ? site_media_url($logoPath) : site_asset('manake-logo-blue.png');
+    $logoUrl = $logoPath ? site_media_url($logoPath) : site_asset('manake-logo-white.png');
     $faviconPath = $settings['brand.favicon_path'] ?? null;
     $faviconUrl = $faviconPath ? site_media_url($faviconPath) : site_asset('MANAKE-FAV-M.png');
     $settingsAction = request()->routeIs('admin.settings.*')

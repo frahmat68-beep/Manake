@@ -18,13 +18,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="@yield('meta_description', site_setting('seo.meta_description', setting('meta_description', 'Manake Rental menyediakan rental alat produksi profesional: kamera, lighting, drone, dan audio.')))">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', site_setting('seo.meta_title', setting('meta_title', setting('site_name', 'Manake.Id'))))</title>
+    <title>@yield('title', site_setting('seo.meta_title', setting('meta_title', setting('site_name', 'Manake'))))</title>
     @php
         $assetWithVersion = static function (string $file): string {
             return site_asset($file);
         };
         $faviconUrl = $assetWithVersion('MANAKE-FAV-M.png');
-        $brandLogoUrl = $assetWithVersion('manake-logo-blue.png');
+        $brandLogoUrl = $assetWithVersion('manake-logo-white.png');
     @endphp
     <link rel="icon" type="image/png" href="{{ $faviconUrl }}">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
@@ -447,7 +447,7 @@
             <div class="relative z-10 w-full max-w-sm rounded-[2.5rem] border border-white/10 bg-slate-900/90 p-8 shadow-[0_0_100px_-20px_rgba(212,168,67,0.28)] animate-fade-up">
                 <!-- Logo -->
                 <div class="mb-8 flex justify-center">
-                    <img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake" class="h-16 w-auto drop-shadow-[0_0_15px_rgba(212,168,67,0.28)]" />
+                    <img src="{{ site_asset('manake-logo-white.png') }}" alt="Manake" class="h-16 w-auto drop-shadow-[0_0_15px_rgba(212,168,67,0.28)]" />
                 </div>
                 
                 <div class="flex flex-col w-full">

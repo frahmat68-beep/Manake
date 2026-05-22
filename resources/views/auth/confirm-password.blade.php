@@ -1,5 +1,5 @@
 <x-guest-layout
-    :page-title="__('app.auth.confirm_button') . ' | Manake.Id'"
+    :page-title="__('app.auth.confirm_button') . ' | Manake'"
     :eyebrow="__('app.auth.confirm_button')"
     :heading="__('app.auth.confirm_button')"
     :subheading="__('app.auth.confirm_password_intro')"
