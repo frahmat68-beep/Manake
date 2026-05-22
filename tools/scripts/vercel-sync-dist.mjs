@@ -9,8 +9,14 @@ if (!existsSync(sourceDir)) {
     process.exit(0);
 }
 
+const rootBuildDir = resolve(process.cwd(), 'build');
+
 rmSync(distDir, { recursive: true, force: true });
 mkdirSync(distDir, { recursive: true });
 cpSync(sourceDir, distDir, { recursive: true });
 
-console.log('[vercel-sync-dist] Synced', sourceDir, '->', distDir);
+rmSync(rootBuildDir, { recursive: true, force: true });
+mkdirSync(rootBuildDir, { recursive: true });
+cpSync(sourceDir, rootBuildDir, { recursive: true });
+
+console.log('[vercel-sync-dist] Synced', sourceDir, '->', distDir, 'and', rootBuildDir);
