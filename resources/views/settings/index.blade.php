@@ -24,8 +24,8 @@
             <section class="card rounded-[2rem] p-6 shadow-sm sm:p-7">
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div class="space-y-1">
-                        <h1 class="text-2xl font-semibold tracking-[-0.03em] text-blue-700">{{ __('ui.settings.title') }}</h1>
-                        <p class="text-sm text-slate-500">{{ __('ui.settings.subtitle') }}</p>
+                        <h1 class="text-2xl font-semibold tracking-[-0.03em] text-[#D4A843]">{{ __('ui.settings.title') }}</h1>
+                        <p class="text-sm text-[#A0A0A8]">{{ __('ui.settings.subtitle') }}</p>
                     </div>
                     @if (session('status') === 'settings-updated')
                         <span class="status-chip status-chip-success">{{ __('ui.settings.saved') }}</span>
@@ -35,8 +35,8 @@
                 <div class="mt-6 grid gap-4 lg:grid-cols-2">
                     <section class="manake-settings-section rounded-[1.5rem] border p-4">
                         <div class="space-y-1">
-                            <h2 class="text-sm font-semibold text-slate-900">{{ __('ui.settings.section_language') }}</h2>
-                            <p class="text-xs text-slate-500">{{ __('ui.settings.section_language_hint') }}</p>
+                            <h2 class="text-sm font-semibold text-[#E8E8EC]">{{ __('ui.settings.section_language') }}</h2>
+                            <p class="text-xs text-[#A0A0A8]">{{ __('ui.settings.section_language_hint') }}</p>
                         </div>
 
                         <div class="mt-4 grid gap-2 sm:grid-cols-2">
@@ -65,8 +65,8 @@
 
                     <section class="manake-settings-section rounded-[1.5rem] border p-4">
                         <div class="space-y-1">
-                            <h2 class="text-sm font-semibold text-slate-900">{{ __('ui.settings.section_theme') }}</h2>
-                            <p class="text-xs text-slate-500">{{ __('ui.settings.section_theme_hint') }}</p>
+                            <h2 class="text-sm font-semibold text-[#E8E8EC]">{{ __('ui.settings.section_theme') }}</h2>
+                            <p class="text-xs text-[#A0A0A8]">{{ __('ui.settings.section_theme_hint') }}</p>
                         </div>
 
                         <div class="mt-4 grid gap-2">
@@ -94,7 +94,7 @@
                     </section>
                 </div>
 
-                <div class="mt-6 flex justify-end border-t border-slate-200 pt-4">
+                <div class="mt-6 flex justify-end border-t border-[#1A1A1E] pt-4">
                     <button class="btn-primary inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold">
                         {{ __('ui.settings.save') }}
                     </button>
@@ -105,18 +105,18 @@
         <aside class="space-y-4 xl:sticky xl:top-24 xl:self-start">
             <section class="card rounded-[2rem] p-5 shadow-sm">
                 <div class="space-y-1">
-                    <h2 class="text-sm font-semibold text-slate-900">{{ __('ui.settings.summary_title') }}</h2>
-                    <p class="text-xs text-slate-500">{{ __('ui.settings.summary_scope') }}</p>
+                    <h2 class="text-sm font-semibold text-[#E8E8EC]">{{ __('ui.settings.summary_title') }}</h2>
+                    <p class="text-xs text-[#A0A0A8]">{{ __('ui.settings.summary_scope') }}</p>
                 </div>
 
                 <dl class="mt-4 space-y-3">
                     <div class="manake-settings-summary rounded-2xl border px-4 py-3">
-                        <dt class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{{ __('ui.settings.summary_language') }}</dt>
-                        <dd class="mt-2 text-sm font-semibold text-slate-900">{{ $localeOptions[$locale] ?? __('ui.languages.id') }}</dd>
+                        <dt class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">{{ __('ui.settings.summary_language') }}</dt>
+                        <dd class="mt-2 text-sm font-semibold text-[#E8E8EC]">{{ $localeOptions[$locale] ?? __('ui.languages.id') }}</dd>
                     </div>
                     <div class="manake-settings-summary rounded-2xl border px-4 py-3">
-                        <dt class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{{ __('ui.settings.summary_theme') }}</dt>
-                        <dd class="mt-2 text-sm font-semibold text-slate-900">{{ $themeOptions[$theme] ?? __('ui.settings.theme_system') }}</dd>
+                        <dt class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">{{ __('ui.settings.summary_theme') }}</dt>
+                        <dd class="mt-2 text-sm font-semibold text-[#E8E8EC]">{{ $themeOptions[$theme] ?? __('ui.settings.theme_system') }}</dd>
                     </div>
                 </dl>
             </section>

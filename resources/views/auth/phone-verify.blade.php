@@ -6,7 +6,7 @@
     <section class="bg-slate-50">
         <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
             <div class="mk-card p-6 sm:p-7">
-                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('Verifikasi Telepon') }}</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#D4A843]">{{ __('Verifikasi Telepon') }}</p>
                 <h1 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-50">{{ __('Verifikasi Nomor Telepon') }}</h1>
                 <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
                     {{ __('Pembayaran hanya bisa diproses setelah nomor telepon terverifikasi. OTP dikirim via driver log (mode pengembangan).') }}
@@ -34,12 +34,12 @@
                             name="phone"
                             value="{{ old('phone', $profile?->phone ?? '') }}"
                             placeholder="{{ __('08xxxxxxxxxx') }}"
-                            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none @error('phone') border-rose-400 focus:border-rose-400 focus:ring-rose-200/70 @enderror"
+                            class="w-full rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-sm text-[#E8E8EC] focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('phone') border-rose-400 focus:border-rose-400 focus:ring-rose-200/70 @enderror"
                         >
                         @error('phone')
                             <p class="text-xs text-rose-600">{{ $message }}</p>
                         @enderror
-                        <button class="inline-flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
+                        <button class="inline-flex w-full items-center justify-center rounded-xl bg-[#D4A843] px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]">
                             {{ __('Kirim OTP') }}
                         </button>
                     </form>
@@ -54,12 +54,12 @@
                             maxlength="6"
                             value="{{ old('otp') }}"
                             placeholder="{{ __('6 digit OTP') }}"
-                            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none @error('otp') border-rose-400 focus:border-rose-400 focus:ring-rose-200/70 @enderror"
+                            class="w-full rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-sm text-[#E8E8EC] focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('otp') border-rose-400 focus:border-rose-400 focus:ring-rose-200/70 @enderror"
                         >
                         @error('otp')
                             <p class="text-xs text-rose-600">{{ $message }}</p>
                         @enderror
-                        <button class="inline-flex w-full items-center justify-center rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600">
+                        <button class="inline-flex w-full items-center justify-center rounded-xl border border-[#1A1A1E] px-4 py-2.5 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
                             {{ __('Verifikasi') }}
                         </button>
                     </form>
@@ -75,10 +75,10 @@
                 </div>
 
                 <div class="mt-5 flex flex-wrap gap-2">
-                    <a href="{{ route('profile.complete') }}" class="inline-flex items-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-blue-200 hover:text-blue-600 dark:border-slate-800 dark:text-slate-300 dark:hover:border-blue-500/40 dark:hover:text-blue-300">
+                    <a href="{{ route('profile.complete') }}" class="inline-flex items-center rounded-xl border border-[#1A1A1E] px-4 py-2 text-sm font-semibold text-[#E8E8EC] hover:border-[#D4A843]/40 hover:text-[#D4A843]">
                         {{ __('Kembali ke Profil') }}
                     </a>
-                    <a href="{{ route('checkout') }}" class="inline-flex items-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+                    <a href="{{ route('checkout') }}" class="inline-flex items-center rounded-xl bg-[#D4A843] px-4 py-2 text-sm font-semibold text-[#0A0A0B] hover:bg-[#e0ba5d]">
                         {{ __('Coba Lanjut Pembayaran') }}
                     </a>
                 </div>

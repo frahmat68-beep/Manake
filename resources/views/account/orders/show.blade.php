@@ -292,10 +292,10 @@
                             @foreach ($timeline as $step)
                                 @php
                                     $stepClass = $step['done']
-                                        ? 'border-blue-200 bg-blue-50'
+                                        ? 'border-[#1A1A1E] bg-[#111113]'
                                         : ($step['active'] ? 'border-amber-200 bg-amber-50' : 'border-slate-200 bg-slate-50');
                                     $dotClass = $step['done']
-                                        ? 'bg-blue-600'
+                                        ? 'bg-[#D4A843]'
                                         : ($step['active'] ? 'bg-amber-500' : 'bg-slate-300');
                                 @endphp
                                 <div class="flex items-center justify-between rounded-2xl border px-3 py-2 {{ $stepClass }}">
@@ -323,13 +323,13 @@
                     </article>
 
                     <article class="mk-card rounded-2xl p-6">
-                        <h2 class="text-lg font-semibold text-blue-700">{{ $orderItemsTitle }}</h2>
+                        <h2 class="text-lg font-semibold text-[#D4A843]">{{ $orderItemsTitle }}</h2>
                         <div class="mt-4 space-y-3">
                             @forelse ($order->items as $item)
                                 <div class="rounded-2xl border border-slate-100 p-4">
                                     <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                                         <div>
-                                            <p class="text-sm font-semibold text-blue-700">{{ $item->equipment->name ?? __('app.product.generic') }}</p>
+                                            <p class="text-sm font-semibold text-[#D4A843]">{{ $item->equipment->name ?? __('app.product.generic') }}</p>
                                             <p class="text-xs text-slate-500">
                                                 {{ strtr($orderItemLineTemplate, [
                                                     ':qty' => (string) $item->qty,
@@ -362,8 +362,8 @@
                     @endif
                 </div>
 
-                <aside class="h-fit space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-950">
-                    <h2 class="text-lg font-semibold text-blue-700">{{ $orderPaymentTitle }}</h2>
+                <aside class="h-fit space-y-4 rounded-3xl border border-slate-200 bg-[#111113] p-6 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                    <h2 class="text-lg font-semibold text-[#D4A843]">{{ $orderPaymentTitle }}</h2>
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between text-slate-600">
                             <span>{{ $orderMidtransOrderIdLabel }}</span>
@@ -410,7 +410,7 @@
                             </div>
                         @endif
                         @if ($order->admin_note)
-                            <div class="rounded-2xl border border-blue-200 bg-blue-50 px-3 py-2 text-xs text-blue-700">
+                            <div class="rounded-2xl border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs text-[#D4A843]">
                                 <p class="font-semibold">{{ $orderAdminNoteLabel }}</p>
                                 <p class="mt-1">{{ $order->admin_note }}</p>
                             </div>
@@ -440,7 +440,7 @@
                                         max="{{ $rescheduleMaxDate }}"
                                         value="{{ old('rental_start_date', optional($order->rental_start_date)->format('Y-m-d')) }}"
                                         required
-                                        class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                                        class="mt-1 w-full rounded-lg border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs text-[#E8E8EC] focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/30"
                                     >
                                 </div>
                                 <div>
@@ -455,11 +455,11 @@
                                         value="{{ old('rental_end_date', optional($order->rental_end_date)->format('Y-m-d')) }}"
                                         readonly
                                         required
-                                        class="mt-1 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 py-2 text-xs text-slate-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                                        class="mt-1 w-full rounded-lg border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-2 text-xs text-[#E8E8EC] focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/30"
                                     >
                                     <p class="mt-1 text-[11px] text-slate-500">{{ strtr($orderRescheduleEndNoteTemplate, [':days' => (string) $rescheduleDurationDays]) }}</p>
                                 </div>
-                                <button type="submit" class="inline-flex w-full items-center justify-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-50">
+                                <button type="submit" class="inline-flex w-full items-center justify-center rounded-lg border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs font-semibold text-[#D4A843] transition hover:bg-[#111113]">
                                     {{ $orderRescheduleSaveButton }}
                                 </button>
                             </form>
@@ -471,17 +471,17 @@
                     @endif
 
                     @if ($isPrimaryPayable)
-                        <button id="pay-now-button" class="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition">
+                        <button id="pay-now-button" class="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-[#D4A843] px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] hover:bg-[#e0ba5d] transition">
                             {{ $orderPayNowButton }}
                         </button>
-                        <button id="refresh-status-button" class="mt-2 inline-flex w-full items-center justify-center rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-blue-200 hover:text-blue-600 transition">
+                        <button id="refresh-status-button" class="mt-2 inline-flex w-full items-center justify-center rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-[#1A1A1E] hover:text-[#D4A843] transition">
                             {{ $orderRefreshPaymentButton }}
                         </button>
                         <p class="text-xs text-slate-500">{{ $orderPaymentNote }}</p>
                     @endif
 
                     @if ($hasDamageFeeOutstanding)
-                        <button id="pay-damage-fee-button" class="mt-3 inline-flex w-full items-center justify-center rounded-2xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700">
+                        <button id="pay-damage-fee-button" class="mt-3 inline-flex w-full items-center justify-center rounded-2xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] transition hover:bg-rose-700">
                             {{ $orderPayAdditionalButton }}
                         </button>
                         <button id="refresh-damage-status-button" class="mt-2 inline-flex w-full items-center justify-center rounded-2xl border border-rose-200 px-4 py-2.5 text-sm font-semibold text-rose-700 transition hover:bg-rose-50">
@@ -498,11 +498,11 @@
                                 data-invoice-pdf-url="{{ $signedInvoicePdfUrl }}"
                                 data-invoice-preview-url="{{ $signedInvoicePdfPreviewUrl }}"
                                 data-order-number="{{ $order->order_number ?? ('ORD-' . $order->id) }}"
-                                class="inline-flex w-full items-center justify-center rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-blue-200 hover:text-blue-600"
+                                class="inline-flex w-full items-center justify-center rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-[#1A1A1E] hover:text-[#D4A843]"
                             >
                                 {{ $orderViewInvoiceButton }}
                             </button>
-                            <a href="{{ $signedInvoicePdfUrl }}" class="inline-flex w-full items-center justify-center rounded-2xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700">
+                            <a href="{{ $signedInvoicePdfUrl }}" class="inline-flex w-full items-center justify-center rounded-2xl bg-[#D4A843] px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] hover:bg-[#e0ba5d]">
                                 {{ $orderDownloadPdfButton }}
                             </a>
                         </div>
@@ -524,18 +524,18 @@
         >
             <div class="absolute inset-0 bg-slate-950/55" data-close-invoice-modal></div>
 
-            <div class="relative z-10 flex h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-2xl">
-                <div class="flex items-center justify-between bg-blue-600 px-4 py-3 text-white sm:px-5">
+            <div class="relative z-10 flex h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-[#1A1A1E] bg-[#111113] shadow-2xl">
+                <div class="flex items-center justify-between bg-[#D4A843] px-4 py-3 text-[#0A0A0B] sm:px-5">
                     <div>
                         <h3 id="order-detail-invoice-title" class="text-base font-semibold sm:text-lg">
                             {{ __('ui.overview.invoice_detail_title') }}
                         </h3>
-                        <p class="text-xs text-blue-100">{{ __('ui.invoice.title') }}</p>
+                        <p class="text-xs text-[#A0A0A8]">{{ __('ui.invoice.title') }}</p>
                     </div>
                     <button
                         type="button"
                         data-close-invoice-modal
-                        class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-blue-300/80 bg-blue-500/60 p-0 text-white transition hover:bg-blue-500"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#1A1A1E] bg-[#111113]0/60 p-0 text-[#0A0A0B] transition hover:bg-[#111113]0"
                         aria-label="{{ __('ui.overview.close_modal') }}"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -550,24 +550,24 @@
                         id="order-detail-invoice-frame"
                         title="{{ __('ui.invoice.title') }}"
                         loading="lazy"
-                        class="h-full w-full rounded-2xl border border-slate-200 bg-white"
+                        class="h-full w-full rounded-2xl border border-slate-200 bg-[#111113]"
                     ></iframe>
                 </div>
 
-                <div class="border-t border-slate-200 bg-white px-4 py-3">
+                <div class="border-t border-slate-200 bg-[#111113] px-4 py-3">
                     <div class="flex justify-end">
                         <div class="flex flex-wrap items-center justify-end gap-2">
                             <a
                                 id="order-detail-invoice-download"
                                 href="{{ $signedInvoicePdfUrl }}"
-                                class="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600"
+                                class="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-[#1A1A1E] hover:text-[#D4A843]"
                             >
                                 {{ $orderDownloadPdfButton }}
                             </a>
                             <button
                                 type="button"
                                 data-close-invoice-modal
-                                class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600"
+                                class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-[#1A1A1E] hover:text-[#D4A843]"
                             >
                                 {{ __('ui.overview.close_modal') }}
                             </button>
@@ -788,8 +788,8 @@
                 const showAlert = (message, type = 'info') => {
                     if (!alertBox) return;
                     const styles = {
-                        info: 'border-slate-200 bg-white text-slate-700',
-                        success: 'border-blue-200 bg-blue-50 text-blue-700',
+                        info: 'border-slate-200 bg-[#111113] text-slate-700',
+                        success: 'border-[#1A1A1E] bg-[#111113] text-[#D4A843]',
                         error: 'border-rose-200 bg-rose-50 text-rose-700',
                     };
                     alertBox.className = `rounded-xl border px-4 py-3 text-sm ${styles[type] || styles.info}`;

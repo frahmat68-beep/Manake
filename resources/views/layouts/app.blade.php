@@ -499,7 +499,7 @@
                             </div>
                             
                             <button type="submit" class="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-amber-900/20">
-                                Sign In
+                                Masuk
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                                 </svg>
@@ -510,7 +510,7 @@
                                 <span class="relative bg-slate-900 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-500">OR</span>
                             </div>
                             
-                            <x-auth.google-button label="Continue with Google" class="flex w-full items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 py-3.5 text-sm font-bold text-white transition hover:bg-white/10 active:scale-95" />
+                            <x-auth.google-button label="Lanjut dengan Google" class="flex w-full items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 py-3.5 text-sm font-bold text-white transition hover:bg-white/10 active:scale-95" />
                             
                             <p class="mt-4 text-center text-xs text-slate-400">
                                 Don't have an account? 
@@ -563,7 +563,7 @@
                             <p class="mt-4 text-center text-xs text-slate-400">
                                 Already have an account? 
                                 <button type="button" class="font-bold text-[#D4A843] hover:text-[#e0ba5d]" @click="authModalView = 'login'">
-                                    Sign In
+                                Masuk
                                 </button>
                             </p>
                         </form>
@@ -589,7 +589,7 @@
                             </button>
                             
                             <button type="button" class="mt-4 text-center text-xs font-bold text-slate-400 hover:text-white transition" @click="authModalView = 'login'">
-                                ← Back to Login
+                                ← Kembali ke Login
                             </button>
                         </form>
                     </div>

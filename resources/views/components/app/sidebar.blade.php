@@ -113,7 +113,7 @@
                             aria-label="{{ $item['label'] }}"
                             data-nav-item
                             data-nav-active="{{ $item['active'] ? 'true' : 'false' }}"
-                            class="flex h-11 min-w-0 flex-1 items-center rounded-2xl px-3 transition-all duration-300 hover-scale lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3 {{ $item['active'] ? '!text-white shadow-lg shadow-blue-600/20' : '!text-slate-700 hover:bg-blue-50/50' }}"
+                            class="flex h-11 min-w-0 flex-1 items-center rounded-2xl px-3 transition-all duration-300 hover-scale lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3 {{ $item['active'] ? '!text-[#0A0A0B] shadow-lg shadow-amber-600/20' : '!text-[#E8E8EC] hover:bg-[#111113]' }}"
                         >
                             <span data-nav-icon class="transition-transform duration-300 group-hover:scale-110">{!! $item['icon'] !!}</span>
                             <span class="truncate text-sm font-bold transition-all duration-300 lg:ml-0 lg:pointer-events-none lg:max-w-0 lg:overflow-hidden lg:whitespace-nowrap lg:opacity-0 lg:-translate-x-2 lg:group-hover/sidebar:ml-3 lg:group-hover/sidebar:pointer-events-auto lg:group-hover/sidebar:max-w-[12rem] lg:group-hover/sidebar:opacity-100 lg:group-hover/sidebar:translate-x-0 lg:group-focus-within/sidebar:ml-3 lg:group-focus-within/sidebar:pointer-events-auto lg:group-focus-within/sidebar:max-w-[12rem] lg:group-focus-within/sidebar:opacity-100 lg:group-focus-within/sidebar:translate-x-0">{{ $item['label'] }}</span>
@@ -123,7 +123,7 @@
                             x-cloak
                             x-show="catalogSubmenuEnabled"
                             data-ui-icon-button
-                            class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl !text-slate-700 lg:hidden lg:group-hover/sidebar:inline-flex lg:group-focus-within/sidebar:inline-flex"
+                            class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl !text-[#E8E8EC] lg:hidden lg:group-hover/sidebar:inline-flex lg:group-focus-within/sidebar:inline-flex"
                             @click.prevent="catalogToggle()"
                             :aria-expanded="catalogSubmenuOpen.toString()"
                             aria-label="{{ __('ui.nav.category') }}"
@@ -144,10 +144,10 @@
                         x-transition:leave-start="opacity-100 translate-y-0 max-h-80"
                         x-transition:leave-end="opacity-0 -translate-y-1 max-h-0"
                         data-nav-panel
-                        class="overflow-hidden rounded-xl border border-slate-200/80 bg-slate-50/90 p-2 lg:ml-10"
+                        class="overflow-hidden rounded-xl border border-[#1A1A1E] bg-[#111113]/95 p-2 lg:ml-10"
                         style="transition-duration: {{ $submenuDurationMs }}ms;"
                     >
-                        <p class="px-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">{{ __('ui.nav.category') }}</p>
+                        <p class="px-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#A0A0A8]">{{ __('ui.nav.category') }}</p>
                         <div class="space-y-1">
                             @foreach ($categories as $category)
                                 @php
@@ -157,10 +157,10 @@
                                     href="{{ route('catalog', ['category' => $category->slug]) }}"
                                     data-ui-chip-option
                                     data-ui-active="{{ $isCategoryActive ? 'true' : 'false' }}"
-                                    class="flex items-center justify-between rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition {{ $isCategoryActive ? '!text-slate-900' : '!text-slate-700' }}"
+                                    class="flex items-center justify-between rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition {{ $isCategoryActive ? '!text-[#0A0A0B]' : '!text-[#E8E8EC]' }}"
                                 >
                                     <span class="truncate">{{ $category->name }}</span>
-                                    <span class="ml-2 inline-flex h-1.5 w-1.5 rounded-full {{ $isCategoryActive ? 'bg-blue-600' : 'bg-slate-300' }}"></span>
+                                    <span class="ml-2 inline-flex h-1.5 w-1.5 rounded-full {{ $isCategoryActive ? 'bg-[#D4A843]' : 'bg-[#2A2A2F]' }}"></span>
                                 </a>
                             @endforeach
                         </div>
@@ -176,7 +176,7 @@
                     @if (isset($item['modal']))
                         @click.prevent="openAuthModal('{{ $item['modal'] }}')"
                     @endif
-                    class="flex h-11 items-center rounded-2xl px-3 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3 {{ $item['active'] ? '!text-white' : '!text-slate-700' }}"
+                    class="flex h-11 items-center rounded-2xl px-3 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3 {{ $item['active'] ? '!text-[#0A0A0B]' : '!text-[#E8E8EC]' }}"
                 >
                     <span data-nav-icon>{!! $item['icon'] !!}</span>
                     <span class="text-sm font-semibold transition-all duration-200 lg:ml-0 lg:pointer-events-none lg:max-w-0 lg:overflow-hidden lg:whitespace-nowrap lg:opacity-0 lg:-translate-x-2 lg:group-hover/sidebar:ml-3 lg:group-hover/sidebar:pointer-events-auto lg:group-hover/sidebar:max-w-[12rem] lg:group-hover/sidebar:opacity-100 lg:group-hover/sidebar:translate-x-0 lg:group-focus-within/sidebar:ml-3 lg:group-focus-within/sidebar:pointer-events-auto lg:group-focus-within/sidebar:max-w-[12rem] lg:group-focus-within/sidebar:opacity-100 lg:group-focus-within/sidebar:translate-x-0">{{ $item['label'] }}</span>
@@ -190,7 +190,7 @@
                 data-nav-item
                 :data-nav-active="shellPrefsOpen ? 'true' : 'false'"
                 data-settings-toggle
-                class="flex h-11 w-full items-center rounded-2xl px-3 !text-slate-700 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3"
+                class="flex h-11 w-full items-center rounded-2xl px-3 !text-[#E8E8EC] transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3"
                 @click="shellPrefsOpen = !shellPrefsOpen"
                 :aria-expanded="shellPrefsOpen.toString()"
                 aria-label="{{ __('ui.nav.settings') }}"
@@ -228,9 +228,9 @@
                 aria-label="{{ __('ui.nav.my_profile') }}"
                 data-nav-item
                 data-nav-active="{{ request()->routeIs('profile.*') ? 'true' : 'false' }}"
-                class="flex items-center gap-3 rounded-xl px-2 py-2 !text-slate-700 transition lg:justify-center lg:gap-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:gap-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:gap-3"
+                class="flex items-center gap-3 rounded-xl px-2 py-2 !text-[#E8E8EC] transition lg:justify-center lg:gap-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:gap-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:gap-3"
             >
-                <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white shadow-sm">{{ $userInitial }}</span>
+                <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#D4A843] text-xs font-semibold text-[#0A0A0B] shadow-sm">{{ $userInitial }}</span>
                 <span class="text-sm font-semibold transition-all duration-200 lg:ml-0 lg:pointer-events-none lg:max-w-0 lg:overflow-hidden lg:whitespace-nowrap lg:opacity-0 lg:-translate-x-2 lg:group-hover/sidebar:ml-3 lg:group-hover/sidebar:pointer-events-auto lg:group-hover/sidebar:max-w-[10rem] lg:group-hover/sidebar:opacity-100 lg:group-hover/sidebar:translate-x-0 lg:group-focus-within/sidebar:ml-3 lg:group-focus-within/sidebar:pointer-events-auto lg:group-focus-within/sidebar:max-w-[10rem] lg:group-focus-within/sidebar:opacity-100 lg:group-focus-within/sidebar:translate-x-0">{{ $displayName }}</span>
             </a>
 
@@ -241,7 +241,7 @@
                     title="{{ __('ui.nav.logout') }}"
                     data-nav-item
                     data-nav-active="false"
-                    class="flex h-11 w-full items-center rounded-xl px-3 !text-slate-700 transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3"
+                    class="flex h-11 w-full items-center rounded-xl px-3 !text-[#E8E8EC] transition lg:justify-center lg:px-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:px-3 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:px-3"
                 >
                     <span data-nav-icon>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">

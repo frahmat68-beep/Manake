@@ -10,7 +10,7 @@
 @section('content')
     <div class="space-y-4">
         <div class="flex items-center justify-between gap-3">
-            <h1 class="text-2xl font-semibold text-blue-700">{{ __('ui.placeholders.notifications_title') }}</h1>
+            <h1 class="text-2xl font-semibold text-[#D4A843]">{{ __('ui.placeholders.notifications_title') }}</h1>
             <div class="flex items-center gap-2">
                 <span class="status-chip {{ $unreadCount > 0 ? 'status-chip-warning' : 'status-chip-success' }}">
                     {{ $unreadCount > 0 ? __('ui.notifications_page.unread', ['count' => $unreadCount]) : __('ui.notifications_page.all_read') }}
@@ -33,23 +33,23 @@
                         <input type="hidden" name="redirect" value="{{ $targetUrl }}">
                         <button
                             type="submit"
-                            class="card flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition hover:border-blue-200 hover:shadow-md"
+                            class="card flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition hover:border-[#D4A843]/30 hover:shadow-md"
                         >
-                            <span class="mt-1 inline-flex h-2.5 w-2.5 shrink-0 rounded-full bg-blue-500"></span>
+                            <span class="mt-1 inline-flex h-2.5 w-2.5 shrink-0 rounded-full bg-[#D4A843]"></span>
                             <div class="min-w-0 flex-1 space-y-1">
                                 <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                                     <p class="text-sm font-semibold text-slate-900">{{ $notification->title }}</p>
                                     <p class="text-xs text-slate-400">{{ $notification->created_at?->diffForHumans() }}</p>
                                 </div>
                                 <p class="text-sm leading-6 text-slate-600">{{ $notification->message }}</p>
-                                <p class="text-xs font-semibold text-blue-600">{{ __('ui.notifications_page.open_detail') }}</p>
+                                <p class="text-xs font-semibold text-[#D4A843]">{{ __('ui.notifications_page.open_detail') }}</p>
                             </div>
                         </button>
                     </form>
                 @else
                     <a
                         href="{{ $targetUrl }}"
-                        class="card flex items-start gap-4 rounded-2xl border p-4 transition hover:border-blue-200 hover:shadow-md"
+                        class="card flex items-start gap-4 rounded-2xl border p-4 transition hover:border-[#D4A843]/30 hover:shadow-md"
                     >
                         <span class="mt-1 inline-flex h-2.5 w-2.5 shrink-0 rounded-full bg-slate-200"></span>
                         <div class="min-w-0 flex-1 space-y-1">
@@ -63,9 +63,9 @@
                     </a>
                 @endif
             @empty
-                <div class="mk-card rounded-2xl border border-dashed border-slate-200 p-8 text-center dark:border-slate-800">
-                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ __('app.notifications.empty') }}</p>
-                    <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{{ __('ui.notifications_page.empty_note') }}</p>
+                <div class="mk-card rounded-2xl border border-dashed border-[#1A1A1E] p-8 text-center">
+                    <p class="text-sm font-semibold text-[#E8E8EC]">{{ __('app.notifications.empty') }}</p>
+                    <p class="mt-2 text-sm text-[#A0A0A8]">{{ __('ui.notifications_page.empty_note') }}</p>
                 </div>
             @endforelse
         </section>

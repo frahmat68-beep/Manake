@@ -50,7 +50,7 @@
             {{ __('ui.auth.register_button') }}
         </button>
         
-        <x-auth.google-button label="Continue with Google" class="w-full flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-medium transition-all" />
+        <x-auth.google-button label="Lanjut dengan Google" class="w-full flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-medium transition-all" />
         
         <div class="mt-2 w-full text-center">
             <span class="text-xs text-[#A0A0A8]">

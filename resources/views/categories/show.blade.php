@@ -117,7 +117,7 @@
                                 <div>
                                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[#A0A0A8]">{{ __('Mulai dari') }}</p>
                                     <p class="mt-1 text-2xl font-black text-[#E8E8EC]">
-                                        Rp{{ number_format($item->price_per_day, 0, ',', '.') }}<span class="text-xs text-[#A0A0A8] font-bold ml-1">/{{ __('hari') }}</span>
+                                        Rp {{ number_format($item->price_per_day, 0, ',', '.') }} <span class="text-xs font-bold text-[#A0A0A8]">/ hari</span>
                                     </p>
                                 </div>
                                 <a href="{{ route('product.show', $item->slug) }}" class="inline-flex items-center justify-center rounded-md bg-[#D4A843] p-3 text-[#0A0A0B] transition hover:bg-[#e0ba5d] shrink-0">

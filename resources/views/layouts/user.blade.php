@@ -144,14 +144,14 @@
             </div>
 
             <nav class="mt-8 space-y-2 text-sm font-semibold">
-                <a href="{{ route('overview') }}" class="flex items-center justify-between rounded-xl px-3 py-2 {{ request()->routeIs('overview') ? 'btn-primary text-white' : 'btn-secondary text-slate-700' }}">
+                <a href="{{ route('overview') }}" class="flex items-center justify-between rounded-xl px-3 py-2 {{ request()->routeIs('overview') ? 'btn-primary text-[#0A0A0B]' : 'btn-secondary text-[#E8E8EC]' }}">
                     <span>{{ __('ui.nav.overview') }}</span>
                     <span class="text-[10px] uppercase tracking-widest">{{ __('ui.overview.tag') }}</span>
                 </a>
-                <a href="{{ route('booking.index') }}" class="flex items-center justify-between rounded-xl px-3 py-2 {{ request()->routeIs('booking.*') ? 'btn-primary text-white' : 'btn-secondary text-slate-700' }}">
+                <a href="{{ route('booking.index') }}" class="flex items-center justify-between rounded-xl px-3 py-2 {{ request()->routeIs('booking.*') ? 'btn-primary text-[#0A0A0B]' : 'btn-secondary text-[#E8E8EC]' }}">
                     <span>{{ __('ui.nav.booking') }}</span>
                 </a>
-                <a href="{{ route('cart') }}" class="flex items-center justify-between rounded-xl px-3 py-2 {{ request()->routeIs('cart') ? 'btn-primary text-white' : 'btn-secondary text-slate-700' }}">
+                <a href="{{ route('cart') }}" class="flex items-center justify-between rounded-xl px-3 py-2 {{ request()->routeIs('cart') ? 'btn-primary text-[#0A0A0B]' : 'btn-secondary text-[#E8E8EC]' }}">
                     <span>{{ __('ui.nav.cart') }}</span>
                     @if (($cartCount ?? 0) > 0)
                         <span class="inline-flex min-w-[22px] items-center justify-center rounded-full bg-[#D4A843] px-2 py-0.5 text-[10px] text-[#0A0A0B]">
@@ -159,13 +159,13 @@
                         </span>
                     @endif
                 </a>
-                <a href="{{ route('settings.index') }}" class="flex items-center justify-between rounded-xl px-3 py-2 {{ request()->routeIs('settings.*') ? 'btn-primary text-white' : 'btn-secondary text-slate-700' }}">
+                <a href="{{ route('settings.index') }}" class="flex items-center justify-between rounded-xl px-3 py-2 {{ request()->routeIs('settings.*') ? 'btn-primary text-[#0A0A0B]' : 'btn-secondary text-[#E8E8EC]' }}">
                     <span>{{ __('ui.nav.settings') }}</span>
                 </a>
             </nav>
 
-            <div class="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
-                <p class="font-semibold text-slate-900">{{ __('ui.overview.quick_help_title') }}</p>
+            <div class="mt-10 rounded-2xl border border-[#1A1A1E] bg-[#111113] p-4 text-xs text-[#A0A0A8]">
+                <p class="font-semibold text-[#E8E8EC]">{{ __('ui.overview.quick_help_title') }}</p>
                 <p class="mt-2">{{ __('ui.overview.quick_help_body') }}</p>
                 <a href="/contact" class="btn-secondary mt-3 inline-flex items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
                     {{ __('ui.actions.contact') }}
@@ -181,7 +181,7 @@
         </aside>
 
         <div class="lg:pl-72">
-            <header class="manake-topbar-shell sticky top-0 z-30 border-b border-slate-200 bg-white">
+            <header class="manake-topbar-shell sticky top-0 z-30 border-b border-[#1A1A1E] bg-[#0A0A0B]/90 backdrop-blur-xl">
                 <div class="mx-auto flex w-full max-w-[1320px] flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
                     <div class="flex items-center gap-3">
                         <button data-ui-icon-button class="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl" @click="sidebarOpen = true" aria-label="{{ __('ui.nav.toggle_menu') }}">
@@ -192,27 +192,27 @@
                             </svg>
                         </button>
                         <div>
-                            <h1 class="text-lg font-semibold text-slate-900">@yield('page_title', __('ui.overview.title'))</h1>
+                            <h1 class="text-lg font-semibold text-[#E8E8EC]">@yield('page_title', __('ui.overview.title'))</h1>
                         </div>
                     </div>
                     <div class="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
                         <div class="relative w-full sm:max-w-xs md:max-w-sm">
-                            <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+                            <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#66666C]">🔍</span>
                             <input
                                 type="text"
                                 placeholder="{{ __('ui.overview.search_placeholder') }}"
-                            class="w-full rounded-xl border border-[#1A1A1E] bg-[#111113] pl-9 pr-3 py-2 text-sm text-[#E8E8EC] placeholder:text-[#71717A] focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none"
+                                class="w-full rounded-xl border border-[#1A1A1E] bg-[#111113] pl-9 pr-3 py-2 text-sm text-[#E8E8EC] placeholder:text-[#71717A] focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none"
                             >
                         </div>
                         <div class="flex items-center gap-3">
                             <a href="{{ route('catalog') }}" class="btn-secondary rounded-xl px-4 py-2 text-xs font-semibold transition">
                                 {{ __('ui.actions.explore_catalog') }}
                             </a>
-                            <div class="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-2 py-1.5">
+                            <div class="flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#111113] px-2 py-1.5">
                                 <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#D4A843] text-xs font-semibold text-[#0A0A0B]">
                                     {{ strtoupper(substr(auth()->user()->display_name ?? auth()->user()->name ?? 'U', 0, 1)) }}
                                 </span>
-                                <span class="hidden text-sm font-semibold text-slate-700 sm:inline">
+                                <span class="hidden text-sm font-semibold text-[#E8E8EC] sm:inline">
                                     {{ auth()->user()->display_name ?? auth()->user()->name ?? __('app.user.generic') }}
                                 </span>
                             </div>

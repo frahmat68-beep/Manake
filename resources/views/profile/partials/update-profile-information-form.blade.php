@@ -3,11 +3,11 @@
         $isNameLocked = (bool) ($nameLocked ?? false);
     @endphp
     <header>
-        <h2 class="text-xl font-bold text-blue-700">
+        <h2 class="text-xl font-bold text-[#D4A843]">
             {{ __('Informasi Profil') }}
         </h2>
 
-        <p class="mt-1 text-sm text-slate-500">
+        <p class="mt-1 text-sm text-[#A0A0A8]">
             {{ __('Perbarui informasi profil dan alamat email akun Anda.') }}
         </p>
     </header>
@@ -26,7 +26,7 @@
                 id="name"
                 name="name"
                 type="text"
-                class="mt-1 block w-full @if($isNameLocked) bg-slate-100 text-slate-500 @endif"
+                class="mt-1 block w-full @if($isNameLocked) bg-[#0A0A0B] text-[#A0A0A8] @endif"
                 :value="old('name', $user->name)"
                 required
                 autofocus
@@ -34,7 +34,7 @@
                 :readonly="$isNameLocked"
             />
             @if ($isNameLocked)
-                <p class="mt-1 text-xs text-slate-500">{{ __('Nama akun dikunci mengikuti data identitas.') }}</p>
+                <p class="mt-1 text-xs text-[#A0A0A8]">{{ __('Nama akun dikunci mengikuti data identitas.') }}</p>
             @endif
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
@@ -46,16 +46,16 @@
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
-                    <p class="text-sm mt-2 text-slate-800">
+                    <p class="text-sm mt-2 text-[#E8E8EC]">
                         {{ __('Email Anda belum terverifikasi.') }}
 
-                        <button form="send-verification" class="underline text-sm text-slate-600 hover:text-slate-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <button form="send-verification" class="underline text-sm text-[#D4A843] hover:text-[#e0ba5d] rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D4A843]">
                             {{ __('Klik di sini untuk mengirim ulang email verifikasi.') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-emerald-600">
+                        <p class="mt-2 font-medium text-sm text-emerald-400">
                             {{ __('Tautan verifikasi baru telah dikirim ke email Anda.') }}
                         </p>
                     @endif

@@ -189,8 +189,8 @@
 
                             <div class="mk-card-soft p-5">
                                 <div class="flex items-center gap-2 mb-3.5">
-                                    <div class="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></div>
-                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400">{{ __('app.product.schedule_title') }}</p>
+                                    <div class="h-1.5 w-1.5 rounded-full bg-[#111113]0 animate-pulse"></div>
+                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#D4A843] dark:text-[#A0A0A8]">{{ __('app.product.schedule_title') }}</p>
                                 </div>
                                 
                                 @if ($bookingRanges->isEmpty())
@@ -217,7 +217,7 @@
                                                 $endDate = \Carbon\Carbon::parse($range['end_date'])->translatedFormat('d M Y');
                                                 $dateText = $startDate === $endDate ? $startDate : ($startDate . ' - ' . $endDate);
                                             @endphp
-                                            <div class="flex items-center gap-2.5 p-2.5 bg-white/70 dark:bg-slate-900/60 rounded-xl border border-white/60 dark:border-slate-800/40 shadow-sm">
+                                            <div class="flex items-center gap-2.5 p-2.5 bg-[#111113] dark:bg-slate-900/60 rounded-xl border border-[#1A1A1E] dark:border-slate-800/40 shadow-sm">
                                                 <div class="h-1.5 w-1.5 shrink-0 rounded-full {{ $rangeDotClass }}"></div>
                                                 <div class="flex-1 min-w-0">
                                                     <p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{{ $dateText }}</p>
@@ -284,20 +284,20 @@
                         </div>
 
                         @if ($lockDates)
-                            <div class="mb-6 p-3.5 bg-blue-50/80 dark:bg-blue-950/20 rounded-xl border border-blue-100/50 dark:border-blue-900/30 text-[10px] font-extrabold text-blue-700 dark:text-blue-400 flex items-center gap-2.5">
+                            <div class="mb-6 p-3.5 bg-[#111113] dark:bg-[#111113] rounded-xl border border-[#1A1A1E] dark:border-[#1A1A1E] text-[10px] font-extrabold text-[#D4A843] dark:text-[#A0A0A8] flex items-center gap-2.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m0 0v2m0-2h2m-2 0H10m4-6a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
                                 {{ __('Tanggal sewa dikunci mengikuti pesanan di cart. Untuk ubah tanggal, edit dulu item di cart.') }}
                             </div>
                         @endif
 
                         <div class="space-y-3.5 mb-6">
-                            <div class="flex items-center justify-between rounded-xl bg-white/50 dark:bg-slate-900/30 px-4.5 py-3 text-xs border border-white/60 dark:border-slate-800/40">
+                            <div class="flex items-center justify-between rounded-xl bg-[#111113]/50 dark:bg-slate-900/30 px-4.5 py-3 text-xs border border-[#1A1A1E] dark:border-slate-800/40">
                                 <span class="font-bold text-slate-400 dark:text-slate-500">{{ __('app.product.duration') }}</span>
-                                <span id="total-days" class="font-extrabold text-slate-950 dark:text-slate-50 text-sm">-</span>
+                                <span id="total-days" class="font-extrabold text-[#E8E8EC] dark:text-slate-50 text-sm">-</span>
                             </div>
-                            <div class="flex items-center justify-between rounded-xl bg-blue-600 px-4.5 py-4 text-xs text-white relative overflow-hidden">
+                            <div class="flex items-center justify-between rounded-xl bg-[#D4A843] px-4.5 py-4 text-xs text-[#0A0A0B] relative overflow-hidden">
                                 <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50"></div>
-                                <span class="relative font-bold text-white/80">{{ __('app.product.estimate') }}</span>
+                                <span class="relative font-bold text-[#0A0A0B]/80">{{ __('app.product.estimate') }}</span>
                                 <span id="total-price" class="relative text-xl font-extrabold">Rp -</span>
                             </div>
                             <div id="availability-feedback" class="hidden rounded-xl border px-4.5 py-3 text-[11px] font-bold leading-relaxed whitespace-pre-line animate-fade-in"></div>
@@ -334,7 +334,7 @@
                                     <div class="space-y-1.5">
                                         <label class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 ml-0.5">Kuantitas</label>
                                         <div class="relative flex items-center">
-                                            <button type="button" @click="qty = Math.max(1, qty - 1)" class="absolute left-1.5 h-9 w-9 flex items-center justify-center rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 transition-all active:scale-95 text-sm font-bold">-</button>
+                                            <button type="button" @click="qty = Math.max(1, qty - 1)" class="absolute left-1.5 h-9 w-9 flex items-center justify-center rounded-lg bg-[#111113] dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 transition-all active:scale-95 text-sm font-bold">-</button>
                                             <input
                                                 id="rent-qty"
                                                 type="number"
@@ -345,7 +345,7 @@
                                                 class="mk-input no-spinner text-center font-extrabold text-sm h-12"
                                                 required
                                             >
-                                            <button type="button" @click="qty = Math.min(maxQty, qty + 1)" class="absolute right-1.5 h-9 w-9 flex items-center justify-center rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 transition-all active:scale-95 text-sm font-bold">+</button>
+                                            <button type="button" @click="qty = Math.min(maxQty, qty + 1)" class="absolute right-1.5 h-9 w-9 flex items-center justify-center rounded-lg bg-[#111113] dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 transition-all active:scale-95 text-sm font-bold">+</button>
                                         </div>
                                     </div>
 
@@ -419,7 +419,7 @@
             const setAvailabilityMessage = (message, tone = 'info') => {
                 if (!availabilityFeedback) return;
                 const classes = {
-                    info: 'border-blue-100 bg-blue-50/80 text-blue-750 dark:border-blue-900/30 dark:bg-blue-950/20 dark:text-blue-400',
+                    info: 'border-[#1A1A1E] bg-[#111113] text-[#A0A0A8]',
                     success: 'border-emerald-100 bg-emerald-50/80 text-emerald-750 dark:border-emerald-900/30 dark:bg-emerald-950/20 dark:text-emerald-400',
                     warning: 'border-amber-100 bg-amber-50/80 text-amber-750 dark:border-amber-900/30 dark:bg-amber-950/20 dark:text-amber-400',
                     error: 'border-rose-100 bg-rose-50/80 text-rose-750 dark:border-rose-900/30 dark:bg-rose-950/20 dark:text-rose-400',

@@ -1,10 +1,10 @@
 <section>
     <header>
-        <h2 class="text-xl font-bold text-blue-700">
+        <h2 class="text-xl font-bold text-[#D4A843]">
             {{ __('Ubah Kata Sandi') }}
         </h2>
 
-        <p class="mt-1 text-sm text-slate-500">
+        <p class="mt-1 text-sm text-[#A0A0A8]">
             {{ __('Gunakan kata sandi yang panjang dan unik agar akun tetap aman.') }}
         </p>
     </header>
@@ -20,8 +20,8 @@
                 name="current_password"
                 autocomplete="current-password"
                 wrapper-class="mt-1"
-                input-class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                button-class="text-gray-400 hover:text-indigo-600"
+                input-class="block w-full rounded-md border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] shadow-sm focus:border-[#D4A843] focus:ring-[#D4A843]/20"
+                button-class="text-[#A0A0A8] hover:text-[#D4A843]"
             />
             <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
         </div>
@@ -33,8 +33,8 @@
                 name="password"
                 autocomplete="new-password"
                 wrapper-class="mt-1"
-                input-class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                button-class="text-gray-400 hover:text-indigo-600"
+                input-class="block w-full rounded-md border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] shadow-sm focus:border-[#D4A843] focus:ring-[#D4A843]/20"
+                button-class="text-[#A0A0A8] hover:text-[#D4A843]"
             />
             <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
         </div>
@@ -46,8 +46,8 @@
                 name="password_confirmation"
                 autocomplete="new-password"
                 wrapper-class="mt-1"
-                input-class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                button-class="text-gray-400 hover:text-indigo-600"
+                input-class="block w-full rounded-md border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] shadow-sm focus:border-[#D4A843] focus:ring-[#D4A843]/20"
+                button-class="text-[#A0A0A8] hover:text-[#D4A843]"
             />
             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
         </div>
@@ -61,7 +61,7 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm font-semibold text-emerald-600"
+                    class="text-sm font-semibold text-emerald-400"
                 >{{ __('Tersimpan.') }}</p>
             @endif
         </div>
