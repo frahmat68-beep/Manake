@@ -118,13 +118,14 @@ class PageSmokeTest extends TestCase
 
     public function test_core_shell_pages_do_not_depend_on_runtime_cdn_assets(): void
     {
+        $this->withVite();
+
         foreach ([route('home'), route('login'), route('admin.login')] as $url) {
             $response = $this->get($url);
 
             $response->assertOk();
             $response->assertDontSee('https://cdn.tailwindcss.com', false);
-            $response->assertDontSee('/build/assets/', false);
-            $response->assertSee('manake-inline-app-css', false);
+            $response->assertSee('build/assets/app', false);
         }
     }
 
