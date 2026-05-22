@@ -40,6 +40,14 @@ Route::get('/assets/public/{path}', [AssetController::class, 'public'])
 Route::get('/assets/media/{path}', [AssetController::class, 'media'])
     ->where('path', '.*')
     ->name('assets.media');
+Route::get('/debug-build', function () {
+    return response()->json([
+        'build' => is_dir(public_path('build')) ? scandir(public_path('build')) : 'not a dir',
+        'assets' => is_dir(public_path('build/assets')) ? scandir(public_path('build/assets')) : 'not a dir',
+        'manifest' => is_file(public_path('build/manifest.json')) ? file_get_contents(public_path('build/manifest.json')) : 'no manifest',
+    ]);
+});
+
 Route::get('/build/{path}', [AssetController::class, 'build'])
     ->where('path', '.*')
     ->name('assets.build');

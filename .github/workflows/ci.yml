@@ -11,11 +11,11 @@ jobs:
         runs-on: ubuntu-latest
         env:
             APP_ENV: testing
-            APP_KEY: base64:Q2hhbmdlTWVJbkNJJTJGQXBwS2V5SW5Mb2NhbA==
+            APP_KEY: base64:EeLTZpy7uV9O92m+2qhVK2B2SFsHkU49/qXAYEWLfhM=
             APP_LOCALE: id
             APP_FALLBACK_LOCALE: id
             DB_CONNECTION: sqlite
-            DB_DATABASE: database/database.sqlite
+            DB_DATABASE: ':memory:'
             CACHE_STORE: array
             SESSION_DRIVER: array
             QUEUE_CONNECTION: database
@@ -105,11 +105,11 @@ jobs:
         needs: quality
         env:
             APP_ENV: testing
-            APP_KEY: base64:Q2hhbmdlTWVJbkNJJTJGQXBwS2V5SW5Mb2NhbA==
+            APP_KEY: base64:EeLTZpy7uV9O92m+2qhVK2B2SFsHkU49/qXAYEWLfhM=
             APP_LOCALE: id
             APP_FALLBACK_LOCALE: id
             DB_CONNECTION: sqlite
-            DB_DATABASE: database/database.sqlite
+            DB_DATABASE: ':memory:'
             CACHE_STORE: array
             SESSION_DRIVER: array
             QUEUE_CONNECTION: database
