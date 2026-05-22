@@ -19,7 +19,7 @@
             @csrf
 
             <div class="space-y-1.5">
-                <label for="confirm-password" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                <label for="confirm-password" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">
                     {{ __('app.auth.password') }}
                 </label>
                 <x-password-input

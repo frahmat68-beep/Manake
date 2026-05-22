@@ -10,7 +10,7 @@
 >
     <div class="space-y-5">
         @if ($errors->any())
-            <div class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            <div class="rounded-md border border-rose-500/20 bg-rose-950/70 px-4 py-3 text-sm text-rose-300">
                 {{ $errors->first() }}
             </div>
         @endif
@@ -21,7 +21,7 @@
             <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
             <div class="space-y-1.5">
-                <label for="reset-email" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                <label for="reset-email" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">
                     {{ __('app.auth.email') }}
                 </label>
                 <input
@@ -32,14 +32,14 @@
                     required
                     autofocus
                     autocomplete="username"
-                    class="input w-full rounded-2xl px-4 py-3 text-sm"
+                    class="input w-full rounded-md px-4 py-3 text-sm"
                     placeholder="{{ __('app.auth.email_placeholder') }}"
                 >
                 <x-input-error :messages="$errors->get('email')" class="mt-1" />
             </div>
 
             <div class="space-y-1.5">
-                <label for="reset-password" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                <label for="reset-password" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">
                     {{ __('app.auth.password') }}
                 </label>
                 <x-password-input
@@ -48,13 +48,13 @@
                     :required="true"
                     autocomplete="new-password"
                     placeholder="{{ __('app.auth.password_placeholder') }}"
-                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
+                    input-class="input w-full rounded-md px-4 py-3 text-sm"
                 />
                 <x-input-error :messages="$errors->get('password')" class="mt-1" />
             </div>
 
             <div class="space-y-1.5">
-                <label for="reset-password-confirmation" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                <label for="reset-password-confirmation" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">
                     {{ __('app.auth.password_confirm') }}
                 </label>
                 <x-password-input
@@ -63,12 +63,12 @@
                     :required="true"
                     autocomplete="new-password"
                     placeholder="{{ __('app.auth.password_confirm_placeholder') }}"
-                    input-class="input w-full rounded-2xl px-4 py-3 text-sm"
+                    input-class="input w-full rounded-md px-4 py-3 text-sm"
                 />
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
             </div>
 
-            <button class="btn-primary inline-flex w-full items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold">
+            <button class="btn-primary inline-flex w-full items-center justify-center rounded-md px-4 py-3 text-sm font-semibold">
                 {{ __('app.auth.reset_password_button') }}
             </button>
         </form>

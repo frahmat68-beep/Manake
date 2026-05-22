@@ -12,28 +12,28 @@
     <section class="mk-section">
         <div class="mk-container space-y-6">
             <header class="mk-card p-6 sm:p-10">
-                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('app.footer.quick_about') }}</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#D4A843]">{{ __('app.footer.quick_about') }}</p>
                 <h1 class="mk-title-section mt-3">{{ setting('brand.name', 'Manake') }}</h1>
                 <p class="mk-copy mt-4 leading-relaxed">{{ $aboutText }}</p>
             </header>
 
             <div class="grid gap-6 lg:grid-cols-2">
                 <article class="mk-card p-6">
-                    <h2 class="text-lg font-bold text-slate-900">{{ __('Mengapa Memilih Kami?') }}</h2>
-                    <ul class="mt-4 space-y-3 text-sm text-slate-600">
-                        <li class="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3"><strong class="text-slate-900">{{ __('Alat Berkualitas Tinggi:') }}</strong> {{ __('Kamera, lighting, dan audio dirawat secara profesional untuk performa terbaik.') }}</li>
-                        <li class="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3"><strong class="text-slate-900">{{ __('Proses Cepat & Mudah:') }}</strong> {{ __('Sistem booking online instan dengan penanggalan real-time yang akurat.') }}</li>
-                        <li class="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3"><strong class="text-slate-900">{{ __('Keamanan Transaksi:') }}</strong> {{ __('Pembayaran aman terintegrasi otomatis menggunakan Midtrans Snap.') }}</li>
-                        <li class="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3"><strong class="text-slate-900">{{ __('Reschedule Fleksibel:') }}</strong> {{ __('Kemudahan mengubah tanggal sewa sebelum pengambilan barang.') }}</li>
-                        <li class="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3"><strong class="text-slate-900">{{ __('Dukungan Admin:') }}</strong> {{ __('Tim kami siap melayani koordinasi pickup, pengembalian, dan konsultasi alat.') }}</li>
+                    <h2 class="text-lg font-bold text-[#E8E8EC]">{{ __('Mengapa Memilih Kami?') }}</h2>
+                    <ul class="mt-4 space-y-3 text-sm text-[#A0A0A8]">
+                        <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-3"><strong class="text-[#E8E8EC]">{{ __('Alat Berkualitas Tinggi:') }}</strong> {{ __('Kamera, lighting, dan audio dirawat secara profesional untuk performa terbaik.') }}</li>
+                        <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-3"><strong class="text-[#E8E8EC]">{{ __('Proses Cepat & Mudah:') }}</strong> {{ __('Sistem booking online instan dengan penanggalan real-time yang akurat.') }}</li>
+                        <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-3"><strong class="text-[#E8E8EC]">{{ __('Keamanan Transaksi:') }}</strong> {{ __('Pembayaran aman terintegrasi otomatis menggunakan Midtrans Snap.') }}</li>
+                        <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-3"><strong class="text-[#E8E8EC]">{{ __('Reschedule Fleksibel:') }}</strong> {{ __('Kemudahan mengubah tanggal sewa sebelum pengambilan barang.') }}</li>
+                        <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-3"><strong class="text-[#E8E8EC]">{{ __('Dukungan Admin:') }}</strong> {{ __('Tim kami siap melayani koordinasi pickup, pengembalian, dan konsultasi alat.') }}</li>
                     </ul>
                 </article>
 
                 <article class="mk-card p-6">
-                    <h2 class="text-lg font-bold text-slate-900">{{ __('Kontak Cepat') }}</h2>
-                    <div class="mt-4 space-y-3 text-sm text-slate-600">
-                        <p><span class="font-bold text-slate-900">WhatsApp:</span> {{ $contactWhatsapp }}</p>
-                        <p><span class="font-bold text-slate-900">Email:</span> {{ $contactEmail }}</p>
+                    <h2 class="text-lg font-bold text-[#E8E8EC]">{{ __('Kontak Cepat') }}</h2>
+                    <div class="mt-4 space-y-3 text-sm text-[#A0A0A8]">
+                        <p><span class="font-bold text-[#E8E8EC]">WhatsApp:</span> {{ $contactWhatsapp }}</p>
+                        <p><span class="font-bold text-[#E8E8EC]">Email:</span> {{ $contactEmail }}</p>
                     </div>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <a href="{{ route('contact') }}" class="mk-button-secondary py-2 px-4 text-sm font-bold">

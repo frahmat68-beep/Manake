@@ -123,7 +123,7 @@
         }
     </style>
 </head>
-<body class="manake-shell">
+<body class="manake-shell" data-manake-shell="user">
     <div x-data="{ sidebarOpen: false }" class="min-h-screen">
         <div class="fixed inset-0 z-40 bg-slate-900/40 transition lg:hidden" x-show="sidebarOpen" x-cloak @click="sidebarOpen = false"></div>
 
@@ -154,7 +154,7 @@
                 <a href="{{ route('cart') }}" class="flex items-center justify-between rounded-xl px-3 py-2 {{ request()->routeIs('cart') ? 'btn-primary text-white' : 'btn-secondary text-slate-700' }}">
                     <span>{{ __('ui.nav.cart') }}</span>
                     @if (($cartCount ?? 0) > 0)
-                        <span class="inline-flex min-w-[22px] items-center justify-center rounded-full bg-blue-600 px-2 py-0.5 text-[10px] text-white">
+                        <span class="inline-flex min-w-[22px] items-center justify-center rounded-full bg-[#D4A843] px-2 py-0.5 text-[10px] text-[#0A0A0B]">
                             {{ $cartCount }}
                         </span>
                     @endif
@@ -201,7 +201,7 @@
                             <input
                                 type="text"
                                 placeholder="{{ __('ui.overview.search_placeholder') }}"
-                                class="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                            class="w-full rounded-xl border border-[#1A1A1E] bg-[#111113] pl-9 pr-3 py-2 text-sm text-[#E8E8EC] placeholder:text-[#71717A] focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none"
                             >
                         </div>
                         <div class="flex items-center gap-3">
@@ -209,7 +209,7 @@
                                 {{ __('ui.actions.explore_catalog') }}
                             </a>
                             <div class="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-2 py-1.5">
-                                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
+                                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#D4A843] text-xs font-semibold text-[#0A0A0B]">
                                     {{ strtoupper(substr(auth()->user()->display_name ?? auth()->user()->name ?? 'U', 0, 1)) }}
                                 </span>
                                 <span class="hidden text-sm font-semibold text-slate-700 sm:inline">

@@ -128,7 +128,7 @@
         }
     </style>
 </head>
-<body class="manake-shell antialiased selection:bg-blue-600/10 selection:text-blue-600" data-manake-shell="app">
+<body class="manake-shell antialiased selection:bg-amber-500/10 selection:text-amber-500" data-manake-shell="app">
 @include('partials.page-loader')
 @php
     $isAuthenticated = auth('web')->check();
@@ -257,7 +257,7 @@
                     method="GET"
                     action="{{ route('catalog') }}"
                     data-search-suggest-url="{{ route('search.suggestions') }}"
-                    class="command-surface command-surface--search relative order-3 w-full rounded-2xl sm:order-2 sm:flex-1 sm:max-w-xl transition-all focus-within:ring-4 focus-within:ring-blue-600/10 focus-within:border-blue-500/50"
+                    class="command-surface command-surface--search relative order-3 w-full rounded-2xl sm:order-2 sm:flex-1 sm:max-w-xl transition-all focus-within:ring-4 focus-within:ring-amber-500/10 focus-within:border-amber-500/50"
                 >
                     <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -298,11 +298,11 @@
                                     x-cloak
                                     x-show="notifCount > 0"
                                     x-text="notifBadge()"
-                                    class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white dark:ring-slate-900"
+                                    class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D4A843] px-1 text-[10px] font-bold leading-none text-[#0A0A0B] ring-2 ring-white dark:ring-slate-900"
                                 ></span>
                             </button>
                             <div x-cloak x-show="notifOpen" x-transition.origin.top.right class="card absolute right-0 mt-2 w-[22rem] max-w-[calc(100vw-2rem)] rounded-2xl p-4 shadow-2xl glass-lg">
-                                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600">{{ __('ui.nav.notifications') }}</p>
+                                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#D4A843]">{{ __('ui.nav.notifications') }}</p>
                                 <div class="mt-3 max-h-72 space-y-2 overflow-y-auto pr-1">
                                     @forelse ($notificationItems as $notification)
                                         @php
@@ -313,13 +313,13 @@
                                         <a
                                             href="{{ $notificationTargetUrl }}"
                                             data-read="{{ $notificationUnread ? '0' : '1' }}"
-                                            class="block rounded-xl border border-slate-200/50 p-3 transition hover:border-blue-400/50 hover:bg-blue-50/50"
+                                            class="block rounded-xl border border-slate-200/50 p-3 transition hover:border-amber-400/50 hover:bg-amber-50/50"
                                             @click.prevent="openNotification($event, '{{ $notificationTargetUrl }}', '{{ $notificationReadUrl }}', {{ $notificationUnread ? 'true' : 'false' }})"
                                         >
                                             <div class="flex items-start justify-between gap-2">
                                                 <p class="text-xs font-bold text-slate-900">{{ $notification['title'] }}</p>
                                                 @if (!empty($notification['is_new']))
-                                                    <span class="mt-1 inline-flex h-2 w-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></span>
+                                                    <span class="mt-1 inline-flex h-2 w-2 rounded-full bg-[#D4A843] shadow-[0_0_8px_rgba(212,168,67,0.5)]"></span>
                                                 @endif
                                             </div>
                                             <p class="mt-1 text-xs leading-relaxed text-slate-600 line-clamp-2">{{ $notification['body'] }}</p>
@@ -338,7 +338,7 @@
                                         </div>
                                     @endforelse
                                 </div>
-                                <a href="{{ route('notifications') }}" class="mt-4 block rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-center text-xs font-bold text-blue-600 transition hover:bg-blue-50 hover:text-blue-700" @click="notifOpen = false">
+                                <a href="{{ route('notifications') }}" class="mt-4 block rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-center text-xs font-bold text-[#D4A843] transition hover:bg-amber-50 hover:text-[#e0ba5d]" @click="notifOpen = false">
                                     {{ __('ui.nav.view_all') }}
                                 </a>
                             </div>
@@ -373,7 +373,7 @@
                                 <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6" />
                             </svg>
                             @if (($cartCount ?? 0) > 0)
-                                <span class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white ring-2 ring-white dark:ring-slate-900">
+                                <span class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D4A843] px-1 text-[10px] font-bold text-[#0A0A0B] ring-2 ring-white dark:ring-slate-900">
                                     {{ $cartCount > 99 ? '99+' : $cartCount }}
                                 </span>
                             @endif
@@ -399,7 +399,7 @@
                         <button
                             type="button"
                             data-ui-text-button
-                            class="hidden text-sm font-bold tracking-tight transition sm:inline hover:text-blue-600"
+                            class="hidden text-sm font-bold tracking-tight transition sm:inline hover:text-[#D4A843]"
                             @click="openAuthModal('login')"
                         >
                             {{ __('ui.nav.login') }}
@@ -478,14 +478,14 @@
                                     name="email"
                                     value="{{ old('auth_modal') === 'login' ? old('email') : '' }}"
                                     required
-                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/20 transition-all"
                                     placeholder="Enter your email"
                                 />
                             </div>
                             <div class="space-y-1">
                                 <div class="flex items-center justify-between ml-1">
                                     <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Password</label>
-                                    <button type="button" class="text-[10px] font-bold uppercase tracking-widest text-blue-500 hover:text-blue-400 transition" @click="authModalView = 'forgot'">
+                                    <button type="button" class="text-[10px] font-bold uppercase tracking-widest text-[#D4A843] hover:text-[#e0ba5d] transition" @click="authModalView = 'forgot'">
                                         Forgot?
                                     </button>
                                 </div>
@@ -493,12 +493,12 @@
                                     type="password"
                                     name="password"
                                     required
-                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/20 transition-all"
                                     placeholder="••••••••"
                                 />
                             </div>
                             
-                            <button type="submit" class="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-blue-900/20">
+                            <button type="submit" class="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-amber-900/20">
                                 Sign In
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -514,7 +514,7 @@
                             
                             <p class="mt-4 text-center text-xs text-slate-400">
                                 Don't have an account? 
-                                <button type="button" class="font-bold text-blue-500 hover:text-blue-400" @click="authModalView = 'register'">
+                                <button type="button" class="font-bold text-[#D4A843] hover:text-[#e0ba5d]" @click="authModalView = 'register'">
                                     Create one now
                                 </button>
                             </p>
@@ -531,7 +531,7 @@
                                     name="email"
                                     value="{{ old('auth_modal') === 'register' ? old('email') : '' }}"
                                     required
-                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/20 transition-all"
                                     placeholder="Enter your email"
                                 />
                             </div>
@@ -541,7 +541,7 @@
                                     type="password"
                                     name="password"
                                     required
-                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/20 transition-all"
                                     placeholder="••••••••"
                                 />
                             </div>
@@ -551,18 +551,18 @@
                                     type="password"
                                     name="password_confirmation"
                                     required
-                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/20 transition-all"
                                     placeholder="••••••••"
                                 />
                             </div>
                             
-                            <button type="submit" class="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-blue-900/20">
+                            <button type="submit" class="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-amber-900/20">
                                 Create Account
                             </button>
                             
                             <p class="mt-4 text-center text-xs text-slate-400">
                                 Already have an account? 
-                                <button type="button" class="font-bold text-blue-500 hover:text-blue-400" @click="authModalView = 'login'">
+                                <button type="button" class="font-bold text-[#D4A843] hover:text-[#e0ba5d]" @click="authModalView = 'login'">
                                     Sign In
                                 </button>
                             </p>
@@ -579,12 +579,12 @@
                                     name="email"
                                     value="{{ old('auth_modal') === 'forgot' ? old('email') : '' }}"
                                     required
-                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-600/20 transition-all"
+                                    class="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-3.5 text-sm text-white placeholder:text-slate-600 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/20 transition-all"
                                     placeholder="Enter your email"
                                 />
                             </div>
                             
-                            <button type="submit" class="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-blue-900/20">
+                            <button type="submit" class="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-amber-900/20">
                                 Send Reset Link
                             </button>
                             
@@ -641,7 +641,7 @@
         const createItemNode = (item) => {
             const link = document.createElement('a');
             link.href = item.detail_url || '#';
-            link.className = 'flex items-center gap-4 px-4 py-3 transition hover:bg-blue-50/50 group';
+            link.className = 'flex items-center gap-4 px-4 py-3 transition hover:bg-amber-50/50 group';
 
             const image = document.createElement('img');
             image.src = item.image_url || '{{ site_asset('MANAKE-FAV-M.png') }}';
@@ -654,7 +654,7 @@
             content.className = 'min-w-0 flex-1';
 
             const name = document.createElement('p');
-            name.className = 'truncate text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors';
+            name.className = 'truncate text-sm font-bold text-slate-900 group-hover:text-[#D4A843] transition-colors';
             name.textContent = item.name || genericItemLabel;
             content.appendChild(name);
             
@@ -668,7 +668,7 @@
             link.appendChild(content);
             
             const arrow = document.createElement('span');
-            arrow.className = 'text-slate-300 group-hover:text-blue-500 transition-colors opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all';
+            arrow.className = 'text-slate-300 group-hover:text-[#D4A843] transition-colors opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all';
             arrow.innerHTML = '→';
             link.appendChild(arrow);
 

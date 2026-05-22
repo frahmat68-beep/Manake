@@ -7,7 +7,7 @@
     'required' => false,
     'inputClass' => '',
     'wrapperClass' => '',
-    'buttonClass' => 'text-slate-400 transition hover:text-slate-700 dark:hover:text-slate-100',
+    'buttonClass' => 'text-[#A0A0A8] transition hover:text-[#E8E8EC]',
 ])
 
 @php
@@ -15,7 +15,7 @@
     $resolvedName = $name ?? $attributes->get('name');
     $baseInputClass = $inputClass !== ''
         ? $inputClass
-        : 'w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none';
+        : 'w-full rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-4 py-2.5 text-sm text-[#E8E8EC] placeholder:text-[#66666C] focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none';
 @endphp
 
 <div x-data="{ show: false }" class="relative {{ $wrapperClass }}">

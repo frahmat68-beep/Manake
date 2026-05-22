@@ -20,8 +20,8 @@
         </div>
     @endif
 
-    <div class="w-full text-center mb-4">
-        <p class="text-sm text-gray-400">{{ __('ui.auth.forgot_help') }}</p>
+        <div class="w-full text-center mb-4">
+        <p class="text-sm text-[#A0A0A8]">{{ __('ui.auth.forgot_help') }}</p>
     </div>
 
     <form method="POST" action="{{ route('password.email') }}" class="w-full flex flex-col gap-4">
@@ -35,16 +35,16 @@
             required
             autofocus
             autocomplete="email"
-            class="w-full px-5 py-3 rounded-xl !bg-[#18181b] !text-white !border !border-white/5 placeholder:text-gray-500 text-sm focus:outline-none focus:!border-blue-500 focus:!ring-4 focus:!ring-blue-600/20 transition-all"
+            class="w-full rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-5 py-3 text-sm text-[#E8E8EC] placeholder:text-[#66666C] focus:border-[#D4A843] focus:ring-4 focus:ring-[#D4A843]/20 focus:outline-none transition-all"
         />
 
-        <button type="submit" class="w-full bg-blue-600 !text-white font-medium px-5 py-3 rounded-xl shadow-[0_4px_20px_-5px_rgba(37,99,235,0.5)] hover:bg-blue-500 transition-all active:scale-95 mb-1 text-sm mt-2">
+        <button type="submit" class="w-full bg-[#D4A843] text-[#0A0A0B] font-medium px-5 py-3 rounded-md shadow-[0_4px_20px_-5px_rgba(212,168,67,0.35)] hover:bg-[#e0ba5d] transition-all active:scale-95 mb-1 text-sm mt-2">
             {{ __('ui.auth.forgot_button') }}
         </button>
 
         <div class="w-full text-center mt-2">
-            <span class="text-xs text-gray-400">
-                <a href="{{ route('login') }}" class="font-medium text-blue-500 hover:text-blue-400 transition-colors" data-skip-loader="true">
+            <span class="text-xs text-[#A0A0A8]">
+                <a href="{{ route('login') }}" class="font-medium text-[#D4A843] hover:text-[#e0ba5d] transition-colors" data-skip-loader="true">
                     &larr; {{ __('ui.auth.back_to_login') }}
                 </a>
             </span>

@@ -52,17 +52,17 @@
     <section x-data="{ contactModalOpen: false }" class="mk-section">
         <div class="mk-container space-y-6">
             <div class="mk-card p-6 sm:p-8">
-                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ $rulesKicker }}</p>
-                <h1 class="mt-2 text-3xl font-extrabold text-slate-900 dark:text-slate-50">{{ $rulesTitle }}</h1>
-                <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#D4A843]">{{ $rulesKicker }}</p>
+                <h1 class="mt-2 text-3xl font-extrabold text-[#E8E8EC]">{{ $rulesTitle }}</h1>
+                <p class="mt-3 max-w-3xl text-sm leading-relaxed text-[#A0A0A8]">
                     {{ $rulesSubtitle }}
                 </p>
             </div>
 
             <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
                 <article class="mk-card p-5">
-                    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.rental_rules.sections.booking_payment.title') }}</h2>
-                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                    <h2 class="text-lg font-semibold text-[#E8E8EC]">{{ __('ui.rental_rules.sections.booking_payment.title') }}</h2>
+                    <ul class="mt-3 space-y-2 text-sm text-[#A0A0A8]">
                         <li>{{ __('ui.rental_rules.sections.booking_payment.point_1') }}</li>
                         <li>{{ __('ui.rental_rules.sections.booking_payment.point_2') }}</li>
                         <li>{{ __('ui.rental_rules.sections.booking_payment.point_3') }}</li>
@@ -70,8 +70,8 @@
                 </article>
 
                 <article class="mk-card p-5">
-                    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.rental_rules.sections.availability.title') }}</h2>
-                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                    <h2 class="text-lg font-semibold text-[#E8E8EC]">{{ __('ui.rental_rules.sections.availability.title') }}</h2>
+                    <ul class="mt-3 space-y-2 text-sm text-[#A0A0A8]">
                         <li>{{ __('ui.rental_rules.sections.availability.point_1') }}</li>
                         <li>{{ __('ui.rental_rules.sections.availability.point_2') }}</li>
                         <li>{{ __('ui.rental_rules.sections.availability.point_3') }}</li>
@@ -79,8 +79,8 @@
                 </article>
 
                 <article class="mk-card p-5">
-                    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.rental_rules.sections.reschedule.title') }}</h2>
-                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                    <h2 class="text-lg font-semibold text-[#E8E8EC]">{{ __('ui.rental_rules.sections.reschedule.title') }}</h2>
+                    <ul class="mt-3 space-y-2 text-sm text-[#A0A0A8]">
                         <li>{{ __('ui.rental_rules.sections.reschedule.point_1') }}</li>
                         <li>{{ __('ui.rental_rules.sections.reschedule.point_2') }}</li>
                         <li>{{ __('ui.rental_rules.sections.reschedule.point_3') }}</li>
@@ -89,8 +89,8 @@
                 </article>
 
                 <article class="mk-card p-5">
-                    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.rental_rules.sections.penalty.title') }}</h2>
-                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                    <h2 class="text-lg font-semibold text-[#E8E8EC]">{{ __('ui.rental_rules.sections.penalty.title') }}</h2>
+                    <ul class="mt-3 space-y-2 text-sm text-[#A0A0A8]">
                         <li>{{ __('ui.rental_rules.sections.penalty.point_1') }}</li>
                         <li>{{ __('ui.rental_rules.sections.penalty.point_2') }}</li>
                         <li>{{ __('ui.rental_rules.sections.penalty.point_3') }}</li>
@@ -101,22 +101,22 @@
             </div>
 
             <article class="mk-card p-5">
-                <h2 class="text-lg font-semibold text-blue-700 dark:text-blue-400">{{ __('ui.rental_rules.user_flow_title') }}</h2>
-                <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{{ __('ui.rental_rules.user_flow_intro') }}</p>
-                <ol class="mt-4 space-y-2 text-sm text-slate-700 dark:text-slate-300">
-                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_1') }}</li>
-                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_2') }}</li>
-                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_3') }}</li>
-                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_4') }}</li>
-                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_5') }}</li>
-                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_6') }}</li>
-                    <li class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800/70 dark:bg-slate-900/60">{{ __('ui.rental_rules.sections.user_flow.point_7') }}</li>
+                <h2 class="text-lg font-semibold text-[#D4A843]">{{ __('ui.rental_rules.user_flow_title') }}</h2>
+                <p class="mt-2 text-sm leading-relaxed text-[#A0A0A8]">{{ __('ui.rental_rules.user_flow_intro') }}</p>
+                <ol class="mt-4 space-y-2 text-sm text-[#A0A0A8]">
+                    <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_1') }}</li>
+                    <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_2') }}</li>
+                    <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_3') }}</li>
+                    <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_4') }}</li>
+                    <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_5') }}</li>
+                    <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_6') }}</li>
+                    <li class="rounded-md border border-[#1A1A1E] bg-[#111113] px-3 py-2">{{ __('ui.rental_rules.sections.user_flow.point_7') }}</li>
                 </ol>
             </article>
 
-            <article class="mk-card bg-gradient-to-br from-blue-50 to-white p-5 dark:from-blue-950/35 dark:to-slate-950">
-                <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">{{ $rulesOperationalTitle }}</h2>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+            <article class="mk-card bg-[#111113] p-5">
+                <h2 class="text-lg font-semibold text-[#E8E8EC]">{{ $rulesOperationalTitle }}</h2>
+                <p class="mt-2 text-sm text-[#A0A0A8]">
                     {{ __('ui.rental_rules.operational_note') }}
                 </p>
                 <div class="mt-4 flex flex-wrap gap-3">
@@ -137,21 +137,21 @@
                 x-cloak
                 x-show="contactModalOpen"
                 x-transition.opacity
-                class="fixed inset-0 z-[80] flex items-center justify-center bg-slate-900/60 p-4"
+                class="fixed inset-0 z-[80] flex items-center justify-center bg-black/70 p-4"
                 @click.self="contactModalOpen = false"
                 @keydown.escape.window="contactModalOpen = false"
             >
-                <div class="w-full max-w-3xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl sm:p-6 dark:border-slate-800 dark:bg-slate-950">
+                <div class="w-full max-w-3xl rounded-md border border-[#1A1A1E] bg-[#111113] p-5 shadow-2xl sm:p-6">
                     <div class="flex items-start justify-between gap-3">
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('ui.contact.title') }}</p>
-                            <h2 class="mt-1 text-xl font-bold text-slate-900 dark:text-slate-50">{{ __('ui.contact.info_title') }}</h2>
-                            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ __('ui.contact.subtitle') }}</p>
+                            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#D4A843]">{{ __('ui.contact.title') }}</p>
+                            <h2 class="mt-1 text-xl font-bold text-[#E8E8EC]">{{ __('ui.contact.info_title') }}</h2>
+                            <p class="mt-2 text-sm text-[#A0A0A8]">{{ __('ui.contact.subtitle') }}</p>
                         </div>
                         <button
                             type="button"
                             @click="contactModalOpen = false"
-                            class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:border-blue-200 hover:text-blue-600 dark:border-slate-800 dark:hover:border-blue-500/40"
+                            class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[#1A1A1E] text-[#A0A0A8] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]"
                             aria-label="{{ __('ui.actions.close') }}"
                         >
                             ✕
@@ -159,10 +159,10 @@
                     </div>
 
                     <div class="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-                        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/60">
-                            <div class="space-y-1 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                        <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-4">
+                            <div class="space-y-1 text-sm leading-relaxed text-[#A0A0A8]">
                                 @if ($contactAddressTitle)
-                                    <p class="font-semibold text-slate-900 dark:text-slate-50">{{ $contactAddressTitle }}</p>
+                                    <p class="font-semibold text-[#E8E8EC]">{{ $contactAddressTitle }}</p>
                                 @endif
                                 @foreach ($contactAddressRest as $addressLine)
                                     <p>{{ $addressLine }}</p>
@@ -170,7 +170,7 @@
                             </div>
 
                             <div class="mt-4">
-                                <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">{{ __('ui.contact.labels.whatsapp') }}</p>
+                                <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#A0A0A8]">{{ __('ui.contact.labels.whatsapp') }}</p>
                                 <div class="mt-2 flex flex-wrap gap-2">
                                     @forelse ($contactWhatsappEntries as $whatsappNumber)
                                         @php $whatsappHref = $buildWhatsappHref($whatsappNumber); @endphp
@@ -179,30 +179,30 @@
                                                 href="{{ $whatsappHref }}"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+                                                class="inline-flex items-center rounded-lg bg-[#D4A843] px-3 py-1.5 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]"
                                             >
                                                 {{ $whatsappNumber }}
                                             </a>
                                         @else
-                                            <span class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white">
+                                            <span class="inline-flex items-center rounded-lg bg-[#111113] px-3 py-1.5 text-sm font-semibold text-[#E8E8EC] ring-1 ring-[#1A1A1E]">
                                                 {{ $whatsappNumber }}
                                             </span>
                                         @endif
                                     @empty
-                                        <span class="text-sm text-slate-700 dark:text-slate-300">{{ $contactWhatsapp }}</span>
+                                        <span class="text-sm text-[#A0A0A8]">{{ $contactWhatsapp }}</span>
                                     @endforelse
                                 </div>
                             </div>
 
-                            <div class="mt-4 space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                            <div class="mt-4 space-y-2 text-sm text-[#A0A0A8]">
                                 <p>
-                                    <span class="font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.contact.labels.email') }}:</span>
-                                    <a href="mailto:{{ $contactEmail }}" class="break-all text-blue-700 hover:text-blue-800 dark:text-blue-400">{{ $contactEmail }}</a>
+                                    <span class="font-semibold text-[#E8E8EC]">{{ __('ui.contact.labels.email') }}:</span>
+                                    <a href="mailto:{{ $contactEmail }}" class="break-all text-[#D4A843] hover:text-[#e0ba5d]">{{ $contactEmail }}</a>
                                 </p>
                                 <p>
-                                    <span class="font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.contact.labels.instagram') }}:</span>
+                                    <span class="font-semibold text-[#E8E8EC]">{{ __('ui.contact.labels.instagram') }}:</span>
                                     @if ($instagramUrl)
-                                        <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:text-blue-800 dark:text-blue-400">{{ $contactInstagram }}</a>
+                                        <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="text-[#D4A843] hover:text-[#e0ba5d]">{{ $contactInstagram }}</a>
                                     @else
                                         {{ $contactInstagram }}
                                     @endif
@@ -210,15 +210,15 @@
                             </div>
                         </div>
 
-                        <div class="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950">
-                            <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('ui.contact.map_title') }}</p>
-                            <div class="mt-2 overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800">
+                        <div class="rounded-md border border-[#1A1A1E] bg-[#111113] p-3">
+                            <p class="text-sm font-semibold text-[#E8E8EC]">{{ __('ui.contact.map_title') }}</p>
+                            <div class="mt-2 overflow-hidden rounded-md border border-[#1A1A1E]">
                                 @if ($contactMapEmbed)
                                     <div class="[&>iframe]:h-[220px] [&>iframe]:w-full [&>iframe]:border-0">
                                         {!! $contactMapEmbed !!}
                                     </div>
                                 @else
-                                    <div class="flex h-[220px] items-center justify-center px-3 text-center text-sm text-slate-500 dark:text-slate-400">
+                                    <div class="flex h-[220px] items-center justify-center px-3 text-center text-sm text-[#A0A0A8]">
                                         {{ __('ui.contact.map_empty') }}
                                     </div>
                                 @endif

@@ -11,7 +11,7 @@
     <!-- Global Errors/Status -->
     @if ($errors->any())
         <div class="mb-2 flex w-full flex-col gap-2">
-            <div class="text-center text-sm text-red-400">{{ $errors->first() }}</div>
+            <div class="text-center text-sm text-rose-300">{{ $errors->first() }}</div>
         </div>
     @endif
 
@@ -25,7 +25,7 @@
             value="{{ old('email') }}"
             required
             autocomplete="email"
-            class="input w-full rounded-xl px-5 py-3 text-sm"
+            class="input w-full rounded-md px-5 py-3 text-sm"
         />
 
         <x-password-input
@@ -34,7 +34,7 @@
             required
             autocomplete="new-password"
             placeholder="{{ __('ui.auth.password_placeholder') }}"
-            input-class="input w-full rounded-xl px-5 py-3 text-sm"
+            input-class="input w-full rounded-md px-5 py-3 text-sm"
         />
         
         <x-password-input
@@ -43,19 +43,19 @@
             required
             autocomplete="new-password"
             placeholder="{{ __('ui.auth.confirm_password_placeholder') }}"
-            input-class="input w-full rounded-xl px-5 py-3 text-sm"
+            input-class="input w-full rounded-md px-5 py-3 text-sm"
         />
         
-        <button type="submit" class="btn-primary w-full rounded-xl px-5 py-3 text-sm font-medium transition-all active:scale-95">
+        <button type="submit" class="btn-primary w-full rounded-md px-5 py-3 text-sm font-medium transition-all active:scale-95">
             {{ __('ui.auth.register_button') }}
         </button>
         
-        <x-auth.google-button label="Continue with Google" class="w-full flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-medium transition-all" />
+        <x-auth.google-button label="Continue with Google" class="w-full flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-medium transition-all" />
         
         <div class="mt-2 w-full text-center">
-            <span class="text-xs text-gray-400 dark:text-gray-500">
+            <span class="text-xs text-[#A0A0A8]">
                 {{ __('ui.auth.already_have_account') }} 
-                <a href="{{ route('login') }}" class="font-medium text-blue-500 transition hover:text-blue-400" data-skip-loader="true">
+                <a href="{{ route('login') }}" class="font-medium text-[#D4A843] transition hover:text-[#e0ba5d]" data-skip-loader="true">
                     {{ __('ui.auth.sign_in') }}
                 </a>
             </span>

@@ -11,7 +11,7 @@
 
 <a
     href="{{ route('social.redirect', 'google') }}"
-    class="inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-50 hover:shadow-sm {{ $class }} {{ $googleOauthConfigured ? '' : 'opacity-90' }}"
+    class="inline-flex w-full items-center justify-center gap-3 rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-4 py-3 text-sm font-semibold text-[#E8E8EC] transition-all hover:border-[#D4A843]/30 hover:bg-[#111113] hover:shadow-sm {{ $class }} {{ $googleOauthConfigured ? '' : 'opacity-90' }}"
     title="{{ $googleOauthConfigured ? 'Masuk dengan Google' : 'Konfigurasi Google OAuth production belum lengkap' }}"
 >
     <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
@@ -24,7 +24,7 @@
 </a>
 
 @unless ($googleOauthConfigured)
-    <p class="mt-2 text-xs text-amber-600">
+    <p class="mt-2 text-xs text-amber-300">
         Google OAuth production belum lengkap. Isi `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, dan `GOOGLE_REDIRECT_URL`.
     </p>
 @endunless

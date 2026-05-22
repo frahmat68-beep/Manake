@@ -44,17 +44,17 @@
     <section class="mk-section">
         <div class="mk-container space-y-6">
             <div class="mk-card p-6 sm:p-10">
-                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ __('ui.contact.title') }}</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#D4A843]">{{ __('ui.contact.title') }}</p>
                 <h1 class="mk-title-section mt-3">{{ __('ui.contact.info_title') }}</h1>
                 <p class="mk-copy mt-4 leading-relaxed">{{ __('ui.contact.subtitle') }}</p>
             </div>
 
             <div class="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
                 <div class="mk-card p-6">
-                    <h2 class="text-lg font-bold text-slate-900">{{ __('ui.contact.info_title') }}</h2>
-                    <div class="mt-4 space-y-1 text-sm leading-relaxed text-slate-600">
+                    <h2 class="text-lg font-bold text-[#E8E8EC]">{{ __('ui.contact.info_title') }}</h2>
+                    <div class="mt-4 space-y-1 text-sm leading-relaxed text-[#A0A0A8]">
                         @if ($contactAddressTitle)
-                            <p class="font-bold text-slate-900">{{ $contactAddressTitle }}</p>
+                            <p class="font-bold text-[#E8E8EC]">{{ $contactAddressTitle }}</p>
                         @endif
                         @foreach ($contactAddressRest as $addressLine)
                             <p>{{ $addressLine }}</p>
@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="mt-5">
-                        <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ __('ui.contact.labels.whatsapp') }}</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#A0A0A8]">{{ __('ui.contact.labels.whatsapp') }}</p>
                         <div class="mt-2 flex flex-wrap gap-2">
                             @forelse ($contactWhatsappEntries as $whatsappNumber)
                                 @php $whatsappHref = $buildWhatsappHref($whatsappNumber); @endphp
@@ -76,45 +76,45 @@
                                         {{ $whatsappNumber }}
                                     </a>
                                 @else
-                                    <span class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white">
+                                    <span class="inline-flex items-center rounded-lg bg-[#111113] px-3 py-1.5 text-sm font-semibold text-[#E8E8EC] ring-1 ring-[#1A1A1E]">
                                         {{ $whatsappNumber }}
                                     </span>
                                 @endif
                             @empty
-                                <span class="text-sm text-slate-600">{{ $contactWhatsapp }}</span>
+                                <span class="text-sm text-[#A0A0A8]">{{ $contactWhatsapp }}</span>
                             @endforelse
                         </div>
                     </div>
 
                     <div class="mt-5 grid gap-3 sm:grid-cols-2">
-                        <div class="rounded-2xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
-                            <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ __('ui.contact.labels.email') }}</p>
-                            <a href="mailto:{{ $contactEmail }}" class="mt-1 block break-all text-sm font-bold text-slate-800 hover:text-blue-700">
+                        <div class="rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-3">
+                            <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#A0A0A8]">{{ __('ui.contact.labels.email') }}</p>
+                            <a href="mailto:{{ $contactEmail }}" class="mt-1 block break-all text-sm font-bold text-[#E8E8EC] hover:text-[#D4A843]">
                                 {{ $contactEmail }}
                             </a>
                         </div>
-                        <div class="rounded-2xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
-                            <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ __('ui.contact.labels.instagram') }}</p>
+                        <div class="rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-3">
+                            <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#A0A0A8]">{{ __('ui.contact.labels.instagram') }}</p>
                             @if ($instagramUrl)
-                                <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="mt-1 block text-sm font-bold text-slate-800 hover:text-blue-700">
+                                <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="mt-1 block text-sm font-bold text-[#E8E8EC] hover:text-[#D4A843]">
                                     {{ $contactInstagram }}
                                 </a>
                             @else
-                                <p class="mt-1 text-sm font-bold text-slate-800">{{ $contactInstagram }}</p>
+                                <p class="mt-1 text-sm font-bold text-[#E8E8EC]">{{ $contactInstagram }}</p>
                             @endif
                         </div>
                     </div>
                 </div>
 
                 <div class="mk-card p-6">
-                    <h2 class="text-lg font-bold text-slate-900">{{ __('ui.contact.map_title') }}</h2>
-                    <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200/80">
+                    <h2 class="text-lg font-bold text-[#E8E8EC]">{{ __('ui.contact.map_title') }}</h2>
+                    <div class="mt-4 overflow-hidden rounded-md border border-[#1A1A1E]">
                         @if ($contactMapEmbed)
                             <div class="[&>iframe]:h-[280px] [&>iframe]:w-full [&>iframe]:border-0">
                                 {!! $contactMapEmbed !!}
                             </div>
                         @else
-                            <div class="flex h-48 items-center justify-center text-sm text-slate-500">
+                            <div class="flex h-48 items-center justify-center text-sm text-[#A0A0A8]">
                                 {{ __('ui.contact.map_empty') }}
                             </div>
                         @endif

@@ -6,15 +6,15 @@
     ];
 @endphp
 
-<div id="manake-confirm-overlay" class="fixed inset-0 z-[120] hidden items-center justify-center bg-slate-900/55 p-4" role="dialog" aria-modal="true" aria-labelledby="manake-confirm-title">
-    <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
-        <h2 id="manake-confirm-title" class="text-lg font-semibold text-slate-900"></h2>
-        <p id="manake-confirm-message" class="mt-2 text-sm text-slate-600"></p>
+<div id="manake-confirm-overlay" class="fixed inset-0 z-[120] hidden items-center justify-center bg-[#0A0A0B]/75 p-4" role="dialog" aria-modal="true" aria-labelledby="manake-confirm-title">
+    <div class="w-full max-w-md rounded-lg border border-[#1A1A1E] bg-[#111113] p-5 shadow-2xl">
+        <h2 id="manake-confirm-title" class="text-lg font-semibold text-[#E8E8EC]"></h2>
+        <p id="manake-confirm-message" class="mt-2 text-sm text-[#A0A0A8]"></p>
         <div class="mt-5 flex items-center justify-end gap-2">
-            <button id="manake-confirm-cancel" type="button" class="btn-secondary rounded-xl px-4 py-2 text-sm font-semibold">
+            <button id="manake-confirm-cancel" type="button" class="btn-secondary rounded-md px-4 py-2 text-sm font-semibold">
                 {{ __('ui.dialog.cancel') }}
             </button>
-            <button id="manake-confirm-submit" type="button" class="rounded-xl px-4 py-2 text-sm font-semibold text-white">
+            <button id="manake-confirm-submit" type="button" class="rounded-md px-4 py-2 text-sm font-semibold text-[#0A0A0B]">
                 {{ __('ui.dialog.confirm') }}
             </button>
         </div>
@@ -66,8 +66,8 @@
             cancelButton.textContent = cancelText;
             confirmButton.textContent = confirmText;
             confirmButton.className = variant === 'danger'
-                ? 'rounded-xl bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-700'
-                : 'rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700';
+                ? 'rounded-md bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-700'
+                : 'rounded-md bg-[#D4A843] px-4 py-2 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]';
 
             overlay.classList.remove('hidden');
             overlay.classList.add('flex');
@@ -81,13 +81,13 @@
             }
 
             const classes = {
-                info: 'border-slate-200 bg-white text-slate-700',
-                success: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-                error: 'border-rose-200 bg-rose-50 text-rose-700',
+                info: 'border-[#1A1A1E] bg-[#111113] text-[#E8E8EC]',
+                success: 'border-emerald-500/20 bg-emerald-950/70 text-emerald-300',
+                error: 'border-rose-500/20 bg-rose-950/70 text-rose-300',
             };
 
             const toast = document.createElement('div');
-            toast.className = `pointer-events-auto rounded-xl border px-4 py-3 text-sm shadow ${classes[type] || classes.info}`;
+            toast.className = `pointer-events-auto rounded-md border px-4 py-3 text-sm shadow ${classes[type] || classes.info}`;
             toast.textContent = message;
             toastRoot.appendChild(toast);
 

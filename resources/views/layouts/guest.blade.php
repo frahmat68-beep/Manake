@@ -50,15 +50,18 @@
             $compactAuthShowcaseText = $asideText ?: null;
         @endphp
 
-        <div class="min-h-screen flex flex-col items-center justify-center bg-[#121212] relative overflow-hidden w-full">
-            <!-- Centered glass card -->
-            <div class="relative z-10 w-full max-w-sm rounded-3xl !bg-[#0f1115] border !border-white/10 !shadow-[0_0_80px_-20px_rgba(37,99,235,0.25)] !backdrop-blur-xl p-8 flex flex-col items-center">
-                <!-- Logo -->
-                <a href="{{ route('home') }}" class="flex items-center justify-center mb-8 hover:scale-105 transition-transform" data-skip-loader="true">
-                    @php
-                        $logoFile = 'manake-logo-blue.png';
-                    @endphp
-                    <img src="{{ site_asset($logoFile) }}" alt="{{ $brandName }}" class="h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(37,99,235,0.3)]" />
+        <div class="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#0A0A0B] px-4 py-10 text-[#E8E8EC]">
+            <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(212,168,67,0.12),transparent_28%),radial-gradient(circle_at_bottom,_rgba(212,168,67,0.06),transparent_22%)]"></div>
+            <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,11,0.88),rgba(10,10,11,0.7))]"></div>
+
+            <div class="relative z-10 w-full max-w-sm rounded-lg border border-[#1A1A1E] bg-[#111113] p-8 shadow-[0_0_80px_-20px_rgba(212,168,67,0.18)]">
+                <a href="{{ route('home') }}" class="mb-8 flex items-center justify-center transition-transform hover:scale-105" data-skip-loader="true">
+                    <x-brand.image
+                        light="manake-logo-blue.png"
+                        dark="manake-logo-blue.png"
+                        alt="{{ $brandName }}"
+                        img-class="h-16 w-auto object-contain"
+                    />
                 </a>
 
                 @if ($heading ?? null)
@@ -67,13 +70,13 @@
                     </h2>
                 @endif
 
-                <div class="flex flex-col w-full gap-4">
+                <div class="flex w-full flex-col gap-4">
                     {{ $slot }}
                 </div>
             </div>
             
             @if ($showBackHome)
-                <a href="{{ $backUrl }}" class="relative z-10 mt-6 inline-flex w-fit items-center justify-center text-sm font-semibold text-gray-500 hover:text-white transition" data-skip-loader="true">
+                <a href="{{ $backUrl }}" class="relative z-10 mt-6 inline-flex w-fit items-center justify-center text-sm font-semibold text-[#A0A0A8] transition hover:text-[#D4A843]" data-skip-loader="true">
                     &larr; {{ $backLabel }}
                 </a>
             @endif

@@ -25,7 +25,7 @@
             @csrf
 
             <div class="space-y-1.5">
-                <label for="otp" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                <label for="otp" class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">
                     {{ __('app.auth.otp_label') }}
                 </label>
                 <input
