@@ -125,20 +125,20 @@
 </head>
 <body class="manake-shell" data-manake-shell="user">
     <div x-data="{ sidebarOpen: false }" class="min-h-screen">
-        <div class="fixed inset-0 z-40 bg-slate-900/40 transition lg:hidden" x-show="sidebarOpen" x-cloak @click="sidebarOpen = false"></div>
+        <div class="fixed inset-0 z-40 bg-black/60 transition lg:hidden" x-show="sidebarOpen" x-cloak @click="sidebarOpen = false"></div>
 
         <aside
-            class="fixed inset-y-0 left-0 z-50 w-72 transform border-r border-slate-200 bg-white px-6 py-6 transition lg:translate-x-0"
+            class="fixed inset-y-0 left-0 z-50 w-72 transform border-r border-[#1A1A1E] bg-[#0A0A0B] px-6 py-6 transition lg:translate-x-0"
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
         >
             @php
                 $brandName = site_setting('brand.name', 'Manake');
             @endphp
             <div class="flex items-center justify-between">
-                <a href="/" class="inline-flex items-center text-slate-900">
+                <a href="/" class="inline-flex items-center text-[#E8E8EC]">
                     <x-brand.image light="manake-logo-blue.png" dark="manake-logo-blue.png" :alt="$brandName" img-class="h-8 w-auto" />
                 </a>
-                <button class="lg:hidden text-slate-500" @click="sidebarOpen = false" aria-label="{{ __('ui.actions.close') }}">
+                <button class="lg:hidden text-[#A0A0A8]" @click="sidebarOpen = false" aria-label="{{ __('ui.actions.close') }}">
                     ✕
                 </button>
             </div>

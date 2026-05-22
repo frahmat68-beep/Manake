@@ -444,10 +444,10 @@
                 ✕
             </button>
             
-            <div class="relative z-10 w-full max-w-sm rounded-[2.5rem] border border-white/10 bg-slate-900/90 p-8 shadow-[0_0_100px_-20px_rgba(37,99,235,0.4)] animate-fade-up">
+            <div class="relative z-10 w-full max-w-sm rounded-[2.5rem] border border-white/10 bg-slate-900/90 p-8 shadow-[0_0_100px_-20px_rgba(212,168,67,0.28)] animate-fade-up">
                 <!-- Logo -->
                 <div class="mb-8 flex justify-center">
-                    <img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake" class="h-16 w-auto drop-shadow-[0_0_15px_rgba(37,99,235,0.4)]" />
+                    <img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake" class="h-16 w-auto drop-shadow-[0_0_15px_rgba(212,168,67,0.28)]" />
                 </div>
                 
                 <div class="flex flex-col w-full">

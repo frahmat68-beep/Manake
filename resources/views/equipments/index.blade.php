@@ -180,10 +180,10 @@
                 </div>
 
                 @if ($search !== '')
-                    <div class="mt-8 px-4 py-3 bg-blue-50 rounded-2xl border border-blue-100/50 inline-flex items-center gap-3">
-                        <div class="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></div>
-                        <p class="text-sm font-medium text-blue-700">
-                            {{ $catalogSearchResultPrefix }} <span class="font-bold underline decoration-blue-500/30">&quot;{{ $search }}&quot;</span>
+                    <div class="mt-8 inline-flex items-center gap-3 rounded-2xl border border-[#1A1A1E] bg-[#111113] px-4 py-3">
+                        <div class="h-2 w-2 rounded-full bg-[#D4A843] animate-pulse"></div>
+                        <p class="text-sm font-medium text-[#A0A0A8]">
+                            {{ $catalogSearchResultPrefix }} <span class="font-bold text-[#E8E8EC]">&quot;{{ $search }}&quot;</span>
                         </p>
                     </div>
                 @endif
@@ -199,15 +199,15 @@
                     @endphp
 
                     <div class="mb-16">
-                        <div class="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between border-b border-slate-200/60 pb-6">
+                        <div class="mb-8 flex flex-col gap-2 border-b border-[#1A1A1E] pb-6 sm:flex-row sm:items-end sm:justify-between">
                             <div>
-                                <h2 class="text-3xl font-bold tracking-tight text-slate-900">{{ $category->name }}</h2>
+                                <h2 class="text-3xl font-bold tracking-tight text-[#E8E8EC]">{{ $category->name }}</h2>
                                 @if (!empty($category->description))
-                                    <p class="mt-2 text-sm text-slate-500 font-medium max-w-2xl">{{ $category->description }}</p>
+                                    <p class="mt-2 max-w-2xl text-sm font-medium text-[#A0A0A8]">{{ $category->description }}</p>
                                 @endif
                             </div>
-                            <span class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-xs font-bold text-slate-600 border border-slate-200 shadow-sm">
-                                <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                            <span class="inline-flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#111113] px-4 py-1.5 text-xs font-bold text-[#A0A0A8] shadow-sm">
+                                <span class="h-1.5 w-1.5 rounded-full bg-[#D4A843]"></span>
                                 {{ $items->count() }} {{ $catalogItemSuffix }}
                             </span>
                         </div>

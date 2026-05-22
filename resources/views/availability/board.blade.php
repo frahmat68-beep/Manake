@@ -131,21 +131,21 @@
 
         @keyframes boardRangePulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.26);
+                box-shadow: 0 0 0 0 rgba(212, 168, 67, 0.22);
             }
             70% {
-                box-shadow: 0 0 0 9px rgba(37, 99, 235, 0);
+                box-shadow: 0 0 0 9px rgba(212, 168, 67, 0);
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+                box-shadow: 0 0 0 0 rgba(212, 168, 67, 0);
             }
         }
 
         .board-cell--range {
-            border-color: #3b82f6 !important;
-            background: linear-gradient(160deg, #dbeafe 0%, #bfdbfe 100%) !important;
-            color: #0f172a !important;
-            box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.22), 0 14px 28px -24px rgba(37, 99, 235, 0.75) !important;
+            border-color: #D4A843 !important;
+            background: linear-gradient(160deg, rgba(212, 168, 67, 0.16) 0%, rgba(212, 168, 67, 0.26) 100%) !important;
+            color: #E8E8EC !important;
+            box-shadow: 0 0 0 1px rgba(212, 168, 67, 0.2), 0 14px 28px -24px rgba(212, 168, 67, 0.55) !important;
         }
 
         .board-cell--range-dragging {
@@ -164,10 +164,10 @@
         }
 
         html[data-theme-resolved='dark'] .board-cell--range {
-            border-color: rgba(110, 138, 255, 0.7) !important;
-            background: linear-gradient(160deg, #1b2c49 0%, #25426e 100%) !important;
-            color: #eef4ff !important;
-            box-shadow: 0 0 0 1px rgba(110, 138, 255, 0.18), 0 16px 28px -24px rgba(8, 17, 34, 0.8) !important;
+            border-color: rgba(212, 168, 67, 0.72) !important;
+            background: linear-gradient(160deg, rgba(33, 28, 12, 0.95) 0%, rgba(53, 41, 12, 0.92) 100%) !important;
+            color: #E8E8EC !important;
+            box-shadow: 0 0 0 1px rgba(212, 168, 67, 0.18), 0 16px 28px -24px rgba(0, 0, 0, 0.8) !important;
         }
 
         html[data-theme-resolved='dark'] .board-cell--locked {
@@ -485,7 +485,7 @@
         <section class="mk-card p-4 sm:p-6 animate-fade-up">
             <div class="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div class="max-w-2xl">
-                    <p class="section-kicker font-bold tracking-widest uppercase text-blue-600/80">{{ __('ui.nav.availability_board') ?: 'AVAILABILITY BOARD' }}</p>
+                    <p class="section-kicker font-bold tracking-widest uppercase text-[#D4A843]/80">{{ __('ui.nav.availability_board') ?: 'PAPAN KETERSEDIAAN' }}</p>
                     <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl leading-tight">
                         {{ $availabilityTitle }}
                     </h1>
@@ -591,7 +591,7 @@
                 <div class="px-3 py-3 sm:px-5 sm:py-4">
                     <!-- Elegant horizontal scroll indicator for mobile -->
                     <div class="flex items-center gap-1.5 mb-3 px-1 text-[10px] font-semibold text-slate-400 dark:text-slate-500 sm:hidden">
-                        <svg class="h-3.5 w-3.5 animate-pulse text-blue-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <svg class="h-3.5 w-3.5 animate-pulse text-[#D4A843]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
                         </svg>
                         <span>Geser mendatar untuk melihat kalender penuh / Swipe horizontally</span>
@@ -608,8 +608,8 @@
                                 @foreach ($calendarDays as $day)
                                     @php
                                         $toneClass = $toneClasses[$day['tone']] ?? $toneClasses['calm'];
-                                        $selectedClass = $day['is_selected'] ? 'ring-2 ring-blue-500 shadow-md shadow-blue-100' : '';
-                                        $todayClass = $day['is_today'] ? 'text-blue-700 font-bold' : '';
+                                        $selectedClass = $day['is_selected'] ? 'ring-2 ring-[#D4A843] shadow-md shadow-[#D4A843]/20' : '';
+                                        $todayClass = $day['is_today'] ? 'text-[#D4A843] font-bold' : '';
                                         $isSelectable = (bool) ($day['is_selectable'] ?? false);
                                         $lockedClass = $isSelectable ? '' : 'board-cell--locked';
                                         $hasUsage = (int) $day['busy_equipments'] > 0 || (int) $day['reserved_units'] > 0;
@@ -637,7 +637,7 @@
                                         <div class="flex items-center justify-between gap-2">
                                             <p class="text-[11px] font-semibold sm:text-xs {{ $todayClass }}">{{ $day['day'] }}</p>
                                             @if ($day['is_selected'])
-                                                <span class="inline-flex h-2.5 w-2.5 rounded-full bg-blue-600"></span>
+                                                <span class="inline-flex h-2.5 w-2.5 rounded-full bg-[#D4A843]"></span>
                                             @endif
                                         </div>
 
@@ -825,7 +825,7 @@
                                         <p class="text-sm font-semibold text-slate-900 dark:text-slate-100" x-text="item.equipment_name"></p>
                                         <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400" x-text="item.status_label"></p>
                                     </div>
-                                    <span class="rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-150 dark:border-blue-900 px-2 py-0.5 text-[10px] font-bold text-blue-700 dark:text-blue-400" x-text="`x${item.qty}`"></span>
+                                    <span class="rounded-full bg-[#111113] border border-[#1A1A1E] px-2 py-0.5 text-[10px] font-bold text-[#D4A843]" x-text="`x${item.qty}`"></span>
                                 </div>
                                 <p class="mt-2 text-xs text-slate-650 dark:text-slate-350">
                                     {{ $availabilityPeriodLabel }}: <span class="font-semibold text-slate-800 dark:text-slate-200" x-text="`${formatDateLabel(item.start_date)} - ${formatDateLabel(item.end_date)}`"></span>
@@ -858,7 +858,7 @@
                             -
                             <span class="font-semibold text-slate-800 dark:text-slate-200" x-text="formatDateLabel(getRangeEndDate())"></span>
                             •
-                            <span class="font-semibold text-blue-600 dark:text-blue-450" x-text="getRangeDurationLabel()"></span>
+                            <span class="font-semibold text-[#D4A843]" x-text="getRangeDurationLabel()"></span>
                         </p>
                     </div>
                     <button
@@ -916,7 +916,7 @@
                                     <div class="min-w-0 flex-1">
                                         <p class="text-sm font-semibold text-slate-900 dark:text-slate-100" x-text="item.name"></p>
                                         <p class="mt-0.5 text-xs italic text-slate-500 dark:text-slate-400" x-text="item.category"></p>
-                                        <p class="mt-1 text-[11px] font-bold text-blue-700 dark:text-blue-400">
+                                        <p class="mt-1 text-[11px] font-bold text-[#D4A843]">
                                             {{ $availabilityFromPriceLabel }} <span x-text="`{{ $currencyPrefix }} ${Number(item.price_per_day || 0).toLocaleString(@js($intlLocale))}`"></span> {{ __('app.product.per_day') }}
                                         </p>
                                     </div>

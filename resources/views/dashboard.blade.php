@@ -15,7 +15,7 @@
                 'label' => 'Rental Aktif',
                 'value' => 2,
                 'note' => '2 alat sedang disewa',
-                'accent' => 'text-blue-600',
+                'accent' => 'text-[#D4A843]',
             ],
             [
                 'label' => 'Selesai',
@@ -112,7 +112,7 @@
                         </nav>
                     </div>
 
-                    <div class="manake-card" style="background: linear-gradient(180deg, rgba(37,99,235,0.12), rgba(37,99,235,0.04));">
+                    <div class="manake-card" style="background: linear-gradient(180deg, rgba(212,168,67,0.12), rgba(212,168,67,0.04));">
                         <h3 class="text-xl font-black text-slate-950 dark:text-white">{{ __('Butuh Bantuan?') }}</h3>
                         <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
                             {{ __('Tim support Manake siap membantu operasional produksi Anda.') }}
@@ -184,7 +184,7 @@
                                 <p class="manake-kicker">{{ __('Riwayat Terbaru') }}</p>
                                 <h2 class="manake-heading mt-2 text-2xl font-black text-slate-950 dark:text-white">{{ __('Riwayat Terbaru') }}</h2>
                             </div>
-                            <a href="/booking/history" class="text-sm font-bold text-blue-600 hover:text-blue-700">
+                            <a href="/booking/history" class="text-sm font-bold text-[#D4A843] hover:text-[#E0BA5D]">
                                 {{ __('Lengkap') }}
                             </a>
                         </div>
