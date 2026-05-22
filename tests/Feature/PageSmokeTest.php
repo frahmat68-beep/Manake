@@ -43,13 +43,13 @@ class PageSmokeTest extends TestCase
         }
     }
 
-    public function test_home_page_renders_cinematic_hero_surface(): void
+    public function test_home_page_renders_ui_reset_placeholder(): void
     {
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('PROFESSIONAL RENTAL GEAR');
-        $response->assertSee('Browse Equipment');
+        $response->assertSee('MANAKE UI RESET');
+        $response->assertSee('Ready for v0 rebuild');
     }
 
     public function test_login_page_uses_relative_logo_assets(): void
