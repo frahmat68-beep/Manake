@@ -2,7 +2,6 @@
     $initialThemePreference = $themePreference ?? request()->attributes->get('theme_preference', 'light');
     $initialThemeResolved = $themeResolved ?? request()->attributes->get('theme_resolved', $initialThemePreference === 'dark' ? 'dark' : 'light');
     $brandName = site_setting('brand.name', 'Manake');
-    $searchQuery = trim((string) request('q', ''));
 @endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" class="scroll-smooth {{ $initialThemeResolved === 'dark' ? 'dark' : '' }}" data-theme="manake-brand" data-theme-preference="{{ $initialThemePreference }}" data-theme-resolved="{{ $initialThemeResolved }}">
@@ -13,36 +12,35 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', site_setting('seo.meta_title', setting('meta_title', setting('site_name', 'Manake.Id'))))</title>
     <link rel="icon" type="image/png" href="{{ site_asset('MANAKE-FAV-M.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     @include('partials.theme-init')
     @include('partials.runtime-ui-assets')
     @stack('head')
     <style>[x-cloak] { display: none !important; }</style>
 </head>
 <body class="ui-shell landing-shell antialiased selection:bg-blue-600/10 selection:text-blue-700" data-manake-shell="landing">
-    <header class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/88 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/88">
-        <div class="ui-container flex items-center gap-4 py-4">
-            <a href="{{ route('home') }}" class="flex items-center gap-3">
-                <x-brand.image light="manake-logo-blue.png" dark="manake-logo-blue.png" :alt="$brandName" img-class="h-9 w-auto" />
-                <span class="hidden text-sm font-black tracking-[0.18em] text-slate-900 sm:inline">{{ $brandName }}</span>
+    <header class="fixed inset-x-0 top-0 z-50 bg-transparent">
+        <div class="mx-auto flex h-16 max-w-[1400px] items-center gap-6 px-4 sm:px-6 lg:px-10 lg:h-20">
+            <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0" aria-label="{{ $brandName }}">
+                <x-brand.image light="manake-logo-white.png" dark="manake-logo-white.png" :alt="$brandName" img-class="h-9 w-auto" />
             </a>
 
-            <form method="GET" action="{{ route('catalog') }}" class="hidden flex-1 lg:block">
-                <input type="text" name="q" value="{{ $searchQuery }}" placeholder="{{ __('Search gear, categories, or keywords...') }}" class="ui-input max-w-2xl">
-            </form>
-
-            <nav class="ml-auto hidden items-center gap-1 md:flex">
-                <a href="{{ route('catalog') }}" class="rounded-full px-4 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950">{{ __('Catalog') }}</a>
-                <a href="{{ route('availability.board') }}" class="rounded-full px-4 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950">{{ __('Availability') }}</a>
-                <a href="{{ route('rental.rules') }}" class="rounded-full px-4 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950">{{ __('Rules') }}</a>
+            <nav class="hidden flex-1 items-center justify-center gap-8 lg:flex" aria-label="{{ __('Navigasi utama') }}">
+                <a href="#equipment" class="text-[15px] font-medium text-white/55 transition hover:text-white">{{ __('Peralatan') }}</a>
+                <a href="#categories" class="text-[15px] font-medium text-white/55 transition hover:text-white">{{ __('Kategori') }}</a>
+                <a href="#about" class="text-[15px] font-medium text-white/55 transition hover:text-white">{{ __('Tentang Kami') }}</a>
+                <a href="#cara-sewa" class="text-[15px] font-medium text-white/55 transition hover:text-white">{{ __('Cara Sewa') }}</a>
+                <a href="#contact" class="text-[15px] font-medium text-white/55 transition hover:text-white">{{ __('Kontak') }}</a>
             </nav>
 
-            @auth('web')
-                <a href="{{ route('booking.history') }}" class="btn-primary ml-auto px-4 py-2.5 text-sm">{{ __('My Orders') }}</a>
-            @else
-                <a href="{{ route('login') }}" class="btn-secondary ml-auto px-4 py-2.5 text-sm">{{ __('Login') }}</a>
-                <a href="{{ route('register') }}" class="btn-primary px-4 py-2.5 text-sm">{{ __('Register') }}</a>
-            @endauth
+            <div class="ml-auto flex items-center gap-4">
+                <a href="{{ route('login') }}" class="hidden text-sm font-medium text-white/65 transition hover:text-white sm:inline">
+                    {{ __('Masuk') }}
+                </a>
+                <a href="{{ route('catalog') }}" class="inline-flex items-center rounded-lg bg-amber-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300 sm:px-5 lg:px-6">
+                    {{ __('Lihat Peralatan') }}
+                </a>
+            </div>
         </div>
     </header>
 
