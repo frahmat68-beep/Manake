@@ -13,22 +13,22 @@
             "runtime": "vercel-php@0.9.0"
         }
     },
-    "routes": [
+    "rewrites": [
         {
-            "src": "/build/(.*)",
-            "dest": "/public/build/$1"
+            "source": "/build/(.*)",
+            "destination": "/public/build/$1"
         },
         {
-            "src": "/storage/(.*)",
-            "dest": "/public/storage/$1"
+            "source": "/storage/(.*)",
+            "destination": "/public/storage/$1"
         },
         {
-            "src": "/(favicon\\.ico|robots\\.txt|MANAKE-FAV-M\\.png|MANAKE-FAV-M-white\\.png|manake-logo-blue\\.png|manake-logo-white\\.png)",
-            "dest": "/public/$1"
+            "source": "/(favicon\\.ico|robots\\.txt|MANAKE-FAV-M\\.png|MANAKE-FAV-M-white\\.png|manake-logo-blue\\.png|manake-logo-white\\.png)",
+            "destination": "/public/$1"
         },
         {
-            "src": "/(.*)",
-            "dest": "/api/index.php"
+            "source": "/(.*)",
+            "destination": "/api/index.php"
         }
     ]
 }
