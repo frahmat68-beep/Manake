@@ -249,6 +249,13 @@ class CartController extends Controller
         return redirect()->route('cart')->with('success', __('ui.cart.messages.removed'));
     }
 
+    public function clear(CartService $cart)
+    {
+        $cart->clear();
+
+        return redirect()->route('cart')->with('success', __('Semua item di keranjang telah dihapus.'));
+    }
+
     private function estimatedLineSubtotal(array $item): int
     {
         $qty = max((int) ($item['qty'] ?? 1), 1);

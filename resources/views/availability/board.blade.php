@@ -23,8 +23,8 @@
     $intlLocale = app()->getLocale() === 'en' ? 'en-US' : 'id-ID';
     $toneClasses = [
         'calm' => 'border-[#1A1A1E] bg-[#111113] text-[#E8E8EC]',
-        'busy' => 'border-amber-200 bg-amber-50 text-amber-800',
-        'critical' => 'border-rose-200 bg-rose-50 text-rose-800',
+        'busy' => 'border-amber-500/20 bg-amber-500/10 text-amber-400',
+        'critical' => 'border-rose-500/20 bg-rose-500/10 text-rose-400',
     ];
     $availabilityTitle = setting('copy.availability.title', __('ui.availability_board.title'));
     $availabilitySubtitle = setting('copy.availability.subtitle', __('ui.availability_board.subtitle'));
@@ -672,13 +672,13 @@
                             <p class="text-[11px] font-semibold uppercase tracking-wide text-[#A0A0A8]">{{ $availabilityMetricTotal }}</p>
                             <p class="mt-1 text-2xl font-semibold text-[#E8E8EC]">{{ $summary['total_equipments'] ?? 0 }}</p>
                         </div>
-                        <div class="rounded-2xl border border-rose-100 dark:border-rose-950/20 bg-rose-50/50 dark:bg-rose-950/10 px-3 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-rose-500 dark:text-rose-450">{{ $availabilityMetricBusy }}</p>
-                            <p class="mt-1 text-2xl font-semibold text-rose-700 dark:text-rose-400">{{ $summary['busy_equipments'] ?? 0 }}</p>
+                        <div class="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-rose-500">{{ $availabilityMetricBusy }}</p>
+                            <p class="mt-1 text-2xl font-semibold text-rose-400">{{ $summary['busy_equipments'] ?? 0 }}</p>
                         </div>
-                        <div class="rounded-2xl border border-emerald-100 dark:border-emerald-950/20 bg-emerald-50/50 dark:bg-emerald-950/10 px-3 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">{{ $availabilityMetricAvailable }}</p>
-                            <p class="mt-1 text-2xl font-semibold text-emerald-700 dark:text-emerald-450">{{ $summary['available_equipments'] ?? 0 }}</p>
+                        <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-3 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-500">{{ $availabilityMetricAvailable }}</p>
+                            <p class="mt-1 text-2xl font-semibold text-emerald-400">{{ $summary['available_equipments'] ?? 0 }}</p>
                         </div>
                         <div class="rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-3">
                             <p class="text-[11px] font-semibold uppercase tracking-wide text-[#A0A0A8]">{{ $availabilityMetricUnits }}</p>
@@ -797,17 +797,17 @@
 
                 <div class="px-4 py-4 sm:px-5 overflow-y-auto max-h-[calc(90vh-5rem)]">
                     <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                        <div class="rounded-xl border border-rose-100 dark:border-rose-950/20 bg-rose-50/50 dark:bg-rose-950/10 px-3.5 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-rose-500 dark:text-rose-450">{{ $availabilityMetricBusy }}</p>
-                            <p class="mt-1.5 text-xl font-bold text-rose-700 dark:text-rose-400" x-text="modalBusyEquipments"></p>
+                        <div class="rounded-xl border border-rose-500/20 bg-rose-500/10 px-3.5 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-rose-500">{{ $availabilityMetricBusy }}</p>
+                            <p class="mt-1 text-xl font-bold text-rose-400" x-text="modalBusyEquipments"></p>
                         </div>
-                        <div class="rounded-xl border border-amber-100 dark:border-amber-950/20 bg-amber-50/50 dark:bg-amber-950/10 px-3.5 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-450">{{ $availabilityMetricUnits }}</p>
-                            <p class="mt-1.5 text-xl font-bold text-amber-700 dark:text-amber-400" x-text="modalReservedUnits"></p>
+                        <div class="rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3.5 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-[#A0A0A8]">{{ $availabilityMetricUnits }}</p>
+                            <p class="mt-1 text-xl font-bold text-[#E8E8EC]" x-text="modalReservedUnits"></p>
                         </div>
-                        <div class="rounded-xl border border-emerald-100 dark:border-emerald-950/20 bg-emerald-50/50 dark:bg-emerald-950/10 px-3.5 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-450">{{ $availabilityMetricAvailable }}</p>
-                            <p class="mt-1.5 text-xl font-bold text-emerald-700 dark:text-emerald-400" x-text="modalAvailableEquipments"></p>
+                        <div class="rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-3">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-500">{{ $availabilityMetricAvailable }}</p>
+                            <p class="mt-1 text-xl font-bold text-emerald-400" x-text="modalAvailableEquipments"></p>
                         </div>
                     </div>
 
@@ -887,7 +887,7 @@
                         </div>
                         <div class="rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3.5 py-2">
                             <p class="text-[10px] font-bold uppercase tracking-wide text-[#A0A0A8]">{{ $availabilityRangeAvailableLabel }}</p>
-                            <p class="text-base font-bold text-emerald-700 dark:text-emerald-400" x-text="getFilteredRangeRows().length"></p>
+                            <p class="text-base font-bold text-emerald-400" x-text="getFilteredRangeRows().length"></p>
                         </div>
                         <a
                             :href="catalogUrl"

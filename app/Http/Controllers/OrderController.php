@@ -91,6 +91,31 @@ class OrderController extends Controller
         return redirect()->route('account.orders.show', $order)->with('pay_now', true);
     }
 
+    public function cancel(Request $request, Order $order, OrderPaymentLifecycleService $paymentLifecycle)
+    {
+        $this->ensureOwnedOrder($request, $order);
+        $paymentLifecycle->expirePendingOrderIfPastCutoff($order);
+        $paymentLifecycle->reconcileRentalPaymentState($order);
+
+        if ((string) ($order->status_pesanan ?? '') !== Order::STATUS_PENDING_PAYMENT) {
+            return redirect()
+                ->route('account.orders.show', $order)
+                ->with('error', __('Hanya pesanan yang menunggu pembayaran yang bisa dibatalkan secara mandiri.'));
+        }
+
+        $cancelled = $paymentLifecycle->cancelPendingOrder($order);
+
+        if (! $cancelled) {
+            return redirect()
+                ->route('account.orders.show', $order)
+                ->with('error', __('Gagal membatalkan pesanan. Mungkin pesanan sudah diproses atau dibatalkan sebelumnya.'));
+        }
+
+        return redirect()
+            ->route('account.orders.show', $order)
+            ->with('success', __('Pesanan berhasil dibatalkan.'));
+    }
+
     public function reschedule(Request $request, Order $order, AvailabilityService $availability, PricingService $pricing)
     {
         $this->ensureOwnedOrder($request, $order);

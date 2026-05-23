@@ -139,6 +139,74 @@ class OrderPaymentLifecycleService
         return $updated;
     }
 
+    public function cancelPendingOrder(Order $order): bool
+    {
+        if ((string) ($order->status_pembayaran ?? '') !== Order::PAYMENT_PENDING) {
+            return false;
+        }
+
+        if ((string) ($order->status_pesanan ?? '') !== Order::STATUS_PENDING_PAYMENT) {
+            return false;
+        }
+
+        if ($order->paid_at !== null) {
+            return false;
+        }
+
+        $updated = false;
+
+        DB::transaction(function () use ($order, &$updated) {
+            $lockedOrder = Order::query()
+                ->whereKey($order->id)
+                ->lockForUpdate()
+                ->first();
+
+            if (! $lockedOrder) {
+                return;
+            }
+
+            if ($lockedOrder->status_pembayaran !== Order::PAYMENT_PENDING || $lockedOrder->status_pesanan !== Order::STATUS_PENDING_PAYMENT) {
+                return;
+            }
+
+            if ($lockedOrder->paid_at !== null) {
+                return;
+            }
+
+            $lockedOrder->status_pembayaran = Order::PAYMENT_FAILED;
+            $lockedOrder->status_pesanan = Order::STATUS_CANCELLED;
+            $lockedOrder->status = 'cancelled';
+            $lockedOrder->save();
+
+            Payment::query()
+                ->where('order_id', $lockedOrder->id)
+                ->where('provider', Payment::PROVIDER_MIDTRANS_RENTAL)
+                ->update([
+                    'status' => Order::PAYMENT_FAILED,
+                    'transaction_status' => 'cancel',
+                    'updated_at' => now(),
+                ]);
+
+            if (schema_table_exists_cached('order_notifications') && (int) $lockedOrder->user_id > 0) {
+                OrderNotification::query()->create([
+                    'user_id' => $lockedOrder->user_id,
+                    'order_id' => $lockedOrder->id,
+                    'type' => 'order_cancelled',
+                    'title' => 'Pesanan dibatalkan',
+                    'message' => 'Pesanan ' . ($lockedOrder->order_number ?: ('ORD-' . $lockedOrder->id)) . ' telah dibatalkan oleh pengguna.',
+                ]);
+            }
+
+            $updated = true;
+        });
+
+        if ($updated) {
+            $order->refresh();
+        }
+
+        return $updated;
+    }
+
     public function reconcileRentalPaymentState(Order $order): bool
     {
         $payment = $order->relationLoaded('payment')

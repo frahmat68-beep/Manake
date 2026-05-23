@@ -477,7 +477,16 @@
                         <button id="refresh-status-button" class="mt-2 inline-flex w-full items-center justify-center rounded-2xl border border-[#1A1A1E] px-4 py-2.5 text-sm font-semibold text-[#A0A0A8] hover:border-[#D4A843] hover:text-[#D4A843] transition">
                             {{ $orderRefreshPaymentButton }}
                         </button>
-                        <p class="text-xs text-[#A0A0A8]">{{ $orderPaymentNote }}</p>
+                        @if ($orderStatus === 'menunggu_pembayaran')
+                            <form action="{{ route('account.orders.cancel', $order) }}" method="POST" class="mt-2" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="inline-flex w-full items-center justify-center rounded-2xl border border-rose-500/20 px-4 py-2.5 text-sm font-semibold text-rose-500 hover:bg-rose-500/10 transition">
+                                    {{ __('Batalkan Pesanan') }}
+                                </button>
+                            </form>
+                        @endif
+                        <p class="mt-2 text-xs text-[#A0A0A8]">{{ $orderPaymentNote }}</p>
                     @endif
 
                     @if ($hasDamageFeeOutstanding)

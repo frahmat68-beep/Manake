@@ -35,7 +35,7 @@
                 name="email"
                 value="{{ old('email') }}"
                 required
-                class="input w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all"
+                class="input w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-[#E8E8EC] placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all"
             />
         </div>
         
@@ -51,7 +51,7 @@
                 name="password"
                 required
                 placeholder="{{ __('ui.auth.password_placeholder') }}"
-                input-class="input w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all"
+                input-class="input w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-[#E8E8EC] placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all"
             >
             </x-password-input>
         </div>
@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <x-auth.google-button label="Lanjut dengan Google" class="btn-secondary w-full flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-semibold transition-all hover:bg-[#1A1A1E] border border-[#1A1A1E] text-white bg-transparent" />
+        <x-auth.google-button label="Lanjut dengan Google" class="btn-secondary w-full flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-semibold transition-all hover:bg-[#1A1A1E] border border-[#1A1A1E] text-[#E8E8EC] bg-transparent" />
         
         <div class="mt-4 w-full text-center">
             <span class="text-sm text-[#A0A0A8]">

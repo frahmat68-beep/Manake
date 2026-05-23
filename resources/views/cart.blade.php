@@ -4,14 +4,30 @@
     <div class="min-h-screen bg-[#0A0A0B] text-[#E8E8EC]">
         <div class="mx-auto max-w-7xl px-4 py-12 pb-24 sm:px-6 lg:px-8">
             {{-- Header Section --}}
-            <header class="mb-12 text-center sm:text-left animate-fade-up">
-                <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-8 shadow-2xl sm:p-10">
-                    <h1 class="text-4xl font-black tracking-tight text-[#E8E8EC] sm:text-5xl leading-tight">
-                        {{ __('Keranjang Belanja') }}
-                    </h1>
-                    <p class="mt-4 max-w-2xl text-lg font-medium leading-relaxed text-[#A0A0A8]">
-                        {{ __('Kelola pilihan alat produksi Anda sebelum melanjutkan ke pembayaran.') }}
-                    </p>
+            <header class="mb-12 flex flex-col sm:flex-row sm:items-center sm:justify-between text-center sm:text-left animate-fade-up">
+                <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-8 shadow-2xl sm:p-10 flex-1">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-4xl font-black tracking-tight text-[#E8E8EC] sm:text-5xl leading-tight">
+                                {{ __('Keranjang Belanja') }}
+                            </h1>
+                            <p class="mt-4 max-w-2xl text-lg font-medium leading-relaxed text-[#A0A0A8]">
+                                {{ __('Kelola pilihan alat produksi Anda sebelum melanjutkan ke pembayaran.') }}
+                            </p>
+                        </div>
+                        @if (!empty($cartItems))
+                            <form action="{{ route('cart.clear') }}" method="POST" class="inline-block mt-4 sm:mt-0" onsubmit="return confirm('{{ __('Apakah Anda yakin ingin menghapus semua item di keranjang?') }}');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="inline-flex items-center rounded-md border border-rose-500/20 bg-rose-500/10 px-6 py-3 text-xs font-bold uppercase tracking-widest text-rose-500 transition hover:bg-rose-500 hover:text-white">
+                                    <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                    {{ __('Hapus Semua') }}
+                                </button>
+                            </form>
+                        @endif
+                    </div>
                 </div>
             </header>
 

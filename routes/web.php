@@ -76,6 +76,7 @@ Route::middleware('auth.feature')->group(function () {
     Route::patch('/cart/{key}/decrement', [CartController::class, 'decrement'])->name('cart.decrement');
     Route::patch('/cart/{key}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{key}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 });
 
 /*
@@ -113,6 +114,7 @@ Route::middleware(['auth', 'otp'])->group(function () {
 
     Route::get('/account/orders/{order:order_number}', [OrderController::class, 'show'])->name('account.orders.show');
     Route::patch('/account/orders/{order:order_number}/reschedule', [OrderController::class, 'reschedule'])->name('account.orders.reschedule');
+    Route::delete('/account/orders/{order:order_number}/cancel', [OrderController::class, 'cancel'])->name('account.orders.cancel');
     Route::get('/account/orders/{order:order_number}/receipt', [OrderController::class, 'receipt'])
         ->middleware('signed')
         ->name('account.orders.receipt');
