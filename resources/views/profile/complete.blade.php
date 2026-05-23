@@ -164,7 +164,7 @@
                             <div class="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2">
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Nama Lengkap') }}</label>
-                                    <input type="text" name="full_name" value="{{ old('full_name', $profile->full_name ?? $user?->name) }}" @if ($hasLockedFullName) readonly @endif required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @if($hasLockedFullName) bg-slate-100 text-[#A0A0A8] cursor-not-allowed @endif @error('full_name') border-rose-400 @enderror">
+                                    <input type="text" name="full_name" value="{{ old('full_name', $profile->full_name ?? $user?->name) }}" @if ($hasLockedFullName) readonly @endif required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @if($hasLockedFullName) bg-[#1A1A1E] text-[#66666C] cursor-not-allowed border-none @endif @error('full_name') border-rose-400 @enderror">
                                     @if ($hasLockedFullName)
                                         <p class="mt-1 text-xs text-[#A0A0A8]">{{ __('Nama sudah dikunci untuk keamanan data identitas.') }}</p>
                                     @endif
@@ -172,7 +172,7 @@
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('NIK (16 digit)') }}</label>
-                                    <input type="text" name="nik" value="{{ old('nik', $profile->nik ?? $profile->identity_number) }}" @if ($hasLockedNik) readonly @endif required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @if($hasLockedNik) bg-slate-100 text-[#A0A0A8] cursor-not-allowed @endif @error('nik') border-rose-400 @enderror">
+                                    <input type="text" name="nik" value="{{ old('nik', $profile->nik ?? $profile->identity_number) }}" @if ($hasLockedNik) readonly @endif required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @if($hasLockedNik) bg-[#1A1A1E] text-[#66666C] cursor-not-allowed border-none @endif @error('nik') border-rose-400 @enderror">
                                     @if ($hasLockedNik)
                                         <p class="mt-1 text-xs text-[#A0A0A8]">{{ __('NIK sudah dikunci dan tidak dapat diubah.') }}</p>
                                     @endif
@@ -180,12 +180,12 @@
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Tanggal Lahir') }}</label>
-                                    <input type="date" name="date_of_birth" value="{{ old('date_of_birth', optional($profile?->date_of_birth)->format('Y-m-d')) }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('date_of_birth') border-rose-400 @enderror">
+                                    <input type="date" name="date_of_birth" value="{{ old('date_of_birth', optional($profile?->date_of_birth)->format('Y-m-d')) }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('date_of_birth') border-rose-400 @enderror">
                                     @error('date_of_birth')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Gender') }}</label>
-                                    <select name="gender" class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('gender') border-rose-400 @enderror">
+                                    <select name="gender" class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('gender') border-rose-400 @enderror">
                                         <option value="" disabled @selected(! in_array(old('gender', $profile->gender ?? ''), ['male', 'female'], true))>{{ __('Pilih') }}</option>
                                         <option value="male" @selected(old('gender', $profile->gender ?? '') === 'male')>{{ __('Laki-laki') }}</option>
                                         <option value="female" @selected(old('gender', $profile->gender ?? '') === 'female')>{{ __('Perempuan') }}</option>
@@ -200,42 +200,42 @@
                             <div class="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2">
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Nomor Telepon') }}</label>
-                                    <input type="text" name="phone" value="{{ old('phone', $profile->phone ?? '') }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('phone') border-rose-400 @enderror">
+                                    <input type="text" name="phone" value="{{ old('phone', $profile->phone ?? '') }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('phone') border-rose-400 @enderror">
                                     @error('phone')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Google Maps Link (opsional)') }}</label>
-                                    <input type="url" name="maps_url" value="{{ old('maps_url', $profile->maps_url ?? '') }}" class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('maps_url') border-rose-400 @enderror">
+                                    <input type="url" name="maps_url" value="{{ old('maps_url', $profile->maps_url ?? '') }}" class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('maps_url') border-rose-400 @enderror">
                                     @error('maps_url')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div class="md:col-span-2">
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Jalan, Nomor, RT/RW') }}</label>
-                                    <input type="text" name="address_line" value="{{ old('address_line', $profile->address_line ?? $profile->address ?? '') }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('address_line') border-rose-400 @enderror">
+                                    <input type="text" name="address_line" value="{{ old('address_line', $profile->address_line ?? $profile->address ?? '') }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('address_line') border-rose-400 @enderror">
                                     @error('address_line')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Kelurahan') }}</label>
-                                    <input type="text" name="kelurahan" value="{{ old('kelurahan', $profile->kelurahan ?? '') }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('kelurahan') border-rose-400 @enderror">
+                                    <input type="text" name="kelurahan" value="{{ old('kelurahan', $profile->kelurahan ?? '') }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('kelurahan') border-rose-400 @enderror">
                                     @error('kelurahan')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Kecamatan') }}</label>
-                                    <input type="text" name="kecamatan" value="{{ old('kecamatan', $profile->kecamatan ?? '') }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('kecamatan') border-rose-400 @enderror">
+                                    <input type="text" name="kecamatan" value="{{ old('kecamatan', $profile->kecamatan ?? '') }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('kecamatan') border-rose-400 @enderror">
                                     @error('kecamatan')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Kota / Kabupaten') }}</label>
-                                    <input type="text" name="city" value="{{ old('city', $profile->city ?? '') }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('city') border-rose-400 @enderror">
+                                    <input type="text" name="city" value="{{ old('city', $profile->city ?? '') }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('city') border-rose-400 @enderror">
                                     @error('city')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Provinsi') }}</label>
-                                    <input type="text" name="province" value="{{ old('province', $profile->province ?? '') }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('province') border-rose-400 @enderror">
+                                    <input type="text" name="province" value="{{ old('province', $profile->province ?? '') }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('province') border-rose-400 @enderror">
                                     @error('province')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Kode Pos') }}</label>
-                                    <input type="text" name="postal_code" value="{{ old('postal_code', $profile->postal_code ?? '') }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('postal_code') border-rose-400 @enderror">
+                                    <input type="text" name="postal_code" value="{{ old('postal_code', $profile->postal_code ?? '') }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('postal_code') border-rose-400 @enderror">
                                     @error('postal_code')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                             </div>
@@ -246,17 +246,17 @@
                             <div class="mt-4 grid grid-cols-1 gap-5 md:grid-cols-3">
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Nama') }}</label>
-                                    <input type="text" name="emergency_name" value="{{ old('emergency_name', $profile->emergency_name ?? $profile->emergency_contact ?? '') }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('emergency_name') border-rose-400 @enderror">
+                                    <input type="text" name="emergency_name" value="{{ old('emergency_name', $profile->emergency_name ?? $profile->emergency_contact ?? '') }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('emergency_name') border-rose-400 @enderror">
                                     @error('emergency_name')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('Hubungan') }}</label>
-                                    <input type="text" name="emergency_relation" value="{{ old('emergency_relation', $profile->emergency_relation ?? '') }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('emergency_relation') border-rose-400 @enderror">
+                                    <input type="text" name="emergency_relation" value="{{ old('emergency_relation', $profile->emergency_relation ?? '') }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('emergency_relation') border-rose-400 @enderror">
                                     @error('emergency_relation')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-[#A0A0A8] dark:text-[#A0A0A8]">{{ __('No. Telepon') }}</label>
-                                    <input type="text" name="emergency_phone" value="{{ old('emergency_phone', $profile->emergency_phone ?? '') }}" required class="input mt-2 w-full rounded-md px-4 py-2.5 text-sm focus:border-[#D4A843] focus:ring-2 focus:ring-[#D4A843]/20 focus:outline-none @error('emergency_phone') border-rose-400 @enderror">
+                                    <input type="text" name="emergency_phone" value="{{ old('emergency_phone', $profile->emergency_phone ?? '') }}" required class="input mt-2 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-white placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all @error('emergency_phone') border-rose-400 @enderror">
                                     @error('emergency_phone')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                                 </div>
                             </div>

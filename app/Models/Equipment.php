@@ -126,6 +126,9 @@ class Equipment extends Model
             }
         }
 
+        // Replace literal \n and \r\n with actual newlines
+        $text = str_replace(['\r\n', '\n', '\r'], "\n", $text);
+
         $lines = preg_split('/\r\n|\r|\n/', $text) ?: [];
         if (count($lines) <= 1) {
             $lines = preg_split('/\s*[;|]\s*/', $text) ?: [$text];

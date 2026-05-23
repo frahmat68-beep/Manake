@@ -17,7 +17,7 @@
 
             <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
                 {{-- Cart Items Section --}}
-                <section class="lg:col-span-12 space-y-8">
+                <section class="lg:col-span-8 space-y-8">
                     @if (session('success'))
                         <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-6 py-4 text-sm font-bold text-emerald-600 shadow-sm animate-fade-in-down flex items-center gap-3">
                             <div class="h-2 w-2 rounded-full bg-emerald-500"></div>
@@ -139,51 +139,51 @@
 
                 @if (!empty($cartItems))
                 {{-- Summary Section --}}
-                <section class="lg:col-span-12 mt-8">
-                    <article class="relative overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#111113] p-10 text-[#E8E8EC] shadow-2xl sm:p-12 animate-fade-up">
+                <section class="lg:col-span-4 lg:sticky lg:top-24 mt-8 lg:mt-0 z-20">
+                    <article class="relative overflow-hidden rounded-xl border border-[#1A1A1E] bg-[#111113] p-8 text-[#E8E8EC] shadow-2xl animate-fade-up">
                         <div class="absolute top-0 right-0 p-12 opacity-10 blur-2xl">
                             <div class="h-64 w-64 rounded-full bg-[#D4A843]"></div>
                         </div>
                         
                         <div class="relative z-10">
-                            <h2 class="text-3xl font-black tracking-tight leading-none">{{ __('Ringkasan Biaya Estimasi') }}</h2>
-                            <p class="mt-3 text-base font-bold text-[#A0A0A8]">{{ __('Semua biaya sudah termasuk pajak dan garansi alat dasar.') }}</p>
+                            <h2 class="text-2xl font-black tracking-tight leading-none">{{ __('Ringkasan Biaya') }}</h2>
+                            <p class="mt-2 text-xs font-bold text-[#A0A0A8]">{{ __('Estimasi sudah termasuk pajak dan garansi dasar.') }}</p>
                             
                             <div class="mt-12 space-y-6 border-t border-slate-800/50 pt-12">
                                 @if ($cartSuggestedStartDate && $cartSuggestedEndDate)
                                     <div class="flex items-center justify-between rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-6 shadow-inner">
                                         <div class="flex items-center gap-4">
-                                            <div class="flex h-10 w-10 items-center justify-center rounded-md bg-[#D4A843] text-[#0A0A0B] shadow-lg shadow-[#D4A843]/20">
+                                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#D4A843] text-[#0A0A0B] shadow-lg shadow-[#D4A843]/20">
                                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                             </div>
-                                            <div>
-                                                <span class="mb-0.5 block text-[10px] font-black uppercase tracking-widest text-[#D4A843]">{{ __('Masa Sewa Terpusat') }}</span>
-                                                <span class="text-lg font-black text-[#E8E8EC]">{{ Carbon\Carbon::parse($cartSuggestedStartDate)->format('d M') }} — {{ Carbon\Carbon::parse($cartSuggestedEndDate)->format('d M Y') }}</span>
+                                            <div class="truncate">
+                                                <span class="mb-0.5 block text-[10px] font-black uppercase tracking-widest text-[#D4A843]">{{ __('Masa Sewa') }}</span>
+                                                <span class="text-sm font-black text-[#E8E8EC]">{{ Carbon\Carbon::parse($cartSuggestedStartDate)->format('d M') }} — {{ Carbon\Carbon::parse($cartSuggestedEndDate)->format('d M Y') }}</span>
                                             </div>
                                         </div>
-                                        <span class="hidden rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-2 text-xs font-bold text-[#D4A843] sm:inline-block">{{ $days }} Hari Produksi</span>
+                                        <span class="hidden rounded-md border border-[#1A1A1E] bg-[#111113] px-3 py-1.5 text-[10px] font-bold text-[#D4A843] sm:inline-block whitespace-nowrap">{{ $days }} Hari</span>
                                     </div>
                                 @endif
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 py-6">
+                                <div class="grid grid-cols-1 gap-6 py-6">
                                     <div class="space-y-4">
-                                        <div class="flex justify-between text-base font-bold text-[#A0A0A8]">
+                                        <div class="flex justify-between text-sm font-bold text-[#A0A0A8]">
                                             <span>{{ __('Subtotal') }}</span>
                                             <span class="text-[#E8E8EC]">Rp {{ number_format($estimatedSubtotal, 0, ',', '.') }}</span>
                                         </div>
-                                        <div class="flex justify-between text-base font-bold text-[#A0A0A8]">
+                                        <div class="flex justify-between text-sm font-bold text-[#A0A0A8]">
                                             <span>{{ __('PPN (11%)') }}</span>
                                             <span class="text-[#E8E8EC]">Rp {{ number_format($taxAmount, 0, ',', '.') }}</span>
                                         </div>
                                     </div>
                                     
-                                    <div class="flex flex-col items-start sm:items-end justify-center">
+                                    <div class="flex flex-col items-start border-t border-[#1A1A1E] pt-6">
                                         <span class="mb-2 text-[10px] font-black uppercase tracking-[0.3em] text-[#D4A843]">{{ __('Total Pembayaran') }}</span>
-                                        <p class="text-5xl font-black tracking-tighter text-[#E8E8EC] lg:text-6xl">Rp {{ number_format($grandTotal, 0, ',', '.') }}</p>
+                                        <p class="text-4xl font-black tracking-tighter text-[#E8E8EC]">Rp {{ number_format($grandTotal, 0, ',', '.') }}</p>
                                     </div>
                                 </div>
                                 
-                                <div class="flex flex-col gap-6 border-t border-[#1A1A1E] pt-10 sm:flex-row sm:items-center sm:justify-between">
+                                <div class="flex flex-col gap-6 pt-6">
                                     <div class="flex items-center gap-4">
                                         <div class="flex h-12 w-12 items-center justify-center rounded-md border border-[#1A1A1E] bg-[#0A0A0B]">
                                             <svg class="h-6 w-6 text-[#A0A0A8]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04default_api:6A11.955 11.955 0 013 12c0 5.391 3.991 9.928 9 10.822 5.009-.894 9-5.43 9-10.822 0-2.08-.528-4.047-1.455-5.764z"></path></svg>
@@ -193,11 +193,11 @@
                                             <p class="text-sm font-bold text-[#A0A0A8]">Diproses oleh <span class="font-black text-[#E8E8EC]">Midtrans</span></p>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col gap-4 min-w-[320px]">
-                                        <a href="{{ route('checkout') }}" class="group/checkout relative flex items-center justify-center overflow-hidden rounded-md bg-[#D4A843] py-5 text-lg font-black text-[#0A0A0B] shadow-2xl shadow-[#D4A843]/20 transition-all hover:scale-[1.02] active:scale-95">
+                                    <div class="flex flex-col gap-4 w-full mt-2">
+                                        <a href="{{ route('checkout') }}" class="group/checkout relative flex items-center justify-center overflow-hidden rounded-md bg-[#D4A843] py-4 text-base font-black text-[#0A0A0B] shadow-2xl shadow-[#D4A843]/20 transition-all hover:scale-[1.02] active:scale-95">
                                             <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover/checkout:opacity-100 transition-opacity"></div>
-                                            {{ __('Lanjut ke Checkout') }}
-                                            <svg class="ml-3 h-5 w-5 transition-transform group-hover/checkout:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            {{ __('Checkout') }}
+                                            <svg class="ml-3 h-4 w-4 transition-transform group-hover/checkout:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                                             </svg>
                                         </a>

@@ -129,7 +129,7 @@
             </div>
 
             <div class="mt-4 flex-1 overflow-hidden">
-                <div class="scroll-panel h-full divide-y divide-slate-100 overflow-y-auto pr-1">
+                <div class="scroll-panel h-full divide-y divide-[#1A1A1E] overflow-y-auto pr-1">
                     @forelse ($recentBookings as $order)
                         @php
                             $meta = $paymentMeta($order->status_pembayaran ?? 'pending');
