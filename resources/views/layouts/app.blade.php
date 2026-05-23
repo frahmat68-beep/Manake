@@ -92,6 +92,13 @@
             --manake-heading-h4-resolved: var(--manake-heading-h4-dark);
             --manake-body-color-resolved: var(--manake-body-color-dark);
         }
+        body[data-manake-shell="app"] {
+            --manake-heading-h1-resolved: #E8E8EC;
+            --manake-heading-h2-resolved: #E8E8EC;
+            --manake-heading-h3-resolved: #D4A843;
+            --manake-heading-h4-resolved: #E8E8EC;
+            --manake-body-color-resolved: #A0A0A8;
+        }
         header :is(h1, h2, h3) {
             color: var(--manake-heading-h1-resolved) !important;
             letter-spacing: -0.012em;

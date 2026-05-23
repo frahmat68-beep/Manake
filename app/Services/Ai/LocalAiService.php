@@ -11,12 +11,16 @@ use Throwable;
 class LocalAiService
 {
     protected string $baseUrl;
+
     protected string $model;
+
+    protected int $timeoutSeconds;
 
     public function __construct()
     {
-        $this->baseUrl = (string) config('services.ollama.base_url', 'http://152.69.218.198:11434');
+        $this->baseUrl = rtrim((string) config('services.ollama.base_url', 'http://152.69.218.198:11434'), '/');
         $this->model = (string) config('services.ollama.model', 'qwen2:0.5b');
+        $this->timeoutSeconds = max(2, (int) config('services.ollama.timeout', 8));
     }
 
     /**
@@ -25,14 +29,15 @@ class LocalAiService
     public function chat(array $messages)
     {
         try {
-            if (!collect($messages)->contains('role', 'system')) {
+            if (! collect($messages)->contains('role', 'system')) {
                 array_unshift($messages, [
                     'role' => 'system',
                     'content' => $this->buildSystemPrompt(),
                 ]);
             }
 
-            $response = Http::timeout(60) // High timeout for swap-based AI
+            $response = Http::timeout($this->timeoutSeconds)
+                ->connectTimeout(min($this->timeoutSeconds, 5))
                 ->post("{$this->baseUrl}/api/chat", [
                     'model' => $this->model,
                     'messages' => $messages,
@@ -46,7 +51,8 @@ class LocalAiService
 
             if ($response->successful()) {
                 $content = $response->json('message.content');
-                return $content ?: "Maaf, saya tidak mendapatkan respon yang valid dari AI Lokal.";
+
+                return $content ?: 'Maaf, saya tidak mendapatkan respon yang valid dari AI Lokal.';
             }
 
             Log::error('Local AI (Ollama) API Error', [
@@ -54,10 +60,11 @@ class LocalAiService
                 'body' => $response->body(),
             ]);
 
-            return "Maaf, mesin AI lokal kami sedang sibuk atau mengalami kendala. Silakan coba beberapa saat lagi.";
+            return 'Maaf, mesin AI lokal kami sedang sibuk atau mengalami kendala. Silakan coba beberapa saat lagi.';
         } catch (Throwable $e) {
-            Log::critical('LocalAiService::chat failure: ' . $e->getMessage(), ['exception' => $e]);
-            return "Maaf, terjadi kesalahan teknis pada sistem AI lokal.";
+            Log::critical('LocalAiService::chat failure: '.$e->getMessage(), ['exception' => $e]);
+
+            return 'Maaf, terjadi kesalahan teknis pada sistem AI lokal.';
         }
     }
 
@@ -69,29 +76,29 @@ class LocalAiService
         try {
             $siteName = site_setting('brand.name', 'Manake');
             $tagline = site_setting('brand.tagline', 'Rental Alat Produksi Profesional');
-            $owner = "Kiki Rachmat";
-            
-            $categories = schema_table_exists_cached('categories') 
-                ? Category::all(['name'])->map(fn($c) => "- {$c->name}")->implode("\n")
-                : "Data kategori sedang tidak tersedia.";
-            
+            $owner = 'Kiki Rachmat';
+
+            $categories = schema_table_exists_cached('categories')
+                ? Category::all(['name'])->map(fn ($c) => "- {$c->name}")->implode("\n")
+                : 'Data kategori sedang tidak tersedia.';
+
             $equipments = schema_table_exists_cached('equipments')
                 ? Equipment::with('category:id,name')
                     ->where('status', 'ready')
                     ->limit(20) // Limit to save context space for small models
                     ->get(['name', 'price_per_day', 'stock', 'category_id'])
-                    ->map(function($e) {
-                        return "- {$e->name} ({$e->category?->name}): Rp" . number_format($e->price_per_day, 0, ',', '.') . "/hari. Stok: {$e->stock}";
+                    ->map(function ($e) {
+                        return "- {$e->name} ({$e->category?->name}): Rp".number_format($e->price_per_day, 0, ',', '.')."/hari. Stok: {$e->stock}";
                     })->implode("\n")
-                : "Data alat sedang tidak tersedia.";
+                : 'Data alat sedang tidak tersedia.';
 
         } catch (Throwable $e) {
-            Log::error('Local Chatbot Prompt Building Failure: ' . $e->getMessage());
+            Log::error('Local Chatbot Prompt Building Failure: '.$e->getMessage());
             $siteName = 'Manake';
             $tagline = 'Rental Alat Produksi Profesional';
-            $owner = "Kiki Rachmat";
-            $categories = "Data kategori...";
-            $equipments = "Data alat...";
+            $owner = 'Kiki Rachmat';
+            $categories = 'Data kategori...';
+            $equipments = 'Data alat...';
         }
 
         return "Kamu adalah 'Manake Assistant', asisten cerdas khusus untuk platform '{$siteName}' ({$tagline}).

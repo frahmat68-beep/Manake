@@ -349,7 +349,7 @@ return [
         'range_filter_label' => 'Select Equipment Category',
         'range_all_categories' => 'All categories',
         'range_available_label' => 'Available Equipment',
-        'range_continue' => 'Continue to Cart',
+        'range_continue' => 'View Catalog',
         'range_empty' => 'No equipment is fully available for this selected range. Try another category or adjust the dragged dates.',
         'range_pick' => 'Select & Rent',
         'range_prefill_note' => 'Selected dates will be auto-filled on equipment detail.',

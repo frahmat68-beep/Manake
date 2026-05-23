@@ -26,11 +26,7 @@
             : 'border-rose-400/35 bg-rose-950/80 text-rose-200',
     };
     $bookingRanges = collect($bookingRanges ?? []);
-    $specificationSource = trim((string) ($equipment->specifications ?? $equipment->description ?? ''));
-    $specifications = collect(preg_split('/\\r\\n|\\r|\\n/', $specificationSource ?: ''))
-        ->map(fn ($line) => trim((string) preg_replace('/^[-*\\x{2022}\\s]+/u', '', $line)))
-        ->filter()
-        ->values();
+    $specifications = $equipment->normalizedSpecifications();
     $availabilityEndpoint = route('product.availability', $equipment->slug);
     $bookingMinDate = now()->toDateString();
     $bookingMaxDate = now()->addMonthsNoOverflow(3)->toDateString();
@@ -390,6 +386,8 @@
             const locale = @json(app()->getLocale());
             let availabilityState = 'unknown';
             let debounceTimer = null;
+            let availabilityRequestToken = 0;
+            const addToCartDefaultText = addToCartButton ? addToCartButton.textContent : '';
 
             const formatIDR = (value) => `Rp ${value.toLocaleString('id-ID')}`;
             const formatDate = (dateValue) => {
@@ -411,9 +409,14 @@
                 return true;
             };
 
-            const setAddToCartState = (enabled) => {
+            const setAddToCartState = (enabled, label = null) => {
                 if (!addToCartButton) return;
                 addToCartButton.disabled = !enabled;
+                if (label !== null) {
+                    addToCartButton.textContent = label;
+                } else if (addToCartDefaultText) {
+                    addToCartButton.textContent = addToCartDefaultText;
+                }
             };
 
             const setAvailabilityMessage = (message, tone = 'info') => {
@@ -441,7 +444,7 @@
                     totalPrice.textContent = 'Rp -';
                     availabilityState = 'unknown';
                     clearAvailabilityMessage();
-                    setAddToCartState(true);
+                    setAddToCartState(false);
                     return;
                 }
 
@@ -469,11 +472,14 @@
 
                 totalDays.textContent = `${diff} {{ __('app.product.day_label') }}`;
                 totalPrice.textContent = formatIDR(price * diff);
+                setAddToCartState(false, @json(__('app.product.checking_availability')));
             };
 
             const checkAvailability = async () => {
-                if (!availabilityUrl || !startInput.value || !endInput.value) return;
+                if (!availabilityUrl || !startInput.value || !endInput.value) return availabilityState;
+                const requestToken = ++availabilityRequestToken;
                 const qty = Number(qtyInput?.value || '1');
+                setAddToCartState(false, @json(__('app.product.checking_availability')));
                 setAvailabilityMessage(@json(__('app.product.checking_availability')), 'info');
 
                 try {
@@ -488,13 +494,16 @@
                     const payload = await response.json();
 
                     if (!response.ok) throw new Error(payload.message || @json(__('ui.availability.not_available')));
+                    if (requestToken !== availabilityRequestToken) {
+                        return availabilityState;
+                    }
 
                     availabilityState = payload.status || 'unknown';
 
                     if (availabilityState === 'available') {
                         setAddToCartState(true);
                         setAvailabilityMessage(payload.message || @json(__('ui.availability.available')), 'success');
-                        return;
+                        return availabilityState;
                     }
 
                     const conflicts = Array.isArray(payload.conflicts) ? payload.conflicts.map(formatDate) : [];
@@ -509,10 +518,16 @@
 
                     setAddToCartState(false);
                     setAvailabilityMessage(detail, availabilityState === 'partially_available' ? 'warning' : 'error');
+                    return availabilityState;
                 } catch (error) {
                     availabilityState = 'error';
-                    setAddToCartState(false);
-                    setAvailabilityMessage(error.message || @json(__('ui.availability.not_available')), 'error');
+                    setAddToCartState(true);
+                    const fallbackCheckMessage = @json(__('Ketersediaan akan dicek ulang saat masuk keranjang.'));
+                    setAvailabilityMessage(
+                        `${error.message || @json(__('ui.availability.not_available'))}\n${fallbackCheckMessage}`,
+                        'warning'
+                    );
+                    return availabilityState;
                 }
             };
 
@@ -570,7 +585,7 @@
             }
 
             if (rentForm && startInput && endInput) {
-                rentForm.addEventListener('submit', (event) => {
+                rentForm.addEventListener('submit', async (event) => {
                     if (!startInput.value || !endInput.value) {
                         event.preventDefault();
                         alert(@json(__('app.product.select_dates_first')));
@@ -588,8 +603,13 @@
                         alert(@json(__('Tanggal sewa hanya bisa dipilih dari hari ini sampai 3 bulan ke depan.')));
                         return;
                     }
-                    if (availabilityState !== 'available') {
+                    if (availabilityState !== 'available' && availabilityState !== 'error') {
                         event.preventDefault();
+                        const checkedState = await checkAvailability();
+                        if (checkedState === 'available' || checkedState === 'error') {
+                            rentForm.submit();
+                            return;
+                        }
                         alert(@json(__('ui.availability.not_available')));
                     }
                 });

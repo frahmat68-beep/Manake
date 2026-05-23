@@ -84,7 +84,13 @@ class CategoryController extends Controller
 
     public function destroy(string $slug)
     {
-        $category = Category::query()->where('slug', $slug)->firstOrFail();
+        $category = Category::query()->withCount('equipments')->where('slug', $slug)->firstOrFail();
+        if ((int) $category->equipments_count > 0) {
+            return redirect()
+                ->route('admin.categories.index')
+                ->with('error', __('Kategori masih memiliki alat. Pindahkan atau hapus alatnya dulu sebelum menghapus kategori.'));
+        }
+
         $snapshot = $category->only(['id', 'name', 'slug']);
         $category->delete();
         admin_audit('category.destroy', 'categories', $snapshot['id'], $snapshot, auth('admin')->id());
@@ -105,7 +111,7 @@ class CategoryController extends Controller
         $counter = 2;
 
         while ($this->slugExists($candidate, $ignoreId)) {
-            $candidate = $base . '-' . $counter;
+            $candidate = $base.'-'.$counter;
             $counter++;
         }
 

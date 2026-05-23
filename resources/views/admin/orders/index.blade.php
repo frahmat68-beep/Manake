@@ -154,6 +154,8 @@
                                     'barang_diambil' => __('Barang Diambil'),
                                     'barang_kembali' => __('Barang Kembali'),
                                     'barang_rusak' => __('Barang Rusak'),
+                                    'barang_hilang' => __('Barang Hilang'),
+                                    'overdue_denda' => __('Denda Overdue'),
                                     'expired' => __('Kedaluwarsa'),
                                     'selesai' => __('Selesai'),
                                     'dibatalkan' => __('Dibatalkan'),

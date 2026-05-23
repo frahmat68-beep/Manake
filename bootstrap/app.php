@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\AdminSuper;
+use App\Http\Middleware\CheckWebsiteMaintenance;
 use App\Http\Middleware\DisableAuthenticatedCache;
 use App\Http\Middleware\EnsureAuthenticatedForAccountFeature;
 use App\Http\Middleware\EnsureOtpVerified;
@@ -121,6 +122,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
             DisableAuthenticatedCache::class,
             SetTheme::class,
             SetLocale::class,
+            CheckWebsiteMaintenance::class,
         ]);
     })
 

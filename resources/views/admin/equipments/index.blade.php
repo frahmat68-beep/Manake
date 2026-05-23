@@ -80,7 +80,7 @@
                                     'status' => $filter['value'],
                                     'category' => $activeCategorySlug,
                                 ], fn ($value) => $value !== '')) }}"
-                                class="rounded-xl border px-3 py-1.5 text-xs font-semibold transition {{ $isActiveStatus ? 'border-blue-600 bg-blue-600 text-white shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-blue-200 hover:text-blue-600' }}"
+                                class="rounded-xl border px-3 py-1.5 text-xs font-semibold transition {{ $isActiveStatus ? 'border-[#D4A843] bg-[#D4A843] text-[#0A0A0B] shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-[#D4A843]/50 hover:text-[#D4A843]' }}"
                             >
                                 {{ $filter['label'] }}
                             </a>
@@ -96,7 +96,7 @@
                                 'q' => $search,
                                 'status' => $status,
                             ], fn ($value) => $value !== '')) }}"
-                            class="rounded-xl border px-3 py-1.5 text-xs font-semibold transition {{ $activeCategorySlug === '' ? 'border-blue-600 bg-blue-600 text-white shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-blue-200 hover:text-blue-600' }}"
+                            class="rounded-xl border px-3 py-1.5 text-xs font-semibold transition {{ $activeCategorySlug === '' ? 'border-[#D4A843] bg-[#D4A843] text-[#0A0A0B] shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-[#D4A843]/50 hover:text-[#D4A843]' }}"
                         >
                             {{ __('Semua') }}
                         </a>
@@ -107,7 +107,7 @@
                                     'status' => $status,
                                     'category' => $category->slug,
                                 ], fn ($value) => $value !== '')) }}"
-                                class="rounded-xl border px-3 py-1.5 text-xs font-semibold transition {{ $activeCategorySlug === $category->slug ? 'border-blue-600 bg-blue-600 text-white shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-blue-200 hover:text-blue-600' }}"
+                                class="rounded-xl border px-3 py-1.5 text-xs font-semibold transition {{ $activeCategorySlug === $category->slug ? 'border-[#D4A843] bg-[#D4A843] text-[#0A0A0B] shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-[#D4A843]/50 hover:text-[#D4A843]' }}"
                             >
                                 {{ $category->name }}
                             </a>
@@ -143,11 +143,17 @@
                                     : ($statusValue === 'maintenance' ? 'status-chip-warning' : 'status-chip-danger');
                                 $reservedUnits = (int) ($item->reserved_units ?? 0);
                                 $availableUnits = (int) $item->available_units;
+                                $imageUrl = site_media_url($item->image_path ?? $item->image ?? null) ?: config('placeholders.equipment');
                             @endphp
                             <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-900/60">
                                 <td class="px-5 py-4 align-top">
-                                    <p class="max-w-[20rem] font-semibold leading-snug text-slate-900 dark:text-slate-50">{{ $item->name }}</p>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ $item->category?->name ?? '-' }}</p>
+                                    <div class="flex items-center gap-3">
+                                        <img src="{{ $imageUrl }}" alt="{{ $item->name }}" class="h-12 w-12 rounded-lg border border-[#1A1A1E] bg-[#0A0A0B] object-contain p-1" loading="lazy">
+                                        <div>
+                                            <p class="max-w-[20rem] font-semibold leading-snug text-slate-900 dark:text-slate-50">{{ $item->name }}</p>
+                                            <p class="text-xs text-slate-500 dark:text-slate-400">{{ $item->category?->name ?? '-' }}</p>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="px-5 py-4 align-top text-slate-600 dark:text-slate-400">
                                     <p class="max-w-[14rem] break-words">{{ $item->slug }}</p>
@@ -168,6 +174,14 @@
                                 <td class="px-5 py-4 text-center align-top text-slate-500 whitespace-nowrap dark:text-slate-400">{{ $item->updated_at?->format('d M Y') }}</td>
                                 <td class="px-5 py-4 align-top">
                                     <div class="flex justify-end gap-2">
+                                        <a
+                                            href="{{ route('product.show', $item->slug) }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="btn-secondary rounded-xl px-3 py-1.5 text-xs font-semibold transition"
+                                        >
+                                            {{ __('Lihat') }}
+                                        </a>
                                         <a
                                             href="{{ route('admin.equipments.edit', $item->slug) }}"
                                             class="btn-secondary rounded-xl px-3 py-1.5 text-xs font-semibold transition"

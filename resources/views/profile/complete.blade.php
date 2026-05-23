@@ -144,6 +144,14 @@
                                 {{ __('Verifikasi Nomor Telepon') }}
                             </a>
                         @endif
+                        <div class="grid grid-cols-1 gap-3">
+                            <a href="{{ route('cart') }}" class="inline-flex w-full items-center justify-center rounded-md bg-[#D4A843] px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]">
+                                {{ __('Lanjut ke Keranjang') }}
+                            </a>
+                            <a href="{{ route('catalog') }}" class="inline-flex w-full items-center justify-center rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-2.5 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
+                                {{ __('Cari Alat Lain') }}
+                            </a>
+                        </div>
                     </aside>
                 </div>
             @else

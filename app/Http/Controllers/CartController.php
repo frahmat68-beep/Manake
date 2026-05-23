@@ -8,8 +8,7 @@ use App\Services\CartService;
 use App\Services\PricingService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 
 class CartController extends Controller
 {
@@ -92,8 +91,8 @@ class CartController extends Controller
             'image' => ['nullable', 'string', 'max:255'],
             'price' => ['nullable', 'integer', 'min:0'],
             'qty' => ['nullable', 'integer', 'min:1', 'max:99'],
-            'rental_start_date' => ['nullable', 'date', 'required_with:rental_end_date', 'after_or_equal:today', 'before_or_equal:' . $maxAllowedDate],
-            'rental_end_date' => ['nullable', 'date', 'required_with:rental_start_date', 'after_or_equal:rental_start_date', 'before_or_equal:' . $maxAllowedDate],
+            'rental_start_date' => ['nullable', 'date', 'required_with:rental_end_date', 'after_or_equal:today', 'before_or_equal:'.$maxAllowedDate],
+            'rental_end_date' => ['nullable', 'date', 'required_with:rental_start_date', 'after_or_equal:rental_start_date', 'before_or_equal:'.$maxAllowedDate],
         ]);
 
         if (empty($data['equipment_id']) && ! empty($data['product_id'])) {
@@ -117,6 +116,27 @@ class CartController extends Controller
         $qty = max(1, min((int) ($data['qty'] ?? 1), 99));
         $startDate = $this->normalizeDateString($data['rental_start_date'] ?? null);
         $endDate = $this->normalizeDateString($data['rental_end_date'] ?? null);
+        $stock = max((int) ($equipment->stock ?? 0), 0);
+        if (($equipment->status ?? 'ready') !== 'ready') {
+            return redirect()
+                ->route('cart')
+                ->with('error', __(':name sedang tidak bisa disewa.', ['name' => $equipment->name]));
+        }
+        if ($stock < 1) {
+            return redirect()
+                ->route('cart')
+                ->with('error', __(':name sedang tidak tersedia.', ['name' => $equipment->name]));
+        }
+        if ($qty > $stock) {
+            return redirect()
+                ->route('cart')
+                ->with('error', __('Stok :name tersedia :stock unit.', ['name' => $equipment->name, 'stock' => $stock]));
+        }
+        if (! $startDate || ! $endDate) {
+            return redirect()
+                ->route('cart')
+                ->with('error', __('Pilih tanggal mulai dan selesai sewa sebelum memasukkan alat ke keranjang.'));
+        }
         if (($startDate && ! $this->isDateWithinBookingWindow($startDate)) || ($endDate && ! $this->isDateWithinBookingWindow($endDate))) {
             return redirect()
                 ->route('cart')
@@ -133,10 +153,8 @@ class CartController extends Controller
             'image' => $this->resolveEquipmentImage($equipment),
             'price' => (int) ($equipment->price_per_day ?? 0),
         ];
-        if ($startDate && $endDate) {
-            $payload['rental_start_date'] = $startDate;
-            $payload['rental_end_date'] = $endDate;
-        }
+        $payload['rental_start_date'] = $startDate;
+        $payload['rental_end_date'] = $endDate;
 
         $draftItems = collect($cart->items())->keyBy(fn (array $item) => (string) ($item['key'] ?? $this->resolveCartItemKey($item)));
         $draftKey = $this->resolveCartItemKey($payload);
@@ -299,6 +317,7 @@ class CartController extends Controller
             $endDate = $this->normalizeDateString($item['rental_end_date'] ?? null);
             if (! $startDate || ! $endDate) {
                 $demandByEquipment[$equipmentId]['without_dates'] = (int) ($demandByEquipment[$equipmentId]['without_dates'] ?? 0) + $qty;
+
                 continue;
             }
             if (! $this->isDateWithinBookingWindow($startDate) || ! $this->isDateWithinBookingWindow($endDate)) {
@@ -351,7 +370,7 @@ class CartController extends Controller
 
             $conflictDates = collect($dailyDemand)
                 ->filter(function (int $requestedQty, string $dateKey) use ($reservedDaily, $stock) {
-                    $reservedQty = (int) data_get($reservedDaily, $dateKey . '.qty', 0);
+                    $reservedQty = (int) data_get($reservedDaily, $dateKey.'.qty', 0);
                     $availableQty = max($stock - $reservedQty, 0);
 
                     return $requestedQty > $availableQty;
@@ -361,9 +380,9 @@ class CartController extends Controller
                 ->values();
 
             if ($conflictDates->isNotEmpty()) {
-                return __(':name tidak tersedia untuk jumlah ini.', ['name' => $equipment->name]) . "\n"
-                    . __('Tanggal bentrok: :dates.', ['dates' => $this->formatConflictDateList($conflictDates)]) . "\n"
-                    . __('Silakan kurangi jumlah atau pilih tanggal lain.');
+                return __(':name tidak tersedia untuk jumlah ini.', ['name' => $equipment->name])."\n"
+                    .__('Tanggal bentrok: :dates.', ['dates' => $this->formatConflictDateList($conflictDates)])."\n"
+                    .__('Silakan kurangi jumlah atau pilih tanggal lain.');
             }
         }
 
@@ -389,22 +408,22 @@ class CartController extends Controller
         $startDate = $this->normalizeDateString($item['rental_start_date'] ?? null);
         $endDate = $this->normalizeDateString($item['rental_end_date'] ?? null);
         if ($startDate && $endDate) {
-            $dateKey = '@' . $startDate . '_' . $endDate;
+            $dateKey = '@'.$startDate.'_'.$endDate;
         }
 
         if (! empty($item['equipment_id'])) {
-            return 'equipment:' . (int) $item['equipment_id'] . $dateKey;
+            return 'equipment:'.(int) $item['equipment_id'].$dateKey;
         }
 
         if (! empty($item['product_id'])) {
-            return 'product:' . (int) $item['product_id'] . $dateKey;
+            return 'product:'.(int) $item['product_id'].$dateKey;
         }
 
         if (! empty($item['slug'])) {
-            return 'slug:' . (string) $item['slug'] . $dateKey;
+            return 'slug:'.(string) $item['slug'].$dateKey;
         }
 
-        return 'item:' . (string) ($item['name'] ?? uniqid('', true)) . $dateKey;
+        return 'item:'.(string) ($item['name'] ?? uniqid('', true)).$dateKey;
     }
 
     private function resolveEquipmentImage(Equipment $equipment): string
@@ -420,7 +439,7 @@ class CartController extends Controller
         return 'https://images.unsplash.com/photo-1519183071298-a2962be96c68?auto=format&fit=crop&w=600&q=80';
     }
 
-    private function formatConflictDateList(\Illuminate\Support\Collection $dates, int $limit = 4): string
+    private function formatConflictDateList(Collection $dates, int $limit = 4): string
     {
         $visibleDates = $dates->take($limit);
         $remainingCount = max($dates->count() - $visibleDates->count(), 0);

@@ -17,27 +17,64 @@
         position: fixed;
         inset: 0;
         z-index: 99999;
-        background-color: #020617; /* slate-950 */
+        background:
+            radial-gradient(circle at 50% 42%, rgba(212, 168, 67, 0.16), transparent 22rem),
+            rgba(2, 6, 23, 0.96);
         display: flex;
         align-items: center;
         justify-content: center;
         opacity: 1;
         visibility: visible;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+        transition: opacity 0.42s ease, visibility 0.42s ease;
     }
     .manake-page-loader.is-hidden {
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
     }
+    .manake-loader-card {
+        display: grid;
+        place-items: center;
+        gap: 1rem;
+        min-width: 8rem;
+    }
     .manake-loader-mark {
         height: 4rem;
         width: 4rem;
-        animation: manake-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        filter: drop-shadow(0 16px 30px rgba(212, 168, 67, 0.22));
+        animation: manake-loader-float 1.7s cubic-bezier(0.45, 0, 0.2, 1) infinite;
     }
-    @keyframes manake-pulse {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: .5; transform: scale(0.95); }
+    .manake-loader-progress {
+        position: relative;
+        display: block;
+        height: 0.18rem;
+        width: 7.5rem;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(232, 232, 236, 0.12);
+    }
+    .manake-loader-progress::after {
+        content: '';
+        position: absolute;
+        inset-block: 0;
+        width: 48%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, transparent, #D4A843, transparent);
+        animation: manake-loader-track 1.15s ease-in-out infinite;
+    }
+    @keyframes manake-loader-float {
+        0%, 100% { opacity: 0.98; transform: translateY(0) scale(1); }
+        50% { opacity: 0.84; transform: translateY(-0.32rem) scale(0.985); }
+    }
+    @keyframes manake-loader-track {
+        from { transform: translateX(-120%); }
+        to { transform: translateX(240%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .manake-loader-mark,
+        .manake-loader-progress::after {
+            animation: none;
+        }
     }
 </style>
 <noscript>

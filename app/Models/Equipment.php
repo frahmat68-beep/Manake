@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Equipment extends Model
 {
@@ -89,5 +90,72 @@ class Equipment extends Model
         $available = ((int) $this->stock) - $this->reserved_units;
 
         return max($available, 0);
+    }
+
+    public function normalizedSpecifications(): Collection
+    {
+        $raw = $this->specifications ?: $this->description;
+        $items = $this->normalizeSpecificationValue($raw);
+
+        return collect($items)
+            ->map(fn ($item) => trim((string) preg_replace('/^[-*\x{2022}\s]+/u', '', (string) $item)))
+            ->filter()
+            ->unique()
+            ->values();
+    }
+
+    private function normalizeSpecificationValue(mixed $value): array
+    {
+        if (blank($value)) {
+            return [];
+        }
+
+        if (is_array($value)) {
+            return $this->flattenSpecificationArray($value);
+        }
+
+        $text = trim((string) $value);
+        if ($text === '') {
+            return [];
+        }
+
+        if (Str::startsWith($text, ['[', '{'])) {
+            $decoded = json_decode($text, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $this->flattenSpecificationArray($decoded);
+            }
+        }
+
+        $lines = preg_split('/\r\n|\r|\n/', $text) ?: [];
+        if (count($lines) <= 1) {
+            $lines = preg_split('/\s*[;|]\s*/', $text) ?: [$text];
+        }
+
+        return array_values(array_filter(array_map('trim', $lines)));
+    }
+
+    private function flattenSpecificationArray(array $items, ?string $prefix = null): array
+    {
+        $output = [];
+        $isList = array_is_list($items);
+
+        foreach ($items as $key => $value) {
+            $label = $isList ? $prefix : trim((string) $key);
+
+            if (is_array($value)) {
+                $output = array_merge($output, $this->flattenSpecificationArray($value, $label));
+
+                continue;
+            }
+
+            $valueText = trim((string) $value);
+            if ($valueText === '') {
+                continue;
+            }
+
+            $output[] = $label ? "{$label}: {$valueText}" : $valueText;
+        }
+
+        return $output;
     }
 }

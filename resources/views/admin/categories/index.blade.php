@@ -10,6 +10,11 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if (session('error'))
+            <div class="mk-card border-rose-500/30 bg-rose-950/40 px-4 py-3 text-sm text-rose-200">
+                {{ session('error') }}
+            </div>
+        @endif
 
         <section class="mk-card p-6">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -64,13 +69,19 @@
                                         >
                                             {{ __('Ubah') }}
                                         </a>
-                                        <form method="POST" action="{{ route('admin.categories.destroy', $category->slug) }}" data-confirm="{{ __('ui.dialog.delete_admin_item') }}" data-confirm-title="{{ __('ui.dialog.title') }}" data-confirm-button="{{ __('ui.actions.remove') }}" data-cancel-button="{{ __('ui.dialog.cancel') }}" data-confirm-variant="danger">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="rounded-xl bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:bg-rose-950/50">
-                                                {{ __('Hapus') }}
+                                        @if ((int) $category->equipments_count > 0)
+                                            <button type="button" disabled class="rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-semibold text-[#66666C]" title="{{ __('Kategori masih punya alat') }}">
+                                                {{ __('Terkunci') }}
                                             </button>
-                                        </form>
+                                        @else
+                                            <form method="POST" action="{{ route('admin.categories.destroy', $category->slug) }}" data-confirm="{{ __('ui.dialog.delete_admin_item') }}" data-confirm-title="{{ __('ui.dialog.title') }}" data-confirm-button="{{ __('ui.actions.remove') }}" data-cancel-button="{{ __('ui.dialog.cancel') }}" data-confirm-variant="danger">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="rounded-xl bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:bg-rose-950/50">
+                                                    {{ __('Hapus') }}
+                                                </button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

@@ -41,6 +41,8 @@ jobs:
                       ${{ runner.os }}-composer-
 
             - name: Install PHP Dependencies
+              env:
+                  COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
               run: composer install --no-interaction --prefer-dist --no-progress
 
             - name: Setup Node
@@ -135,6 +137,8 @@ jobs:
                       ${{ runner.os }}-composer-
 
             - name: Install PHP Dependencies
+              env:
+                  COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
               run: composer install --no-interaction --prefer-dist --no-progress
 
             - name: Setup Node

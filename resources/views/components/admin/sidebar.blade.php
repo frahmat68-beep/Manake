@@ -70,7 +70,7 @@
 
 <aside
     data-manake-sidebar="admin"
-    class="fixed inset-y-0 left-0 z-50 flex -translate-x-full flex-col border-r border-slate-200 bg-white transition-all duration-300 lg:translate-x-0"
+    class="fixed inset-y-0 left-0 z-50 flex -translate-x-full flex-col border-r border-[#1A1A1E] bg-[#05070C] transition-all duration-300 lg:translate-x-0"
     :class="{
         'translate-x-0': sidebarOpen,
         '-translate-x-full lg:translate-x-0': !sidebarOpen,
@@ -78,7 +78,7 @@
         'w-20': sidebarCollapsed
     }"
 >
-    <div class="flex h-20 items-center justify-between border-b border-slate-200 px-4">
+    <div class="flex h-20 items-center justify-between border-b border-[#1A1A1E] px-4">
         <a href="{{ route('admin.dashboard') }}" class="manake-sidebar-brand-link inline-flex items-center overflow-hidden transition-all duration-300" :class="sidebarCollapsed ? 'w-10' : 'w-full'">
             <x-brand.image
                 light="manake-logo-white.png"
@@ -103,7 +103,7 @@
                     href="{{ $item['url'] }}"
                     data-nav-item
                     data-nav-active="{{ $activePage === $item['key'] ? 'true' : 'false' }}"
-                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'text-white bg-blue-600 shadow-md' : 'text-slate-600 hover:bg-slate-50' }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'bg-[#D4A843] text-[#0A0A0B] shadow-md' : 'text-[#A0A0A8] hover:bg-[#111113] hover:text-[#E8E8EC]' }}"
                     :title="sidebarCollapsed ? '{{ $item['label'] }}' : ''"
                 >
                     <span class="flex-shrink-0">{!! $item['icon'] !!}</span>
@@ -119,7 +119,7 @@
                     href="{{ $item['url'] }}"
                     data-nav-item
                     data-nav-active="{{ $activePage === $item['key'] ? 'true' : 'false' }}"
-                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'text-white bg-blue-600 shadow-md' : 'text-slate-600 hover:bg-slate-50' }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'bg-[#D4A843] text-[#0A0A0B] shadow-md' : 'text-[#A0A0A8] hover:bg-[#111113] hover:text-[#E8E8EC]' }}"
                     :title="sidebarCollapsed ? '{{ $item['label'] }}' : ''"
                 >
                     <span class="flex-shrink-0">{!! $item['icon'] !!}</span>
@@ -129,9 +129,9 @@
         </nav>
     </div>
 
-    <div class="border-t border-slate-200 px-4 py-4">
-        <div class="flex items-center gap-3 rounded-xl bg-slate-50 p-2 text-slate-700 transition-all" :class="sidebarCollapsed ? 'justify-center' : ''">
-            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">{{ $adminInitial }}</span>
+    <div class="border-t border-[#1A1A1E] px-4 py-4">
+        <div class="flex items-center gap-3 rounded-xl bg-[#111113] p-2 text-[#E8E8EC] transition-all" :class="sidebarCollapsed ? 'justify-center' : ''">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#D4A843] text-xs font-semibold text-[#0A0A0B]">{{ $adminInitial }}</span>
             <div class="min-w-0" x-show="!sidebarCollapsed" x-transition.opacity.duration.300ms>
                 <p class="truncate text-sm font-semibold">{{ $adminName }}</p>
                 <p class="truncate text-[10px] uppercase tracking-wide text-slate-400">{{ $adminRole }}</p>

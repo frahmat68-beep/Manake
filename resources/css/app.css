@@ -260,7 +260,8 @@
     [data-manake-shell='auth'],
     [data-manake-shell='public'],
     [data-manake-shell='user'],
-    [data-manake-shell='app'] {
+    [data-manake-shell='app'],
+    [data-manake-shell='admin'] {
         --ui-primary: 212 168 67;
         --ui-primary-strong: 224 186 93;
         --ui-accent: 212 168 67;
@@ -273,7 +274,8 @@
     [data-manake-shell='auth'] .btn-primary,
     [data-manake-shell='public'] .btn-primary,
     [data-manake-shell='user'] .btn-primary,
-    [data-manake-shell='app'] .btn-primary {
+    [data-manake-shell='app'] .btn-primary,
+    [data-manake-shell='admin'] .btn-primary {
         background: linear-gradient(135deg, rgb(var(--ui-primary)) 0%, rgb(var(--ui-primary-strong)) 100%);
         color: rgb(10 10 11);
         box-shadow: 0 14px 30px rgba(212, 168, 67, 0.22);
@@ -283,7 +285,8 @@
     [data-manake-shell='auth'] .btn-secondary,
     [data-manake-shell='public'] .btn-secondary,
     [data-manake-shell='user'] .btn-secondary,
-    [data-manake-shell='app'] .btn-secondary {
+    [data-manake-shell='app'] .btn-secondary,
+    [data-manake-shell='admin'] .btn-secondary {
         background: rgba(17, 17, 19, 0.9);
         color: rgb(var(--ui-text));
         border-color: rgba(26, 26, 30, 1);
@@ -294,11 +297,13 @@
     [data-manake-shell='public'] .btn-primary:hover,
     [data-manake-shell='user'] .btn-primary:hover,
     [data-manake-shell='app'] .btn-primary:hover,
+    [data-manake-shell='admin'] .btn-primary:hover,
     [data-manake-shell='landing'] .btn-secondary:hover,
     [data-manake-shell='auth'] .btn-secondary:hover,
     [data-manake-shell='public'] .btn-secondary:hover,
     [data-manake-shell='user'] .btn-secondary:hover,
-    [data-manake-shell='app'] .btn-secondary:hover {
+    [data-manake-shell='app'] .btn-secondary:hover,
+    [data-manake-shell='admin'] .btn-secondary:hover {
         transform: translateY(-1px);
     }
 
@@ -307,16 +312,19 @@
     [data-manake-shell='public'] .ui-input,
     [data-manake-shell='user'] .ui-input,
     [data-manake-shell='app'] .ui-input,
+    [data-manake-shell='admin'] .ui-input,
     [data-manake-shell='landing'] .ui-select,
     [data-manake-shell='auth'] .ui-select,
     [data-manake-shell='public'] .ui-select,
     [data-manake-shell='user'] .ui-select,
     [data-manake-shell='app'] .ui-select,
+    [data-manake-shell='admin'] .ui-select,
     [data-manake-shell='landing'] .ui-textarea,
     [data-manake-shell='auth'] .ui-textarea,
     [data-manake-shell='public'] .ui-textarea,
     [data-manake-shell='user'] .ui-textarea,
-    [data-manake-shell='app'] .ui-textarea {
+    [data-manake-shell='app'] .ui-textarea,
+    [data-manake-shell='admin'] .ui-textarea {
         background: rgb(10 10 11);
         border-color: rgb(26 26 30);
         color: rgb(var(--ui-text));
@@ -349,13 +357,263 @@
         border: 1px solid rgb(26 26 30);
         background: rgb(17 17 19);
         color: rgb(232 232 236);
-        border-radius: 0.5rem;
+        border-radius: 0.5rem !important;
         box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
     }
 
     .mk-card-soft {
         background: rgb(10 10 11);
         box-shadow: none;
+    }
+
+    :where(
+        [data-manake-shell='landing'],
+        [data-manake-shell='auth'],
+        [data-manake-shell='public'],
+        [data-manake-shell='user'],
+        [data-manake-shell='app'],
+        [data-manake-shell='admin']
+    ) {
+        --ui-bg: 10 10 11;
+        --ui-surface: 17 17 19;
+        --ui-surface-soft: 10 10 11;
+        --ui-border: 26 26 30;
+        --ui-text: 232 232 236;
+        --ui-muted: 160 160 168;
+        background: #0a0a0b;
+        color: #e8e8ec;
+    }
+
+    :where(
+            [data-manake-shell='landing'],
+            [data-manake-shell='auth'],
+            [data-manake-shell='public'],
+            [data-manake-shell='user'],
+            [data-manake-shell='app'],
+            [data-manake-shell='admin']
+        )
+        :is(.input, .mk-input, input, select, textarea) {
+        border-color: #1a1a1e;
+        background-color: #0a0a0b;
+        color: #e8e8ec;
+    }
+
+    :where(
+            [data-manake-shell='landing'],
+            [data-manake-shell='auth'],
+            [data-manake-shell='public'],
+            [data-manake-shell='user'],
+            [data-manake-shell='app'],
+            [data-manake-shell='admin']
+        )
+        :is(.input, .mk-input, input, select, textarea)::placeholder {
+        color: #66666c;
+    }
+
+    :where(
+            [data-manake-shell='landing'],
+            [data-manake-shell='auth'],
+            [data-manake-shell='public'],
+            [data-manake-shell='user'],
+            [data-manake-shell='app'],
+            [data-manake-shell='admin']
+        )
+        :is(.mk-card, .mk-card-soft)
+        :is(
+            .text-slate-900,
+            .text-slate-800,
+            .text-slate-700,
+            .text-blue-700,
+            .dark\:text-slate-50,
+            .dark\:text-slate-100
+        ) {
+        color: #e8e8ec !important;
+    }
+
+    :where(
+            [data-manake-shell='landing'],
+            [data-manake-shell='auth'],
+            [data-manake-shell='public'],
+            [data-manake-shell='user'],
+            [data-manake-shell='app'],
+            [data-manake-shell='admin']
+        )
+        :is(.mk-card, .mk-card-soft)
+        :is(
+            .text-slate-600,
+            .text-slate-500,
+            .text-slate-400,
+            .text-blue-500\/90,
+            .dark\:text-slate-300,
+            .dark\:text-slate-400,
+            .dark\:text-slate-500
+        ) {
+        color: #a0a0a8 !important;
+    }
+
+    :where(
+            [data-manake-shell='landing'],
+            [data-manake-shell='auth'],
+            [data-manake-shell='public'],
+            [data-manake-shell='user'],
+            [data-manake-shell='app'],
+            [data-manake-shell='admin']
+        )
+        :is(.mk-card, .mk-card-soft)
+        :is(.text-blue-600, .dark\:text-blue-300, .dark\:text-blue-400) {
+        color: #d4a843 !important;
+    }
+
+    :where(
+            [data-manake-shell='landing'],
+            [data-manake-shell='auth'],
+            [data-manake-shell='public'],
+            [data-manake-shell='user'],
+            [data-manake-shell='app'],
+            [data-manake-shell='admin']
+        )
+        :is(.mk-card, .mk-card-soft)
+        :is(
+            .bg-white,
+            .bg-slate-50,
+            .dark\:bg-slate-900\/60,
+            .dark\:bg-slate-900\/50,
+            .dark\:bg-slate-900\/40,
+            .dark\:bg-slate-900\/30,
+            .dark\:bg-slate-950
+        ) {
+        background-color: #0a0a0b !important;
+    }
+
+    :where(
+            [data-manake-shell='landing'],
+            [data-manake-shell='auth'],
+            [data-manake-shell='public'],
+            [data-manake-shell='user'],
+            [data-manake-shell='app'],
+            [data-manake-shell='admin']
+        )
+        :is(.mk-card, .mk-card-soft)
+        :is(.border-slate-100, .border-slate-200, .dark\:border-slate-800) {
+        border-color: #1a1a1e !important;
+    }
+
+    :where(
+            [data-manake-shell='landing'],
+            [data-manake-shell='auth'],
+            [data-manake-shell='public'],
+            [data-manake-shell='user'],
+            [data-manake-shell='app'],
+            [data-manake-shell='admin']
+        )
+        :is(.mk-card, .mk-card-soft)
+        :is(
+            .bg-rose-50,
+            .bg-rose-50\/50,
+            .bg-emerald-50,
+            .bg-emerald-50\/50,
+            .bg-amber-50,
+            .bg-amber-50\/50,
+            .bg-blue-50,
+            .bg-blue-100,
+            .dark\:bg-rose-950\/10,
+            .dark\:bg-rose-950\/30,
+            .dark\:bg-emerald-950\/10,
+            .dark\:bg-emerald-950\/30,
+            .dark\:bg-amber-950\/10,
+            .dark\:bg-blue-950\/40
+        ) {
+        background-color: rgba(232, 232, 236, 0.035) !important;
+    }
+
+    :where(
+            [data-manake-shell='landing'],
+            [data-manake-shell='auth'],
+            [data-manake-shell='public'],
+            [data-manake-shell='user'],
+            [data-manake-shell='app'],
+            [data-manake-shell='admin']
+        )
+        :is(.mk-card, .mk-card-soft)
+        :is(
+            .border-rose-100,
+            .border-rose-200,
+            .border-emerald-100,
+            .border-emerald-200,
+            .border-amber-100,
+            .border-amber-200,
+            .border-blue-100,
+            .border-blue-200,
+            .dark\:border-rose-950\/20,
+            .dark\:border-emerald-950\/20
+        ) {
+        border-color: rgba(232, 232, 236, 0.1) !important;
+    }
+
+    [data-manake-shell='admin']
+        :is(
+            .text-blue-500,
+            .text-blue-500\/90,
+            .text-blue-600,
+            .text-blue-700,
+            .dark\:text-blue-300,
+            .dark\:text-blue-400
+        ) {
+        color: #d4a843 !important;
+    }
+
+    [data-manake-shell='admin'] :is(.bg-blue-600) {
+        background-color: #d4a843 !important;
+        color: #0a0a0b !important;
+    }
+
+    [data-manake-shell='admin'] :is(.bg-blue-50, .bg-blue-100, .dark\:bg-blue-950\/40) {
+        background-color: rgba(212, 168, 67, 0.12) !important;
+    }
+
+    [data-manake-shell='admin'] :is(.border-blue-100, .border-blue-200, .border-blue-600) {
+        border-color: rgba(212, 168, 67, 0.35) !important;
+    }
+
+    [data-manake-shell='admin'] [data-manake-sidebar='admin'],
+    [data-manake-shell='admin'] [data-manake-topbar='admin'] {
+        border-color: #1a1a1e !important;
+        background: rgba(5, 7, 12, 0.96) !important;
+        color: #e8e8ec;
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    [data-manake-shell='admin'] [data-nav-item][data-nav-active='true'] {
+        background: #d4a843 !important;
+        color: #0a0a0b !important;
+        box-shadow: 0 14px 28px rgba(212, 168, 67, 0.2);
+    }
+
+    [data-manake-shell='admin'] [data-nav-item][data-nav-active='false'],
+    [data-manake-shell='admin'] [data-manake-sidebar='admin'] .text-slate-600 {
+        color: #a0a0a8 !important;
+    }
+
+    [data-manake-shell='admin'] [data-nav-item][data-nav-active='false']:hover {
+        background: #111113 !important;
+        color: #e8e8ec !important;
+    }
+
+    [data-manake-shell='admin'] table :is(thead, tbody, tr, td, th) {
+        border-color: #1a1a1e !important;
+    }
+
+    [data-manake-shell='admin'] table thead {
+        background-color: #0a0a0b !important;
+        color: #a0a0a8 !important;
+    }
+
+    [data-manake-shell='admin'] table tbody tr:hover td,
+    [data-manake-shell='admin'] table tbody tr:focus-within td {
+        background-color: #0a0a0b !important;
+        color: #e8e8ec !important;
     }
 
     .mk-input {

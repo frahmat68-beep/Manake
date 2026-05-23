@@ -69,7 +69,7 @@
                         </p>
                     @else
                         <p class="text-lg text-[#A0A0A8] max-w-xl">
-                            Rent premium cinematic equipment for your next masterpiece. From ARRI cameras to professional lighting setups.
+                            Sewa kamera sinema, lighting, audio, drone, dan stabilizer profesional dengan proses yang rapi dari pilih alat sampai pembayaran.
                         </p>
                     @endif
                     

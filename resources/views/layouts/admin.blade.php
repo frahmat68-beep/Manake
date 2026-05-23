@@ -90,6 +90,13 @@
             --manake-heading-h4-resolved: var(--manake-heading-h4-dark);
             --manake-body-color-resolved: var(--manake-body-color-dark);
         }
+        body[data-manake-shell="admin"] {
+            --manake-heading-h1-resolved: #E8E8EC;
+            --manake-heading-h2-resolved: #E8E8EC;
+            --manake-heading-h3-resolved: #D4A843;
+            --manake-heading-h4-resolved: #E8E8EC;
+            --manake-body-color-resolved: #A0A0A8;
+        }
         header :is(h1, h2, h3) {
             color: var(--manake-heading-h1-resolved) !important;
             letter-spacing: -0.012em;
@@ -122,12 +129,12 @@
             font-weight: var(--manake-heading-weight) !important;
         }
         table tbody tr:hover td {
-            background-color: #eaf2ff;
-            color: #0f172a;
+            background-color: #0A0A0B;
+            color: #E8E8EC;
         }
         table tbody tr:focus-within td {
-            background-color: #eaf2ff;
-            color: #0f172a;
+            background-color: #0A0A0B;
+            color: #E8E8EC;
         }
     </style>
 </head>
@@ -178,8 +185,8 @@
                             </svg>
                         </button>
                         <div class="min-w-0">
-                            <h1 class="truncate text-lg font-semibold text-blue-700 dark:text-blue-300">@yield('page_title', __('ui.admin.dashboard'))</h1>
-                            <p class="text-xs text-blue-500/90 dark:text-blue-200/90">{{ __('ui.admin.panel_title') }}</p>
+                            <h1 class="truncate text-lg font-semibold text-[#E8E8EC]">@yield('page_title', __('ui.admin.dashboard'))</h1>
+                            <p class="text-xs text-[#A0A0A8]">{{ __('ui.admin.panel_title') }}</p>
                         </div>
                     </div>
 
@@ -203,7 +210,7 @@
                                 <x-preferences.popover :locale="$locale" :current-theme="$currentTheme" :redirect="url()->full()" />
                             </div>
                         </div>
-                        <div class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+                        <div class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#D4A843] text-sm font-semibold text-[#0A0A0B]">
                             {{ strtoupper(substr($adminName, 0, 1)) }}
                         </div>
                         <form method="POST" action="{{ route('admin.logout') }}">

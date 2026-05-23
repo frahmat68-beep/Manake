@@ -10,6 +10,9 @@
             <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
                 {!! __('Pilih tabel untuk cek isi data. Edit data hanya aktif kalau <code>ADMIN_DB_EDIT_ENABLED=true</code>.') !!}
             </p>
+            <p class="mt-3 rounded-lg border border-amber-500/25 bg-amber-950/25 px-4 py-3 text-xs font-semibold text-amber-200">
+                {{ __('Database utama adalah Supabase production. Pakai halaman ini untuk audit data, bukan eksperimen massal.') }}
+            </p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

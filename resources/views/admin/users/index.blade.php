@@ -23,7 +23,7 @@
                     placeholder="{{ __('Cari nama / email pengguna...') }}"
                     class="input w-full rounded-xl px-3 py-2 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
                 >
-                <button class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">{{ __('Cari') }}</button>
+                <button class="btn-primary rounded-xl px-4 py-2 text-sm font-semibold transition">{{ __('Cari') }}</button>
             </form>
         </section>
 
@@ -33,8 +33,8 @@
                     <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900/60 dark:text-slate-400">
                         <tr>
                             <th class="px-5 py-3">{{ __('Pengguna') }}</th>
-                            <th class="px-5 py-3">{{ __('Email') }}</th>
-                            <th class="px-5 py-3">{{ __('Telepon') }}</th>
+                            <th class="px-5 py-3">{{ __('Status Email') }}</th>
+                            <th class="px-5 py-3">{{ __('Status Telepon') }}</th>
                             <th class="px-5 py-3">{{ __('Profil') }}</th>
                             <th class="px-5 py-3 text-right">{{ __('Aksi') }}</th>
                         </tr>

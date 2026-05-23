@@ -115,17 +115,32 @@
                 'name' => (string) data_get($item, 'name', 'Equipment'),
                 'qty' => (int) data_get($item, 'qty', 1),
                 'period' => $start && $end
-                    ? \Carbon\Carbon::parse((string) $start)->translatedFormat('d M') . ' - ' . \Carbon\Carbon::parse((string) $end)->translatedFormat('d M Y')
+                    ? \Carbon\Carbon::parse((string) $start)->locale('id')->translatedFormat('d M').' - '.\Carbon\Carbon::parse((string) $end)->locale('id')->translatedFormat('d M Y')
                     : 'Jadwal belum dikunci',
             ];
         })
         ->values();
     $carouselItems = $equipmentItems->concat($equipmentItems)->take(max(12, $equipmentItems->count() * 2))->values();
+    $heroDescription = setting('home.hero_subtitle', 'Manake menyediakan akses ke kamera sinema, lighting profesional, perangkat audio, drone, stabilizer, dan lainnya — siap diambil dan digunakan. Tanpa kerumitan kepemilikan, hasil tetap profesional.');
+    $heroCtaText = setting('hero_cta_text', 'Lihat Peralatan');
+    $equipmentSectionTitle = setting('copy.landing.ready_panel_title', 'Tersedia untuk disewa hari ini.');
+    $equipmentSectionLink = setting('copy.landing.flow_catalog_link', 'Lihat semua peralatan yang tersedia');
+    $categorySectionKicker = setting('copy.landing.quick_category_kicker', 'Kategori & Jadwal');
+    $categorySectionTitle = setting('copy.landing.quick_category_title', 'Lihat kategori alat dan booking aktif dalam satu tempat.');
+    $categoryEmptyText = setting('copy.landing.quick_category_empty', 'Data live dari database menunjukkan slot rental aktif masih kosong.');
+    $flowKicker = setting('copy.landing.flow_kicker', 'Cara Sewa');
+    $flowTitle = setting('copy.landing.flow_title', 'Sewa peralatan dalam empat langkah mudah.');
+    $rentalSteps = [
+        ['number' => '01', 'title' => setting('copy.landing.step_1_title', 'Pilih Peralatan'), 'body' => setting('copy.landing.step_1_desc', 'Telusuri katalog kami dan pilih peralatan yang sesuai dengan kebutuhan produksi Anda. Filter berdasarkan kategori, ketersediaan, dan harga.')],
+        ['number' => '02', 'title' => setting('copy.landing.step_2_title', 'Ajukan Pemesanan'), 'body' => setting('copy.landing.step_2_desc', 'Isi formulir pemesanan dengan tanggal sewa, durasi, dan detail produksi Anda. Kami akan mengkonfirmasi dalam waktu 1x24 jam.')],
+        ['number' => '03', 'title' => setting('copy.landing.step_3_title', 'Ambil atau Terima'), 'body' => setting('copy.landing.step_3_desc', 'Ambil peralatan langsung di studio kami di Jakarta, atau pilih layanan pengiriman ke lokasi produksi Anda.')],
+        ['number' => '04', 'title' => setting('copy.landing.step_4_title', 'Shoot & Kembalikan'), 'body' => setting('copy.landing.step_4_desc', 'Gunakan peralatan untuk produksi Anda, lalu kembalikan sesuai jadwal. Tim kami siap membantu jika ada kendala teknis.')],
+    ];
 @endphp
 
 @section('content')
     <div class="bg-[#0A0A0B] text-[#E8E8EC]">
-        <section class="relative min-h-[100svh] overflow-hidden">
+        <section class="relative min-h-[calc(100svh-8rem)] overflow-hidden">
             <div class="absolute inset-0">
                 <img src="{{ site_asset('images/hero-bg.jpg') }}" alt="Set produksi film profesional" class="h-full w-full object-cover object-center" />
                 <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-[#0A0A0B]/45 to-[#0A0A0B]"></div>
@@ -133,7 +148,7 @@
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.05),transparent_22%),radial-gradient(circle_at_15%_20%,rgba(212,168,67,0.12),transparent_20%),radial-gradient(circle_at_85%_16%,rgba(255,255,255,0.05),transparent_18%)]"></div>
             </div>
 
-            <div class="relative mx-auto grid min-h-[100svh] max-w-7xl items-center gap-12 px-6 pb-14 pt-28 md:px-10 lg:grid-cols-[1.08fr_0.92fr]">
+            <div class="relative mx-auto grid min-h-[calc(100svh-8rem)] max-w-7xl items-center gap-12 px-6 pb-12 pt-24 md:px-10 lg:grid-cols-[1.08fr_0.92fr]">
                 <div class="max-w-3xl">
                     <h1 class="text-[clamp(3.1rem,8vw,7rem)] font-semibold leading-[0.93] tracking-[-0.055em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
                         <span class="block">Sewa</span>
@@ -170,12 +185,12 @@
                     </h1>
 
                     <p class="mt-7 max-w-2xl text-lg leading-8 text-[#A0A0A8] md:text-xl">
-                        Manake menyediakan akses ke kamera sinema, lighting profesional, perangkat audio, drone, stabilizer, dan lainnya — siap diambil dan digunakan. Tanpa kerumitan kepemilikan, hasil tetap profesional.
+                        {{ $heroDescription }}
                     </p>
 
                     <div class="mt-10 flex flex-wrap items-center gap-4">
                         <a href="#equipment" class="inline-flex items-center gap-3 rounded-md bg-[#D4A843] px-7 py-4 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]">
-                            Lihat Peralatan
+                            {{ $heroCtaText }}
                             <span aria-hidden="true">→</span>
                         </a>
                     </div>
@@ -237,9 +252,9 @@
                 <div class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#0A0A0B] p-5 shadow-[0_18px_50px_-35px_rgba(0,0,0,0.9)] md:p-7">
                     <div class="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">Kategori & Jadwal</p>
+                            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">{{ $categorySectionKicker }}</p>
                             <h2 class="mt-3 text-3xl leading-tight text-[#E8E8EC] md:text-4xl" style="font-family: 'DM Serif Display', Georgia, serif;">
-                                Lihat kategori alat dan booking aktif dalam satu tempat.
+                                {{ $categorySectionTitle }}
                             </h2>
                             <div class="mt-5 flex flex-wrap gap-2">
                                 @foreach ($marqueeCategories->unique()->take(8) as $category)
@@ -262,7 +277,7 @@
                             @empty
                                 <div class="rounded-xl border border-white/10 bg-[#111113] p-5">
                                     <p class="text-base font-semibold text-[#E8E8EC]">Belum ada booking aktif</p>
-                                    <p class="mt-2 text-sm leading-6 text-[#A0A0A8]">Data live dari database menunjukkan slot rental aktif masih kosong.</p>
+                                    <p class="mt-2 text-sm leading-6 text-[#A0A0A8]">{{ $categoryEmptyText }}</p>
                                 </div>
                             @endforelse
                         </div>
@@ -277,11 +292,11 @@
                     <div>
                         <p class="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">Peralatan Unggulan</p>
                         <h2 class="text-[clamp(2.5rem,4vw,4rem)] leading-[0.96] tracking-[-0.04em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
-                            Tersedia untuk disewa hari ini.
+                            {{ $equipmentSectionTitle }}
                         </h2>
                     </div>
                     <a href="{{ route('catalog') }}" class="inline-flex items-center gap-2 text-sm font-medium text-[#A0A0A8] transition hover:text-[#D4A843]">
-                        Lihat semua peralatan yang tersedia <span aria-hidden="true">→</span>
+                        {{ $equipmentSectionLink }} <span aria-hidden="true">→</span>
                     </a>
                 </div>
 
@@ -384,19 +399,14 @@
         <section id="cara-sewa" class="bg-[#0A0A0B] py-24 md:py-28">
             <div class="mx-auto max-w-7xl px-6 md:px-10">
                 <div class="max-w-2xl">
-                    <p class="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">Cara Sewa</p>
+                    <p class="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">{{ $flowKicker }}</p>
                     <h2 class="text-[clamp(2.4rem,4vw,3.8rem)] leading-[0.96] tracking-[-0.04em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
-                        Sewa peralatan dalam empat langkah mudah.
+                        {{ $flowTitle }}
                     </h2>
                 </div>
 
                 <div class="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                    @foreach ([
-                        ['number' => '01', 'title' => 'Pilih Peralatan', 'body' => 'Telusuri katalog kami dan pilih peralatan yang sesuai dengan kebutuhan produksi Anda. Filter berdasarkan kategori, ketersediaan, dan harga.'],
-                        ['number' => '02', 'title' => 'Ajukan Pemesanan', 'body' => 'Isi formulir pemesanan dengan tanggal sewa, durasi, dan detail produksi Anda. Kami akan mengkonfirmasi dalam waktu 1x24 jam.'],
-                        ['number' => '03', 'title' => 'Ambil atau Terima', 'body' => 'Ambil peralatan langsung di studio kami di Jakarta, atau pilih layanan pengiriman ke lokasi produksi Anda.'],
-                        ['number' => '04', 'title' => 'Shoot & Kembalikan', 'body' => 'Gunakan peralatan untuk produksi Anda, lalu kembalikan sesuai jadwal. Tim kami siap membantu jika ada kendala teknis.'],
-                    ] as $step)
+                    @foreach ($rentalSteps as $step)
                         <article class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-semibold tracking-[0.24em] text-[#D4A843]">{{ $step['number'] }}</span>

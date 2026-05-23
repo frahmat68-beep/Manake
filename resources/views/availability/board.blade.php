@@ -202,7 +202,7 @@
             schedulesByDate: @js($dailySchedulesByDate ?? []),
             equipmentRows: @js($equipmentClientRows),
             productUrlTemplate: @js(route('product.show', ['slug' => '__slug__'])),
-            cartUrl: @js(route('cart')),
+            catalogUrl: @js(route('catalog')),
             scheduleModalOpen: false,
             rangeModalOpen: false,
             modalDate: '',
@@ -540,7 +540,7 @@
                             @endif
                         </div>
                         <p class="text-[11px] font-medium text-slate-500">
-                            {{ __('Showing range:') }} <span class="text-slate-700 dark:text-slate-300">{{ \Carbon\Carbon::parse($windowStartValue)->translatedFormat('d M') }} — {{ \Carbon\Carbon::parse($windowEndValue)->translatedFormat('d M Y') }}</span>
+                            {{ __('Rentang tampil:') }} <span class="text-slate-700 dark:text-slate-300">{{ \Carbon\Carbon::parse($windowStartValue)->translatedFormat('d M') }} — {{ \Carbon\Carbon::parse($windowEndValue)->translatedFormat('d M Y') }}</span>
                         </p>
                     </div>
                 </form>
@@ -594,7 +594,7 @@
                         <svg class="h-3.5 w-3.5 animate-pulse text-[#D4A843]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
                         </svg>
-                        <span>Geser mendatar untuk melihat kalender penuh / Swipe horizontally</span>
+                        <span>Geser mendatar untuk melihat kalender penuh</span>
                     </div>
 
                     <div class="-mx-1 overflow-x-auto pb-2 px-1 sm:mx-0 sm:overflow-visible sm:px-0 scrollbar-thin">
@@ -890,7 +890,7 @@
                             <p class="text-base font-bold text-emerald-700 dark:text-emerald-400" x-text="getFilteredRangeRows().length"></p>
                         </div>
                         <a
-                            :href="cartUrl"
+                            :href="catalogUrl"
                             class="mk-button-primary py-2.5 px-5 text-sm"
                         >
                             {{ $availabilityRangeContinue }}
