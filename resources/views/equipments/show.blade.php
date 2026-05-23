@@ -87,7 +87,7 @@
                                 {{ $equipment->name }}
                             </h1>
                             <p class="mt-2 max-w-2xl text-sm leading-relaxed text-[#A0A0A8] sm:text-base">
-                                {{ $equipment->description ?: __('app.product.meta') }}
+                                {!! nl2br(e($equipment->description ?: __('app.product.meta'))) !!}
                             </p>
                         </div>
                         <a href="{{ route('catalog') }}" class="inline-flex shrink-0 self-start rounded-md border border-[#1A1A1E] bg-[#111113] px-5 py-2.5 text-xs font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] sm:self-auto">
