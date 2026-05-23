@@ -493,7 +493,7 @@
                         <button id="pay-damage-fee-button" class="mt-3 inline-flex w-full items-center justify-center rounded-2xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] transition hover:bg-rose-700">
                             {{ $orderPayAdditionalButton }}
                         </button>
-                        <button id="refresh-damage-status-button" class="mt-2 inline-flex w-full items-center justify-center rounded-2xl border border-rose-200 px-4 py-2.5 text-sm font-semibold text-rose-700 transition hover:bg-rose-50">
+                        <button id="refresh-damage-status-button" class="mt-2 inline-flex w-full items-center justify-center rounded-2xl border border-rose-500/20 px-4 py-2.5 text-sm font-semibold text-rose-500 transition hover:bg-rose-500/10">
                             {{ $orderRefreshAdditionalButton }}
                         </button>
                     @endif

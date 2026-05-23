@@ -33,28 +33,28 @@
 
     <div class="space-y-6">
         @if (session('success'))
-            <div class="manake-card-soft px-4 py-3 text-sm text-emerald-700">
+            <div class="mk-card-soft px-4 py-3 text-sm text-emerald-500">
                 {{ session('success') }}
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="manake-card-soft px-4 py-3 text-sm text-rose-700">
+            <div class="mk-card-soft px-4 py-3 text-sm text-rose-500">
                 {{ $errors->first() }}
             </div>
         @endif
 
-        <div class="manake-card flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div class="mk-card flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between p-6">
             <div>
                 <p class="manake-kicker">{{ __('Pesanan') }}</p>
-                <h2 class="manake-display mt-2 text-3xl font-black text-slate-950 dark:text-white">{{ $order->order_number ?? ('ORD-' . $order->id) }}</h2>
+                <h2 class="manake-display mt-2 text-3xl font-black text-[#E8E8EC]">{{ $order->order_number ?? ('ORD-' . $order->id) }}</h2>
             </div>
             <a href="{{ route('admin.orders.index') }}" class="btn-secondary w-full sm:w-auto">{{ __('← Kembali ke Daftar Pesanan') }}</a>
         </div>
 
         <section class="grid grid-cols-1 gap-6 lg:grid-cols-[1.2fr,0.8fr]">
-            <article class="manake-card">
-                <h3 class="manake-heading text-lg font-black text-slate-950 dark:text-white">{{ __('Item Pesanan') }}</h3>
+            <article class="mk-card p-6">
+                <h3 class="manake-heading text-lg font-black text-[#E8E8EC]">{{ __('Item Pesanan') }}</h3>
                 <div class="mt-4 space-y-3">
                     @forelse ($order->items as $item)
                         <div class="rounded-2xl border border-slate-200 p-4">
@@ -84,8 +84,8 @@
                 </div>
             </article>
 
-            <aside class="manake-card space-y-4">
-                <h3 class="manake-heading text-lg font-black text-slate-950 dark:text-white">{{ __('Kontrol Status') }}</h3>
+            <aside class="mk-card p-6 space-y-4">
+                <h3 class="manake-heading text-lg font-black text-[#E8E8EC]">{{ __('Kontrol Status') }}</h3>
                 <div class="space-y-2 text-sm text-slate-600">
                     <p><span class="font-semibold text-slate-800">{{ __('Pengguna:') }}</span> {{ $order->user?->name ?? '-' }}</p>
                     <p><span class="font-semibold text-slate-800">{{ __('Email:') }}</span> {{ $order->user?->email ?? '-' }}</p>

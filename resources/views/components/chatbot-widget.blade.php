@@ -77,10 +77,10 @@
     <!-- Floating Button -->
     <button
         @click="isOpen = !isOpen"
-        class="group relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 text-white shadow-2xl transition duration-300 hover:-translate-y-1 hover:scale-105 active:scale-95"
-        :class="isOpen ? 'rotate-90 from-slate-800 via-slate-700 to-slate-600' : ''"
+        class="group relative flex h-14 w-14 items-center justify-center rounded-full shadow-2xl transition duration-300 hover:-translate-y-1 hover:scale-105 active:scale-95"
+        :class="isOpen ? 'rotate-90 bg-[#111113] text-[#E8E8EC] border border-[#1A1A1E]' : 'bg-[#D4A843] text-[#0A0A0B]'"
     >
-        <span class="absolute inset-0 rounded-full bg-white/20 opacity-0 blur-md transition duration-300 group-hover:opacity-100"></span>
+        <span class="absolute inset-0 rounded-full bg-[#D4A843]/20 opacity-0 blur-md transition duration-300 group-hover:opacity-100"></span>
         <div x-show="!isOpen" x-transition>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
@@ -103,23 +103,23 @@
         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
         x-transition:leave-end="opacity-0 translate-y-10 scale-95"
         x-cloak
-        class="absolute bottom-16 right-0 flex h-[540px] w-[360px] flex-col overflow-hidden rounded-[2rem] border border-blue-100 bg-white/95 shadow-[0_30px_80px_-35px_rgba(15,23,42,0.5)] backdrop-blur-xl sm:w-[410px]"
+        class="absolute bottom-16 right-0 flex h-[540px] w-[360px] flex-col overflow-hidden rounded-[2rem] border border-[#1A1A1E] bg-[#0A0A0B]/95 shadow-[0_30px_80px_-35px_rgba(0,0,0,0.8)] backdrop-blur-xl sm:w-[410px]"
     >
         <!-- Header -->
-        <div class="flex items-center justify-between bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.22),_transparent_30%),linear-gradient(135deg,_#1d4ed8,_#2563eb_50%,_#0ea5e9)] p-4 text-white">
+        <div class="flex items-center justify-between bg-[#111113] border-b border-[#1A1A1E] p-4 text-[#E8E8EC]">
             <div class="flex items-center gap-3">
-                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 shadow-inner backdrop-blur-md">
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#D4A843]/10 border border-[#D4A843]/20 text-[#D4A843] shadow-inner backdrop-blur-md">
                     <span class="text-lg font-bold">M</span>
                 </div>
                 <div>
                     <h3 class="text-sm font-bold tracking-[0.01em]">Manake Guide</h3>
                     <div class="flex items-center gap-1.5">
-                        <span class="h-2 w-2 rounded-full bg-green-400 animate-pulse"></span>
-                        <span class="text-[10px] text-blue-100/90">Rental copilot + FAQ live help</span>
+                        <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="text-[10px] text-[#A0A0A8]">Rental copilot + FAQ live help</span>
                     </div>
                 </div>
             </div>
-            <button @click="resetChat()" class="rounded-xl p-2 transition hover:bg-white/10" title="Reset Chat">
+            <button @click="resetChat()" class="rounded-xl p-2 transition hover:bg-[#1A1A1E] text-[#A0A0A8] hover:text-[#E8E8EC]" title="Reset Chat">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
@@ -129,17 +129,17 @@
         <!-- Chat Container -->
         <div
             x-ref="chatContainer"
-            class="flex-1 space-y-4 overflow-y-auto bg-[linear-gradient(180deg,_#f8fbff,_#eef4ff_48%,_#f8fafc)] p-4"
+            class="flex-1 space-y-4 overflow-y-auto bg-[#0A0A0B] p-4"
         >
             <template x-if="messages.length === 1 && faqPreview.length > 0">
-                <div class="rounded-[1.5rem] border border-blue-100 bg-white/85 p-3 shadow-sm backdrop-blur">
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-700">FAQ cepat</p>
-                    <p class="mt-1 text-xs leading-relaxed text-slate-500">Pilih pertanyaan umum untuk balasan instan, atau ketik pertanyaan Anda sendiri.</p>
+                <div class="rounded-[1.5rem] border border-[#1A1A1E] bg-[#111113] p-3 shadow-sm backdrop-blur">
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4A843]">FAQ cepat</p>
+                    <p class="mt-1 text-xs leading-relaxed text-[#A0A0A8]">Pilih pertanyaan umum untuk balasan instan, atau ketik pertanyaan Anda sendiri.</p>
                     <div class="mt-3 grid gap-2">
                         <template x-for="(faq, index) in faqPreview" :key="`faq-${index}`">
                             <button
                                 type="button"
-                                class="w-full rounded-2xl border border-slate-200 bg-[linear-gradient(180deg,_#ffffff,_#f8fbff)] px-3 py-2.5 text-left text-xs font-medium text-slate-700 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md"
+                                class="w-full rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-2.5 text-left text-xs font-medium text-[#E8E8EC] shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#D4A843]/40 hover:text-[#D4A843] hover:shadow-md"
                                 @click="useFaq(faq.question, faq.answer)"
                                 x-text="faq.question"
                             ></button>
@@ -156,8 +156,8 @@
                     <div
                         class="max-w-[82%] rounded-[1.35rem] px-4 py-3 text-sm shadow-sm transition duration-200"
                         :class="msg.role === 'user' 
-                            ? 'bg-[linear-gradient(135deg,_#2563eb,_#1d4ed8)] text-white rounded-tr-md shadow-[0_16px_30px_-22px_rgba(37,99,235,0.9)]' 
-                            : 'border border-slate-100 bg-white text-slate-700 rounded-tl-md shadow-[0_18px_32px_-26px_rgba(15,23,42,0.4)]'"
+                            ? 'bg-[#D4A843] text-[#0A0A0B] font-medium rounded-tr-md shadow-[0_16px_30px_-22px_rgba(212,168,67,0.3)]' 
+                            : 'border border-[#1A1A1E] bg-[#111113] text-[#E8E8EC] rounded-tl-md shadow-[0_18px_32px_-26px_rgba(0,0,0,0.5)]'"
                     >
                         <p x-text="msg.content" class="leading-relaxed whitespace-pre-wrap"></p>
                     </div>
@@ -166,7 +166,7 @@
 
             <!-- Loading Indicator -->
             <div x-show="isLoading" class="flex justify-start" x-transition>
-                <div class="flex items-center gap-1 rounded-[1.2rem] border border-slate-100 bg-white px-4 py-3 shadow-sm">
+                <div class="flex items-center gap-1 rounded-[1.2rem] border border-[#1A1A1E] bg-[#111113] px-4 py-3 shadow-sm">
                     <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.3s"></div>
                     <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.15s"></div>
                     <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D4A843]"></div>
@@ -175,18 +175,18 @@
         </div>
 
         <!-- Input -->
-        <div class="border-t border-slate-100 bg-white/95 p-4 backdrop-blur">
+        <div class="border-t border-[#1A1A1E] bg-[#0A0A0B]/95 p-4 backdrop-blur">
             <form @submit.prevent="sendMessage()" class="flex items-center gap-2">
                 <input
                     type="text"
                     x-model="userInput"
                     placeholder="Tanya seputar sewa alat..."
-                    class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    class="w-full rounded-2xl border border-[#1A1A1E] bg-[#111113] px-4 py-2.5 text-sm text-[#E8E8EC] transition focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20 placeholder:text-slate-600"
                     :disabled="isLoading"
                 >
                 <button
                     type="submit"
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,_#2563eb,_#0ea5e9)] text-white shadow-sm transition hover:scale-105 hover:shadow-md disabled:opacity-50"
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#D4A843] text-[#0A0A0B] shadow-sm transition hover:scale-105 hover:bg-[#e0ba5d] hover:shadow-md disabled:opacity-50"
                     :disabled="isLoading || !userInput.trim()"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -194,7 +194,7 @@
                     </svg>
                 </button>
             </form>
-            <p class="mt-2 text-center text-[10px] text-slate-400">Manake Guide • FAQ + AI fallback + catalog-aware help</p>
+            <p class="mt-2 text-center text-[10px] text-[#A0A0A8]">Manake Guide • FAQ + AI fallback + catalog-aware help</p>
         </div>
     </div>
 </div>

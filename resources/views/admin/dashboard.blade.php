@@ -258,32 +258,32 @@
                     </div>
                 </section>
 
-                <details class="mk-card rounded-2xl p-5">
-                    <summary class="cursor-pointer text-base font-semibold text-blue-700">
+                <details class="mk-card rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-5 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.9)]">
+                    <summary class="cursor-pointer text-base font-semibold text-[#D4A843]">
                         {{ __('Kalender Unit Disewa (Opsional)') }}
                     </summary>
                     <div class="mt-4">
                         <div class="flex flex-wrap items-center justify-between gap-3">
-                            <div class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-2 py-1.5">
+                            <div class="inline-flex items-center gap-2 rounded-xl border border-[#1A1A1E] px-2 py-1.5">
                                 <a
                                     href="{{ route('admin.dashboard', array_merge($calendarBaseQuery, ['calendar_month' => $rentalCalendar['previous_month'] ?? now()->subMonth()->format('Y-m')])) }}"
-                                    class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                                    class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[#A0A0A8] transition hover:bg-[#1A1A1E] hover:text-[#E8E8EC]"
                                     aria-label="{{ __('Bulan sebelumnya') }}"
                                 >
                                     ←
                                 </a>
-                                <span class="min-w-[9rem] text-center text-sm font-semibold text-slate-700">{{ $rentalCalendar['month_label'] ?? now()->translatedFormat('F Y') }}</span>
+                                <span class="min-w-[9rem] text-center text-sm font-semibold text-[#E8E8EC]">{{ $rentalCalendar['month_label'] ?? now()->translatedFormat('F Y') }}</span>
                                 <a
                                     href="{{ route('admin.dashboard', array_merge($calendarBaseQuery, ['calendar_month' => $rentalCalendar['next_month'] ?? now()->addMonth()->format('Y-m')])) }}"
-                                    class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                                    class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[#A0A0A8] transition hover:bg-[#1A1A1E] hover:text-[#E8E8EC]"
                                     aria-label="{{ __('Bulan berikutnya') }}"
                                 >
                                     →
                                 </a>
                             </div>
                             <div class="flex flex-wrap items-center gap-2 text-xs">
-                                <span class="rounded-full bg-slate-100 px-2.5 py-1 font-semibold text-slate-700">{{ __('Unit-hari:') }} {{ (int) ($rentalCalendar['total_unit_days'] ?? 0) }}</span>
-                                <span class="rounded-full bg-blue-100 px-2.5 py-1 font-semibold text-blue-700">{{ __('Puncak:') }} {{ (int) ($rentalCalendar['max_daily_units'] ?? 0) }}</span>
+                                <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 font-semibold text-[#E8E8EC]">{{ __('Unit-hari:') }} {{ (int) ($rentalCalendar['total_unit_days'] ?? 0) }}</span>
+                                <span class="rounded-full border border-[#D4A843]/20 bg-[#D4A843]/10 px-2.5 py-1 font-semibold text-[#D4A843]">{{ __('Puncak:') }} {{ (int) ($rentalCalendar['max_daily_units'] ?? 0) }}</span>
                             </div>
                         </div>
 
@@ -299,9 +299,9 @@
                                         @php
                                             $hasRental = (int) ($day['total_qty'] ?? 0) > 0;
                                         @endphp
-                                        <div class="rounded-xl border px-2 py-2 {{ ($day['in_month'] ?? false) ? 'border-slate-200 bg-white' : 'border-slate-100 bg-slate-50 text-slate-300' }}">
-                                            <p class="text-xs font-semibold">{{ $day['day'] }}</p>
-                                            <p class="mt-1 text-xs {{ $hasRental ? 'font-semibold text-blue-600' : 'text-slate-400' }}">
+                                        <div class="rounded-xl border px-2 py-2 {{ ($day['in_month'] ?? false) ? 'border-[#1A1A1E] bg-[#0A0A0B]' : 'border-[#1A1A1E] bg-[#111113] text-[#A0A0A8] opacity-50' }}">
+                                            <p class="text-xs font-semibold {{ ($day['in_month'] ?? false) ? 'text-[#E8E8EC]' : '' }}">{{ $day['day'] }}</p>
+                                            <p class="mt-1 text-xs {{ $hasRental ? 'font-semibold text-[#D4A843]' : 'text-[#66666C]' }}">
                                                 {{ $hasRental ? ($day['total_qty'] . ' ' . __('unit')) : '-' }}
                                             </p>
                                         </div>
@@ -315,7 +315,7 @@
         </section>
 
         @if ($isPaginator)
-            <div class="border-t border-slate-200 pt-4">
+            <div class="border-t border-[#1A1A1E] pt-4">
                 {{ $operationalOrders->links() }}
             </div>
         @endif
