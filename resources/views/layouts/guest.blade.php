@@ -123,6 +123,7 @@
             </div>
         </div>
 
+        <x-chatbot-widget />
         @include('partials.theme-toggle')
         <script>
             window.csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
