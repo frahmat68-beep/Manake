@@ -7,7 +7,6 @@ use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Schema;
 
 class SetLocale
 {
@@ -28,7 +27,11 @@ class SetLocale
         }
 
         if (! $locale) {
-            $locale = $request->cookie('locale', config('app.locale', 'id'));
+            $locale = $request->cookie('locale');
+        }
+
+        if (! $locale) {
+            $locale = 'id';
         }
 
         if (! in_array($locale, ['id', 'en'], true)) {

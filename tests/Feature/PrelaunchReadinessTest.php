@@ -28,6 +28,19 @@ class PrelaunchReadinessTest extends TestCase
         $this->assertSame('en', session('locale'));
     }
 
+    public function test_fresh_public_request_defaults_to_indonesian_locale(): void
+    {
+        config(['app.locale' => 'en']);
+
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertSee('Masuk Manake')
+            ->assertSee('Lupa password?')
+            ->assertDontSee('Manake Login');
+
+        $this->assertSame('id', app()->getLocale());
+    }
+
     public function test_core_user_pages_render_in_main_booking_flow(): void
     {
         $user = User::factory()->create();
