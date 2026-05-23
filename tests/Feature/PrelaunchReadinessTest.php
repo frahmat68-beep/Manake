@@ -41,6 +41,15 @@ class PrelaunchReadinessTest extends TestCase
         $this->assertSame('id', app()->getLocale());
     }
 
+    public function test_admin_login_page_uses_release_ready_copy_and_submit_button(): void
+    {
+        $this->get(route('admin.login'))
+            ->assertOk()
+            ->assertSee('Masuk Admin')
+            ->assertSee('type="submit"', false)
+            ->assertDontSee('bg-blue-600');
+    }
+
     public function test_core_user_pages_render_in_main_booking_flow(): void
     {
         $user = User::factory()->create();
