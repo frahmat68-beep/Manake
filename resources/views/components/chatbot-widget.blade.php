@@ -167,9 +167,9 @@
             <!-- Loading Indicator -->
             <div x-show="isLoading" class="flex justify-start" x-transition>
                 <div class="flex items-center gap-1 rounded-[1.2rem] border border-slate-100 bg-white px-4 py-3 shadow-sm">
-                    <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-blue-600"></div>
-                    <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-cyan-500 [animation-delay:0.15s]"></div>
-                    <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-blue-400 [animation-delay:0.3s]"></div>
+                    <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.3s"></div>
+                    <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.15s"></div>
+                    <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D4A843]"></div>
                 </div>
             </div>
         </div>
