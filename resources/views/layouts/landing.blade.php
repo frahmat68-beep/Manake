@@ -104,6 +104,13 @@
         @include('partials.footer')
     @endunless
 
+    <script>
+        document.addEventListener('open-auth-modal', (event) => {
+            const requestedView = typeof event.detail === 'string' ? event.detail : 'login';
+            const target = requestedView === 'register' ? @json(route('register')) : @json(route('login', ['reason' => 'cart']));
+            window.location.assign(target);
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>
