@@ -9,13 +9,6 @@
         $currentTheme = 'light';
     }
     $searchQuery = request('q', '');
-    $categories = collect($navCategories ?? [])
-        ->filter(fn ($category) => ! empty($category->slug ?? null))
-        ->map(fn ($category) => [
-            'label' => $category->name,
-            'url' => route('category.show', $category->slug),
-        ])
-        ->values();
     $notificationItems = collect([
         [
             'title' => __('app.notifications.ready_title'),
@@ -49,34 +42,10 @@
                 </a>
 
                 <div class="hidden items-center gap-5 text-sm font-semibold text-[#A0A0A8] lg:flex">
-                    <div class="relative" @mouseenter="categoryOpen = true" @mouseleave="categoryOpen = false" @click.outside="categoryOpen = false">
-                        <div class="inline-flex items-center gap-1">
-                            <a href="{{ $toHomeSection('categories') }}" data-ui-text-button class="transition">{{ __('ui.nav.category') }}</a>
-                            <button
-                                type="button"
-                                data-ui-text-button
-                                class="inline-flex items-center rounded-full p-0.5 transition"
-                                @click="categoryOpen = !categoryOpen"
-                                :aria-expanded="categoryOpen.toString()"
-                                aria-label="{{ __('ui.nav.category') }}"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform" :class="categoryOpen ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div x-cloak x-show="categoryOpen" x-transition.origin.top.left class="card absolute left-0 mt-2 w-56 rounded-xl p-2 shadow-lg">
-                            @forelse ($categories as $cat)
-                                <a href="{{ $cat['url'] }}" data-ui-menu-item class="block rounded-lg px-3 py-2 text-sm transition">
-                                    {{ $cat['label'] }}
-                                </a>
-                            @empty
-                                <a href="{{ route('categories.index') }}" data-ui-menu-item class="block rounded-lg px-3 py-2 text-sm transition">
-                                    {{ __('app.category.title') }}
-                                </a>
-                            @endforelse
-                        </div>
-                    </div>
+                    <a href="{{ $toHomeSection('equipment') }}" data-ui-text-button class="transition">{{ __('Equipment') }}</a>
+                    <a href="{{ $toHomeSection('about') }}" data-ui-text-button class="transition">{{ __('Tentang Kami') }}</a>
+                    <a href="{{ $toHomeSection('cara-sewa') }}" data-ui-text-button class="transition">{{ __('Cara Sewa') }}</a>
+                    <a href="{{ $toHomeSection('contact') }}" data-ui-text-button class="transition">{{ __('Contact') }}</a>
                 </div>
             </div>
 
@@ -235,18 +204,13 @@
 
         <div x-cloak x-show="mobileOpen" x-transition class="pb-4 lg:hidden">
             <div class="card space-y-3 rounded-2xl p-3">
-                    <div class="rounded-xl bg-[#111113] p-3">
-                    <p class="text-[11px] font-semibold uppercase tracking-widest text-[#A0A0A8]">{{ __('ui.nav.category') }}</p>
+                <div class="rounded-xl bg-[#111113] p-3">
+                    <p class="text-[11px] font-semibold uppercase tracking-widest text-[#A0A0A8]">{{ __('Navigasi') }}</p>
                     <div class="mt-2 grid grid-cols-2 gap-2">
-                        @forelse ($categories as $cat)
-                            <a href="{{ $cat['url'] }}" class="btn-secondary rounded-xl px-3 py-2 text-center text-sm font-semibold transition">
-                                {{ $cat['label'] }}
-                            </a>
-                        @empty
-                            <a href="{{ route('categories.index') }}" class="btn-secondary col-span-2 rounded-xl px-3 py-2 text-center text-sm font-semibold transition">
-                                {{ __('app.category.title') }}
-                            </a>
-                        @endforelse
+                        <a href="{{ $toHomeSection('equipment') }}" class="btn-secondary rounded-xl px-3 py-2 text-center text-sm font-semibold transition">Equipment</a>
+                        <a href="{{ $toHomeSection('about') }}" class="btn-secondary rounded-xl px-3 py-2 text-center text-sm font-semibold transition">Tentang Kami</a>
+                        <a href="{{ $toHomeSection('cara-sewa') }}" class="btn-secondary rounded-xl px-3 py-2 text-center text-sm font-semibold transition">Cara Sewa</a>
+                        <a href="{{ $toHomeSection('contact') }}" class="btn-secondary rounded-xl px-3 py-2 text-center text-sm font-semibold transition">Contact</a>
                     </div>
                 </div>
 

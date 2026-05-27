@@ -188,12 +188,7 @@
                         {{ $heroDescription }}
                     </p>
 
-                    <div class="mt-10 flex flex-wrap items-center gap-4">
-                        <a href="#equipment" class="inline-flex items-center gap-3 rounded-md bg-[#D4A843] px-7 py-4 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]">
-                            {{ $heroCtaText }}
-                            <span aria-hidden="true">→</span>
-                        </a>
-                    </div>
+                    <div class="mt-10"></div>
                 </div>
 
                 <div class="grid gap-4">

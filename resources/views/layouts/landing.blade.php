@@ -46,7 +46,6 @@
 
             <nav class="hidden flex-1 items-center justify-center gap-8 lg:flex" aria-label="{{ __('Navigasi utama') }}">
                 <a href="{{ $menuHref('#equipment') }}" class="{{ $navClass }}">{{ __('Equipment') }}</a>
-                <a href="{{ $menuHref('#categories') }}" class="{{ $navClass }}">{{ __('Categories') }}</a>
                 <a href="{{ $menuHref('#about') }}" class="{{ $navClass }}">{{ __('Tentang Kami') }}</a>
                 <a href="{{ $menuHref('#cara-sewa') }}" class="{{ $navClass }}">{{ __('Cara Sewa') }}</a>
                 <a href="{{ $menuHref('#contact') }}" class="{{ $navClass }}">{{ __('Contact') }}</a>
@@ -54,9 +53,6 @@
 
             <div class="ml-auto hidden items-center gap-4 sm:flex">
                 <a href="{{ route('login') }}" class="{{ $authLinkClass }}">{{ __('Masuk') }}</a>
-                <a href="{{ $menuHref('#equipment') }}" class="inline-flex items-center rounded-md bg-amber-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-400">
-                    {{ __('Lihat Peralatan') }}
-                </a>
             </div>
 
             <button
@@ -80,16 +76,12 @@
                 <div class="rounded-lg border border-white/10 bg-slate-950/95 p-4 shadow-2xl shadow-black/30 backdrop-blur-xl">
                     <nav class="grid gap-2">
                         <a href="{{ $menuHref('#equipment') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Equipment') }}</a>
-                        <a href="{{ $menuHref('#categories') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Categories') }}</a>
                         <a href="{{ $menuHref('#about') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Tentang Kami') }}</a>
                         <a href="{{ $menuHref('#cara-sewa') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Cara Sewa') }}</a>
                         <a href="{{ $menuHref('#contact') }}" class="rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5" @click="open = false">{{ __('Contact') }}</a>
                     </nav>
-                    <div class="mt-4 flex items-center gap-3 border-t border-white/10 pt-4">
+                    <div class="mt-4 border-t border-white/10 pt-4">
                         <a href="{{ route('login') }}" class="text-sm text-white/65">{{ __('Masuk') }}</a>
-                        <a href="{{ $menuHref('#equipment') }}" class="ml-auto inline-flex items-center rounded-md bg-amber-500 px-4 py-2.5 text-sm font-semibold text-slate-950">
-                            {{ __('Lihat Peralatan') }}
-                        </a>
                     </div>
                 </div>
             </div>
