@@ -1,39 +1,39 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ChatbotController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\AssetController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\OverviewController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\LocaleController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\ThemeController;
-use App\Http\Controllers\EquipmentController;
-use App\Http\Controllers\AvailabilityBoardController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\DbExplorerController;
-use App\Http\Controllers\Admin\StubController as AdminStubController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
-use App\Http\Controllers\Admin\EquipmentController as AdminEquipmentController;
 use App\Http\Controllers\Admin\ContentController as AdminContentController;
 use App\Http\Controllers\Admin\CopywritingController as AdminCopywritingController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\DbExplorerController;
+use App\Http\Controllers\Admin\EquipmentController as AdminEquipmentController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\StubController as AdminStubController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\WebsiteSettingsController as AdminWebsiteSettingsController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AvailabilityBoardController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OverviewController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ThemeController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
 | PUBLIC PAGES (NO AUTH)
 |--------------------------------------------------------------------------
 */
-
 
 Route::get('/assets/public/{path}', [AssetController::class, 'public'])
     ->where('path', '.*')
@@ -51,6 +51,7 @@ Route::post('/lang/{locale}', [LocaleController::class, 'switch'])->name('lang.s
 Route::post('/theme/{theme}', [ThemeController::class, 'switch'])->name('theme.switch');
 
 Route::get('/catalog', [EquipmentController::class, 'index'])->name('catalog');
+Route::redirect('/equipment', '/catalog')->name('equipment.index');
 Route::get('/availability-board', [AvailabilityBoardController::class, 'index'])->name('availability.board');
 Route::get('/search/suggestions', [EquipmentController::class, 'suggestions'])->name('search.suggestions');
 Route::get('/equipments', [PageController::class, 'catalogRedirect'])->name('equipments.index');
@@ -104,8 +105,8 @@ Route::middleware(['auth', 'otp'])->group(function () {
     Route::get('/booking/pay/{order:order_number}', [OrderController::class, 'pay'])->name('booking.pay');
     Route::get('/booking/{order:order_number}', [OrderController::class, 'show'])->name('booking.show');
 
-    Route::get('/settings', [\App\Http\Controllers\SettingsController::class, 'edit'])->name('settings.index');
-    Route::post('/settings', [\App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
+    Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.index');
+    Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
     Route::post('/payments/{order:order_number}/snap-token', [PaymentController::class, 'createSnapToken'])->name('payments.snap-token');
     Route::post('/payments/{order:order_number}/refresh-status', [PaymentController::class, 'refreshStatus'])->name('payments.refresh-status');

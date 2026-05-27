@@ -33,7 +33,7 @@
     };
 @endphp
 
-<nav class="sticky top-0 z-50 border-b border-[#1A1A1E] bg-[#0A0A0B]/95 backdrop-blur-xl" x-data="{ mobileOpen: false, categoryOpen: false, userOpen: false, prefOpen: false, notifOpen: false }">
+<nav class="sticky top-0 z-50 border-b border-[#1A1A1E] bg-[#0A0A0B]/95 backdrop-blur-xl" x-data="{ mobileOpen: false, userOpen: false, prefOpen: false, notifOpen: false }">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
         <div class="flex h-16 items-center justify-between gap-3">
             <div class="flex min-w-0 items-center gap-6">

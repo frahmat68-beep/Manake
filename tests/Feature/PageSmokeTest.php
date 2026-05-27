@@ -45,6 +45,11 @@ class PageSmokeTest extends TestCase
         }
     }
 
+    public function test_legacy_equipment_index_redirects_to_catalog(): void
+    {
+        $this->get('/equipment')->assertRedirect(route('catalog'));
+    }
+
     public function test_home_page_renders_v0_cinematic_indonesian_hero_with_empty_database(): void
     {
         $response = $this->get(route('home'));
@@ -88,6 +93,7 @@ class PageSmokeTest extends TestCase
             $response->assertSee('Sony FX3 Cinema Kit');
             $response->assertSee('Kamera');
             $response->assertSee(route('product.show', $equipment->slug));
+            $response->assertDontSee('/catalog?category=', false);
             $response->assertSee('/assets/media/'.$imagePath, false);
         } finally {
             Storage::disk('public')->delete($imagePath);

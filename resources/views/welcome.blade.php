@@ -12,7 +12,6 @@
         ['name' => 'DJI Ronin 4D', 'slug' => 'dji-ronin-4d', 'category' => 'Stabilizer', 'available' => true, 'price' => 650000, 'image' => site_asset('images/stabilizer-ronin.jpg'), 'url' => route('catalog')],
         ['name' => 'Motorola DP4800e Kit', 'slug' => 'motorola-dp4800e-kit', 'category' => 'HT', 'available' => true, 'price' => 120000, 'image' => site_asset('images/ht-motorola.jpg'), 'url' => route('catalog')],
     ]);
-    $fallbackMarqueeCategories = collect(['Kamera', 'Lighting', 'Audio', 'HT / Walkie', 'Drone', 'Stabilizer']);
     $fallbackImageByCategory = [
         'kamera' => site_asset('images/camera-arri.jpg'),
         'lighting' => site_asset('images/lighting-aputure.jpg'),
@@ -91,14 +90,6 @@
             ];
         });
     $equipmentItems = $realEquipmentItems->isNotEmpty() ? $realEquipmentItems : $fallbackEquipmentCards;
-    $marqueeCategories = collect($navCategories ?? [])
-        ->map(fn ($category) => trim((string) data_get($category, 'name', '')))
-        ->filter()
-        ->values();
-    if ($marqueeCategories->isEmpty()) {
-        $marqueeCategories = $fallbackMarqueeCategories;
-    }
-    $marqueeCategories = $marqueeCategories->concat($marqueeCategories)->take(max(12, $marqueeCategories->count() * 2))->values();
     $guestRentalSnapshotItems = collect($guestRentalSnapshot ?? [])->filter();
     $homeStats = $homeRentalStats ?? [];
     $snapshotNumbers = [
@@ -122,7 +113,6 @@
         ->values();
     $carouselItems = $equipmentItems->concat($equipmentItems)->take(max(12, $equipmentItems->count() * 2))->values();
     $heroDescription = setting('home.hero_subtitle', 'Manake menyediakan akses ke kamera sinema, lighting profesional, perangkat audio, drone, stabilizer, dan lainnya — siap diambil dan digunakan. Tanpa kerumitan kepemilikan, hasil tetap profesional.');
-    $heroCtaText = setting('hero_cta_text', 'Lihat Peralatan');
     $equipmentSectionTitle = setting('copy.landing.ready_panel_title', 'Tersedia untuk disewa hari ini.');
     $equipmentSectionLink = setting('copy.landing.flow_catalog_link', 'Lihat semua peralatan yang tersedia');
     $categorySectionKicker = setting('copy.landing.quick_category_kicker', 'Kategori & Jadwal');
@@ -251,13 +241,6 @@
                             <h2 class="mt-3 text-3xl leading-tight text-[#E8E8EC] md:text-4xl" style="font-family: 'DM Serif Display', Georgia, serif;">
                                 {{ $categorySectionTitle }}
                             </h2>
-                            <div class="mt-5 flex flex-wrap gap-2">
-                                @foreach ($marqueeCategories->unique()->take(8) as $category)
-                                    <a href="{{ route('catalog', ['category' => \Illuminate\Support\Str::slug($category)]) }}" class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
-                                        {{ $category }}
-                                    </a>
-                                @endforeach
-                            </div>
                         </div>
 
                         <div class="grid gap-3">
