@@ -86,11 +86,18 @@
                             <h1 class="text-2xl font-extrabold leading-tight tracking-tight text-[#E8E8EC] sm:text-3xl">
                                 {{ $equipment->name }}
                             </h1>
-                            <p class="mt-2 max-w-2xl text-sm leading-relaxed text-[#A0A0A8] sm:text-base">
-                                {!! nl2br(e($equipment->description ?: __('app.product.meta'))) !!}
-                            </p>
+                            <div class="mt-5 flex flex-wrap gap-3">
+                                @if ($canRent)
+                                    <a href="#rental-summary" data-scroll-to-rental class="mk-button-primary px-5 py-2.5 text-sm">
+                                        Pilih Tanggal Sewa
+                                    </a>
+                                @endif
+                                <a href="{{ route('catalog') }}" class="mk-button-secondary px-5 py-2.5 text-sm">
+                                    {{ __('app.actions.back_to_catalog') }}
+                                </a>
+                            </div>
                         </div>
-                        <a href="{{ route('catalog') }}" class="inline-flex shrink-0 self-start rounded-md border border-[#1A1A1E] bg-[#111113] px-5 py-2.5 text-xs font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] sm:self-auto">
+                        <a href="{{ route('catalog') }}" class="hidden shrink-0 self-start rounded-md border border-[#1A1A1E] bg-[#111113] px-5 py-2.5 text-xs font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] sm:self-auto lg:inline-flex">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                             {{ __('app.actions.back_to_catalog') }}
                         </a>
@@ -259,7 +266,7 @@
                                     value="{{ $prefillStartDate }}"
                                     required
                                     @readonly($lockDates)
-                                    class="mk-input {{ $lockDates ? 'cursor-not-allowed opacity-60' : '' }}"
+                                    class="mk-input min-h-14 cursor-pointer text-base {{ $lockDates ? 'cursor-not-allowed opacity-60' : '' }}"
                                 >
                             </div>
                             <div class="space-y-1.5">
@@ -274,7 +281,7 @@
                                     value="{{ $prefillEndDate }}"
                                     required
                                     @readonly($lockDates)
-                                    class="mk-input {{ $lockDates ? 'cursor-not-allowed opacity-60' : '' }}"
+                                    class="mk-input min-h-14 cursor-pointer text-base {{ $lockDates ? 'cursor-not-allowed opacity-60' : '' }}"
                                 >
                             </div>
                         </div>
@@ -288,13 +295,13 @@
 
                         @unless($lockDates)
                             <div class="mb-6 grid grid-cols-3 gap-2">
-                                <button type="button" data-date-preset="today" class="rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs font-extrabold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
+                                <button type="button" data-date-preset="today" class="rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-3 text-xs font-extrabold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
                                     Hari ini
                                 </button>
-                                <button type="button" data-date-preset="tomorrow" class="rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs font-extrabold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
+                                <button type="button" data-date-preset="tomorrow" class="rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-3 text-xs font-extrabold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
                                     Besok
                                 </button>
-                                <button type="button" data-date-preset="weekend" class="rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs font-extrabold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
+                                <button type="button" data-date-preset="weekend" class="rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-3 text-xs font-extrabold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
                                     3 hari
                                 </button>
                             </div>
@@ -626,6 +633,17 @@
             };
 
             if (startInput && endInput) {
+                [startInput, endInput].forEach((input) => {
+                    input.addEventListener('click', () => {
+                        if (isLockedDates || typeof input.showPicker !== 'function') return;
+                        try {
+                            input.showPicker();
+                        } catch (error) {
+                            input.focus();
+                        }
+                    });
+                });
+
                 startInput.addEventListener('change', () => {
                     if (startInput.value) endInput.min = startInput.value > minDate ? startInput.value : minDate;
                     else endInput.min = minDate;
@@ -644,6 +662,25 @@
 
             document.querySelectorAll('[data-date-preset]').forEach((button) => {
                 button.addEventListener('click', () => applyPreset(button.dataset.datePreset || 'today'));
+            });
+
+            document.querySelectorAll('[data-scroll-to-rental]').forEach((button) => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    summary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    window.setTimeout(() => {
+                        if (startInput && !isLockedDates) {
+                            startInput.focus({ preventScroll: true });
+                            if (typeof startInput.showPicker === 'function') {
+                                try {
+                                    startInput.showPicker();
+                                } catch (error) {
+                                    startInput.focus({ preventScroll: true });
+                                }
+                            }
+                        }
+                    }, 450);
+                });
             });
 
             if (qtyInput) {

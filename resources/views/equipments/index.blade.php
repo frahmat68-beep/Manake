@@ -276,10 +276,7 @@
                                         fetchpriority="{{ $prioritizeImage ? 'high' : 'auto' }}"
                                         decoding="async"
                                     >
-                                    <div class="absolute inset-x-4 top-4 flex items-center justify-between pointer-events-none">
-                                        <span class="rounded-full border border-[#1A1A1E] bg-[#111113]/95 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#D4A843] backdrop-blur-md">
-                                            {{ $item->category?->name ?? __('app.category.title') }}
-                                        </span>
+                                    <div class="absolute inset-x-4 top-4 flex items-center justify-end pointer-events-none">
                                         <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
                                             {{ $statusLabel }}
                                         </span>
@@ -289,16 +286,13 @@
                                 <div class="flex flex-1 flex-col p-6">
                                     <h3 class="min-h-[2.5rem] text-lg font-bold leading-snug text-[#E8E8EC] transition-colors duration-300 group-hover:text-[#D4A843]">{{ $item->name }}</h3>
                                     
-                                    <div class="mt-3 flex items-center justify-between border-t border-[#1A1A1E] pt-3">
+                                    <div class="mt-3 border-t border-[#1A1A1E] pt-3">
                                         <div class="flex items-baseline gap-1">
                                             <p class="text-xl font-extrabold tracking-tight text-[#E8E8EC]">
                                                 {{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}
                                             </p>
                                             <span class="text-[9px] font-bold uppercase tracking-widest text-[#A0A0A8]">{{ __('app.product.per_day') }}</span>
                                         </div>
-                                        <span class="text-xs font-semibold text-[#A0A0A8]">
-                                            Tersedia: <span class="font-bold text-[#E8E8EC]">{{ $availableUnits }} unit</span>
-                                        </span>
                                     </div>
 
                                     <div class="mt-6 flex flex-col gap-2">
