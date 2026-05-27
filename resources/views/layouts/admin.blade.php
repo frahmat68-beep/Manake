@@ -136,6 +136,28 @@
             background-color: #0A0A0B;
             color: #E8E8EC;
         }
+        body[data-manake-shell="admin"] :is(.text-blue-300, .text-blue-400, .text-blue-500, .text-blue-600, .text-blue-700) {
+            color: #D4A843 !important;
+        }
+        body[data-manake-shell="admin"] :is(.bg-blue-50, .bg-blue-100, .bg-blue-600, .bg-blue-700) {
+            background-color: #D4A843 !important;
+            color: #0A0A0B !important;
+        }
+        body[data-manake-shell="admin"] :is(.border-blue-200, .border-blue-300, .border-blue-400, .border-blue-500) {
+            border-color: rgba(212, 168, 67, 0.42) !important;
+        }
+        body[data-manake-shell="admin"] :is(.hover\:text-blue-300:hover, .hover\:text-blue-600:hover, .hover\:text-blue-700:hover) {
+            color: #D4A843 !important;
+        }
+        body[data-manake-shell="admin"] :is(.hover\:border-blue-200:hover, .hover\:border-blue-500\/40:hover) {
+            border-color: rgba(212, 168, 67, 0.48) !important;
+        }
+        body[data-manake-shell="admin"] :is(.focus\:border-blue-400:focus) {
+            border-color: #D4A843 !important;
+        }
+        body[data-manake-shell="admin"] :is(.focus\:ring-blue-500\/30:focus) {
+            --tw-ring-color: rgba(212, 168, 67, 0.30) !important;
+        }
     </style>
 </head>
 <body class="manake-shell" data-admin-panel="true" data-manake-shell="admin">
@@ -167,7 +189,7 @@
         />
 
         <div class="transition-all duration-300" :class="sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-72'">
-            <header class="manake-topbar-shell sticky top-0 z-30 border-b border-slate-200 bg-white" data-manake-topbar="admin">
+            <header class="manake-topbar-shell sticky top-0 z-30 border-b border-[#1A1A1E] bg-[#0A0A0B]/95 text-[#E8E8EC] shadow-[0_14px_50px_rgba(0,0,0,0.18)] backdrop-blur-xl" data-manake-topbar="admin">
                 <div class="mx-auto flex h-16 w-full max-w-[1320px] items-center justify-between gap-3 px-4 sm:px-6">
                     <div class="flex min-w-0 items-center gap-3">
                         <button type="button" data-ui-icon-button class="inline-flex h-9 w-9 items-center justify-center rounded-xl lg:hidden" @click="sidebarOpen = true" aria-label="{{ __('Buka sidebar') }}">
@@ -179,7 +201,7 @@
                         </button>
                         
                         <!-- Desktop Collapse Toggle -->
-                        <button type="button" class="hidden lg:flex h-9 w-9 items-center justify-center rounded-xl hover:bg-slate-50 transition" @click="sidebarCollapsed = !sidebarCollapsed">
+                        <button type="button" class="hidden h-9 w-9 items-center justify-center rounded-xl transition hover:bg-white/5 lg:flex" @click="sidebarCollapsed = !sidebarCollapsed">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300" :class="sidebarCollapsed ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="m15 18-6-6 6-6"/>
                             </svg>

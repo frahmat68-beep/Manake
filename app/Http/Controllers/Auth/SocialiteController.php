@@ -85,7 +85,7 @@ class SocialiteController extends Controller
 
             Auth::login($user);
             
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('booking.history'));
 
         } catch (Throwable $e) {
             return redirect()->route('login')->withErrors([

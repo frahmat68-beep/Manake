@@ -4,14 +4,6 @@
 
 @php
     $heroCategories = ['Kamera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'HT'];
-    $fallbackEquipmentCards = collect([
-        ['name' => 'ARRI Alexa Mini LF', 'slug' => 'arri-alexa-mini-lf', 'category' => 'Kamera', 'available' => true, 'price' => 1200000, 'image' => site_asset('images/camera-arri.jpg'), 'url' => route('catalog')],
-        ['name' => 'Aputure 600d Pro', 'slug' => 'aputure-600d-pro', 'category' => 'Lighting', 'available' => true, 'price' => 350000, 'image' => site_asset('images/lighting-aputure.jpg'), 'url' => route('catalog')],
-        ['name' => 'RODE NTG5 Boom Kit', 'slug' => 'rode-ntg5-boom-kit', 'category' => 'Audio', 'available' => false, 'price' => 180000, 'image' => site_asset('images/audio-rode.jpg'), 'url' => route('catalog')],
-        ['name' => 'DJI Mavic 3 Cine', 'slug' => 'dji-mavic-3-cine', 'category' => 'Drone', 'available' => true, 'price' => 800000, 'image' => site_asset('images/drone-dji.jpg'), 'url' => route('catalog')],
-        ['name' => 'DJI Ronin 4D', 'slug' => 'dji-ronin-4d', 'category' => 'Stabilizer', 'available' => true, 'price' => 650000, 'image' => site_asset('images/stabilizer-ronin.jpg'), 'url' => route('catalog')],
-        ['name' => 'Motorola DP4800e Kit', 'slug' => 'motorola-dp4800e-kit', 'category' => 'HT', 'available' => true, 'price' => 120000, 'image' => site_asset('images/ht-motorola.jpg'), 'url' => route('catalog')],
-    ]);
     $fallbackImageByCategory = [
         'kamera' => site_asset('images/camera-arri.jpg'),
         'lighting' => site_asset('images/lighting-aputure.jpg'),
@@ -89,7 +81,7 @@
                 'url' => route('product.show', (string) data_get($equipment, 'slug', '')),
             ];
         });
-    $equipmentItems = $realEquipmentItems->isNotEmpty() ? $realEquipmentItems : $fallbackEquipmentCards;
+    $equipmentItems = $realEquipmentItems;
     $guestRentalSnapshotItems = collect($guestRentalSnapshot ?? [])->filter();
     $homeStats = $homeRentalStats ?? [];
     $snapshotNumbers = [
@@ -111,10 +103,11 @@
             ];
         })
         ->values();
-    $carouselItems = $equipmentItems->concat($equipmentItems)->take(max(12, $equipmentItems->count() * 2))->values();
+    $carouselItems = $equipmentItems->isNotEmpty()
+        ? $equipmentItems->concat($equipmentItems)->take(max(12, $equipmentItems->count() * 2))->values()
+        : collect();
     $heroDescription = setting('home.hero_subtitle', 'Manake menyediakan akses ke kamera sinema, lighting profesional, perangkat audio, drone, stabilizer, dan lainnya — siap diambil dan digunakan. Tanpa kerumitan kepemilikan, hasil tetap profesional.');
     $equipmentSectionTitle = setting('copy.landing.ready_panel_title', 'Tersedia untuk disewa hari ini.');
-    $equipmentSectionLink = setting('copy.landing.flow_catalog_link', 'Lihat semua peralatan yang tersedia');
     $categorySectionKicker = setting('copy.landing.quick_category_kicker', 'Kategori & Jadwal');
     $categorySectionTitle = setting('copy.landing.quick_category_title', 'Lihat kategori alat dan booking aktif dalam satu tempat.');
     $categoryEmptyText = setting('copy.landing.quick_category_empty', 'Data live dari database menunjukkan slot rental aktif masih kosong.');
@@ -266,21 +259,19 @@
 
         <section id="equipment" class="bg-[#0A0A0B] py-24 md:py-28">
             <div class="mx-auto max-w-7xl px-6 md:px-10">
-                <div class="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                <div class="mb-12">
                     <div>
                         <p class="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">Peralatan Unggulan</p>
                         <h2 class="text-[clamp(2.5rem,4vw,4rem)] leading-[0.96] tracking-[-0.04em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
                             {{ $equipmentSectionTitle }}
                         </h2>
                     </div>
-                    <a href="{{ route('catalog') }}" class="inline-flex items-center gap-2 text-sm font-medium text-[#A0A0A8] transition hover:text-[#D4A843]">
-                        {{ $equipmentSectionLink }} <span aria-hidden="true">→</span>
-                    </a>
                 </div>
 
-                <div class="group/carousel overflow-hidden pb-3">
-                    <div class="flex w-max gap-5 animate-[manake_equipment_carousel_42s_linear_infinite] group-hover/carousel:[animation-play-state:paused]">
-                        @foreach ($carouselItems as $item)
+                @if ($carouselItems->isNotEmpty())
+                    <div class="group/carousel overflow-hidden pb-3">
+                        <div class="flex w-max gap-5 animate-[manake_equipment_carousel_42s_linear_infinite] group-hover/carousel:[animation-play-state:paused]">
+                            @foreach ($carouselItems as $item)
                             @php
                                 $isAvailable = (bool) data_get($item, 'available', data_get($item, 'available_units', 0) > 0);
                                 $itemUrl = data_get($item, 'url', route('catalog'));
@@ -341,9 +332,15 @@
                                     </div>
                                 </div>
                             </article>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-8 text-center">
+                        <p class="text-base font-semibold text-[#E8E8EC]">Belum ada alat ready di database</p>
+                        <p class="mx-auto mt-2 max-w-xl text-sm leading-6 text-[#A0A0A8]">Carousel ini hanya menampilkan data equipment berstatus ready dari database utama, jadi tidak ada item dummy yang ditampilkan.</p>
+                    </div>
+                @endif
             </div>
         </section>
 

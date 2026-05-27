@@ -76,7 +76,10 @@
 >
     <!-- Floating Button -->
     <button
+        type="button"
         @click="isOpen = !isOpen"
+        :aria-label="isOpen ? 'Tutup Manake Guide' : 'Buka Manake Guide'"
+        data-chatbot-toggle
         class="group relative flex h-14 w-14 items-center justify-center rounded-full shadow-2xl transition duration-300 hover:-translate-y-1 hover:scale-105 active:scale-95"
         :class="isOpen ? 'rotate-90 bg-[#111113] text-[#E8E8EC] border border-[#1A1A1E]' : 'bg-[#D4A843] text-[#0A0A0B]'"
     >
@@ -181,11 +184,14 @@
                     type="text"
                     x-model="userInput"
                     placeholder="Tanya seputar sewa alat..."
+                    data-chatbot-input
                     class="w-full rounded-2xl border border-[#1A1A1E] bg-[#111113] px-4 py-2.5 text-sm text-[#E8E8EC] transition focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20 placeholder:text-slate-600"
                     :disabled="isLoading"
                 >
                 <button
                     type="submit"
+                    aria-label="Kirim pesan"
+                    data-chatbot-send
                     class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#D4A843] text-[#0A0A0B] shadow-sm transition hover:scale-105 hover:bg-[#e0ba5d] hover:shadow-md disabled:opacity-50"
                     :disabled="isLoading || !userInput.trim()"
                 >

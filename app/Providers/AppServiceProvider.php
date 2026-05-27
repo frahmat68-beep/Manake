@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Auth\Notifications\VerifyEmail;
-use App\Models\Category;
 use App\Models\OrderNotification;
 use App\Models\SiteSetting;
 use App\Models\User;
@@ -42,23 +41,10 @@ class AppServiceProvider extends ServiceProvider
 
         User::observe(UserObserver::class);
 
-        View::composer(['partials.navbar', 'layouts.app', 'layouts.user', 'layouts.app-dashboard', 'welcome'], function ($view) {
+        View::composer(['partials.navbar', 'layouts.app', 'welcome'], function ($view) {
             $cartCount = app(CartService::class)->totalItems();
-            static $navCategoriesCache;
             $notificationCount = 0;
             $notificationItems = collect();
-
-            if ($navCategoriesCache === null) {
-                $navCategoriesCache = collect();
-
-                if (schema_table_exists_cached('categories')) {
-                    $navCategoriesCache = Category::query()
-                        ->select(['name', 'slug'])
-                        ->orderBy('name')
-                        ->limit(8)
-                        ->get();
-                }
-            }
 
             if (Auth::guard('web')->check() && schema_table_exists_cached('order_notifications')) {
                 $webUserId = (int) Auth::guard('web')->id();
@@ -100,7 +86,6 @@ class AppServiceProvider extends ServiceProvider
                 'cartCount' => $cartCount,
                 'notificationCount' => $notificationCount,
                 'notificationItems' => $notificationItems,
-                'navCategories' => $navCategoriesCache,
             ]);
         });
     }

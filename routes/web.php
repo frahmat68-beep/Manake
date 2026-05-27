@@ -55,13 +55,13 @@ Route::redirect('/equipment', '/catalog')->name('equipment.index');
 Route::get('/availability-board', [AvailabilityBoardController::class, 'index'])->name('availability.board');
 Route::get('/search/suggestions', [EquipmentController::class, 'suggestions'])->name('search.suggestions');
 Route::get('/equipments', [PageController::class, 'catalogRedirect'])->name('equipments.index');
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::redirect('/categories', '/catalog')->name('categories.index');
 
 Route::get('/product/{slug}/availability', [EquipmentController::class, 'availability'])->name('product.availability');
 Route::get('/product/{slug}', [EquipmentController::class, 'show'])->name('product.show');
 Route::get('/equipment/{slug}', [PageController::class, 'equipmentRedirect'])->name('equipment.show');
 
-Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
+Route::get('/category/{slug}', fn () => redirect()->route('catalog'))->name('category.show');
 
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/about', [PageController::class, 'about'])->name('about');
@@ -100,7 +100,7 @@ Route::middleware(['auth', 'otp'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markRead'])->name('notifications.read');
 
-    Route::get('/booking', [OrderController::class, 'index'])->name('booking.index');
+    Route::redirect('/booking', '/booking/history')->name('booking.index');
     Route::get('/booking/history', [OrderController::class, 'index'])->name('booking.history');
     Route::get('/booking/pay/{order:order_number}', [OrderController::class, 'pay'])->name('booking.pay');
     Route::get('/booking/{order:order_number}', [OrderController::class, 'show'])->name('booking.show');

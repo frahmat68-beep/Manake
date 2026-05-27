@@ -30,8 +30,6 @@ class PageSmokeTest extends TestCase
     {
         $routes = [
             route('home'),
-            route('categories.index'),
-            route('category.show', 'sample-category'),
             route('catalog'),
             route('rental.rules'),
             route('availability.board'),
@@ -50,6 +48,12 @@ class PageSmokeTest extends TestCase
         $this->get('/equipment')->assertRedirect(route('catalog'));
     }
 
+    public function test_legacy_category_routes_redirect_to_catalog(): void
+    {
+        $this->get(route('categories.index'))->assertRedirect(route('catalog'));
+        $this->get(route('category.show', 'sample-category'))->assertRedirect(route('catalog'));
+    }
+
     public function test_home_page_renders_v0_cinematic_indonesian_hero_with_empty_database(): void
     {
         $response = $this->get(route('home'));
@@ -58,7 +62,8 @@ class PageSmokeTest extends TestCase
         $response->assertSee('Sewa');
         $response->assertSee('Sewa');
         $response->assertSee('terbaik, kapan saja.');
-        $response->assertSee('ARRI Alexa Mini LF');
+        $response->assertSee('Belum ada alat ready di database');
+        $response->assertDontSee('ARRI Alexa Mini LF');
         $response->assertSee('Kategori');
     }
 

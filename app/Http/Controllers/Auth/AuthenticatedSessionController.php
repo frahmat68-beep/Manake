@@ -107,7 +107,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->put('otp_verified', true);
 
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended(route('booking.history'));
     }
 
 

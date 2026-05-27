@@ -16,7 +16,7 @@ class RedirectIfAuthenticated
                     return redirect('/admin/dashboard');
                 }
 
-                return redirect('/dashboard');
+                return redirect()->route('booking.history');
             }
         }
 

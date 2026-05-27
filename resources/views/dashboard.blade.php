@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('layouts.app')
 
 @section('title', __('Dashboard Pengguna'))
 
@@ -103,7 +103,7 @@
                             <a href="{{ route('overview') }}" class="btn-primary w-full justify-start">
                                 {{ __('Dashboard') }}
                             </a>
-                            <a href="{{ route('booking.index') }}" class="btn-secondary w-full justify-start">
+                            <a href="{{ route('booking.history') }}" class="btn-secondary w-full justify-start">
                                 {{ __('Riwayat Saya') }}
                             </a>
                             <a href="{{ route('profile.complete') }}" class="btn-secondary w-full justify-start">
@@ -140,7 +140,7 @@
                                 <p class="manake-kicker">{{ __('Rental Aktif') }}</p>
                                 <h2 class="manake-heading mt-2 text-2xl font-black text-slate-950 dark:text-white">{{ __('Rental Aktif') }}</h2>
                             </div>
-                            <a href="{{ route('booking.index') }}" class="btn-secondary">
+                            <a href="{{ route('booking.history') }}" class="btn-secondary">
                                 {{ __('Lihat Semua') }}
                             </a>
                         </div>

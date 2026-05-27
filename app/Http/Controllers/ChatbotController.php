@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ChatbotKnowledgeService;
+use App\Services\Ai\GeminiAiService;
 use App\Services\Ai\LocalAiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -10,11 +11,13 @@ use Illuminate\Support\Facades\Session;
 class ChatbotController extends Controller
 {
     protected LocalAiService $aiService;
+    protected GeminiAiService $geminiService;
     protected ChatbotKnowledgeService $knowledgeService;
 
-    public function __construct(LocalAiService $aiService, ChatbotKnowledgeService $knowledgeService)
+    public function __construct(LocalAiService $aiService, GeminiAiService $geminiService, ChatbotKnowledgeService $knowledgeService)
     {
         $this->aiService = $aiService;
+        $this->geminiService = $geminiService;
         $this->knowledgeService = $knowledgeService;
     }
 
@@ -28,6 +31,12 @@ class ChatbotController extends Controller
                 'message' => 'required|string|max:500',
             ]);
 
+            if ($this->isOutOfManakeScope($request->message)) {
+                return response()->json([
+                    'message' => 'Maaf, saya hanya bisa membantu pertanyaan seputar Manake: katalog alat, cara sewa, ketersediaan, pembayaran, order, lokasi, dan aturan rental.',
+                ]);
+            }
+
             // Get or initialize chat history from session (limited to last 10 exchanges for token safety)
             $history = Session::get('chatbot_history', []);
             
@@ -39,6 +48,10 @@ class ChatbotController extends Controller
 
             // Call the AI service
             $aiResponse = trim((string) $this->aiService->chat($history));
+            if ($this->shouldFallbackToKnowledgeBase($aiResponse)) {
+                $aiResponse = trim((string) $this->geminiService->chat($history));
+            }
+
             if ($this->shouldFallbackToKnowledgeBase($aiResponse)) {
                 $aiResponse = $this->knowledgeService->buildFallbackReply($request->message);
             }
@@ -96,6 +109,10 @@ class ChatbotController extends Controller
             'sistem ai sedang mengalami gangguan teknis',
             'mesin ai lokal kami sedang sibuk',
             'kesalahan teknis pada sistem ai lokal',
+            'gemini api key belum dikonfigurasi',
+            'fallback gemini sedang tidak tersedia',
+            'fallback gemini sedang mengalami gangguan teknis',
+            'gemini tidak mengembalikan jawaban yang valid',
         ] as $marker) {
             if (str_contains($normalized, $marker)) {
                 return true;
@@ -103,5 +120,38 @@ class ChatbotController extends Controller
         }
 
         return false;
+    }
+
+    private function isOutOfManakeScope(string $message): bool
+    {
+        $normalized = mb_strtolower(trim($message));
+
+        if ($normalized === '') {
+            return false;
+        }
+
+        foreach (['halo', 'hai', 'hi', 'hello', 'pagi', 'siang', 'malam', 'terima kasih', 'makasih', 'thanks'] as $greeting) {
+            if ($normalized === $greeting || str_starts_with($normalized, $greeting.' ')) {
+                return false;
+            }
+        }
+
+        foreach ([
+            'manake', 'sewa', 'rental', 'alat', 'equipment', 'kamera', 'camera', 'lighting', 'lampu',
+            'audio', 'mic', 'microphone', 'ht', 'handy talky', 'drone', 'stabilizer', 'gimbal',
+            'katalog', 'catalog', 'produk', 'product', 'stok', 'stock', 'tersedia', 'ketersediaan',
+            'availability', 'booking', 'pemesanan', 'jadwal', 'tanggal', 'harga', 'price', 'biaya',
+            'cart', 'keranjang', 'checkout', 'payment', 'pembayaran', 'midtrans', 'qris', 'order',
+            'pesanan', 'riwayat', 'invoice', 'receipt', 'profil', 'profile', 'login', 'akun',
+            'register', 'lokasi', 'alamat', 'maps', 'jam', 'pickup', 'ambil', 'pengambilan',
+            'return', 'pengembalian', 'buffer', 'reschedule', 'refund', 'denda', 'rusak', 'damage',
+            'support', 'kontak', 'admin', 'website',
+        ] as $keyword) {
+            if (str_contains($normalized, $keyword)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -5,8 +5,7 @@
 
 @php
     $googleOauthConfigured = trim((string) config('services.google.client_id', '')) !== ''
-        && trim((string) config('services.google.client_secret', '')) !== ''
-        && trim((string) config('services.google.redirect', '')) !== '';
+        && trim((string) config('services.google.client_secret', '')) !== '';
 @endphp
 
 @php
