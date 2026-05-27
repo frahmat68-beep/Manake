@@ -64,7 +64,7 @@ class PageSmokeTest extends TestCase
         $response->assertSee('terbaik, kapan saja.');
         $response->assertSee('Belum ada alat ready di database');
         $response->assertDontSee('ARRI Alexa Mini LF');
-        $response->assertSee('Kategori');
+        $response->assertDontSee('Kategori & Jadwal');
     }
 
     public function test_home_page_uses_database_equipment_and_categories_when_available(): void

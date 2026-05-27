@@ -216,7 +216,7 @@ class HomeHeroCarouselTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Live Snapshot');
-        $response->assertSee('Kategori');
+        $response->assertDontSee('Kategori & Jadwal');
         $response->assertSee('HT Wlan UHF');
         $response->assertSee('3');
         $response->assertSee('Item tersedia');
@@ -228,7 +228,7 @@ class HomeHeroCarouselTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Live Snapshot');
-        $response->assertSee('Kategori');
+        $response->assertDontSee('Kategori & Jadwal');
         $response->assertDontSee('Pending Bayar');
         $response->assertDontSee('Siap Diambil');
         $response->assertDontSee('Sedang Disewa');

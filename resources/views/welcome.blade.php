@@ -108,9 +108,6 @@
         : collect();
     $heroDescription = setting('home.hero_subtitle', 'Manake menyediakan akses ke kamera sinema, lighting profesional, perangkat audio, drone, stabilizer, dan lainnya — siap diambil dan digunakan. Tanpa kerumitan kepemilikan, hasil tetap profesional.');
     $equipmentSectionTitle = setting('copy.landing.ready_panel_title', 'Tersedia untuk disewa hari ini.');
-    $categorySectionKicker = setting('copy.landing.quick_category_kicker', 'Kategori & Jadwal');
-    $categorySectionTitle = setting('copy.landing.quick_category_title', 'Lihat kategori alat dan booking aktif dalam satu tempat.');
-    $categoryEmptyText = setting('copy.landing.quick_category_empty', 'Data live dari database menunjukkan slot rental aktif masih kosong.');
     $flowKicker = setting('copy.landing.flow_kicker', 'Cara Sewa');
     $flowTitle = setting('copy.landing.flow_title', 'Sewa peralatan dalam empat langkah mudah.');
     $rentalSteps = [
@@ -217,38 +214,6 @@
                                 <div class="rounded-xl border border-white/10 bg-black/25 px-3 py-3">
                                     <p class="text-sm font-semibold text-[#E8E8EC]">Belum ada booking aktif</p>
                                     <p class="mt-1 text-xs text-[#A0A0A8]">Semua alat siap dicek dari katalog live.</p>
-                                </div>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="categories" class="border-y border-[#1A1A1E] bg-[#111113] py-16 md:py-20">
-            <div class="mx-auto max-w-7xl px-6 md:px-10">
-                <div class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#0A0A0B] p-5 shadow-[0_18px_50px_-35px_rgba(0,0,0,0.9)] md:p-7">
-                    <div class="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">{{ $categorySectionKicker }}</p>
-                            <h2 class="mt-3 text-3xl leading-tight text-[#E8E8EC] md:text-4xl" style="font-family: 'DM Serif Display', Georgia, serif;">
-                                {{ $categorySectionTitle }}
-                            </h2>
-                        </div>
-
-                        <div class="grid gap-3">
-                            @forelse ($rentalTimelineItems->take(5) as $rental)
-                                <div class="grid gap-3 rounded-xl border border-white/10 bg-[#111113] p-4 sm:grid-cols-[1fr_auto] sm:items-center">
-                                    <div class="min-w-0">
-                                        <p class="truncate text-base font-semibold text-[#E8E8EC]">{{ $rental['name'] }}</p>
-                                        <p class="mt-1 text-sm text-[#A0A0A8]">{{ $rental['qty'] }} unit sedang masuk jadwal rental</p>
-                                    </div>
-                                    <p class="text-sm font-semibold text-[#D4A843]">{{ $rental['period'] }}</p>
-                                </div>
-                            @empty
-                                <div class="rounded-xl border border-white/10 bg-[#111113] p-5">
-                                    <p class="text-base font-semibold text-[#E8E8EC]">Belum ada booking aktif</p>
-                                    <p class="mt-2 text-sm leading-6 text-[#A0A0A8]">{{ $categoryEmptyText }}</p>
                                 </div>
                             @endforelse
                         </div>
