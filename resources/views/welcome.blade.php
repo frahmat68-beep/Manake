@@ -224,18 +224,57 @@
 
         <section id="equipment" class="bg-[#0A0A0B] py-24 md:py-28">
             <div class="mx-auto max-w-7xl px-6 md:px-10">
-                <div class="mb-12">
+                <div
+                    class="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
+                    x-data="{
+                        scroll(direction) {
+                            const track = document.getElementById('featured-equipment-track');
+                            if (!track) return;
+                            const card = track.querySelector('[data-carousel-card]');
+                            const amount = card ? card.getBoundingClientRect().width + 24 : track.clientWidth * 0.85;
+                            track.scrollBy({ left: direction * amount, behavior: 'smooth' });
+                        }
+                    }"
+                >
                     <div>
                         <p class="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">Peralatan Unggulan</p>
                         <h2 class="text-[clamp(2.5rem,4vw,4rem)] leading-[0.96] tracking-[-0.04em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
                             {{ $equipmentSectionTitle }}
                         </h2>
                     </div>
+                    @if ($carouselItems->isNotEmpty())
+                        <div class="flex items-center gap-2">
+                            <button
+                                type="button"
+                                class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-[#111113] text-xl font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/50 hover:text-[#D4A843]"
+                                aria-label="Peralatan sebelumnya"
+                                @click="scroll(-1)"
+                            >
+                                ←
+                            </button>
+                            <button
+                                type="button"
+                                class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-[#D4A843] text-xl font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]"
+                                aria-label="Peralatan berikutnya"
+                                @click="scroll(1)"
+                            >
+                                →
+                            </button>
+                        </div>
+                    @endif
                 </div>
 
                 @if ($carouselItems->isNotEmpty())
-                    <div class="group/carousel overflow-hidden pb-3">
-                        <div class="flex w-max gap-5 animate-[manake_equipment_carousel_42s_linear_infinite] group-hover/carousel:[animation-play-state:paused]">
+                    <div
+                        class="relative -mx-6 md:-mx-10"
+                    >
+                        <div class="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-24 bg-gradient-to-r from-[#0A0A0B] to-transparent md:block"></div>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-24 bg-gradient-to-l from-[#0A0A0B] to-transparent md:block"></div>
+                        <div
+                            id="featured-equipment-track"
+                            class="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-6 pb-4 md:px-10"
+                            style="scrollbar-width: none;"
+                        >
                             @foreach ($carouselItems as $item)
                             @php
                                 $isAvailable = (bool) data_get($item, 'available', data_get($item, 'available_units', 0) > 0);
@@ -249,7 +288,8 @@
                                 $itemStatusLabel = (string) data_get($item, 'status_label', $resolveStatusLabel($itemStatusValue, $itemAvailableUnits));
                                 $itemStatusClass = (string) data_get($item, 'status_class', $resolveStatusClasses($itemStatusValue, $itemAvailableUnits));
                             @endphp
-                            <article class="group w-[285px] overflow-hidden rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] shadow-[0_18px_50px_-28px_rgba(0,0,0,0.8)]">
+                            <article data-carousel-card class="group flex min-h-[33rem] w-[82vw] max-w-[24rem] shrink-0 snap-start overflow-hidden rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] shadow-[0_18px_50px_-28px_rgba(0,0,0,0.8)] sm:w-[21rem] lg:w-[23rem]">
+                                <div class="flex w-full flex-col">
                                 <div class="relative aspect-[4/3] overflow-hidden bg-[#111113]">
                                     <img
                                         src="{{ $itemImage }}"
@@ -295,6 +335,7 @@
                                             @endif
                                         </a>
                                     </div>
+                                </div>
                                 </div>
                             </article>
                             @endforeach
