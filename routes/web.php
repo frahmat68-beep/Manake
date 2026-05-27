@@ -181,6 +181,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/copy/{section}', [AdminCopywritingController::class, 'update'])->name('copy.update');
 
         /* === DATA MASTER === */
+        Route::redirect('/bookings', '/admin/orders')->name('bookings.index');
+        Route::get('/bookings/{booking}', fn (string $booking) => redirect()->route('admin.orders.show', $booking))->name('bookings.show');
+
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
         Route::put('/orders/{order}', [AdminOrderController::class, 'update'])->name('orders.update');

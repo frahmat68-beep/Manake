@@ -89,6 +89,19 @@ class AdminRoutesTest extends TestCase
             ->assertOk();
     }
 
+    public function test_legacy_admin_booking_routes_redirect_to_orders(): void
+    {
+        $admin = $this->createAdmin();
+
+        $this->actingAs($admin, 'admin')
+            ->get(route('admin.bookings.index'))
+            ->assertRedirect(route('admin.orders.index'));
+
+        $this->actingAs($admin, 'admin')
+            ->get(route('admin.bookings.show', 1))
+            ->assertRedirect(route('admin.orders.show', 1));
+    }
+
     public function test_admin_dashboard_shows_financial_summary_cards(): void
     {
         $admin = $this->createAdmin();
