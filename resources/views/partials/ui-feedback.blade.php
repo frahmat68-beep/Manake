@@ -8,7 +8,7 @@
 
 <div id="manake-confirm-overlay" class="fixed inset-0 z-[120] hidden items-center justify-center bg-[#0A0A0B]/75 p-4" role="dialog" aria-modal="true" aria-labelledby="manake-confirm-title">
     <div class="w-full max-w-md rounded-lg border border-[#1A1A1E] bg-[#111113] p-5 shadow-2xl">
-        <h2 id="manake-confirm-title" class="text-lg font-semibold text-[#E8E8EC]"></h2>
+        <h2 id="manake-confirm-title" class="text-lg font-semibold text-[#E8E8EC]">{{ __('ui.dialog.title') }}</h2>
         <p id="manake-confirm-message" class="mt-2 text-sm text-[#A0A0A8]"></p>
         <div class="mt-5 flex items-center justify-end gap-2">
             <button id="manake-confirm-cancel" type="button" class="btn-secondary rounded-md px-4 py-2 text-sm font-semibold">

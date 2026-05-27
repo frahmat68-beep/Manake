@@ -184,6 +184,7 @@
                     type="text"
                     x-model="userInput"
                     placeholder="Tanya seputar sewa alat..."
+                    aria-label="Tanya seputar sewa alat..."
                     data-chatbot-input
                     class="w-full rounded-2xl border border-[#1A1A1E] bg-[#111113] px-4 py-2.5 text-sm text-[#E8E8EC] transition focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20 placeholder:text-slate-600"
                     :disabled="isLoading"

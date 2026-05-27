@@ -142,6 +142,7 @@
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                                 </span>
                                 <input type="text" name="q" value="{{ $search }}" placeholder="Cari kamera, lighting, drone, audio..." 
+                                       aria-label="Cari kamera, lighting, drone, audio..."
                                        class="mk-input pl-12 py-3.5 bg-[#0A0A0B] border-[#1A1A1E] text-[#E8E8EC] placeholder:text-[#66666C] focus:border-[#D4A843] focus:ring-[#D4A843]/20">
                             </div>
                             <button type="submit" class="rounded-md bg-[#D4A843] px-6 py-3.5 font-bold text-[#0A0A0B] transition hover:bg-[#e0ba5d]">

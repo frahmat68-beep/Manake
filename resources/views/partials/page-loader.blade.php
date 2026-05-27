@@ -39,8 +39,10 @@
         min-width: 8rem;
     }
     .manake-loader-mark {
-        height: 4rem;
         width: 4rem;
+        height: auto;
+        aspect-ratio: 493/512;
+        object-fit: contain;
         filter: drop-shadow(0 16px 30px rgba(212, 168, 67, 0.22));
         animation: manake-loader-float 1.7s cubic-bezier(0.45, 0, 0.2, 1) infinite;
     }
