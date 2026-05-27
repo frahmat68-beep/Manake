@@ -286,6 +286,20 @@
                             </div>
                         @endif
 
+                        @unless($lockDates)
+                            <div class="mb-6 grid grid-cols-3 gap-2">
+                                <button type="button" data-date-preset="today" class="rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs font-extrabold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
+                                    Hari ini
+                                </button>
+                                <button type="button" data-date-preset="tomorrow" class="rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs font-extrabold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
+                                    Besok
+                                </button>
+                                <button type="button" data-date-preset="weekend" class="rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs font-extrabold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
+                                    3 hari
+                                </button>
+                            </div>
+                        @endunless
+
                         <div class="space-y-3.5 mb-6">
                             <div class="flex items-center justify-between rounded-xl bg-[#111113]/50 px-4 py-3 text-xs border border-[#1A1A1E]">
                                 <span class="font-bold text-[#A0A0A8]">{{ __('app.product.duration') }}</span>
@@ -303,8 +317,8 @@
                             @guest
                                 @if ($canRent)
                                     <a
+                                        id="login-rent-button"
                                         href="{{ route('login', ['reason' => 'cart']) }}"
-                                        @click.prevent="window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: 'login' }))"
                                         class="mk-button-primary w-full text-center py-3.5 text-sm"
                                     >
                                         {{ __('ui.actions.login_to_add') }}
@@ -382,6 +396,7 @@
             const totalPrice = document.getElementById('total-price');
             const availabilityFeedback = document.getElementById('availability-feedback');
             const addToCartButton = document.getElementById('add-to-cart-button');
+            const loginRentButton = document.getElementById('login-rent-button');
             const rentForm = document.getElementById('rent-form');
             const locale = @json(app()->getLocale());
             let availabilityState = 'unknown';
@@ -407,6 +422,29 @@
                 if (minDate && value < minDate) return false;
                 if (maxDate && value > maxDate) return false;
                 return true;
+            };
+            const toDateValue = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+
+                return `${year}-${month}-${day}`;
+            };
+            const clampDateValue = (value) => {
+                if (minDate && value < minDate) return minDate;
+                if (maxDate && value > maxDate) return maxDate;
+
+                return value;
+            };
+            const updateLoginRentHref = () => {
+                if (!loginRentButton) return;
+                const currentUrl = new URL(window.location.href);
+                if (startInput?.value) currentUrl.searchParams.set('rental_start_date', startInput.value);
+                if (endInput?.value) currentUrl.searchParams.set('rental_end_date', endInput.value);
+
+                const loginUrl = new URL(@json(route('login', ['reason' => 'cart'])), window.location.origin);
+                loginUrl.searchParams.set('redirect', currentUrl.toString());
+                loginRentButton.href = loginUrl.toString();
             };
 
             const setAddToCartState = (enabled, label = null) => {
@@ -445,6 +483,7 @@
                     availabilityState = 'unknown';
                     clearAvailabilityMessage();
                     setAddToCartState(false);
+                    updateLoginRentHref();
                     return;
                 }
 
@@ -454,6 +493,7 @@
                     availabilityState = 'invalid';
                     setAddToCartState(false);
                     setAvailabilityMessage(@json(__('Tanggal sewa hanya bisa dipilih dari hari ini sampai 3 bulan ke depan.')), 'error');
+                    updateLoginRentHref();
                     return;
                 }
 
@@ -467,12 +507,14 @@
                     availabilityState = 'invalid';
                     setAddToCartState(false);
                     setAvailabilityMessage(@json(__('app.product.invalid_range')), 'error');
+                    updateLoginRentHref();
                     return;
                 }
 
                 totalDays.textContent = `${diff} {{ __('app.product.day_label') }}`;
                 totalPrice.textContent = formatIDR(price * diff);
                 setAddToCartState(false, @json(__('app.product.checking_availability')));
+                updateLoginRentHref();
             };
 
             const checkAvailability = async () => {
@@ -536,6 +578,28 @@
                 if (debounceTimer) clearTimeout(debounceTimer);
                 debounceTimer = window.setTimeout(checkAvailability, 260);
             };
+            const applyPreset = (preset) => {
+                if (!startInput || !endInput || isLockedDates) return;
+                const today = new Date(`${minDate || toDateValue(new Date())}T00:00:00`);
+                let start = new Date(today);
+                let end = new Date(today);
+
+                if (preset === 'tomorrow') {
+                    start.setDate(start.getDate() + 1);
+                    end = new Date(start);
+                } else if (preset === 'weekend') {
+                    end.setDate(end.getDate() + 2);
+                }
+
+                startInput.value = clampDateValue(toDateValue(start));
+                endInput.value = clampDateValue(toDateValue(end));
+                if (endInput.value < startInput.value) {
+                    endInput.value = startInput.value;
+                }
+                applyDateInputLimits();
+                updateTotal();
+                scheduleAvailabilityCheck();
+            };
 
             const applyDateInputLimits = () => {
                 if (!startInput || !endInput) return;
@@ -568,8 +632,19 @@
                     updateTotal();
                     scheduleAvailabilityCheck();
                 });
+                startInput.addEventListener('input', () => {
+                    if (startInput.value) endInput.min = startInput.value > minDate ? startInput.value : minDate;
+                    else endInput.min = minDate;
+                    updateTotal();
+                    scheduleAvailabilityCheck();
+                });
                 endInput.addEventListener('change', () => { updateTotal(); scheduleAvailabilityCheck(); });
+                endInput.addEventListener('input', () => { updateTotal(); scheduleAvailabilityCheck(); });
             }
+
+            document.querySelectorAll('[data-date-preset]').forEach((button) => {
+                button.addEventListener('click', () => applyPreset(button.dataset.datePreset || 'today'));
+            });
 
             if (qtyInput) {
                 qtyInput.addEventListener('change', scheduleAvailabilityCheck);

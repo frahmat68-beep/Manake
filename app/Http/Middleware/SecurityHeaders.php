@@ -33,7 +33,7 @@ class SecurityHeaders
         $csp .= "img-src 'self' data: https:; ";
         $csp .= "media-src 'self'; ";
         $csp .= "connect-src 'self' https://*.midtrans.com https://cdn.jsdelivr.net https://unpkg.com{$previewFeedbackSource}; ";
-        $csp .= "frame-src 'self' https://*.midtrans.com https://accounts.google.com{$previewFeedbackSource}; ";
+        $csp .= "frame-src 'self' https://*.midtrans.com https://accounts.google.com https://www.google.com https://maps.google.com{$previewFeedbackSource}; ";
         $csp .= "manifest-src 'self'; ";
 
         if (app()->environment('production')) {

@@ -47,6 +47,16 @@
                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#D4A843]">{{ __('ui.contact.title') }}</p>
                 <h1 class="mk-title-section mt-3">{{ __('ui.contact.info_title') }}</h1>
                 <p class="mk-copy mt-4 leading-relaxed">{{ __('ui.contact.subtitle') }}</p>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    @if ($contactWhatsappEntries->isNotEmpty() && $buildWhatsappHref((string) $contactWhatsappEntries->first()))
+                        <a href="{{ $buildWhatsappHref((string) $contactWhatsappEntries->first()) }}" target="_blank" rel="noopener noreferrer" class="mk-button-primary px-5 py-2.5 text-sm">
+                            Chat WhatsApp
+                        </a>
+                    @endif
+                    <a href="{{ route('catalog') }}" class="mk-button-secondary px-5 py-2.5 text-sm">
+                        Lihat Katalog
+                    </a>
+                </div>
             </div>
 
             <div class="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">

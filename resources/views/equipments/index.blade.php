@@ -126,6 +126,14 @@
                             <p class="mt-2 text-sm text-[#A0A0A8] sm:text-base max-w-2xl leading-relaxed">
                                 {{ $catalogSubtitle }}
                             </p>
+                            <div class="mt-5 flex flex-wrap gap-3">
+                                <a href="{{ route('availability.board') }}" class="mk-button-primary px-5 py-2.5 text-sm">
+                                    Cek Ketersediaan
+                                </a>
+                                <a href="{{ route('contact') }}" class="mk-button-secondary px-5 py-2.5 text-sm">
+                                    Tanya Admin
+                                </a>
+                            </div>
                         </div>
                     </div>
 

@@ -1,8 +1,6 @@
 @php
     $brandName = site_setting('brand.name', 'Manake');
-    $isHome = request()->routeIs('home');
     $homeUrl = route('home');
-    $toHomeSection = static fn (string $hash): string => $isHome ? "#{$hash}" : "{$homeUrl}#{$hash}";
     $notificationItems = collect($notificationItems ?? []);
     $currentUser = auth('web')->user();
     $displayName = $currentUser?->display_name ?: ($currentUser?->name ?: __('app.user.generic'));
@@ -19,10 +17,10 @@
         </a>
 
         <div class="hidden flex-1 items-center justify-center gap-8 text-sm font-semibold text-[#A0A0A8] lg:flex">
-            <a href="{{ $toHomeSection('equipment') }}" class="transition hover:text-[#E8E8EC]">{{ __('Equipment') }}</a>
-            <a href="{{ $toHomeSection('about') }}" class="transition hover:text-[#E8E8EC]">{{ __('Tentang Kami') }}</a>
-            <a href="{{ $toHomeSection('cara-sewa') }}" class="transition hover:text-[#E8E8EC]">{{ __('Cara Sewa') }}</a>
-            <a href="{{ $toHomeSection('contact') }}" class="transition hover:text-[#E8E8EC]">{{ __('Contact') }}</a>
+            <a href="{{ route('catalog') }}" class="transition hover:text-[#E8E8EC]">{{ __('Equipment') }}</a>
+            <a href="{{ route('about') }}" class="transition hover:text-[#E8E8EC]">{{ __('Tentang Kami') }}</a>
+            <a href="{{ route('rental.rules') }}" class="transition hover:text-[#E8E8EC]">{{ __('Cara Sewa') }}</a>
+            <a href="{{ route('contact') }}" class="transition hover:text-[#E8E8EC]">{{ __('Contact') }}</a>
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
@@ -131,10 +129,10 @@
     <div x-cloak x-show="mobileOpen" x-transition class="border-t border-[#1A1A1E] bg-[#0A0A0B]/98 lg:hidden">
         <div class="mx-auto max-w-7xl space-y-3 px-4 py-4 sm:px-6">
             <div class="grid gap-2">
-                <a href="{{ $toHomeSection('equipment') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Equipment</a>
-                <a href="{{ $toHomeSection('about') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Tentang Kami</a>
-                <a href="{{ $toHomeSection('cara-sewa') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Cara Sewa</a>
-                <a href="{{ $toHomeSection('contact') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Contact</a>
+                <a href="{{ route('catalog') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Equipment</a>
+                <a href="{{ route('about') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Tentang Kami</a>
+                <a href="{{ route('rental.rules') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Cara Sewa</a>
+                <a href="{{ route('contact') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Contact</a>
             </div>
 
             @auth('web')

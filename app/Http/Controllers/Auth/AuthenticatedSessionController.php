@@ -21,6 +21,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+        $redirect = trim((string) request('redirect', ''));
+        if ($redirect !== '') {
+            $redirectHost = parse_url($redirect, PHP_URL_HOST);
+            $currentHost = request()->getHost();
+
+            if ($redirectHost === null || $redirectHost === $currentHost) {
+                session()->put('url.intended', $redirect);
+            }
+        }
+
         return view('auth.login');
     }
 

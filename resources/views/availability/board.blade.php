@@ -492,6 +492,14 @@
                     <p class="mt-1 text-sm text-[#A0A0A8] leading-relaxed">
                         {{ $availabilitySubtitle }}
                     </p>
+                    <div class="mt-5 flex flex-wrap gap-3">
+                        <a href="{{ route('catalog') }}" class="mk-button-primary px-5 py-2.5 text-sm">
+                            Pilih Alat
+                        </a>
+                        <a href="{{ route('contact') }}" class="mk-button-secondary px-5 py-2.5 text-sm">
+                            Tanya Jadwal
+                        </a>
+                    </div>
                 </div>
 
                 <form method="GET" action="{{ route('availability.board') }}" class="grid w-full gap-3 rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B] p-4 sm:grid-cols-3 lg:max-w-3xl">
