@@ -5,6 +5,9 @@ namespace Tests\Feature;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Equipment;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -134,5 +137,40 @@ class AdminCrudAndCatalogTest extends TestCase
         $response->assertSee('Mount: Sony E');
         $response->assertSee('Focal: 35mm');
         $response->assertSee('Isi box: Lens + pouch');
+    }
+
+    public function test_admin_can_delete_equipment_that_has_order_history(): void
+    {
+        $admin = $this->createAdmin();
+        $user = User::factory()->create();
+        $equipment = Equipment::factory()->create([
+            'name' => 'Temporary Audio Kit',
+            'slug' => 'temporary-audio-kit',
+        ]);
+        $order = Order::query()->create([
+            'user_id' => $user->id,
+            'status_pembayaran' => Order::PAYMENT_PAID,
+            'status_pesanan' => Order::STATUS_COMPLETED,
+            'total_amount' => 100000,
+            'rental_start_date' => now()->toDateString(),
+            'rental_end_date' => now()->addDay()->toDateString(),
+        ]);
+        $item = OrderItem::query()->create([
+            'order_id' => $order->id,
+            'equipment_id' => $equipment->id,
+            'qty' => 1,
+            'price' => 100000,
+            'subtotal' => 100000,
+            'rental_start_date' => now()->toDateString(),
+            'rental_end_date' => now()->addDay()->toDateString(),
+            'rental_days' => 2,
+        ]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->delete(route('admin.equipments.destroy', $equipment->slug));
+
+        $response->assertRedirect(route('admin.equipments.index'));
+        $this->assertDatabaseMissing('equipments', ['id' => $equipment->id]);
+        $this->assertNull($item->fresh()->equipment_id);
     }
 }

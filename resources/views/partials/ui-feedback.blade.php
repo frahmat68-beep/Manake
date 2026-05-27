@@ -138,11 +138,7 @@
                 variant: form.dataset.confirmVariant || 'danger',
                 onConfirm: () => {
                     form.dataset.confirmed = '1';
-                    if (typeof form.requestSubmit === 'function') {
-                        form.requestSubmit();
-                    } else {
-                        form.submit();
-                    }
+                    HTMLFormElement.prototype.submit.call(form);
                 },
             });
         });

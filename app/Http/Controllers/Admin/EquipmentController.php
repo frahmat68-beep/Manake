@@ -11,6 +11,7 @@ use App\Models\OrderItem;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -142,12 +143,28 @@ class EquipmentController extends Controller
         $equipment = Equipment::query()->where('slug', $slug)->firstOrFail();
         $snapshot = $equipment->only(['id', 'name', 'slug', 'status', 'stock']);
 
+        DB::transaction(function () use ($equipment, $snapshot): void {
+            if (schema_table_exists_cached('order_items')) {
+                OrderItem::query()
+                    ->where('equipment_id', $equipment->id)
+                    ->update(['equipment_id' => null]);
+
+                if (Schema::hasColumn('order_items', 'product_id')) {
+                    DB::table('order_items')
+                        ->where('product_id', $equipment->id)
+                        ->update(['product_id' => null]);
+                }
+            }
+
+            $equipment->maintenanceWindows()->delete();
+            $equipment->delete();
+
+            admin_audit('equipment.destroy', 'equipments', $snapshot['id'], $snapshot, auth('admin')->id());
+        });
+
         if ($equipment->image_path) {
             site_media_delete($equipment->image_path);
         }
-
-        $equipment->delete();
-        admin_audit('equipment.destroy', 'equipments', $snapshot['id'], $snapshot, auth('admin')->id());
 
         return redirect()
             ->route('admin.equipments.index')

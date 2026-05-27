@@ -76,9 +76,6 @@
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div class="max-w-3xl">
                             <div class="flex flex-wrap items-center gap-2.5 mb-3">
-                                <span class="rounded-full border border-[#1A1A1E] bg-[#111113]/95 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#D4A843] backdrop-blur-md">
-                                    {{ $equipment->category?->name ?? __('app.category.title') }}
-                                </span>
                                 <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
                                     {{ $statusLabel }}
                                 </span>
@@ -97,10 +94,6 @@
                                 </a>
                             </div>
                         </div>
-                        <a href="{{ route('catalog') }}" class="hidden shrink-0 self-start rounded-md border border-[#1A1A1E] bg-[#111113] px-5 py-2.5 text-xs font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] sm:self-auto lg:inline-flex">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                            {{ __('app.actions.back_to_catalog') }}
-                        </a>
                     </div>
                 </div>
             </div>
