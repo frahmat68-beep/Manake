@@ -510,6 +510,7 @@
                             name="q"
                             value="{{ $search }}"
                             placeholder="{{ $availabilitySearchPlaceholder }}"
+                            aria-label="{{ $availabilitySearchPlaceholder }}"
                             class="mk-input pl-11 py-3 text-sm"
                         >
                     </div>
@@ -521,6 +522,7 @@
                             value="{{ $monthValue }}"
                             min="{{ $windowStartMonthValue }}"
                             max="{{ $windowEndMonthValue }}"
+                            aria-label="Filter bulan"
                             class="mk-input pl-11 py-3 text-sm"
                         >
                     </div>
@@ -532,6 +534,7 @@
                             value="{{ $selectedDateValue }}"
                             min="{{ $windowStartValue }}"
                             max="{{ $windowEndValue }}"
+                            aria-label="Filter tanggal"
                             class="mk-input pl-11 py-3 text-sm"
                         >
                     </div>
@@ -640,7 +643,7 @@
                                             'board-cell--range-dragging': isSelectingRange && isDateInSelection('{{ $day['date'] }}')
                                         }"
                                         aria-haspopup="dialog"
-                                        aria-label="{{ __('ui.actions.detail') }} {{ \Carbon\Carbon::parse($day['date'])->translatedFormat('d F Y') }}"
+                                        aria-label="{{ $day['day'] }}, {{ __('ui.actions.detail') }} {{ \Carbon\Carbon::parse($day['date'])->translatedFormat('d F Y') }}"
                                     >
                                         <div class="flex items-center justify-between gap-2">
                                             <p class="text-[11px] font-semibold sm:text-xs {{ $todayClass }}">{{ $day['day'] }}</p>

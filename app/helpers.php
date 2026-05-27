@@ -350,7 +350,7 @@ if (! function_exists('trusted_map_embed_iframe')) {
             return null;
         }
 
-        return '<iframe src="'.e($embedUrl).'" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>';
+        return '<iframe src="'.e($embedUrl).'" title="Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>';
     }
 }
 
