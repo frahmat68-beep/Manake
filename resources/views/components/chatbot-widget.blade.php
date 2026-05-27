@@ -182,6 +182,8 @@
             <form @submit.prevent="sendMessage()" class="flex items-center gap-2">
                 <input
                     type="text"
+                    id="chatbot-search-input"
+                    name="chatbot_query"
                     x-model="userInput"
                     placeholder="Tanya seputar sewa alat..."
                     aria-label="Tanya seputar sewa alat..."

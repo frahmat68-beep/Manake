@@ -156,7 +156,7 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <input type="hidden" name="status_pesanan" value="barang_diambil">
-                                                <button class="w-full rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100">
+                                                <button class="w-full rounded-xl border border-[#D4A843]/20 bg-[#D4A843]/10 px-3 py-2 text-xs font-semibold text-[#D4A843] transition hover:bg-[#D4A843] hover:text-[#0A0A0B]">
                                                     {{ __('Konfirmasi Diambil') }}
                                                 </button>
                                             </form>
@@ -179,7 +179,7 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <input type="hidden" name="status_pesanan" value="barang_kembali">
-                                                <button class="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-100">
+                                                <button class="w-full rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-50 hover:text-[#0A0A0B]">
                                                     {{ __('Konfirmasi Kembali') }}
                                                 </button>
                                             </form>
@@ -204,7 +204,7 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <input type="hidden" name="status_pesanan" value="barang_rusak">
-                                                <button class="w-full rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100">
+                                                <button class="w-full rounded-xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-400 transition hover:bg-rose-500 hover:text-[#0A0A0B]">
                                                     {{ __('Tandai Rusak') }}
                                                 </button>
                                             </form>
