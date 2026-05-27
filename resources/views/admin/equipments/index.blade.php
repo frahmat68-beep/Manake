@@ -148,7 +148,13 @@
                             <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-900/60">
                                 <td class="px-5 py-4 align-top">
                                     <div class="flex items-center gap-3">
-                                        <img src="{{ $imageUrl }}" alt="{{ $item->name }}" class="h-12 w-12 rounded-lg border border-[#1A1A1E] bg-[#0A0A0B] object-contain p-1" loading="lazy">
+                                        <img
+                                            src="{{ $imageUrl }}"
+                                            alt="{{ $item->name }}"
+                                            class="h-12 w-12 rounded-lg border border-[#1A1A1E] bg-[#0A0A0B] object-contain p-1"
+                                            loading="lazy"
+                                            onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';"
+                                        >
                                         <div>
                                             <p class="max-w-[20rem] font-semibold leading-snug text-slate-900 dark:text-slate-50">{{ $item->name }}</p>
                                             <p class="text-xs text-slate-500 dark:text-slate-400">{{ $item->category?->name ?? '-' }}</p>
