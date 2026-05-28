@@ -94,14 +94,41 @@
 
 @push('head')
     <style>
-        @keyframes availabilitySurfaceIn {
+        /* Custom Entrance Animations */
+        .availability-enter {
+            animation: availability-enter 520ms ease-out both;
+        }
+
+        .availability-card-in {
+            animation: availability-card-in 520ms ease-out both;
+        }
+
+        @keyframes availability-enter {
             from {
                 opacity: 0;
-                transform: translateY(5px);
+                transform: translateY(10px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        @keyframes availability-card-in {
+            from {
+                opacity: 0;
+                transform: translateY(14px) scale(.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .availability-enter,
+            .availability-card-in {
+                animation: none !important;
             }
         }
 
@@ -181,15 +208,6 @@
 
         .board-item:hover {
             transform: translateX(2px);
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .board-cell,
-            .board-item {
-                animation: none;
-                transition: none;
-                transform: none;
-            }
         }
     </style>
 @endpush
@@ -482,84 +500,79 @@
         x-on:keydown.escape.window="handleEscape()"
         x-on:pointerup.window="cancelDanglingSelection()"
     >
-        <section class="mk-card p-4 sm:p-6 animate-fade-up">
-            <div class="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                <div class="max-w-2xl">
-                    <p class="section-kicker font-bold tracking-widest uppercase text-[#D4A843]/80">{{ __('ui.nav.availability_board') ?: 'PAPAN KETERSEDIAAN' }}</p>
+        <section class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8 lg:p-10 shadow-2xl availability-enter">
+            <div class="relative flex flex-col gap-6">
+                <div>
+                    <p class="section-kicker font-bold tracking-widest uppercase text-[#D4A843]/80">CEK ALAT</p>
                     <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-[#E8E8EC] sm:text-3xl leading-tight">
                         {{ $availabilityTitle }}
                     </h1>
-                    <p class="mt-1 text-sm text-[#A0A0A8] leading-relaxed">
+                    <p class="mt-1 text-sm text-[#A0A0A8] leading-relaxed max-w-3xl">
                         {{ $availabilitySubtitle }}
                     </p>
-                    <div class="mt-5 flex flex-wrap gap-3">
-                        <a href="{{ route('catalog') }}" class="mk-button-primary px-5 py-2.5 text-sm">
-                            Pilih Alat
-                        </a>
-                        <a href="{{ route('contact') }}" class="mk-button-secondary px-5 py-2.5 text-sm">
-                            Tanya Jadwal
-                        </a>
-                    </div>
                 </div>
 
-                <form method="GET" action="{{ route('availability.board') }}" class="grid w-full gap-3 rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B] p-4 sm:grid-cols-3 lg:max-w-3xl">
-                    <div class="board-input-group sm:col-span-3 lg:col-span-1">
-                        <svg class="absolute left-4 h-5 w-5 text-[#6A6A78]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        <input
-                            type="text"
-                            name="q"
-                            value="{{ $search }}"
-                            placeholder="{{ $availabilitySearchPlaceholder }}"
-                            aria-label="{{ $availabilitySearchPlaceholder }}"
-                            class="mk-input pl-11 py-3 text-sm"
-                        >
-                    </div>
-                    <div class="board-input-group">
-                        <svg class="absolute left-4 h-5 w-5 text-[#6A6A78]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        <input
-                            type="month"
-                            name="month"
-                            value="{{ $monthValue }}"
-                            min="{{ $windowStartMonthValue }}"
-                            max="{{ $windowEndMonthValue }}"
-                            aria-label="Filter bulan"
-                            class="mk-input pl-11 py-3 text-sm"
-                        >
-                    </div>
-                    <div class="board-input-group">
-                        <svg class="absolute left-4 h-5 w-5 text-[#6A6A78]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <input
-                            type="date"
-                            name="date"
-                            value="{{ $selectedDateValue }}"
-                            min="{{ $windowStartValue }}"
-                            max="{{ $windowEndValue }}"
-                            aria-label="Filter tanggal"
-                            class="mk-input pl-11 py-3 text-sm"
-                        >
-                    </div>
-                    <div class="sm:col-span-3 flex flex-wrap items-center justify-between gap-3 pt-1">
+                <form method="GET" action="{{ route('availability.board') }}" class="w-full space-y-3">
+                    <div class="grid w-full gap-3 grid-cols-1 sm:grid-cols-[minmax(0,1.4fr)_180px_180px_auto]">
+                        <div class="board-input-group">
+                            <svg class="absolute left-4 h-5 w-5 text-[#6A6A78]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <input
+                                type="text"
+                                name="q"
+                                value="{{ $search }}"
+                                autocomplete="off"
+                                placeholder="{{ $availabilitySearchPlaceholder }}"
+                                aria-label="{{ $availabilitySearchPlaceholder }}"
+                                class="mk-input pl-11 py-3.5 text-sm"
+                            >
+                        </div>
+                        <div class="board-input-group">
+                            <svg class="absolute left-4 h-5 w-5 text-[#6A6A78]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <input
+                                type="month"
+                                name="month"
+                                value="{{ $monthValue }}"
+                                min="{{ $windowStartMonthValue }}"
+                                max="{{ $windowEndMonthValue }}"
+                                aria-label="Filter bulan"
+                                class="mk-input pl-11 py-3.5 text-sm"
+                            >
+                        </div>
+                        <div class="board-input-group">
+                            <svg class="absolute left-4 h-5 w-5 text-[#6A6A78]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <input
+                                type="date"
+                                name="date"
+                                value="{{ $selectedDateValue }}"
+                                min="{{ $windowStartValue }}"
+                                max="{{ $windowEndValue }}"
+                                aria-label="Filter tanggal"
+                                class="mk-input pl-11 py-3.5 text-sm"
+                            >
+                        </div>
                         <div class="flex gap-2">
-                             <button type="submit" class="mk-button-primary py-2.5 px-5 text-sm">
+                            <button type="submit" class="mk-button-primary py-3.5 px-6 text-sm flex items-center justify-center gap-2 w-full sm:w-auto">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                                {{ $availabilityShowButton }}
+                                <span>Cari</span>
                             </button>
                             @if ($search !== '')
-                                <a href="{{ route('availability.board', ['month' => $monthValue, 'date' => $selectedDateValue]) }}" class="mk-button-secondary py-2.5 px-5 text-sm">
+                                <a href="{{ route('availability.board', ['month' => $monthValue, 'date' => $selectedDateValue]) }}" class="mk-button-secondary py-3.5 px-5 text-sm flex items-center justify-center">
                                     {{ $availabilityResetButton }}
                                 </a>
                             @endif
                         </div>
-                        <p class="text-[11px] font-medium text-[#A0A0A8]">
-                            {{ __('Rentang tampil:') }} <span class="text-[#E8E8EC]">{{ \Carbon\Carbon::parse($windowStartValue)->translatedFormat('d M') }} — {{ \Carbon\Carbon::parse($windowEndValue)->translatedFormat('d M Y') }}</span>
+                    </div>
+                    <div class="flex items-center justify-end">
+                        <p class="text-[10px] font-bold text-[#A0A0A8] uppercase tracking-wider">
+                            {{ __('Rentang Tampil:') }} <span class="text-[#E8E8EC]">{{ \Carbon\Carbon::parse($windowStartValue)->translatedFormat('d M') }} — {{ \Carbon\Carbon::parse($windowEndValue)->translatedFormat('d M Y') }}</span>
                         </p>
                     </div>
                 </form>
             </div>
         </section>
 
-        <section class="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] overflow-hidden">
-            <article class="mk-card overflow-hidden">
+        <section class="grid gap-6 xl:grid-cols-[minmax(0,1.55fr)_minmax(360px,0.95fr)] overflow-hidden">
+            <article class="rounded-3xl border border-white/5 bg-[#111113]/40 overflow-hidden shadow-xl availability-card-in">
                 <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[#1A1A1E] bg-[#0A0A0B] px-5 py-4">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">{{ $availabilityCalendarTitle }}</p>
@@ -674,50 +687,49 @@
             </article>
 
             <div class="space-y-4">
-                <article class="mk-card p-6">
+                <article class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl availability-card-in">
                     <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">{{ $availabilitySelectedTitle }}</p>
                     <h2 class="mt-1 text-2xl font-semibold text-[#E8E8EC]">{{ $selectedDateLabel }}</h2>
 
-                    <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                        <div class="rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-3">
+                    <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                        <div class="rounded-2xl border border-white/5 bg-[#0A0A0B]/40 px-3 py-3.5">
                             <p class="text-[11px] font-semibold uppercase tracking-wide text-[#A0A0A8]">{{ $availabilityMetricTotal }}</p>
-                            <p class="mt-1 text-2xl font-semibold text-[#E8E8EC]">{{ $summary['total_equipments'] ?? 0 }}</p>
+                            <p class="mt-1 text-2xl font-bold text-[#E8E8EC]">{{ $summary['total_equipments'] ?? 0 }}</p>
                         </div>
-                        <div class="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-3">
+                        <div class="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-3.5">
                             <p class="text-[11px] font-semibold uppercase tracking-wide text-rose-500">{{ $availabilityMetricBusy }}</p>
-                            <p class="mt-1 text-2xl font-semibold text-rose-400">{{ $summary['busy_equipments'] ?? 0 }}</p>
+                            <p class="mt-1 text-2xl font-bold text-rose-400">{{ $summary['busy_equipments'] ?? 0 }}</p>
+                            <p class="mt-1.5 text-[9px] font-bold text-rose-400/80 uppercase tracking-tight">
+                                {{ $summary['reserved_units'] ?? 0 }} Unit
+                            </p>
                         </div>
-                        <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-3 py-3">
+                        <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-3 py-3.5">
                             <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-500">{{ $availabilityMetricAvailable }}</p>
-                            <p class="mt-1 text-2xl font-semibold text-emerald-400">{{ $summary['available_equipments'] ?? 0 }}</p>
-                        </div>
-                        <div class="rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-3">
-                            <p class="text-[11px] font-semibold uppercase tracking-wide text-[#A0A0A8]">{{ $availabilityMetricUnits }}</p>
-                            <p class="mt-1 text-2xl font-semibold text-[#E8E8EC]">{{ $summary['reserved_units'] ?? 0 }}</p>
+                            <p class="mt-1 text-2xl font-bold text-emerald-400">{{ $summary['available_equipments'] ?? 0 }}</p>
                         </div>
                     </div>
                 </article>
 
-                <article class="mk-card p-6">
-                    <div class="flex items-center justify-between gap-2">
+                <article class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl availability-card-in">
+                    <div class="flex items-center justify-between gap-2 mb-4">
                         <h3 class="text-base font-semibold text-[#E8E8EC]">{{ $availabilityReadyTitle }}</h3>
                         <span class="mk-badge mk-badge-success shrink-0">
                             {{ $selectedFreeRows->count() }} {{ $availabilityCountEmptySuffix }}
                         </span>
                     </div>
-                    <div class="mt-3 space-y-2">
+                    <div class="space-y-2">
                         @forelse ($selectedFreeRows->take(6) as $row)
-                            <article class="board-item rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3.5 py-3">
+                            <article class="board-item rounded-xl border border-white/5 bg-[#0A0A0B]/40 px-3.5 py-2.5">
                                 <div class="flex items-center justify-between gap-3">
                                     <p class="text-sm font-semibold text-[#E8E8EC]">{{ $row['name'] }}</p>
                                     <span class="mk-badge mk-badge-success shrink-0">
                                         {{ strtr($availabilityMinLeftTemplate, [':qty' => (string) $row['selected_available']]) }}
                                     </span>
                                 </div>
-                                <p class="mt-1 text-xs italic text-[#A0A0A8]">{{ $row['category'] }}</p>
+                                <p class="mt-0.5 text-xs text-[#A0A0A8]">{{ $row['category'] }}</p>
                             </article>
                         @empty
-                            <p class="rounded-xl border border-dashed border-[#1A1A1E] bg-[#0A0A0B] px-3 py-3 text-xs text-[#A0A0A8]">
+                            <p class="rounded-xl border border-dashed border-white/5 bg-[#0A0A0B]/40 px-3 py-3 text-xs text-[#A0A0A8]">
                                 {{ $availabilityReadyEmpty }}
                             </p>
                         @endforelse
@@ -727,38 +739,38 @@
         </section>
 
         <section class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-            <article class="mk-card p-6">
-                <div class="flex items-center justify-between gap-3">
-                    <h2 class="text-lg font-semibold text-[#E8E8EC]">{{ $availabilityBusyTitle }} di {{ $selectedDateLabel }}</h2>
+            <article class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl availability-card-in">
+                <div class="flex items-center justify-between gap-3 mb-4">
+                    <h2 class="text-base font-semibold text-[#E8E8EC]">{{ $availabilityBusyTitle }} di {{ $selectedDateLabel }}</h2>
                     <span class="mk-badge mk-badge-danger shrink-0">{{ $selectedBusyRows->count() }} {{ $availabilityCountToolsSuffix }}</span>
                 </div>
-                <div class="mt-3 space-y-2">
+                <div class="space-y-2">
                     @forelse ($selectedBusyRows->take(10) as $row)
-                        <article class="board-item rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3.5 py-3">
+                        <article class="board-item rounded-xl border border-white/5 bg-[#0A0A0B]/40 px-3.5 py-2.5">
                             <div class="flex items-center justify-between gap-2">
                                 <p class="text-sm font-semibold text-[#E8E8EC]">{{ $row['name'] }}</p>
-                                <p class="text-xs font-semibold text-rose-600 dark:text-rose-400">{{ strtr($availabilityInUseTemplate, [':qty' => (string) $row['selected_reserved']]) }}</p>
+                                <p class="text-xs font-semibold text-rose-400">{{ strtr($availabilityInUseTemplate, [':qty' => (string) $row['selected_reserved']]) }}</p>
                             </div>
                             @if ($row['source_labels']->isNotEmpty())
-                                <p class="mt-1 text-xs text-[#A0A0A8]">{{ $row['source_labels']->implode(', ') }}</p>
+                                <p class="mt-0.5 text-xs text-[#A0A0A8]">{{ $row['source_labels']->implode(', ') }}</p>
                             @endif
                         </article>
                     @empty
-                        <p class="rounded-xl border border-dashed border-[#1A1A1E] bg-[#0A0A0B] px-3 py-3 text-xs text-[#A0A0A8]">
+                        <p class="rounded-xl border border-dashed border-white/5 bg-[#0A0A0B]/40 px-3 py-3 text-xs text-[#A0A0A8]">
                             {{ $availabilityBusyEmpty }}
                         </p>
                     @endforelse
                 </div>
             </article>
 
-            <article class="mk-card p-6">
-                <div class="flex items-center justify-between gap-3">
-                    <h2 class="text-lg font-semibold text-[#E8E8EC]">{{ $availabilityMonthlyTitle }}</h2>
+            <article class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl availability-card-in">
+                <div class="flex items-center justify-between gap-3 mb-4">
+                    <h2 class="text-base font-semibold text-[#E8E8EC]">{{ $availabilityMonthlyTitle }}</h2>
                     <span class="mk-badge mk-badge-info shrink-0">{{ $monthlySchedules->count() }} {{ $availabilityCountSchedulesSuffix }}</span>
                 </div>
-                <div class="mt-3 max-h-[29rem] space-y-2 overflow-y-auto pr-1">
+                <div class="max-h-[29rem] space-y-2 overflow-y-auto pr-1 scrollbar-thin">
                     @forelse ($monthlySchedules as $schedule)
-                        <article class="board-item rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3.5 py-3">
+                        <article class="board-item rounded-xl border border-white/5 bg-[#0A0A0B]/40 px-3.5 py-2.5">
                             <p class="text-sm font-semibold text-[#E8E8EC]">{{ $schedule['equipment_name'] }}</p>
                             <p class="mt-0.5 text-xs text-[#A0A0A8]">
                                 {{ \Carbon\Carbon::parse($schedule['start_date'])->translatedFormat('d M Y') }}
@@ -766,12 +778,12 @@
                                 {{ \Carbon\Carbon::parse($schedule['end_date'])->translatedFormat('d M Y') }}
                                 • Qty {{ $schedule['qty'] }}
                             </p>
-                            <p class="mt-1 text-[11px] text-[#A0A0A8]">
-                                {{ strtoupper($schedule['status_pesanan']) }}
+                            <p class="mt-1 text-[10px] font-bold text-[#A0A0A8] uppercase tracking-wider">
+                                {{ $schedule['status_pesanan'] }}
                             </p>
                         </article>
                     @empty
-                        <p class="rounded-xl border border-dashed border-[#1A1A1E] bg-[#0A0A0B] px-3 py-3 text-xs text-[#A0A0A8]">
+                        <p class="rounded-xl border border-dashed border-white/5 bg-[#0A0A0B]/40 px-3 py-3 text-xs text-[#A0A0A8]">
                             {{ $availabilityMonthlyEmpty }}
                         </p>
                     @endforelse
