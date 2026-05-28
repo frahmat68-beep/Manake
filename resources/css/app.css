@@ -342,6 +342,10 @@
         color: rgb(232 232 236);
     }
 
+    .manake-page-compact {
+        min-height: auto;
+    }
+
     .manake-section {
         background: rgb(10 10 11);
         padding-block: 1.5rem;

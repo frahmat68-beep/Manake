@@ -173,7 +173,7 @@
 @endphp
 
 @section('content')
-    <section class="manake-page">
+    <section class="manake-page manake-page-compact">
         <div class="manake-page-frame">
             <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
@@ -186,7 +186,7 @@
         </div>
     </section>
 
-    <section class="manake-page pt-0">
+    <section class="manake-page manake-page-compact pt-0">
         <div class="manake-page-frame pb-12">
             <div id="payment-alert" class="hidden rounded-md border px-4 py-3 text-sm"></div>
 
