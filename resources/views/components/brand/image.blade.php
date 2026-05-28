@@ -52,10 +52,27 @@
 </span>
 
 <style>
-    /* Premium visual scaling correction to ensure the light-theme logo matches the dark-theme logo exactly */
-    html[data-theme-resolved='light'] img[src*='manake-logo-blue.png'],
-    html[data-theme-resolved='light'] .manake-themed-asset__image[src*='manake-logo-blue.png'] {
-        transform: scale(1.08) !important;
+    /* Prevent layout shifting, establish consistent logo containment for navbar logo */
+    .manake-navbar-logo {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.25rem; /* Standard h-9 height limit */
+        overflow: visible;
+    }
+    .manake-navbar-logo__image {
+        height: 100% !important;
+        max-height: 100% !important;
+        width: auto !important;
+        object-fit: contain !important;
+        transition: transform 0.15s ease-in-out;
         transform-origin: left center !important;
+    }
+    /* Dynamic visual scale compensation to align light/dark logos visually by eye */
+    html[data-theme-resolved="light"] .manake-navbar-logo__image {
+        transform: scale(1.18) !important;
+    }
+    html[data-theme-resolved="dark"] .manake-navbar-logo__image {
+        transform: scale(1.0) !important;
     }
 </style>
