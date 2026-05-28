@@ -63,7 +63,7 @@
 @include('partials.page-loader')
 
 <div
-    class="min-h-screen"
+    class="flex min-h-screen flex-col"
     x-data="{}"
     x-on:mousemove="
         const shell = $el.closest('[data-manake-shell]');
@@ -75,7 +75,7 @@
 >
     @include('partials.navbar')
 
-    <main class="landing-main">
+    <main class="landing-main flex-1">
         @yield('content')
     </main>
 
