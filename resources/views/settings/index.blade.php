@@ -73,6 +73,50 @@
             color: #D4A843;
         }
 
+        /* Light Mode Styling Overrides for visual consistency and high contrast */
+        html[data-theme-resolved='light'] .settings-shell-enter > div {
+            background-color: #FFFFFF !important;
+            border-color: #E5E2DA !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        html[data-theme-resolved='light'] fieldset legend {
+            color: #171717 !important;
+        }
+
+        html[data-theme-resolved='light'] .h-px {
+            background-color: #E5E2DA !important;
+        }
+
+        html[data-theme-resolved='light'] .settings-option-card {
+            border-color: #E5E2DA;
+            background: #FFFFFF;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        html[data-theme-resolved='light'] .settings-option-card:hover {
+            border-color: rgba(212, 168, 67, 0.5);
+            background: rgba(212, 168, 67, 0.03);
+        }
+
+        html[data-theme-resolved='light'] .settings-option-card[data-active="true"] {
+            border-color: #D4A843;
+            background: rgba(212, 168, 67, 0.08);
+            box-shadow: 0 0 15px rgba(212, 168, 67, 0.12), inset 0 0 0 1px rgba(212, 168, 67, 0.15);
+        }
+
+        html[data-theme-resolved='light'] .settings-option-card .manake-preferences-choice__icon {
+            color: #666666;
+        }
+
+        html[data-theme-resolved='light'] .settings-option-card[data-active="true"] .manake-preferences-choice__icon {
+            color: #B8871F;
+        }
+
+        html[data-theme-resolved='light'] .settings-option-card[data-active="true"] .manake-preferences-choice__check {
+            color: #B8871F;
+        }
+
         @keyframes settings-shell-enter {
             from {
                 opacity: 0;

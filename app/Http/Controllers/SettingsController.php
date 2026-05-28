@@ -74,7 +74,7 @@ class SettingsController extends Controller
 
         return back()
             ->with('status', 'settings-updated')
-            ->with('success', __('ui.settings.saved'))
+            ->with('success', __('ui.settings.saved', [], $data['locale']))
             ->withCookie(cookie('locale', $data['locale'], 60 * 24 * 30))
             ->withCookie(cookie('theme', $data['theme'], 60 * 24 * 30))
             ->withCookie(cookie('theme_resolved', $resolvedTheme, 60 * 24 * 30));

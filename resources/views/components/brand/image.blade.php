@@ -34,7 +34,7 @@
     }
 @endphp
 
-<span {{ $attributes->class(['manake-themed-asset', 'manake-themed-asset--swap' => $swapInDark, 'inline-flex', 'items-center', 'justify-content-center']) }}>
+<span {{ $attributes->class(['manake-themed-asset', 'manake-themed-asset--swap' => $swapInDark, 'inline-flex', 'items-center', 'justify-center']) }}>
     <img
         src="{{ $initialSrc }}"
         alt="{{ $alt }}"
@@ -50,3 +50,12 @@
         class="manake-themed-asset__image object-contain max-h-full max-w-full {{ $resolvedImgClass }}"
     >
 </span>
+
+<style>
+    /* Premium visual scaling correction to ensure the light-theme logo matches the dark-theme logo exactly */
+    html[data-theme-resolved='light'] img[src*='manake-logo-blue.png'],
+    html[data-theme-resolved='light'] .manake-themed-asset__image[src*='manake-logo-blue.png'] {
+        transform: scale(1.08) !important;
+        transform-origin: left center !important;
+    }
+</style>
