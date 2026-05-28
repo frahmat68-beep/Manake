@@ -45,7 +45,7 @@
     $footerMapUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($footerAddress ?: 'Manake Studio & Rental');
 @endphp
 
-<footer id="contact" class="border-t manake-shell manake-border">
+<footer id="contact" class="border-t manake-shell manake-border mt-auto">
     <div class="mx-auto grid max-w-7xl gap-8 px-6 py-10 sm:px-8 lg:grid-cols-[1.1fr,0.9fr,1fr] lg:gap-10 lg:py-12 items-start">
         {{-- Column 1: Brand Logo & Guidelines --}}
         <div class="space-y-4">

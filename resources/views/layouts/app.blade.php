@@ -38,7 +38,7 @@
             color: #A0A0A8;
         }
         body[data-manake-shell="app"] .manake-main-stage {
-            min-height: calc(100vh - 4rem);
+            min-height: 0;
         }
         body[data-manake-shell="app"] main :is(h1, h2, h4, h5, h6) {
             color: #E8E8EC;

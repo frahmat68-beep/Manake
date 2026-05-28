@@ -337,7 +337,7 @@
     }
 
     .manake-page {
-        min-height: 100vh;
+        min-height: auto;
         background: rgb(10 10 11);
         color: rgb(232 232 236);
     }
