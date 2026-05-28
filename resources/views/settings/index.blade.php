@@ -104,21 +104,21 @@
         }
 
         html[data-theme-resolved='light'] .settings-option-card[data-active="true"] {
-            border-color: #2563EB;
-            background: rgba(37, 99, 235, 0.08);
-            box-shadow: 0 0 15px rgba(37, 99, 235, 0.12), inset 0 0 0 1px rgba(37, 99, 235, 0.15);
+            border-color: #2563EB !important;
+            background: rgba(37, 99, 235, 0.08) !important;
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.12), inset 0 0 0 1px rgba(37, 99, 235, 0.15) !important;
         }
 
         html[data-theme-resolved='light'] .settings-option-card .manake-preferences-choice__icon {
-            color: #666666;
+            color: #666666 !important;
         }
 
         html[data-theme-resolved='light'] .settings-option-card[data-active="true"] .manake-preferences-choice__icon {
-            color: #1D4ED8;
+            color: #2563EB !important;
         }
 
         html[data-theme-resolved='light'] .settings-option-card[data-active="true"] .manake-preferences-choice__check {
-            color: #1D4ED8;
+            color: #2563EB !important;
         }
 
         @keyframes settings-shell-enter {
