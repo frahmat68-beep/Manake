@@ -66,11 +66,11 @@ class SettingsUiTest extends TestCase
         $response->assertSee(route('settings.index'), false);
     }
 
-    public function test_guest_navbar_does_not_show_settings_link(): void
+    public function test_guest_navbar_shows_settings_link(): void
     {
         $response = $this->get(route('catalog'));
 
         $response->assertOk();
-        $response->assertDontSee(route('settings.index'), false);
+        $response->assertSee(route('settings.index'), false);
     }
 }

@@ -22,6 +22,9 @@
         : 'text-[#E8E8EC] hover:bg-white/5 hover:text-[#D4A843]';
     $mobilePanelClass = $isLightShell ? 'border-[#E5E2DA] bg-[#F7F7F4]/98' : 'border-[#1A1A1E] bg-[#0A0A0B]/98';
     $mobileButtonClass = $isLightShell ? 'border-[#E5E2DA] text-[#171717]' : 'border-white/10 text-[#E8E8EC]';
+    $settingsActiveClass = request()->routeIs('settings.*')
+        ? ($isLightShell ? 'border-[#D4A843]/60 text-[#B8871F]' : 'border-[#D4A843]/50 text-[#D4A843]')
+        : $iconButtonClass;
 @endphp
 
 <nav
@@ -42,6 +45,19 @@
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
+            {{-- Settings: always visible for guests and authenticated users --}}
+            <a
+                href="{{ route('settings.index') }}"
+                class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border transition {{ $settingsActiveClass }}"
+                aria-label="{{ __('ui.nav.settings') }}"
+                title="{{ __('ui.nav.settings') }}"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+                </svg>
+            </a>
+
             @auth('web')
                 <div class="relative" @click.outside="notifOpen = false">
                     <button
@@ -110,7 +126,6 @@
                     <div x-cloak x-show="userOpen" x-transition.origin.top.right class="absolute right-0 mt-3 w-56 rounded-2xl border p-2 {{ $dropdownClass }}">
                         <a href="{{ route('profile') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold transition {{ $dropdownItemClass }}">{{ __('ui.nav.my_profile') }}</a>
                         <a href="{{ route('booking.history') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold transition {{ $dropdownItemClass }}">{{ __('ui.nav.my_orders') }}</a>
-                        <a href="{{ route('settings.index') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold transition {{ $dropdownItemClass }}">{{ __('ui.nav.settings') }}</a>
                         <div class="my-1 h-px {{ $isLightShell ? 'bg-[#E5E2DA]' : 'bg-[#1A1A1E]' }}"></div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -152,14 +167,14 @@
                 <a href="{{ route('about') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.about') }}</a>
                 <a href="{{ route('rental.rules') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.rental_guide') }}</a>
                 <a href="{{ route('contact') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.contact') }}</a>
+                <a href="{{ route('settings.index') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ request()->routeIs('settings.*') ? ($isLightShell ? 'text-[#B8871F]' : 'text-[#D4A843]') : ($isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5') }}" @click="mobileOpen = false">{{ __('ui.nav.settings') }}</a>
             </div>
 
             @auth('web')
-                <div class="grid grid-cols-2 gap-2 border-t pt-3 {{ $isLightShell ? 'border-[#E5E2DA]' : 'border-[#1A1A1E]' }}">
+                <div class="grid grid-cols-3 gap-2 border-t pt-3 {{ $isLightShell ? 'border-[#E5E2DA]' : 'border-[#1A1A1E]' }}">
                     <a href="{{ route('cart') }}" class="rounded-xl border px-3 py-2 text-center text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.cart') }}</a>
                     <a href="{{ route('booking.history') }}" class="rounded-xl border px-3 py-2 text-center text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.my_orders') }}</a>
                     <a href="{{ route('profile') }}" class="rounded-xl border px-3 py-2 text-center text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.my_profile') }}</a>
-                    <a href="{{ route('settings.index') }}" class="rounded-xl border px-3 py-2 text-center text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.settings') }}</a>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
