@@ -275,22 +275,73 @@
                                     quickQty: 1,
                                     quickStart: '',
                                     quickEnd: '',
+                                    quickError: '',
                                     minDate: '{{ $bookingMinDate }}',
                                     maxDate: '{{ $bookingMaxDate }}',
                                     maxQty: {{ max((int) $item->stock, 1) }},
+                                    parseDate(value) {
+                                        if (!value) return null;
+                                        const [year, month, day] = value.split('-').map(Number);
+                                        if (!year || !month || !day) return null;
+                                        return new Date(year, month - 1, day);
+                                    },
+                                    formatDate(date) {
+                                        if (!date) return '';
+                                        const y = date.getFullYear();
+                                        const m = String(date.getMonth() + 1).padStart(2, '0');
+                                        const d = String(date.getDate()).padStart(2, '0');
+                                        return `${y}-${m}-${d}`;
+                                    },
+                                    addDays(dateString, days) {
+                                        const d = this.parseDate(dateString);
+                                        if (!d) return dateString;
+                                        d.setDate(d.getDate() + days);
+                                        const result = this.formatDate(d);
+                                        const max = this.maxDate;
+                                        return result > max ? max : result;
+                                    },
+                                    setPreset(durationDays, startOffset = 0) {
+                                        const start = this.addDays(this.minDate, startOffset);
+                                        const end = this.addDays(this.minDate, startOffset + durationDays - 1);
+                                        this.quickStart = start;
+                                        this.quickEnd = end > this.maxDate ? this.maxDate : end;
+                                        this.quickError = '';
+                                    },
                                     calcDays() {
-                                        if (!this.quickStart || !this.quickEnd) return 0;
-                                        const start = new Date(this.quickStart);
-                                        const end = new Date(this.quickEnd);
-                                        const diff = Math.ceil((end - start) / 86400000) + 1;
-                                        return Number.isNaN(diff) || diff <= 0 ? 0 : diff;
+                                        const start = this.parseDate(this.quickStart);
+                                        const end = this.parseDate(this.quickEnd);
+                                        if (!start || !end) return 0;
+                                        const diff = Math.round((end - start) / 86400000) + 1;
+                                        return diff > 0 ? diff : 0;
                                     },
                                     calcTotal() {
                                         const days = this.calcDays();
-                                        return days > 0 ? days * {{ (int) $item->price_per_day }} * this.quickQty : 0;
+                                        const qty = Number(this.quickQty) || 1;
+                                        return days > 0 ? days * {{ (int) $item->price_per_day }} * qty : 0;
                                     },
                                     formatIdr(value) {
                                         return new Intl.NumberFormat('{{ $intlLocale }}').format(value);
+                                    },
+                                    onStartChanged() {
+                                        const start = this.parseDate(this.quickStart);
+                                        const end = this.parseDate(this.quickEnd);
+                                        if (!end || (start && end < start)) {
+                                            this.quickEnd = this.quickStart;
+                                        }
+                                        this.quickError = '';
+                                    },
+                                    normalizeQty() {
+                                        this.quickQty = Math.max(1, Math.min(this.maxQty, Number(this.quickQty) || 1));
+                                    },
+                                    canSubmit() {
+                                        return this.quickStart && this.quickEnd && this.calcDays() > 0 && Number(this.quickQty) >= 1;
+                                    },
+                                    submitQuickOrder(event) {
+                                        if (!this.canSubmit()) {
+                                            event.preventDefault();
+                                            this.quickError = 'Pilih tanggal sewa dan tanggal kembali terlebih dahulu.';
+                                            return false;
+                                        }
                                     },
                                     handleMouseMove(e) {
                                         const rect = $el.getBoundingClientRect();
@@ -337,7 +388,7 @@
                                                 <button
                                                     type="button"
                                                     class="mk-button-primary w-full py-3"
-                                                    @click="quickOpen = true; quickQty = 1; quickStart = ''; quickEnd = '';"
+                                                    @click="quickOpen = true; quickQty = 1; quickStart = minDate; quickEnd = minDate; quickError = ''"
                                                 >
                                                     {{ $catalogQuickOrderButton }}
                                                 </button>
@@ -382,32 +433,41 @@
                                                 x-transition:enter="transition ease-out duration-300"
                                                 x-transition:enter-start="opacity-0 scale-95"
                                                 x-transition:enter-end="opacity-100 scale-100"
-                                                class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#0A0A0B]/80 backdrop-blur-md"
+                                                class="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-3 sm:p-4 bg-[#0A0A0B]/80 backdrop-blur-md"
                                                 @click.self="quickOpen = false"
                                                 @keydown.escape.window="quickOpen = false"
+                                                role="dialog"
+                                                aria-modal="true"
+                                                aria-label="Pesan Cepat {{ $item->name }}"
                                             >
-                                                <div class="relative w-full max-w-lg overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#111113] p-8 sm:p-10">
-                                                    <div class="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#D4A843]/10 blur-[60px]"></div>
+                                                <div class="relative w-full max-w-lg overflow-hidden rounded-2xl border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8 max-h-[92dvh] overflow-y-auto">
+                                                    <div class="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#D4A843]/10 blur-[60px] pointer-events-none"></div>
                                                     
-                                                    <div class="relative flex items-start justify-between gap-6">
-                                                        <div class="flex-1">
-                                                            <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1">
-                                                                <span class="h-1.5 w-1.5 rounded-full bg-[#D4A843] animate-pulse"></span>
+                                                    <!-- Header -->
+                                                    <div class="relative flex items-start justify-between gap-4">
+                                                        <div class="flex-1 min-w-0">
+                                                            <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1">
+                                                                <span class="h-1.5 w-1.5 rounded-full bg-[#D4A843] animate-pulse" aria-hidden="true"></span>
                                                                 <span class="text-[10px] font-bold uppercase tracking-widest text-[#D4A843]">{{ $catalogQuickOrderTitle }}</span>
                                                             </div>
-                                                            <h4 class="text-2xl font-bold tracking-tight text-[#E8E8EC]">{{ $item->name }}</h4>
-                                                            <p class="mt-2 text-sm font-medium leading-relaxed text-[#A0A0A8]">{{ $catalogQuickOrderHint }}</p>
+                                                            <h4 class="text-xl font-bold tracking-tight text-[#E8E8EC] leading-snug truncate">{{ $item->name }}</h4>
                                                         </div>
                                                         <button
                                                             type="button"
-                                                            class="h-10 w-10 flex items-center justify-center rounded-full border border-[#1A1A1E] bg-[#0A0A0B] text-[#A0A0A8] transition-all duration-300 hover:border-[#D4A843]/40 hover:text-[#E8E8EC] active:scale-90"
+                                                            class="shrink-0 h-9 w-9 flex items-center justify-center rounded-full border border-[#1A1A1E] bg-[#0A0A0B] text-[#A0A0A8] transition-all duration-300 hover:border-[#D4A843]/40 hover:text-[#E8E8EC] active:scale-90"
                                                             @click="quickOpen = false"
+                                                            aria-label="Tutup pesan cepat"
                                                         >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                                         </button>
                                                     </div>
 
-                                                    <form method="POST" action="{{ route('cart.add') }}" class="mt-10 space-y-6 relative">
+                                                    <form
+                                                        method="POST"
+                                                        action="{{ route('cart.add') }}"
+                                                        class="mt-6 space-y-5 relative"
+                                                        @submit="submitQuickOrder($event)"
+                                                    >
                                                         @csrf
                                                         <input type="hidden" name="equipment_id" value="{{ $item->id }}">
                                                         <input type="hidden" name="name" value="{{ $item->name }}">
@@ -416,74 +476,140 @@
                                                         <input type="hidden" name="image" value="{{ $image }}">
                                                         <input type="hidden" name="price" value="{{ $item->price_per_day }}">
 
-                                                        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                                                            <div class="space-y-2">
-                                                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">{{ $catalogQuickStartDateLabel }}</label>
+                                                        <!-- Preset Buttons -->
+                                                        <div class="space-y-1.5">
+                                                            <p class="text-[10px] font-bold uppercase tracking-widest text-[#66666C]">Pilih Cepat</p>
+                                                            <div class="flex flex-wrap gap-2">
+                                                                <button type="button"
+                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
+                                                                    @click="setPreset(1, 0)"
+                                                                >Hari ini</button>
+                                                                <button type="button"
+                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
+                                                                    @click="setPreset(1, 1)"
+                                                                >Besok</button>
+                                                                <button type="button"
+                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
+                                                                    @click="setPreset(3, 0)"
+                                                                >3 Hari</button>
+                                                                <button type="button"
+                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
+                                                                    @click="setPreset(7, 0)"
+                                                                >7 Hari</button>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Date Inputs -->
+                                                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                            <div class="space-y-1.5">
+                                                                <label for="quick-start-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">Tanggal Sewa</label>
                                                                 <input
+                                                                    id="quick-start-{{ $item->id }}"
                                                                     type="date"
                                                                     name="rental_start_date"
                                                                     x-model="quickStart"
-                                                                    min="{{ $bookingMinDate }}"
-                                                                    max="{{ $bookingMaxDate }}"
+                                                                    :min="minDate"
+                                                                    :max="maxDate"
                                                                     class="mk-input"
+                                                                    @change="onStartChanged()"
                                                                     required
                                                                 >
                                                             </div>
-                                                            <div class="space-y-2">
-                                                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">{{ $catalogQuickEndDateLabel }}</label>
+                                                            <div class="space-y-1.5">
+                                                                <label for="quick-end-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">Tanggal Kembali</label>
                                                                 <input
+                                                                    id="quick-end-{{ $item->id }}"
                                                                     type="date"
                                                                     name="rental_end_date"
                                                                     x-model="quickEnd"
                                                                     :min="quickStart || minDate"
                                                                     :max="maxDate"
                                                                     class="mk-input"
+                                                                    @change="quickError = ''"
                                                                     required
                                                                 >
                                                             </div>
                                                         </div>
 
-                                                        <div class="space-y-2">
-                                                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">{{ $catalogQuickQtyLabel }}</label>
+                                                        <!-- Qty -->
+                                                        <div class="space-y-1.5">
+                                                            <label for="quick-qty-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">Jumlah Unit</label>
                                                             <div class="relative flex items-center">
-                                                                <button type="button" @click="quickQty = Math.max(1, quickQty - 1)" class="absolute left-2 h-10 w-10 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#111113] text-[#E8E8EC] hover:border-[#D4A843]/40 transition-all active:scale-90">-</button>
+                                                                <button
+                                                                    type="button"
+                                                                    @click="quickQty = Math.max(1, Number(quickQty) - 1)"
+                                                                    class="absolute left-2 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] hover:border-[#D4A843]/40 transition-all active:scale-90 text-lg font-bold"
+                                                                    aria-label="Kurangi jumlah"
+                                                                >−</button>
                                                                 <input
+                                                                    id="quick-qty-{{ $item->id }}"
                                                                     type="number"
                                                                     name="qty"
                                                                     min="1"
                                                                     :max="maxQty"
-                                                                    x-model="quickQty"
+                                                                    x-model.number="quickQty"
                                                                     class="mk-input no-spinner text-center"
+                                                                    @change="normalizeQty()"
                                                                     required
                                                                 >
-                                                                <button type="button" @click="quickQty = Math.min(maxQty, quickQty + 1)" class="absolute right-2 h-10 w-10 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#111113] text-[#E8E8EC] hover:border-[#D4A843]/40 transition-all active:scale-90">+</button>
+                                                                <button
+                                                                    type="button"
+                                                                    @click="quickQty = Math.min(maxQty, Number(quickQty) + 1)"
+                                                                    class="absolute right-2 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] hover:border-[#D4A843]/40 transition-all active:scale-90 text-lg font-bold"
+                                                                    aria-label="Tambah jumlah"
+                                                                >+</button>
                                                             </div>
                                                         </div>
 
-                                                        <div class="relative grid grid-cols-2 gap-4 overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#D4A843] p-6 text-[#0A0A0B]">
-                                                            <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50"></div>
+                                                        <!-- Summary Panel -->
+                                                        <div class="relative grid grid-cols-2 gap-4 overflow-hidden rounded-xl border border-[#1A1A1E] bg-[#D4A843] p-5 text-[#0A0A0B]">
+                                                            <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50 pointer-events-none"></div>
                                                             <div class="relative">
-                                                                <p class="text-[10px] font-bold uppercase tracking-widest text-white/70">{{ $catalogQuickDurationLabel }}</p>
-                                                                <p class="mt-1 text-lg font-bold" x-text="calcDays() > 0 ? `${calcDays()} {{ $dayLabel }}` : '-'"></p>
+                                                                <p class="text-[10px] font-bold uppercase tracking-widest text-[#0A0A0B]/60">Durasi</p>
+                                                                <p class="mt-1 text-lg font-extrabold" x-text="calcDays() > 0 ? `${calcDays()} {{ $dayLabel }}` : '-'"></p>
                                                             </div>
-                                                            <div class="relative text-right border-l border-white/20 pl-4">
-                                                                <p class="text-[10px] font-bold uppercase tracking-widest text-white/70">{{ $catalogQuickEstimateLabel }}</p>
-                                                                <p class="mt-1 text-lg font-bold" x-text="calcTotal() > 0 ? `{{ $currencyPrefix }} ${formatIdr(calcTotal())}` : '{{ $currencyPrefix }} -'"></p>
+                                                            <div class="relative text-right border-l border-black/20 pl-4">
+                                                                <p class="text-[10px] font-bold uppercase tracking-widest text-[#0A0A0B]/60">Estimasi</p>
+                                                                <p class="mt-1 text-base font-extrabold leading-tight" x-text="calcTotal() > 0 ? `{{ $currencyPrefix }} ${formatIdr(calcTotal())}` : '-'"></p>
                                                             </div>
                                                         </div>
 
-                                                        <div class="flex gap-4 pt-2">
-                                                            <button type="button" class="mk-button-secondary flex-1" @click="quickOpen = false">
+                                                        <!-- Error message -->
+                                                        <p
+                                                            x-show="quickError"
+                                                            x-text="quickError"
+                                                            class="rounded-lg border border-rose-400/30 bg-rose-950/60 px-4 py-2 text-xs font-medium text-rose-300"
+                                                            role="alert"
+                                                        ></p>
+
+                                                        <!-- Helper hint when not ready -->
+                                                        <p
+                                                            x-show="!canSubmit() && !quickError"
+                                                            class="text-xs text-[#66666C] text-center"
+                                                        >Pilih tanggal untuk mengaktifkan tombol Tambah.</p>
+
+                                                        <!-- Action Buttons -->
+                                                        <div class="flex gap-3 pt-1">
+                                                            <button
+                                                                type="button"
+                                                                class="mk-button-secondary flex-1"
+                                                                @click="quickOpen = false"
+                                                            >
                                                                 {{ $catalogQuickCancelButton }}
                                                             </button>
                                                             <button
                                                                 type="submit"
-                                                                class="mk-button-primary flex-1 disabled:opacity-50 disabled:translate-y-0"
-                                                                :disabled="!quickStart || !quickEnd || calcDays() <= 0"
+                                                                class="flex-1 rounded-xl px-5 py-3 text-sm font-bold transition-all duration-200 active:scale-95"
+                                                                :class="canSubmit()
+                                                                    ? 'bg-[#D4A843] text-[#0A0A0B] hover:bg-[#e0ba5d] shadow-[0_8px_24px_-8px_rgba(212,168,67,0.5)]'
+                                                                    : 'bg-[#1A1A1E] text-[#66666C] cursor-not-allowed opacity-60'"
+                                                                :disabled="!canSubmit()"
                                                             >
                                                                 {{ $catalogQuickAddButton }}
                                                             </button>
                                                         </div>
+
+                                                        <p class="text-center text-[10px] text-[#66666C]">Estimasi dihitung otomatis berdasarkan durasi dan jumlah unit.</p>
                                                     </form>
                                                 </div>
                                             </div>
