@@ -227,12 +227,42 @@
                 <div
                     class="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
                     x-data="{
+                        interval: null,
                         scroll(direction) {
                             const track = document.getElementById('featured-equipment-track');
                             if (!track) return;
                             const card = track.querySelector('[data-carousel-card]');
                             const amount = card ? card.getBoundingClientRect().width + 24 : track.clientWidth * 0.85;
-                            track.scrollBy({ left: direction * amount, behavior: 'smooth' });
+                            const maxScrollLeft = track.scrollWidth - track.clientWidth;
+                            if (direction === 1 && track.scrollLeft >= maxScrollLeft - 5) {
+                                track.scrollTo({ left: 0, behavior: 'smooth' });
+                            } else {
+                                track.scrollBy({ left: direction * amount, behavior: 'smooth' });
+                            }
+                            this.resetTimer();
+                        },
+                        init() {
+                            this.startTimer();
+                        },
+                        startTimer() {
+                            this.interval = window.setInterval(() => {
+                                const track = document.getElementById('featured-equipment-track');
+                                if (!track) return;
+                                const card = track.querySelector('[data-carousel-card]');
+                                const amount = card ? card.getBoundingClientRect().width + 24 : track.clientWidth * 0.85;
+                                const maxScrollLeft = track.scrollWidth - track.clientWidth;
+                                if (track.scrollLeft >= maxScrollLeft - 5) {
+                                    track.scrollTo({ left: 0, behavior: 'smooth' });
+                                } else {
+                                    track.scrollBy({ left: amount, behavior: 'smooth' });
+                                }
+                            }, 3500);
+                        },
+                        resetTimer() {
+                            if (this.interval) {
+                                window.clearInterval(this.interval);
+                                this.startTimer();
+                            }
                         }
                     }"
                 >

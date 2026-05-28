@@ -18,7 +18,7 @@
 
         <div class="hidden flex-1 items-center justify-center gap-8 text-sm font-semibold text-[#A0A0A8] lg:flex">
             <a href="{{ route('catalog') }}" class="transition hover:text-[#E8E8EC]">{{ __('Equipment') }}</a>
-            <a href="{{ route('availability.board') }}" class="rounded-full border border-[#D4A843]/35 bg-[#D4A843] px-4 py-2 font-bold text-[#0A0A0B] transition hover:bg-[#e0ba5d]">{{ __('Cek Alat') }}</a>
+            <a href="{{ route('availability.board') }}" class="transition hover:text-[#E8E8EC]">{{ __('Cek Alat') }}</a>
             <a href="{{ route('about') }}" class="transition hover:text-[#E8E8EC]">{{ __('Tentang Kami') }}</a>
             <a href="{{ route('rental.rules') }}" class="transition hover:text-[#E8E8EC]">{{ __('Cara Sewa') }}</a>
             <a href="{{ route('contact') }}" class="transition hover:text-[#E8E8EC]">{{ __('Contact') }}</a>
@@ -131,7 +131,7 @@
         <div class="mx-auto max-w-7xl space-y-3 px-4 py-4 sm:px-6">
             <div class="grid gap-2">
                 <a href="{{ route('catalog') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Equipment</a>
-                <a href="{{ route('availability.board') }}" class="rounded-xl bg-[#D4A843] px-3 py-2 text-sm font-bold text-[#0A0A0B]" @click="mobileOpen = false">Cek Alat</a>
+                <a href="{{ route('availability.board') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Cek Alat</a>
                 <a href="{{ route('about') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Tentang Kami</a>
                 <a href="{{ route('rental.rules') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Cara Sewa</a>
                 <a href="{{ route('contact') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Contact</a>
