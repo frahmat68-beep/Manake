@@ -19,6 +19,12 @@ class ChatbotFeatureTest extends TestCase
                 ->andReturn('Maaf, sistem AI sedang dalam pemeliharaan (API Key belum dikonfigurasi). Silakan coba lagi nanti.');
         });
 
+        $this->mock(GeminiAiService::class, function ($mock): void {
+            $mock->shouldReceive('chat')
+                ->once()
+                ->andReturn('Maaf, fallback Gemini sedang tidak tersedia.');
+        });
+
         $response = $this->postJson(route('chatbot.message'), [
             'message' => 'bagaimana cara sewa alat di manake?',
         ]);
