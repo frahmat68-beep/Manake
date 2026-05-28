@@ -168,11 +168,12 @@
             </template>
 
             <!-- Loading Indicator -->
-            <div x-show="isLoading" class="flex justify-start" x-transition>
-                <div class="flex items-center gap-1 rounded-[1.2rem] border border-[#1A1A1E] bg-[#111113] px-4 py-3 shadow-sm">
-                    <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.3s"></div>
-                    <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.15s"></div>
-                    <div class="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D4A843]"></div>
+            <div x-show="isLoading" class="flex flex-col gap-1.5" x-transition>
+                <span class="text-[10px] font-medium tracking-wider text-[#D4A843]/80 pl-1.5 animate-pulse">Manake Guide sedang memikirkan jawaban...</span>
+                <div class="flex items-center gap-1.5 self-start rounded-[1.35rem] border border-[#D4A843]/20 bg-[#111113] px-5 py-3.5 shadow-[0_10px_25px_-10px_rgba(0,0,0,0.5)]">
+                    <div class="h-2 w-2 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.3s"></div>
+                    <div class="h-2 w-2 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.15s"></div>
+                    <div class="h-2 w-2 animate-bounce rounded-full bg-[#D4A843]"></div>
                 </div>
             </div>
         </div>
