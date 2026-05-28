@@ -82,13 +82,13 @@
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        height: 36px !important;
-        width: 160px !important;
+        height: 26px !important;
+        width: 120px !important;
         overflow: visible !important;
     }
     .manake-footer-logo__image {
-        height: 36px !important;
-        max-height: 36px !important;
+        height: 26px !important;
+        max-height: 26px !important;
         width: auto !important;
         object-fit: contain !important;
         transition: transform 0.15s ease-in-out;
@@ -96,7 +96,7 @@
     }
     /* Dynamic visual scale compensation to align light/dark footer logos visually by eye */
     html[data-theme-resolved="light"] .manake-footer-logo__image {
-        transform: scale(1.65) !important;
+        transform: scale(1.35) !important;
     }
     html[data-theme-resolved="dark"] .manake-footer-logo__image {
         transform: scale(1.0) !important;
