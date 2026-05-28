@@ -281,7 +281,7 @@
                                     maxQty: {{ max((int) $item->stock, 1) }},
                                     parseDate(value) {
                                         if (!value) return null;
-                                        const [year, month, day] = value.split('-').map(Number);
+                                        const [year, month, day] = String(value).split('-').map(Number);
                                         if (!year || !month || !day) return null;
                                         return new Date(year, month - 1, day);
                                     },
@@ -293,19 +293,61 @@
                                         return `${y}-${m}-${d}`;
                                     },
                                     addDays(dateString, days) {
-                                        const d = this.parseDate(dateString);
-                                        if (!d) return dateString;
-                                        d.setDate(d.getDate() + days);
-                                        const result = this.formatDate(d);
-                                        const max = this.maxDate;
-                                        return result > max ? max : result;
+                                        const date = this.parseDate(dateString);
+                                        if (!date) return this.minDate;
+                                        date.setDate(date.getDate() + days);
+                                        return this.formatDate(date);
                                     },
-                                    setPreset(durationDays, startOffset = 0) {
-                                        const start = this.addDays(this.minDate, startOffset);
-                                        const end = this.addDays(this.minDate, startOffset + durationDays - 1);
-                                        this.quickStart = start;
-                                        this.quickEnd = end > this.maxDate ? this.maxDate : end;
+                                    clampDate(dateString) {
+                                        const date = this.parseDate(dateString);
+                                        const min = this.parseDate(this.minDate);
+                                        const max = this.parseDate(this.maxDate);
+                                        if (!date) return this.minDate;
+                                        if (min && date < min) return this.minDate;
+                                        if (max && date > max) return this.maxDate;
+                                        return this.formatDate(date);
+                                    },
+                                    setDateRange(start, end) {
+                                        this.quickStart = this.clampDate(start);
+                                        this.quickEnd = this.clampDate(end);
+                                        const s = this.parseDate(this.quickStart);
+                                        const e = this.parseDate(this.quickEnd);
+                                        if (s && e && e < s) this.quickEnd = this.quickStart;
                                         this.quickError = '';
+                                    },
+                                    setPreset(days, offset = 0) {
+                                        const start = this.addDays(this.minDate, offset);
+                                        const end = this.addDays(start, Math.max(days - 1, 0));
+                                        this.setDateRange(start, end);
+                                    },
+                                    onStartChanged() {
+                                        this.quickStart = this.clampDate(this.quickStart);
+                                        const start = this.parseDate(this.quickStart);
+                                        const end = this.parseDate(this.quickEnd);
+                                        if (!end || (start && end < start)) {
+                                            this.quickEnd = this.quickStart;
+                                        }
+                                        this.quickError = '';
+                                    },
+                                    onEndChanged() {
+                                        this.quickEnd = this.clampDate(this.quickEnd);
+                                        const start = this.parseDate(this.quickStart);
+                                        const end = this.parseDate(this.quickEnd);
+                                        if (start && end && end < start) {
+                                            this.quickEnd = this.quickStart;
+                                        }
+                                        this.quickError = '';
+                                    },
+                                    normalizeQty() {
+                                        this.quickQty = Math.max(1, Math.min(this.maxQty, Number(this.quickQty) || 1));
+                                    },
+                                    decreaseQty() {
+                                        this.quickQty = Math.max(1, Number(this.quickQty) - 1);
+                                        this.normalizeQty();
+                                    },
+                                    increaseQty() {
+                                        this.quickQty = Math.min(this.maxQty, Number(this.quickQty) + 1);
+                                        this.normalizeQty();
                                     },
                                     calcDays() {
                                         const start = this.parseDate(this.quickStart);
@@ -322,31 +364,17 @@
                                     formatIdr(value) {
                                         return new Intl.NumberFormat('{{ $intlLocale }}').format(value);
                                     },
-                                    onStartChanged() {
-                                        const start = this.parseDate(this.quickStart);
-                                        const end = this.parseDate(this.quickEnd);
-                                        if (!end || (start && end < start)) {
-                                            this.quickEnd = this.quickStart;
-                                        }
-                                        this.quickError = '';
-                                    },
-                                    normalizeQty() {
-                                        this.quickQty = Math.max(1, Math.min(this.maxQty, Number(this.quickQty) || 1));
-                                    },
                                     canSubmit() {
                                         return this.quickStart && this.quickEnd && this.calcDays() > 0 && Number(this.quickQty) >= 1;
                                     },
                                     submitQuickOrder(event) {
+                                        this.normalizeQty();
                                         if (!this.canSubmit()) {
                                             event.preventDefault();
                                             this.quickError = 'Pilih tanggal sewa dan tanggal kembali terlebih dahulu.';
                                             return false;
                                         }
-                                    },
-                                    handleMouseMove(e) {
-                                        const rect = $el.getBoundingClientRect();
-                                        $el.style.setProperty('--x', (e.clientX - rect.left) + 'px');
-                                        $el.style.setProperty('--y', (e.clientY - rect.top) + 'px');
+                                        this.quickError = '';
                                     }
                                 }"
                                 @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')"
@@ -440,7 +468,10 @@
                                                 aria-modal="true"
                                                 aria-label="Pesan Cepat {{ $item->name }}"
                                             >
-                                                <div class="relative w-full max-w-lg rounded-2xl border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8 max-h-[92dvh] overflow-y-auto">
+                                                <div
+                                                    class="relative w-full max-w-lg rounded-2xl border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8 max-h-[92dvh] overflow-y-auto"
+                                                    @click.stop
+                                                >
                                                     <div class="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#D4A843]/10 blur-[60px] pointer-events-none"></div>
                                                     
                                                     <!-- Header -->
@@ -513,7 +544,8 @@
                                                                     class="mk-input cursor-pointer"
                                                                     @click.stop
                                                                     @mousedown.stop
-                                                                    @change.stop="onStartChanged()"
+                                                                    @pointerdown.stop
+                                                                    @change="onStartChanged()"
                                                                     required
                                                                 >
                                                             </div>
@@ -529,7 +561,8 @@
                                                                     class="mk-input cursor-pointer"
                                                                     @click.stop
                                                                     @mousedown.stop
-                                                                    @change.stop="quickError = ''"
+                                                                    @pointerdown.stop
+                                                                    @change="onEndChanged()"
                                                                     required
                                                                 >
                                                             </div>
@@ -541,7 +574,7 @@
                                                             <div class="relative flex items-center">
                                                                 <button
                                                                     type="button"
-                                                                    @click.stop="quickQty = Math.max(1, Number(quickQty) - 1); normalizeQty();"
+                                                                    @click.stop="decreaseQty()"
                                                                     :disabled="quickQty <= 1"
                                                                     :class="quickQty <= 1
                                                                         ? 'opacity-40 cursor-not-allowed'
@@ -558,12 +591,14 @@
                                                                     x-model.number="quickQty"
                                                                     class="mk-input no-spinner text-center"
                                                                     @click.stop
-                                                                    @change.stop="normalizeQty()"
+                                                                    @mousedown.stop
+                                                                    @pointerdown.stop
+                                                                    @change="normalizeQty()"
                                                                     required
                                                                 >
                                                                 <button
                                                                     type="button"
-                                                                    @click.stop="quickQty = Math.min(maxQty, Number(quickQty) + 1); normalizeQty();"
+                                                                    @click.stop="increaseQty()"
                                                                     :disabled="quickQty >= maxQty"
                                                                     :class="quickQty >= maxQty
                                                                         ? 'opacity-40 cursor-not-allowed'
@@ -574,7 +609,7 @@
                                                             </div>
                                                             <!-- Stock helper text -->
                                                             <p class="text-[11px] text-[#66666C] ml-1"
-                                                               x-text="maxQty <= 1 ? 'Maks. 1 unit tersedia.' : `Maks. ${maxQty} unit tersedia.`"
+                                                               x-text="`Maks. ${maxQty} unit tersedia.`"
                                                             ></p>
                                                         </div>
 
