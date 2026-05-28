@@ -272,7 +272,7 @@
                             <article
                                 x-data="{
                                     quickOpen: false,
-                                    quickQty: 1,
+                                    quickQty: '1',
                                     quickStart: '',
                                     quickEnd: '',
                                     quickError: '',
@@ -339,7 +339,8 @@
                                         this.quickError = '';
                                     },
                                     normalizeQty() {
-                                        this.quickQty = Math.max(1, Math.min(this.maxQty, Number(this.quickQty) || 1));
+                                        const parsed = parseInt(this.quickQty, 10);
+                                        this.quickQty = String(Math.max(1, Math.min(this.maxQty, Number.isFinite(parsed) ? parsed : 1)));
                                     },
                                     openDatePicker(event) {
                                         const input = event?.target;
@@ -355,11 +356,11 @@
                                         }
                                     },
                                     decreaseQty() {
-                                        this.quickQty = Math.max(1, Number(this.quickQty) - 1);
+                                        this.quickQty = String(Math.max(1, (parseInt(this.quickQty, 10) || 1) - 1));
                                         this.normalizeQty();
                                     },
                                     increaseQty() {
-                                        this.quickQty = Math.min(this.maxQty, Number(this.quickQty) + 1);
+                                        this.quickQty = String(Math.min(this.maxQty, (parseInt(this.quickQty, 10) || 1) + 1));
                                         this.normalizeQty();
                                     },
                                     calcDays() {
@@ -371,14 +372,14 @@
                                     },
                                     calcTotal() {
                                         const days = this.calcDays();
-                                        const qty = Number(this.quickQty) || 1;
+                                        const qty = parseInt(this.quickQty, 10) || 1;
                                         return days > 0 ? days * {{ (int) $item->price_per_day }} * qty : 0;
                                     },
                                     formatIdr(value) {
                                         return new Intl.NumberFormat('{{ $intlLocale }}').format(value);
                                     },
                                     canSubmit() {
-                                        return this.quickStart && this.quickEnd && this.calcDays() > 0 && Number(this.quickQty) >= 1;
+                                        return this.quickStart && this.quickEnd && this.calcDays() > 0 && (parseInt(this.quickQty, 10) || 0) >= 1;
                                     },
                                     submitQuickOrder(event) {
                                         this.normalizeQty();
@@ -429,7 +430,7 @@
                                                 <button
                                                     type="button"
                                                     class="mk-button-primary w-full py-3"
-                                                    @click="quickOpen = true; quickQty = 1; quickStart = minDate; quickEnd = minDate; quickError = ''"
+                                                    @click="quickOpen = true; quickQty = '1'; quickStart = minDate; quickEnd = minDate; quickError = ''"
                                                 >
                                                     {{ $catalogQuickOrderButton }}
                                                 </button>
@@ -592,7 +593,7 @@
                                                                     :class="quickQty <= 1
                                                                         ? 'opacity-40 cursor-not-allowed'
                                                                         : 'hover:border-[#D4A843]/40 hover:text-[#D4A843] active:scale-90'"
-                                                                    class="absolute left-2 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] transition-all text-lg font-bold"
+                                                                    class="absolute left-2 z-10 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] transition-all text-lg font-bold"
                                                                     aria-label="Kurangi jumlah"
                                                                 >−</button>
                                                                 <input
@@ -601,8 +602,10 @@
                                                                     name="qty"
                                                                     min="1"
                                                                     :max="maxQty"
-                                                                    x-model.number="quickQty"
-                                                                    class="mk-input no-spinner text-center"
+                                                                    x-model="quickQty"
+                                                                    inputmode="numeric"
+                                                                    pattern="[0-9]*"
+                                                                    class="mk-input no-spinner px-14 text-center"
                                                                     @click.stop
                                                                     @input="normalizeQty()"
                                                                     @change="normalizeQty()"
@@ -615,7 +618,7 @@
                                                                     :class="quickQty >= maxQty
                                                                         ? 'opacity-40 cursor-not-allowed'
                                                                         : 'hover:border-[#D4A843]/40 hover:text-[#D4A843] active:scale-90'"
-                                                                    class="absolute right-2 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] transition-all text-lg font-bold"
+                                                                    class="absolute right-2 z-10 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] transition-all text-lg font-bold"
                                                                     aria-label="Tambah jumlah"
                                                                 >+</button>
                                                             </div>
