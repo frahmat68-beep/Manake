@@ -81,9 +81,9 @@
         :aria-label="isOpen ? 'Tutup Manake Guide' : 'Buka Manake Guide'"
         data-chatbot-toggle
         class="group relative flex h-14 w-14 items-center justify-center rounded-full shadow-2xl transition duration-300 hover:-translate-y-1 hover:scale-105 active:scale-95"
-        :class="isOpen ? 'rotate-90 bg-[#111113] text-[#E8E8EC] border border-[#1A1A1E]' : 'bg-[#D4A843] text-[#0A0A0B]'"
+        :class="isOpen ? 'rotate-90 bg-[#111113] text-[#E8E8EC] border border-[#1A1A1E]' : 'bg-[#2563EB] text-[#FFFFFF]'"
     >
-        <span class="absolute inset-0 rounded-full bg-[#D4A843]/20 opacity-0 blur-md transition duration-300 group-hover:opacity-100"></span>
+        <span class="absolute inset-0 rounded-full bg-[#2563EB]/20 opacity-0 blur-md transition duration-300 group-hover:opacity-100"></span>
         <div x-show="!isOpen" x-transition>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
@@ -111,7 +111,7 @@
         <!-- Header -->
         <div class="flex items-center justify-between bg-[#111113] border-b border-[#1A1A1E] p-4 text-[#E8E8EC]">
             <div class="flex items-center gap-3">
-                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#D4A843]/10 border border-[#D4A843]/20 text-[#D4A843] shadow-inner backdrop-blur-md">
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#2563EB]/10 border border-[#2563EB]/20 text-[#2563EB] shadow-inner backdrop-blur-md">
                     <span class="text-lg font-bold">M</span>
                 </div>
                 <div>
@@ -145,13 +145,13 @@
         >
             <template x-if="messages.length === 1 && faqPreview.length > 0">
                 <div class="rounded-[1.5rem] border border-[#1A1A1E] bg-[#111113] p-4 shadow-sm backdrop-blur">
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4A843]">Pertanyaan cepat</p>
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#2563EB]">Pertanyaan cepat</p>
                     <p class="mt-1 text-xs leading-relaxed text-[#A0A0A8]">Pilih topik umum atau ketik pertanyaan sendiri.</p>
                     <div class="mt-3 grid gap-2">
                         <template x-for="(faq, index) in faqPreview" :key="`faq-${index}`">
                             <button
                                 type="button"
-                                class="w-full rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B] px-3.5 py-2.5 text-left text-xs font-medium text-[#E8E8EC] shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#D4A843]/40 hover:text-[#D4A843] hover:shadow-md"
+                                class="w-full rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B] px-3.5 py-2.5 text-left text-xs font-medium text-[#E8E8EC] shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#2563EB]/40 hover:text-[#2563EB] hover:shadow-md"
                                 @click="useFaq(faq.question, faq.answer)"
                                 x-text="faq.question"
                             ></button>
@@ -168,7 +168,7 @@
                     <div
                         class="max-w-[82%] rounded-[1.35rem] px-4 py-3 text-sm shadow-sm transition duration-200"
                         :class="msg.role === 'user' 
-                            ? 'bg-[#D4A843] text-[#0A0A0B] font-medium rounded-tr-md shadow-[0_16px_30px_-22px_rgba(212,168,67,0.3)]' 
+                            ? 'bg-[#2563EB] text-[#FFFFFF] font-medium rounded-tr-md shadow-[0_16px_30px_-22px_rgba(37,99,235,0.3)]' 
                             : 'border border-[#1A1A1E] bg-[#111113] text-[#E8E8EC] rounded-tl-md shadow-[0_18px_32px_-26px_rgba(0,0,0,0.5)]'"
                     >
                         <p x-text="msg.content" class="leading-relaxed whitespace-pre-wrap"></p>
@@ -178,11 +178,11 @@
 
             <!-- Loading Indicator -->
             <div x-show="isLoading" class="flex flex-col gap-1.5" x-transition>
-                <span class="text-[10px] font-medium tracking-wider text-[#D4A843]/80 pl-1.5 animate-pulse">Menyiapkan jawaban...</span>
-                <div class="flex items-center gap-1.5 self-start rounded-[1.35rem] border border-[#D4A843]/20 bg-[#111113] px-5 py-3.5 shadow-[0_10px_25px_-10px_rgba(0,0,0,0.5)]">
-                    <div class="h-2 w-2 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.3s"></div>
-                    <div class="h-2 w-2 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.15s"></div>
-                    <div class="h-2 w-2 animate-bounce rounded-full bg-[#D4A843]"></div>
+                <span class="text-[10px] font-medium tracking-wider text-[#2563EB]/80 pl-1.5 animate-pulse">Menyiapkan jawaban...</span>
+                <div class="flex items-center gap-1.5 self-start rounded-[1.35rem] border border-[#2563EB]/20 bg-[#111113] px-5 py-3.5 shadow-[0_10px_25px_-10px_rgba(0,0,0,0.5)]">
+                    <div class="h-2 w-2 animate-bounce rounded-full bg-[#2563EB]" style="animation-delay: -0.3s"></div>
+                    <div class="h-2 w-2 animate-bounce rounded-full bg-[#2563EB]" style="animation-delay: -0.15s"></div>
+                    <div class="h-2 w-2 animate-bounce rounded-full bg-[#2563EB]"></div>
                 </div>
             </div>
         </div>
@@ -199,14 +199,14 @@
                     placeholder="Tanya seputar sewa alat..."
                     aria-label="Tanya seputar sewa alat..."
                     data-chatbot-input
-                    class="w-full rounded-2xl border border-[#1A1A1E] bg-[#111113] px-4 py-2.5 text-sm text-[#E8E8EC] transition focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20 placeholder:text-slate-600"
+                    class="w-full rounded-2xl border border-[#1A1A1E] bg-[#111113] px-4 py-2.5 text-sm text-[#E8E8EC] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 placeholder:text-slate-600"
                     :disabled="isLoading"
                 >
                 <button
                     type="submit"
                     aria-label="Kirim pesan"
                     data-chatbot-send
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#D4A843] text-[#0A0A0B] shadow-sm transition hover:scale-105 hover:bg-[#e0ba5d] hover:shadow-md disabled:opacity-50"
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#2563EB] text-[#FFFFFF] shadow-sm transition hover:scale-105 hover:bg-[#1D4ED8] hover:shadow-md disabled:opacity-50"
                     :disabled="isLoading || !userInput.trim()"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

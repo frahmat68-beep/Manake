@@ -190,8 +190,8 @@
             }
             html[data-theme-resolved="light"] .manake-hero-island .hero-rotating-word,
             html[data-theme-resolved="light"] .manake-hero-island .hero-rotating-word span {
-                color: #D4A843 !important;
-                text-shadow: 0 3px 18px rgba(0,0,0,0.55), 0 14px 38px rgba(0,0,0,0.35) !important;
+                color: #3B82F6 !important;
+                text-shadow: 0 2px 10px rgba(0,0,0,0.35), 0 10px 28px rgba(0,0,0,0.28) !important;
             }
             html[data-theme-resolved="light"] .manake-hero-island .hero-desc-text {
                 color: rgba(248, 250, 252, 0.92) !important;
@@ -213,7 +213,7 @@
                 color: #111827 !important;
             }
             html[data-theme-resolved="light"] .hero-card-kicker {
-                color: #D4A843 !important; /* Manake Gold */
+                color: #2563EB !important; /* Manake Blue */
             }
             html[data-theme-resolved="light"] .hero-tile {
                 background-color: rgba(37, 99, 235, 0.04) !important;
