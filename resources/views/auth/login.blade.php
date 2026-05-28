@@ -4,8 +4,8 @@
     :heading="__('ui.auth.login_title')"
     :subheading="null"
     :aside-eyebrow="null"
-    :aside-heading="null"
-    :aside-text="null"
+    aside-heading="Sewa alat produksi lebih rapi."
+    aside-text="Masuk untuk melanjutkan booking, melihat keranjang, dan mengelola pesanan."
     :aside-points="[]"
 >
     <!-- Global Errors/Status -->
@@ -35,6 +35,7 @@
                 name="email"
                 value="{{ old('email') }}"
                 required
+                autocomplete="email"
                 class="input w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-[#E8E8EC] placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all"
             />
         </div>
@@ -50,6 +51,7 @@
                 id="password"
                 name="password"
                 required
+                autocomplete="current-password"
                 placeholder="{{ __('ui.auth.password_placeholder') }}"
                 input-class="input w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B]/50 px-4 py-3 text-sm text-[#E8E8EC] placeholder-[#66666C] focus:border-[#D4A843] focus:bg-[#0A0A0B] focus:ring-1 focus:ring-[#D4A843] transition-all"
             >

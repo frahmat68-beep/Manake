@@ -46,7 +46,7 @@
         @include('partials.page-loader')
 
         @php
-            $compactAuthShowcaseTitle = $asideHeading ?: $heading ?: $brandName;
+            $compactAuthShowcaseTitle = $asideHeading ?: null;
             $compactAuthShowcaseText = $asideText ?: null;
         @endphp
 
@@ -60,9 +60,11 @@
                 
                 <!-- Showcase Content -->
                 <div class="absolute bottom-16 left-16 right-16 z-10">
-                    <h1 class="font-serif text-5xl font-bold tracking-tight text-white mb-6">
-                        {{ $compactAuthShowcaseTitle ?? 'Create Your Vision.' }}
-                    </h1>
+                    @if ($compactAuthShowcaseTitle)
+                        <h1 class="font-serif text-5xl font-bold tracking-tight text-white mb-6">
+                            {{ $compactAuthShowcaseTitle }}
+                        </h1>
+                    @endif
                     @if ($compactAuthShowcaseText)
                         <p class="text-lg text-[#A0A0A8] max-w-xl">
                             {{ $compactAuthShowcaseText }}

@@ -1,14 +1,12 @@
 @props([
-    'label' => 'Google',
+    'label' => 'Lanjut dengan Google',
     'class' => '',
 ])
 
 @php
     $googleOauthConfigured = trim((string) config('services.google.client_id', '')) !== ''
         && trim((string) config('services.google.client_secret', '')) !== '';
-@endphp
 
-@php
     $buttonBody = <<<'HTML'
     <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -22,8 +20,9 @@ HTML;
 @if ($googleOauthConfigured)
     <a
         href="{{ route('social.redirect', 'google') }}"
-        class="inline-flex w-full items-center justify-center gap-3 rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-4 py-3 text-sm font-semibold text-[#E8E8EC] transition-all hover:border-[#D4A843]/30 hover:bg-[#111113] hover:shadow-sm {{ $class }}"
+        class="inline-flex w-full items-center justify-center gap-3 rounded-xl border border-[#1A1A1E] bg-[#111113] hover:bg-[#1A1A1E] px-4 py-3.5 text-sm font-semibold text-[#E8E8EC] transition-all hover:border-[#D4A843]/30 hover:shadow-sm {{ $class }}"
         title="Masuk dengan Google"
+        aria-label="Masuk dengan Google"
     >
         {!! $buttonBody !!}
         <span>{{ $label }}</span>
@@ -33,8 +32,7 @@ HTML;
         type="button"
         disabled
         aria-disabled="true"
-        data-auth-url="{{ route('social.redirect', 'google') }}"
-        class="inline-flex w-full cursor-not-allowed items-center justify-center gap-3 rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-4 py-3 text-sm font-semibold text-[#E8E8EC] opacity-50 {{ $class }}"
+        class="inline-flex w-full cursor-not-allowed items-center justify-center gap-3 rounded-xl border border-[#1A1A1E] bg-[#111113]/40 px-4 py-3.5 text-sm font-semibold text-[#66666C] opacity-50 {{ $class }}"
         title="Login Google belum aktif"
     >
         {!! $buttonBody !!}
