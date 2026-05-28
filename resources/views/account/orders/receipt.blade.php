@@ -554,19 +554,21 @@
             __('ui.invoice.terms.final'),
         ];
 
-        $contactPhone = (string) setting('contact_whatsapp', '+62 812-3456-7890');
-        $contactEmail = (string) setting('contact_email', 'hello@manakerental.id');
-        $footerAddressRaw = (string) setting('footer_address', 'Jl. Sutera Vision No. 12, Jakarta Selatan');
-        $footerAddress = \Illuminate\Support\Str::of(strip_tags($footerAddressRaw))
-            ->replaceMatches('/\s+/', ' ')
-            ->trim()
-            ->limit(100)
-            ->value();
+        $invoiceFooterAddress = setting('footer.address', setting('footer_address', site_content('footer.address', __('app.footer.address_body'))));
+        $invoiceFooterWhatsapp = setting('footer.whatsapp', setting('social_whatsapp', site_content('footer.whatsapp', setting('footer_phone', '+62 812-3456-7890'))));
+        $invoiceFooterEmail = setting('contact.email', setting('footer_email', site_content('contact.email', 'hello@manakerental.id')));
+        $invoiceFooterInstagram = setting('footer.instagram', setting('social_instagram', site_content('footer.instagram', '@manakerental')));
 
-        $invoiceBusinessName = 'Manake Rental';
-        $invoiceBusinessPhone = $contactPhone ?: '-';
-        $invoiceBusinessEmail = $contactEmail ?: '-';
-        $invoiceBusinessAddress = $footerAddress ?: '-';
+        $invoiceFooterAddressLines = collect(preg_split('/\R+/', trim((string) $invoiceFooterAddress)))
+            ->map(static fn ($line) => trim((string) $line))
+            ->filter()
+            ->values();
+
+        $invoiceBusinessName = $invoiceFooterAddressLines->first() ?: 'Manake Studio & Rental';
+        $invoiceBusinessAddress = $invoiceFooterAddressLines->slice(1)->implode(' ');
+        $invoiceBusinessPhone = (string) $invoiceFooterWhatsapp;
+        $invoiceBusinessEmail = (string) $invoiceFooterEmail;
+        $invoiceBusinessInstagram = (string) $invoiceFooterInstagram;
 
         $shortRef = $referenceNumber
             ? (strlen($referenceNumber) > 22 ? substr($referenceNumber, 0, 18) . '...' : $referenceNumber)
@@ -736,15 +738,25 @@
                             <td class="value">{{ $shortRef }}</td>
                         </tr>
                         <tr>
-                            <td class="label" style="border-top: 1px dashed rgba(51, 0, 255, 0.2); padding-top: 4px; margin-top: 2px;">Account:</td>
-                            <td class="value" style="border-top: 1px dashed rgba(51, 0, 255, 0.2); padding-top: 4px; margin-top: 2px;">
-                                {{ $invoiceBusinessName }}<br>
-                                <span style="font-weight: normal; color: #555558;">{{ $invoiceBusinessPhone }}</span>
-                                @if ($invoiceBusinessEmail && $invoiceBusinessEmail !== '-')
-                                    <br><span style="font-weight: normal; color: #555558; font-size: 9px;">{{ $invoiceBusinessEmail }}</span>
-                                @endif
-                            </td>
+                            <td class="label" style="border-top: 1px dashed rgba(51, 0, 255, 0.2); padding-top: 4px; margin-top: 2px;">Company:</td>
+                            <td class="value" style="border-top: 1px dashed rgba(51, 0, 255, 0.2); padding-top: 4px; margin-top: 2px; font-weight: bold; color: #111113;">{{ $invoiceBusinessName }}</td>
                         </tr>
+                        <tr>
+                            <td class="label">WhatsApp:</td>
+                            <td class="value" style="font-weight: normal; color: #555558;">{{ $invoiceBusinessPhone }}</td>
+                        </tr>
+                        @if ($invoiceBusinessEmail && $invoiceBusinessEmail !== '-')
+                            <tr>
+                                <td class="label">Email:</td>
+                                <td class="value" style="font-weight: normal; color: #555558; font-size: 10px;">{{ $invoiceBusinessEmail }}</td>
+                            </tr>
+                        @endif
+                        @if ($invoiceBusinessInstagram && $invoiceBusinessInstagram !== '-')
+                            <tr>
+                                <td class="label">Instagram:</td>
+                                <td class="value" style="font-weight: normal; color: #555558;">{{ $invoiceBusinessInstagram }}</td>
+                            </tr>
+                        @endif
                     </table>
                 </div>
             </div>
@@ -757,6 +769,7 @@
                 <strong>{{ $invoiceBusinessName }}</strong><br>
                 WhatsApp: {{ $invoiceBusinessPhone }}<br>
                 Email: {{ $invoiceBusinessEmail }}<br>
+                Instagram: {{ $invoiceBusinessInstagram }}<br>
                 Address: {{ $invoiceBusinessAddress }}
             </div>
         </footer>
