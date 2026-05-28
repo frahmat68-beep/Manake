@@ -5,136 +5,276 @@
 
 @php
     $localeOptions = [
-        'id' => __('ui.languages.id'),
-        'en' => __('ui.languages.en'),
+        'id' => [
+            'label' => __('ui.languages.id'),
+            'hint' => __('ui.settings.language_id_hint'),
+        ],
+        'en' => [
+            'label' => __('ui.languages.en'),
+            'hint' => __('ui.settings.language_en_hint'),
+        ],
     ];
 
     $themeOptions = [
-        'system' => __('ui.settings.theme_system'),
-        'dark' => __('ui.settings.theme_dark'),
-        'light' => __('ui.settings.theme_light'),
+        'system' => [
+            'label' => __('ui.settings.theme_system'),
+            'hint' => __('ui.settings.theme_system_meta'),
+        ],
+        'dark' => [
+            'label' => __('ui.settings.theme_dark'),
+            'hint' => __('ui.settings.theme_dark_meta'),
+        ],
+        'light' => [
+            'label' => __('ui.settings.theme_light'),
+            'hint' => __('ui.settings.theme_light_meta'),
+        ],
     ];
+
+    $activeLocaleLabel = $localeOptions[$locale]['label'] ?? __('ui.languages.id');
+    $activeThemeLabel = $themeOptions[$theme]['label'] ?? __('ui.settings.theme_system');
 @endphp
 
-@section('content')
-    <div class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_18rem]">
-        <form method="POST" action="{{ route('settings.update') }}" class="space-y-5">
-            @csrf
+@push('head')
+    <style>
+        .settings-enter {
+            animation: settings-enter 520ms ease-out both;
+        }
 
-            <section class="card rounded-[2rem] p-6 shadow-sm sm:p-7">
-                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div class="space-y-1">
-                        <h1 class="text-2xl font-semibold tracking-[-0.03em] text-[#D4A843]">{{ __('ui.settings.title') }}</h1>
-                        <p class="text-sm text-[#A0A0A8]">{{ __('ui.settings.subtitle') }}</p>
-                    </div>
-                    @if (session('status') === 'settings-updated')
-                        <span class="status-chip status-chip-success">{{ __('ui.settings.saved') }}</span>
+        .settings-card-in {
+            animation: settings-card-in 520ms ease-out both;
+        }
+
+        .settings-option input:focus-visible + .settings-option-card {
+            outline: 2px solid rgba(212, 168, 67, 0.75);
+            outline-offset: 2px;
+        }
+
+        .settings-option-card[data-active="true"] {
+            border-color: rgba(212, 168, 67, 0.45);
+            background: rgba(212, 168, 67, 0.08);
+            box-shadow: inset 0 0 0 1px rgba(212, 168, 67, 0.14);
+        }
+
+        @keyframes settings-enter {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes settings-card-in {
+            from {
+                opacity: 0;
+                transform: translateY(14px) scale(.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .settings-enter,
+            .settings-card-in {
+                animation: none !important;
+            }
+        }
+    </style>
+@endpush
+
+@section('content')
+    <section class="bg-[#0A0A0B]">
+        <div class="mx-auto max-w-7xl">
+            <header class="settings-enter rounded-3xl border border-white/10 bg-[#111113]/70 p-6 shadow-[0_28px_80px_-52px_rgba(0,0,0,0.9)] sm:p-8">
+                <div class="space-y-2">
+                    <h1 class="text-2xl font-bold tracking-tight text-[#E8E8EC] sm:text-3xl">{{ __('ui.settings.title') }}</h1>
+                    <p class="max-w-2xl text-sm leading-6 text-[#A0A0A8] sm:text-base">{{ __('ui.settings.subtitle') }}</p>
+                </div>
+            </header>
+
+            @if (session('success') || session('status') === 'settings-updated' || $errors->any())
+                <div class="mt-5 space-y-3">
+                    @if (session('success') || session('status') === 'settings-updated')
+                        <div class="rounded-2xl border border-emerald-400/20 bg-emerald-500/8 px-4 py-3 text-sm text-emerald-200">
+                            {{ session('success', __('ui.settings.saved')) }}
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="rounded-2xl border border-rose-400/20 bg-rose-500/8 px-4 py-3 text-sm text-rose-200">
+                            {{ $errors->first() }}
+                        </div>
                     @endif
                 </div>
+            @endif
 
-                <div class="mt-6 grid gap-4 lg:grid-cols-2">
-                    <section class="manake-settings-section rounded-[1.5rem] border p-4">
+            <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(320px,0.75fr)] lg:items-start">
+                <form method="POST" action="{{ route('settings.update') }}" class="space-y-6">
+                    @csrf
+                    <input type="hidden" name="resolved_theme" id="resolved_theme_input" value="{{ $resolvedTheme }}">
+
+                    <fieldset class="settings-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8">
+                        <legend class="sr-only">{{ __('ui.settings.section_language') }}</legend>
                         <div class="space-y-1">
-                            <h2 class="text-sm font-semibold text-[#E8E8EC]">{{ __('ui.settings.section_language') }}</h2>
-                            <p class="text-xs text-[#A0A0A8]">{{ __('ui.settings.section_language_hint') }}</p>
+                            <h2 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('ui.settings.section_language') }}</h2>
+                            <p class="text-sm text-[#A0A0A8]">{{ __('ui.settings.section_language_hint') }}</p>
                         </div>
 
-                        <div class="mt-4 grid gap-2 sm:grid-cols-2">
-                            @foreach ($localeOptions as $value => $label)
-                                <label class="manake-settings-radio block">
+                        <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                            @foreach ($localeOptions as $value => $option)
+                                <label class="settings-option block">
                                     <input
                                         type="radio"
                                         name="locale"
                                         value="{{ $value }}"
-                                        class="peer sr-only"
-                                        {{ $locale === $value ? 'checked' : '' }}
+                                        class="sr-only"
+                                        @checked($locale === $value)
                                     >
-                                    <span class="manake-settings-option flex min-h-[3.35rem] items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition">
-                                        <span>{{ $label }}</span>
-                                        @if ($locale === $value)
-                                            <span class="status-chip status-chip-info text-[10px]">{{ __('ui.settings.active_badge') }}</span>
-                                        @endif
+                                    <span class="settings-option-card flex min-h-[112px] flex-col justify-between rounded-2xl border border-white/10 bg-[#0A0A0B]/75 p-4 transition hover:border-[#D4A843]/35" data-active="{{ $locale === $value ? 'true' : 'false' }}">
+                                        <span class="flex items-start justify-between gap-3">
+                                            <span>
+                                                <span class="block text-base font-semibold text-[#E8E8EC]">{{ $option['label'] }}</span>
+                                                <span class="mt-2 block text-sm leading-6 text-[#A0A0A8]">{{ $option['hint'] }}</span>
+                                            </span>
+                                            @if ($locale === $value)
+                                                <span class="rounded-full border border-emerald-400/20 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-200">{{ __('ui.settings.active_badge') }}</span>
+                                            @endif
+                                        </span>
                                     </span>
                                 </label>
                             @endforeach
                         </div>
-                        @error('locale')
-                            <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                        @enderror
-                    </section>
+                    </fieldset>
 
-                    <section class="manake-settings-section rounded-[1.5rem] border p-4">
+                    <fieldset class="settings-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8" style="animation-delay: 80ms">
+                        <legend class="sr-only">{{ __('ui.settings.section_theme') }}</legend>
                         <div class="space-y-1">
-                            <h2 class="text-sm font-semibold text-[#E8E8EC]">{{ __('ui.settings.section_theme') }}</h2>
-                            <p class="text-xs text-[#A0A0A8]">{{ __('ui.settings.section_theme_hint') }}</p>
+                            <h2 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('ui.settings.section_theme') }}</h2>
+                            <p class="text-sm text-[#A0A0A8]">{{ __('ui.settings.section_theme_hint') }}</p>
                         </div>
 
-                        <div class="mt-4 grid gap-2">
-                            @foreach ($themeOptions as $value => $label)
-                                <label class="manake-settings-radio block">
+                        <div class="mt-5 grid gap-3">
+                            @foreach ($themeOptions as $value => $option)
+                                <label class="settings-option block">
                                     <input
                                         type="radio"
                                         name="theme"
                                         value="{{ $value }}"
-                                        class="peer sr-only"
-                                        {{ $theme === $value ? 'checked' : '' }}
+                                        class="sr-only"
+                                        @checked($theme === $value)
                                     >
-                                    <span class="manake-settings-option flex min-h-[3.35rem] items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition">
-                                        <span>{{ $label }}</span>
-                                        @if ($theme === $value)
-                                            <span class="status-chip status-chip-info text-[10px]">{{ __('ui.settings.active_badge') }}</span>
-                                        @endif
+                                    <span class="settings-option-card flex min-h-[96px] flex-col justify-between rounded-2xl border border-white/10 bg-[#0A0A0B]/75 p-4 transition hover:border-[#D4A843]/35" data-active="{{ $theme === $value ? 'true' : 'false' }}">
+                                        <span class="flex items-start justify-between gap-3">
+                                            <span>
+                                                <span class="block text-base font-semibold text-[#E8E8EC]">{{ $option['label'] }}</span>
+                                                <span class="mt-2 block text-sm leading-6 text-[#A0A0A8]">{{ $option['hint'] }}</span>
+                                            </span>
+                                            @if ($theme === $value)
+                                                <span class="rounded-full border border-emerald-400/20 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-200">{{ __('ui.settings.active_badge') }}</span>
+                                            @endif
+                                        </span>
                                     </span>
                                 </label>
                             @endforeach
                         </div>
-                        @error('theme')
-                            <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                        @enderror
+                    </fieldset>
+
+                    <div class="settings-card-in flex justify-stretch sm:justify-end" style="animation-delay: 140ms">
+                        <button
+                            type="submit"
+                            id="settings-submit-button"
+                            class="inline-flex w-full items-center justify-center rounded-xl bg-[#D4A843] px-6 py-3.5 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/40 sm:w-auto"
+                        >
+                            <span class="submit-label">{{ __('ui.settings.save') }}</span>
+                        </button>
+                    </div>
+                </form>
+
+                <aside class="space-y-6">
+                    <section class="settings-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 50ms">
+                        <div class="space-y-1">
+                            <h2 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('ui.settings.summary_title') }}</h2>
+                            <p class="text-sm text-[#A0A0A8]">{{ __('ui.settings.summary_scope') }}</p>
+                        </div>
+
+                        <dl class="mt-5 space-y-3">
+                            <div class="rounded-2xl border border-white/10 bg-[#0A0A0B]/75 px-4 py-3">
+                                <dt class="text-xs font-medium text-[#A0A0A8]">{{ __('ui.settings.summary_language') }}</dt>
+                                <dd class="mt-2 text-sm font-semibold text-[#E8E8EC]">{{ $activeLocaleLabel }}</dd>
+                            </div>
+                            <div class="rounded-2xl border border-white/10 bg-[#0A0A0B]/75 px-4 py-3">
+                                <dt class="text-xs font-medium text-[#A0A0A8]">{{ __('ui.settings.summary_theme') }}</dt>
+                                <dd class="mt-2 text-sm font-semibold text-[#E8E8EC]">{{ $activeThemeLabel }}</dd>
+                            </div>
+                        </dl>
+
+                        <p class="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm leading-6 text-[#A0A0A8]">
+                            {{ __('ui.settings.summary_note') }}
+                        </p>
                     </section>
-                </div>
-
-                <div class="mt-6 flex justify-end border-t border-[#1A1A1E] pt-4">
-                    <button class="btn-primary inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold">
-                        {{ __('ui.settings.save') }}
-                    </button>
-                </div>
-            </section>
-        </form>
-
-        <aside class="space-y-4 xl:sticky xl:top-24 xl:self-start">
-            <section class="card rounded-[2rem] p-5 shadow-sm">
-                <div class="space-y-1">
-                    <h2 class="text-sm font-semibold text-[#E8E8EC]">{{ __('ui.settings.summary_title') }}</h2>
-                    <p class="text-xs text-[#A0A0A8]">{{ __('ui.settings.summary_scope') }}</p>
-                </div>
-
-                <dl class="mt-4 space-y-3">
-                    <div class="manake-settings-summary rounded-2xl border px-4 py-3">
-                        <dt class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">{{ __('ui.settings.summary_language') }}</dt>
-                        <dd class="mt-2 text-sm font-semibold text-[#E8E8EC]">{{ $localeOptions[$locale] ?? __('ui.languages.id') }}</dd>
-                    </div>
-                    <div class="manake-settings-summary rounded-2xl border px-4 py-3">
-                        <dt class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">{{ __('ui.settings.summary_theme') }}</dt>
-                        <dd class="mt-2 text-sm font-semibold text-[#E8E8EC]">{{ $themeOptions[$theme] ?? __('ui.settings.theme_system') }}</dd>
-                    </div>
-                </dl>
-            </section>
-        </aside>
-    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
 @endsection
 
 @push('scripts')
     <script>
         (() => {
             const form = document.querySelector('form[action="{{ route('settings.update') }}"]');
-            if (!form) {
+            if (! form) {
                 return;
             }
+
+            const submitButton = document.getElementById('settings-submit-button');
+            const submitLabel = submitButton?.querySelector('.submit-label');
+            const resolvedThemeInput = document.getElementById('resolved_theme_input');
+
+            const syncOptionState = (name) => {
+                form.querySelectorAll(`input[name="${name}"]`).forEach((input) => {
+                    const card = input.nextElementSibling;
+                    if (!(card instanceof HTMLElement)) {
+                        return;
+                    }
+
+                    card.dataset.active = input.checked ? 'true' : 'false';
+                    const badge = card.querySelector('[data-active-badge]');
+                    if (badge instanceof HTMLElement) {
+                        badge.hidden = ! input.checked;
+                    }
+                });
+            };
+
+            const syncResolvedTheme = () => {
+                const selectedTheme = form.querySelector('input[name="theme"]:checked')?.value || 'light';
+                const resolvedTheme = window.ManakeTheme?.resolveTheme
+                    ? window.ManakeTheme.resolveTheme(selectedTheme)
+                    : (selectedTheme === 'dark' ? 'dark' : 'light');
+
+                if (resolvedThemeInput) {
+                    resolvedThemeInput.value = resolvedTheme;
+                }
+            };
+
+            form.querySelectorAll('input[name="locale"], input[name="theme"]').forEach((input) => {
+                input.addEventListener('change', () => {
+                    syncOptionState(input.name);
+
+                    if (input.name === 'theme') {
+                        syncResolvedTheme();
+                    }
+                });
+            });
 
             form.addEventListener('submit', () => {
                 const selectedTheme = form.querySelector('input[name="theme"]:checked')?.value;
                 const selectedLocale = form.querySelector('input[name="locale"]:checked')?.value;
+
+                syncResolvedTheme();
 
                 if (selectedTheme && window.ManakePreferences?.rememberTheme) {
                     window.ManakePreferences.rememberTheme(selectedTheme);
@@ -143,7 +283,20 @@
                 if (selectedLocale && window.ManakePreferences?.rememberLocale) {
                     window.ManakePreferences.rememberLocale(selectedLocale);
                 }
+
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.classList.add('opacity-80', 'cursor-wait');
+                }
+
+                if (submitLabel) {
+                    submitLabel.textContent = @json(__('ui.settings.saving'));
+                }
             });
+
+            syncOptionState('locale');
+            syncOptionState('theme');
+            syncResolvedTheme();
         })();
     </script>
 @endpush

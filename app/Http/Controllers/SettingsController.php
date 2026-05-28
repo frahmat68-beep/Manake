@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class SettingsController extends Controller
@@ -15,6 +14,10 @@ class SettingsController extends Controller
         $theme = $request->attributes->get(
             'theme_preference',
             $request->session()->get('theme', $request->cookie('theme', 'light'))
+        );
+        $resolvedTheme = $request->attributes->get(
+            'theme_resolved',
+            $theme === 'dark' ? 'dark' : 'light'
         );
 
         if ($request->user() && schema_column_exists_cached('users', 'preferred_locale')) {
@@ -34,6 +37,7 @@ class SettingsController extends Controller
         return view('settings.index', [
             'locale' => $locale,
             'theme' => $theme,
+            'resolvedTheme' => in_array($resolvedTheme, ['dark', 'light'], true) ? $resolvedTheme : 'light',
         ]);
     }
 
@@ -42,10 +46,18 @@ class SettingsController extends Controller
         $data = $request->validate([
             'locale' => ['required', 'in:id,en'],
             'theme' => ['required', 'in:system,dark,light'],
+            'resolved_theme' => ['nullable', 'in:dark,light'],
         ]);
 
         $request->session()->put('locale', $data['locale']);
         $request->session()->put('theme', $data['theme']);
+        $resolvedTheme = $data['theme'] === 'system'
+            ? ($data['resolved_theme'] ?? $request->cookie('theme_resolved', 'light'))
+            : $data['theme'];
+
+        if (! in_array($resolvedTheme, ['dark', 'light'], true)) {
+            $resolvedTheme = 'light';
+        }
 
         if ($request->user()) {
             $update = [];
@@ -62,7 +74,9 @@ class SettingsController extends Controller
 
         return back()
             ->with('status', 'settings-updated')
+            ->with('success', __('ui.settings.saved'))
             ->withCookie(cookie('locale', $data['locale'], 60 * 24 * 30))
-            ->withCookie(cookie('theme', $data['theme'], 60 * 24 * 30));
+            ->withCookie(cookie('theme', $data['theme'], 60 * 24 * 30))
+            ->withCookie(cookie('theme_resolved', $resolvedTheme, 60 * 24 * 30));
     }
 }

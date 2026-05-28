@@ -104,6 +104,7 @@
             @endauth
 
             @guest('web')
+                <a href="{{ route('settings.index') }}" class="hidden text-sm font-semibold text-[#A0A0A8] transition hover:text-[#E8E8EC] sm:inline-flex">{{ __('ui.nav.settings') }}</a>
                 <a href="{{ route('login') }}" class="hidden text-sm font-semibold text-[#A0A0A8] transition hover:text-[#E8E8EC] sm:inline-flex">{{ __('ui.nav.login') }}</a>
             @endguest
 
@@ -151,6 +152,7 @@
             @endauth
 
             @guest('web')
+                <a href="{{ route('settings.index') }}" class="block rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.settings') }}</a>
                 <a href="{{ route('login') }}" class="block rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.login') }}</a>
             @endguest
         </div>

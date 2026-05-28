@@ -94,4 +94,54 @@ class PreferenceSwitchTest extends TestCase
             'preferred_theme' => 'dark',
         ]);
     }
+
+    public function test_guest_settings_update_persists_preferences_in_session_and_cookie(): void
+    {
+        $response = $this->from(route('settings.index'))
+            ->post(route('settings.update'), [
+                'locale' => 'en',
+                'theme' => 'system',
+                'resolved_theme' => 'dark',
+            ]);
+
+        $response->assertRedirect(route('settings.index'));
+        $response->assertSessionHas('locale', 'en');
+        $response->assertSessionHas('theme', 'system');
+        $response->assertCookie('locale', 'en');
+        $response->assertCookie('theme', 'system');
+        $response->assertCookie('theme_resolved', 'dark');
+    }
+
+    public function test_settings_update_validates_invalid_locale_and_theme(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->from(route('settings.index'))
+            ->post(route('settings.update'), [
+                'locale' => 'jp',
+                'theme' => 'neon',
+                'resolved_theme' => 'blue',
+            ]);
+
+        $response->assertRedirect(route('settings.index'));
+        $response->assertSessionHasErrors(['locale', 'theme', 'resolved_theme']);
+    }
+
+    public function test_saved_language_and_theme_stay_selected_after_redirect(): void
+    {
+        $user = User::factory()->create([
+            'preferred_locale' => 'en',
+            'preferred_theme' => 'dark',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.index'));
+
+        $response->assertOk();
+        $response->assertSee('value="en"', false);
+        $response->assertSee('value="dark"', false);
+        $response->assertSee('checked', false);
+        $response->assertSee('Active Language');
+        $response->assertSee('Dark');
+    }
 }

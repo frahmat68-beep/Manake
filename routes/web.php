@@ -66,6 +66,8 @@ Route::get('/category/{slug}', fn () => redirect()->route('catalog'))->name('cat
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/rental-rules', [PageController::class, 'rentalRules'])->name('rental.rules');
+Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.index');
+Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 // Chatbot Routes
 Route::post('/chatbot/message', [ChatbotController::class, 'chat'])->name('chatbot.message')->middleware('throttle:10,1');
 Route::post('/chatbot/reset', [ChatbotController::class, 'reset'])->name('chatbot.reset');
@@ -105,9 +107,6 @@ Route::middleware(['auth', 'otp'])->group(function () {
     Route::get('/booking/history', [OrderController::class, 'index'])->name('booking.history');
     Route::get('/booking/pay/{order:order_number}', [OrderController::class, 'pay'])->middleware('ensure.profile.completed')->name('booking.pay');
     Route::get('/booking/{order:order_number}', [OrderController::class, 'show'])->name('booking.show');
-
-    Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.index');
-    Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
     Route::post('/payments/{order:order_number}/snap-token', [PaymentController::class, 'createSnapToken'])->middleware('ensure.profile.completed')->name('payments.snap-token');
     Route::post('/payments/{order:order_number}/refresh-status', [PaymentController::class, 'refreshStatus'])->name('payments.refresh-status');

@@ -20,9 +20,20 @@ class SettingsUiTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Pengaturan');
-        $response->assertSee('Ringkas');
-        $response->assertSee('Bahasa aktif');
-        $response->assertSee('Tema aktif');
+        $response->assertSee('Atur bahasa dan tampilan akun.');
+        $response->assertSee('Ringkasan');
+        $response->assertSee('Bahasa Aktif');
+        $response->assertSee('Tema Aktif');
+        $response->assertSee('Simpan Pengaturan');
+    }
+
+    public function test_guest_can_open_settings_page(): void
+    {
+        $response = $this->get(route('settings.index'));
+
+        $response->assertOk();
+        $response->assertSee('Pengaturan');
+        $response->assertSee('Masuk');
     }
 
     public function test_admin_settings_routes_render_the_same_settings_surface(): void
@@ -44,5 +55,16 @@ class SettingsUiTest extends TestCase
             $response->assertSee('Preview');
             $response->assertSee('Maintenance');
         }
+    }
+
+    public function test_logged_in_navbar_contains_settings_link(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('catalog'));
+
+        $response->assertOk();
+        $response->assertSee('Pengaturan');
+        $response->assertSee(route('settings.index'), false);
     }
 }
