@@ -365,25 +365,25 @@
                 <aside class="h-fit space-y-4 rounded-3xl border border-[#1A1A1E] bg-[#111113] p-6 shadow-sm dark:border-slate-800 dark:bg-slate-950">
                     <h2 class="text-lg font-semibold text-[#D4A843]">{{ $orderPaymentTitle }}</h2>
                     <div class="space-y-2 text-sm">
-                        <div class="flex justify-between text-[#A0A0A8]">
-                            <span>{{ $orderMidtransOrderIdLabel }}</span>
-                            <span class="font-semibold text-[#E8E8EC]">{{ $order->midtrans_order_id ?? '-' }}</span>
+                        <div class="flex items-start justify-between gap-4 text-[#A0A0A8]">
+                            <span class="shrink-0">{{ $orderMidtransOrderIdLabel }}</span>
+                            <span class="min-w-0 max-w-[58%] break-all text-right font-semibold text-[#E8E8EC]">{{ $order->midtrans_order_id ?? '-' }}</span>
                         </div>
-                        <div class="flex justify-between text-[#A0A0A8]">
-                            <span>{{ $orderStatusPesananLabel }}</span>
-                            <span class="font-semibold text-[#E8E8EC]">{{ strtoupper($order->status_pesanan ?? 'pending') }}</span>
+                        <div class="flex items-start justify-between gap-4 text-[#A0A0A8]">
+                            <span class="shrink-0">{{ $orderStatusPesananLabel }}</span>
+                            <span class="min-w-0 max-w-[58%] break-words text-right font-semibold text-[#E8E8EC]">{{ $statusLabel($orderStatus) }}</span>
                         </div>
-                        <div class="flex justify-between text-[#A0A0A8]">
-                            <span>{{ $orderSubtotalLabel }}</span>
-                            <span class="font-semibold text-[#E8E8EC]">{{ $formatIdr($baseTotal) }}</span>
+                        <div class="flex items-start justify-between gap-4 text-[#A0A0A8]">
+                            <span class="shrink-0">{{ $orderSubtotalLabel }}</span>
+                            <span class="min-w-0 max-w-[58%] break-words text-right font-semibold text-[#E8E8EC]">{{ $formatIdr($baseTotal) }}</span>
                         </div>
-                        <div class="flex justify-between text-[#A0A0A8]">
-                            <span>{{ $orderTaxLabel }}</span>
-                            <span class="font-semibold text-[#E8E8EC]">{{ $formatIdr($taxAmount) }}</span>
+                        <div class="flex items-start justify-between gap-4 text-[#A0A0A8]">
+                            <span class="shrink-0">{{ $orderTaxLabel }}</span>
+                            <span class="min-w-0 max-w-[58%] break-words text-right font-semibold text-[#E8E8EC]">{{ $formatIdr($taxAmount) }}</span>
                         </div>
-                        <div class="flex justify-between border-t border-[#1A1A1E] pt-2 text-[#A0A0A8]">
-                            <span class="font-semibold">{{ $orderTotalRentalLabel }}</span>
-                            <span class="font-semibold text-[#E8E8EC]">{{ $formatIdr($rentalGrandTotal) }}</span>
+                        <div class="flex items-start justify-between gap-4 border-t border-[#1A1A1E] pt-2 text-[#A0A0A8]">
+                            <span class="shrink-0 font-semibold">{{ $orderTotalRentalLabel }}</span>
+                            <span class="min-w-0 max-w-[58%] break-words text-right font-semibold text-[#E8E8EC]">{{ $formatIdr($rentalGrandTotal) }}</span>
                         </div>
                         @if ($additionalFee > 0)
                             <div class="mt-2 rounded-2xl border border-amber-200 bg-amber-50 px-3 py-3">
@@ -393,9 +393,9 @@
                                         {{ $isDamageFeePaid ? $orderAdditionalFeePaidLabel : $orderAdditionalFeeUnpaidLabel }}
                                     </span>
                                 </div>
-                                <div class="mt-1 flex items-center justify-between text-sm text-amber-700">
-                                    <span>{{ $orderAdditionalFeeLabel }}</span>
-                                    <span class="font-semibold">{{ $formatIdr($additionalFee) }}</span>
+                                <div class="mt-1 flex items-start justify-between gap-4 text-sm text-amber-700">
+                                    <span class="shrink-0">{{ $orderAdditionalFeeLabel }}</span>
+                                    <span class="min-w-0 max-w-[58%] break-words text-right font-semibold">{{ $formatIdr($additionalFee) }}</span>
                                 </div>
                                 <p class="mt-1 text-xs text-amber-700">{{ $orderAdditionalFeeNoTaxLabel }}</p>
                             </div>
@@ -404,9 +404,9 @@
                             @endif
                         @endif
                         @if ($isDamageFeePaid && $additionalFee > 0)
-                            <div class="flex justify-between border-t border-[#1A1A1E] pt-2 text-[#A0A0A8]">
-                                <span class="font-semibold">{{ $orderFinalTotalLabel }}</span>
-                                <span class="font-semibold text-[#E8E8EC]">{{ $formatIdr($grandTotal) }}</span>
+                            <div class="flex items-start justify-between gap-4 border-t border-[#1A1A1E] pt-2 text-[#A0A0A8]">
+                                <span class="shrink-0 font-semibold">{{ $orderFinalTotalLabel }}</span>
+                                <span class="min-w-0 max-w-[58%] break-words text-right font-semibold text-[#E8E8EC]">{{ $formatIdr($grandTotal) }}</span>
                             </div>
                         @endif
                         @if ($order->admin_note)
@@ -416,9 +416,9 @@
                             </div>
                         @endif
                         @if ($order->paid_at)
-                            <div class="flex justify-between text-[#A0A0A8]">
-                                <span>{{ $orderPaidAtLabel }}</span>
-                                <span class="font-semibold text-[#E8E8EC]">{{ $order->paid_at->format('d M Y H:i') }}</span>
+                            <div class="flex items-start justify-between gap-4 text-[#A0A0A8]">
+                                <span class="shrink-0">{{ $orderPaidAtLabel }}</span>
+                                <span class="min-w-0 max-w-[58%] break-words text-right font-semibold text-[#E8E8EC]">{{ $order->paid_at->format('d M Y H:i') }}</span>
                             </div>
                         @endif
                     </div>
