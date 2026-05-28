@@ -92,7 +92,7 @@
 @include('partials.page-loader')
 
 <div
-    class="min-h-screen"
+    class="flex min-h-screen flex-col"
     x-data="{}"
     x-on:mousemove="
         const shell = $el.closest('[data-manake-shell]');
@@ -104,7 +104,7 @@
 >
     @include('partials.navbar')
 
-    <main class="manake-main-stage px-4 py-6 sm:px-8 sm:py-8">
+    <main class="manake-main-stage flex-1 px-4 py-6 sm:px-8 sm:py-8">
         <div class="mx-auto w-full max-w-[1320px]">
             @yield('content')
             {{ $slot ?? '' }}
