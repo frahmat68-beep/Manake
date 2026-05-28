@@ -523,69 +523,69 @@
                 </aside>
             </div>
         </div>
+    </section>
 
-        <div
-            id="order-detail-invoice-modal"
-            class="fixed inset-0 z-[95] hidden items-center justify-center p-3 sm:p-4"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="order-detail-invoice-title"
-        >
-            <div class="absolute inset-0 bg-slate-950/55" data-close-invoice-modal></div>
+    <div
+        id="order-detail-invoice-modal"
+        class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/70 p-3 sm:p-6"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="order-detail-invoice-title"
+    >
+        <div class="absolute inset-0" data-close-invoice-modal></div>
 
-            <div class="relative z-10 flex h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-[#1A1A1E] bg-[#111113] shadow-2xl">
-                <div class="flex items-center justify-between bg-[#D4A843] px-4 py-3 text-[#0A0A0B] sm:px-5">
-                    <div>
-                        <h3 id="order-detail-invoice-title" class="text-base font-semibold sm:text-lg">
-                            {{ __('ui.overview.invoice_detail_title') }}
-                        </h3>
-                        <p class="text-xs text-[#A0A0A8]">{{ __('ui.invoice.title') }}</p>
-                    </div>
-                    <button
-                        type="button"
-                        data-close-invoice-modal
-                        class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#1A1A1E] bg-[#111113]0/60 p-0 text-[#0A0A0B] transition hover:bg-[#111113]0"
-                        aria-label="{{ __('ui.overview.close_modal') }}"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                    </button>
+        <div class="relative z-10 flex h-[min(88vh,860px)] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-[#1A1A1E] bg-[#111113] shadow-2xl">
+            <div class="flex shrink-0 items-center justify-between gap-4 border-b border-[#D4A843]/30 bg-[#D4A843] px-4 py-3 text-[#0A0A0B] sm:px-5">
+                <div>
+                    <h3 id="order-detail-invoice-title" class="text-base font-semibold sm:text-lg">
+                        {{ __('ui.overview.invoice_detail_title') }}
+                    </h3>
+                    <p class="text-xs text-[#0A0A0B]/70">{{ __('ui.invoice.title') }}</p>
                 </div>
+                <button
+                    type="button"
+                    data-close-invoice-modal
+                    class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#0A0A0B]/20 bg-[#0A0A0B]/10 p-0 text-[#0A0A0B] transition hover:bg-[#0A0A0B]/20"
+                    aria-label="{{ __('ui.overview.close_modal') }}"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
 
-                <div class="flex-1 bg-[#0A0A0B] p-2 sm:p-3">
-                    <iframe
-                        id="order-detail-invoice-frame"
-                        title="{{ __('ui.invoice.title') }}"
-                        loading="lazy"
-                        class="h-full w-full rounded-2xl border border-[#1A1A1E] bg-[#111113]"
-                    ></iframe>
-                </div>
+            <div class="min-h-0 flex-1 bg-[#0A0A0B] p-2 sm:p-3">
+                <iframe
+                    id="order-detail-invoice-frame"
+                    title="{{ __('ui.invoice.title') }}"
+                    loading="lazy"
+                    class="h-full w-full rounded-xl border border-[#1A1A1E] bg-white"
+                ></iframe>
+            </div>
 
-                <div class="border-t border-[#1A1A1E] bg-[#111113] px-4 py-3">
-                    <div class="flex justify-end">
-                        <div class="flex flex-wrap items-center justify-end gap-2">
-                            <a
-                                id="order-detail-invoice-download"
-                                href="{{ $signedInvoicePdfUrl }}"
-                                class="inline-flex items-center justify-center rounded-2xl border border-[#1A1A1E] px-4 py-2 text-sm font-semibold text-[#A0A0A8] transition hover:border-[#D4A843] hover:text-[#D4A843]"
-                            >
-                                {{ $orderDownloadPdfButton }}
-                            </a>
-                            <button
-                                type="button"
-                                data-close-invoice-modal
-                                class="inline-flex items-center justify-center rounded-xl border border-[#1A1A1E] px-4 py-2 text-sm font-semibold text-[#A0A0A8] transition hover:border-[#D4A843] hover:text-[#D4A843]"
-                            >
-                                {{ __('ui.overview.close_modal') }}
-                            </button>
-                        </div>
+            <div class="shrink-0 border-t border-[#1A1A1E] bg-[#111113] px-4 py-3">
+                <div class="flex justify-end">
+                    <div class="flex flex-wrap items-center justify-end gap-2">
+                        <a
+                            id="order-detail-invoice-download"
+                            href="{{ $signedInvoicePdfUrl }}"
+                            class="inline-flex items-center justify-center rounded-2xl border border-[#1A1A1E] px-4 py-2 text-sm font-semibold text-[#A0A0A8] transition hover:border-[#D4A843] hover:text-[#D4A843]"
+                        >
+                            {{ $orderDownloadPdfButton }}
+                        </a>
+                        <button
+                            type="button"
+                            data-close-invoice-modal
+                            class="inline-flex items-center justify-center rounded-xl border border-[#1A1A1E] px-4 py-2 text-sm font-semibold text-[#A0A0A8] transition hover:border-[#D4A843] hover:text-[#D4A843]"
+                        >
+                            {{ __('ui.overview.close_modal') }}
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 @endsection
 
 @push('scripts')
@@ -731,7 +731,20 @@
                     return;
                 }
 
-                frame.src = resolvedPreviewUrl;
+                if (modal.parentElement !== document.body) {
+                    document.body.appendChild(modal);
+                }
+
+                let finalPreviewUrl = resolvedPreviewUrl;
+                try {
+                    const urlObj = new URL(resolvedPreviewUrl, window.location.origin);
+                    urlObj.hash = 'toolbar=0&navpanes=0&scrollbar=1';
+                    finalPreviewUrl = urlObj.toString();
+                } catch (e) {
+                    // Fallback if URL constructor fails (e.g. invalid url)
+                }
+
+                frame.src = finalPreviewUrl;
                 activePdfBaseUrl = typeof downloadUrl === 'string' ? downloadUrl : '';
                 syncDownloadUrl();
                 title.textContent = orderNumber ? `Invoice ${orderNumber}` : defaultTitle;
