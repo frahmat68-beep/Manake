@@ -440,7 +440,7 @@
                                                 aria-modal="true"
                                                 aria-label="Pesan Cepat {{ $item->name }}"
                                             >
-                                                <div class="relative w-full max-w-lg overflow-hidden rounded-2xl border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8 max-h-[92dvh] overflow-y-auto">
+                                                <div class="relative w-full max-w-lg rounded-2xl border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8 max-h-[92dvh] overflow-y-auto">
                                                     <div class="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#D4A843]/10 blur-[60px] pointer-events-none"></div>
                                                     
                                                     <!-- Header -->
@@ -455,7 +455,7 @@
                                                         <button
                                                             type="button"
                                                             class="shrink-0 h-9 w-9 flex items-center justify-center rounded-full border border-[#1A1A1E] bg-[#0A0A0B] text-[#A0A0A8] transition-all duration-300 hover:border-[#D4A843]/40 hover:text-[#E8E8EC] active:scale-90"
-                                                            @click="quickOpen = false"
+                                                            @click.stop="quickOpen = false"
                                                             aria-label="Tutup pesan cepat"
                                                         >
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -482,19 +482,19 @@
                                                             <div class="flex flex-wrap gap-2">
                                                                 <button type="button"
                                                                     class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
-                                                                    @click="setPreset(1, 0)"
+                                                                    @click.stop="setPreset(1, 0)"
                                                                 >Hari ini</button>
                                                                 <button type="button"
                                                                     class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
-                                                                    @click="setPreset(1, 1)"
+                                                                    @click.stop="setPreset(1, 1)"
                                                                 >Besok</button>
                                                                 <button type="button"
                                                                     class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
-                                                                    @click="setPreset(3, 0)"
+                                                                    @click.stop="setPreset(3, 0)"
                                                                 >3 Hari</button>
                                                                 <button type="button"
                                                                     class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
-                                                                    @click="setPreset(7, 0)"
+                                                                    @click.stop="setPreset(7, 0)"
                                                                 >7 Hari</button>
                                                             </div>
                                                         </div>
@@ -510,8 +510,10 @@
                                                                     x-model="quickStart"
                                                                     :min="minDate"
                                                                     :max="maxDate"
-                                                                    class="mk-input"
-                                                                    @change="onStartChanged()"
+                                                                    class="mk-input cursor-pointer"
+                                                                    @click.stop
+                                                                    @mousedown.stop
+                                                                    @change.stop="onStartChanged()"
                                                                     required
                                                                 >
                                                             </div>
@@ -524,8 +526,10 @@
                                                                     x-model="quickEnd"
                                                                     :min="quickStart || minDate"
                                                                     :max="maxDate"
-                                                                    class="mk-input"
-                                                                    @change="quickError = ''"
+                                                                    class="mk-input cursor-pointer"
+                                                                    @click.stop
+                                                                    @mousedown.stop
+                                                                    @change.stop="quickError = ''"
                                                                     required
                                                                 >
                                                             </div>
@@ -537,8 +541,12 @@
                                                             <div class="relative flex items-center">
                                                                 <button
                                                                     type="button"
-                                                                    @click="quickQty = Math.max(1, Number(quickQty) - 1)"
-                                                                    class="absolute left-2 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] hover:border-[#D4A843]/40 transition-all active:scale-90 text-lg font-bold"
+                                                                    @click.stop="quickQty = Math.max(1, Number(quickQty) - 1); normalizeQty();"
+                                                                    :disabled="quickQty <= 1"
+                                                                    :class="quickQty <= 1
+                                                                        ? 'opacity-40 cursor-not-allowed'
+                                                                        : 'hover:border-[#D4A843]/40 hover:text-[#D4A843] active:scale-90'"
+                                                                    class="absolute left-2 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] transition-all text-lg font-bold"
                                                                     aria-label="Kurangi jumlah"
                                                                 >−</button>
                                                                 <input
@@ -549,16 +557,25 @@
                                                                     :max="maxQty"
                                                                     x-model.number="quickQty"
                                                                     class="mk-input no-spinner text-center"
-                                                                    @change="normalizeQty()"
+                                                                    @click.stop
+                                                                    @change.stop="normalizeQty()"
                                                                     required
                                                                 >
                                                                 <button
                                                                     type="button"
-                                                                    @click="quickQty = Math.min(maxQty, Number(quickQty) + 1)"
-                                                                    class="absolute right-2 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] hover:border-[#D4A843]/40 transition-all active:scale-90 text-lg font-bold"
+                                                                    @click.stop="quickQty = Math.min(maxQty, Number(quickQty) + 1); normalizeQty();"
+                                                                    :disabled="quickQty >= maxQty"
+                                                                    :class="quickQty >= maxQty
+                                                                        ? 'opacity-40 cursor-not-allowed'
+                                                                        : 'hover:border-[#D4A843]/40 hover:text-[#D4A843] active:scale-90'"
+                                                                    class="absolute right-2 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] transition-all text-lg font-bold"
                                                                     aria-label="Tambah jumlah"
                                                                 >+</button>
                                                             </div>
+                                                            <!-- Stock helper text -->
+                                                            <p class="text-[11px] text-[#66666C] ml-1"
+                                                               x-text="maxQty <= 1 ? 'Maks. 1 unit tersedia.' : `Maks. ${maxQty} unit tersedia.`"
+                                                            ></p>
                                                         </div>
 
                                                         <!-- Summary Panel -->
@@ -593,15 +610,15 @@
                                                             <button
                                                                 type="button"
                                                                 class="mk-button-secondary flex-1"
-                                                                @click="quickOpen = false"
+                                                                @click.stop="quickOpen = false"
                                                             >
                                                                 {{ $catalogQuickCancelButton }}
                                                             </button>
                                                             <button
                                                                 type="submit"
-                                                                class="flex-1 rounded-xl px-5 py-3 text-sm font-bold transition-all duration-200 active:scale-95"
+                                                                class="flex-1 rounded-xl px-5 py-3 text-sm font-bold transition-all duration-200"
                                                                 :class="canSubmit()
-                                                                    ? 'bg-[#D4A843] text-[#0A0A0B] hover:bg-[#e0ba5d] shadow-[0_8px_24px_-8px_rgba(212,168,67,0.5)]'
+                                                                    ? 'bg-[#D4A843] text-[#0A0A0B] hover:bg-[#e0ba5d] shadow-[0_8px_24px_-8px_rgba(212,168,67,0.5)] active:scale-95'
                                                                     : 'bg-[#1A1A1E] text-[#66666C] cursor-not-allowed opacity-60'"
                                                                 :disabled="!canSubmit()"
                                                             >
