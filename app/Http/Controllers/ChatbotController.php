@@ -46,10 +46,17 @@ class ChatbotController extends Controller
                 'content' => $request->message,
             ];
 
-            // Call the AI service
-            $aiResponse = trim((string) $this->aiService->chat($history));
-            if ($this->shouldFallbackToKnowledgeBase($aiResponse)) {
+            // Call the AI service (prioritizing Gemini when API Key is present for instant response)
+            if (config('services.gemini.api_key')) {
                 $aiResponse = trim((string) $this->geminiService->chat($history));
+                if ($this->shouldFallbackToKnowledgeBase($aiResponse)) {
+                    $aiResponse = trim((string) $this->aiService->chat($history));
+                }
+            } else {
+                $aiResponse = trim((string) $this->aiService->chat($history));
+                if ($this->shouldFallbackToKnowledgeBase($aiResponse)) {
+                    $aiResponse = trim((string) $this->geminiService->chat($history));
+                }
             }
 
             if ($this->shouldFallbackToKnowledgeBase($aiResponse)) {
