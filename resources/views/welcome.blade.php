@@ -180,14 +180,17 @@
             html[data-theme-resolved="light"] .hero-title-text {
                 font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif !important;
                 font-weight: 800 !important;
-                color: #111827 !important;
+                color: #FFFFFF !important;
                 letter-spacing: -0.04em !important;
+                text-shadow: 0 4px 18px rgba(0,0,0,0.5), 0 12px 34px rgba(0,0,0,0.38) !important;
             }
             html[data-theme-resolved="light"] .hero-rotating-word {
-                color: #2563EB !important; /* Manake Blue */
+                color: #FFFFFF !important;
+                text-shadow: 0 4px 18px rgba(0,0,0,0.5), 0 12px 34px rgba(0,0,0,0.38) !important;
             }
             html[data-theme-resolved="light"] .hero-desc-text {
-                color: #4B5563 !important; /* Premium dark gray */
+                color: #F3F4F6 !important; /* Soft light gray for premium look on dark overlay */
+                text-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
             }
             html[data-theme-resolved="light"] .hero-card-glass {
                 border-color: rgba(37, 99, 235, 0.15) !important;
@@ -452,10 +455,10 @@
                 <!-- Light mode background image & overlay -->
                 <div class="absolute inset-0 block dark:hidden">
                     <img src="{{ site_asset('images/hero-bg-light.jpg') }}" alt="Set produksi film profesional" class="h-full w-full object-cover object-center" />
-                    <!-- Left gradient: off-white at 92% opacity to ensure perfect text contrast -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-[#F7F7F4]/92 via-[#F7F7F4]/60 to-transparent"></div>
+                    <!-- Left gradient: dark overlay for premium high-contrast white text in light mode -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
                     <!-- Bottom gradient: blends seamlessly into the rest of the light page background -->
-                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#F7F7F4]/40 to-[#F7F7F4]"></div>
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#F7F7F4]/20 to-[#F7F7F4]"></div>
                     <!-- Subtle blue decorative lighting glow that echoes the blue accent -->
                     <div class="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(37,99,235,0.08),transparent_25%),radial-gradient(circle_at_85%_16%,rgba(37,99,235,0.04),transparent_20%)]"></div>
                 </div>
