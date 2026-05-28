@@ -10,20 +10,20 @@
     $navShellClass = $isLightShell
         ? 'border-[#E5E2DA] bg-[#F7F7F4]/95 text-[#171717] shadow-[0_16px_50px_rgba(15,23,42,0.08)]'
         : 'border-[#1A1A1E] bg-[#0A0A0B]/95 text-[#E8E8EC] shadow-[0_16px_60px_rgba(0,0,0,0.18)]';
-    $navLinkClass = $isLightShell ? 'text-[#666666] hover:text-[#171717]' : 'text-[#A0A0A8] hover:text-[#E8E8EC]';
+    $navLinkClass = $isLightShell ? 'text-[#666666] hover:text-blue-600' : 'text-[#A0A0A8] hover:text-[#E8E8EC]';
     $iconButtonClass = $isLightShell
-        ? 'border-[#E5E2DA] bg-white/80 text-[#171717] hover:border-[#D4A843]/45 hover:text-[#B8871F]'
+        ? 'border-[#E5E2DA] bg-white/80 text-[#171717] hover:border-blue-600/45 hover:text-blue-600'
         : 'border-white/10 bg-white/5 text-[#E8E8EC] hover:border-[#D4A843]/40 hover:text-[#D4A843]';
     $dropdownClass = $isLightShell
         ? 'border-[#E5E2DA] bg-white text-[#171717] shadow-[0_22px_60px_rgba(15,23,42,0.12)]'
         : 'border-[#1A1A1E] bg-[#111113] text-[#E8E8EC] shadow-2xl';
     $dropdownItemClass = $isLightShell
-        ? 'text-[#171717] hover:bg-[#F7F7F4] hover:text-[#B8871F]'
+        ? 'text-[#171717] hover:bg-[#F7F7F4] hover:text-blue-600'
         : 'text-[#E8E8EC] hover:bg-white/5 hover:text-[#D4A843]';
     $mobilePanelClass = $isLightShell ? 'border-[#E5E2DA] bg-[#F7F7F4]/98' : 'border-[#1A1A1E] bg-[#0A0A0B]/98';
     $mobileButtonClass = $isLightShell ? 'border-[#E5E2DA] text-[#171717]' : 'border-white/10 text-[#E8E8EC]';
     $settingsActiveClass = request()->routeIs('settings.*')
-        ? ($isLightShell ? 'border-[#D4A843]/60 text-[#B8871F]' : 'border-[#D4A843]/50 text-[#D4A843]')
+        ? ($isLightShell ? 'border-blue-600/60 text-blue-600 bg-blue-50/50' : 'border-[#D4A843]/50 text-[#D4A843] bg-[#D4A843]/5')
         : $iconButtonClass;
 @endphp
 
@@ -192,7 +192,7 @@
                 <a href="{{ route('about') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.about') }}</a>
                 <a href="{{ route('rental.rules') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.rental_guide') }}</a>
                 <a href="{{ route('contact') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.contact') }}</a>
-                <a href="{{ route('settings.index') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ request()->routeIs('settings.*') ? ($isLightShell ? 'text-[#B8871F]' : 'text-[#D4A843]') : ($isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5') }}" @click="mobileOpen = false">{{ __('ui.nav.settings') }}</a>
+                <a href="{{ route('settings.index') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ request()->routeIs('settings.*') ? ($isLightShell ? 'text-blue-600' : 'text-[#D4A843]') : ($isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5') }}" @click="mobileOpen = false">{{ __('ui.nav.settings') }}</a>
             </div>
 
             @auth('web')

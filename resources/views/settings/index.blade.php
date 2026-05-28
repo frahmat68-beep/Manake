@@ -3,6 +3,9 @@
 @section('title', __('ui.settings.title'))
 
 @php
+    $resolvedTheme = $themeResolved ?? request()->attributes->get('theme_resolved', 'light');
+    $isLight = $resolvedTheme === 'light';
+
     $localeOptions = [
         'id' => __('ui.languages.id'),
         'en' => __('ui.languages.en'),
@@ -95,14 +98,15 @@
         }
 
         html[data-theme-resolved='light'] .settings-option-card:hover {
-            border-color: rgba(212, 168, 67, 0.5);
-            background: rgba(212, 168, 67, 0.03);
+            border-color: rgba(37, 99, 235, 0.45);
+            background: rgba(37, 99, 235, 0.03);
+            transform: translateY(-1px);
         }
 
         html[data-theme-resolved='light'] .settings-option-card[data-active="true"] {
-            border-color: #D4A843;
-            background: rgba(212, 168, 67, 0.08);
-            box-shadow: 0 0 15px rgba(212, 168, 67, 0.12), inset 0 0 0 1px rgba(212, 168, 67, 0.15);
+            border-color: #2563EB;
+            background: rgba(37, 99, 235, 0.08);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.12), inset 0 0 0 1px rgba(37, 99, 235, 0.15);
         }
 
         html[data-theme-resolved='light'] .settings-option-card .manake-preferences-choice__icon {
@@ -110,11 +114,11 @@
         }
 
         html[data-theme-resolved='light'] .settings-option-card[data-active="true"] .manake-preferences-choice__icon {
-            color: #B8871F;
+            color: #1D4ED8;
         }
 
         html[data-theme-resolved='light'] .settings-option-card[data-active="true"] .manake-preferences-choice__check {
-            color: #B8871F;
+            color: #1D4ED8;
         }
 
         @keyframes settings-shell-enter {
@@ -147,7 +151,7 @@
             @if (session('success') || session('status') === 'settings-updated' || $errors->any())
                 <div class="mt-5 space-y-3">
                     @if (session('success') || session('status') === 'settings-updated')
-                        <div class="rounded-2xl border border-emerald-400/20 bg-emerald-500/8 px-4 py-3 text-sm text-emerald-200">
+                        <div class="rounded-2xl border {{ $isLight ? 'border-emerald-500/20 bg-emerald-50 text-emerald-800' : 'border-emerald-400/20 bg-emerald-500/8 text-emerald-200' }} px-4 py-3 text-sm">
                             {{ session('success', __('ui.settings.saved')) }}
                         </div>
                     @endif
@@ -248,7 +252,7 @@
                     <button
                         type="submit"
                         id="settings-submit-button"
-                        class="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#D4A843] to-[#B8871F] px-8 py-3.5 text-sm font-semibold text-[#0A0A0B] shadow-[0_4px_20px_rgba(212,168,67,0.25)] transition duration-300 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 active:brightness-95 focus:outline-none focus:ring-2 focus:ring-[#D4A843]/40 disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
+                        class="inline-flex w-full items-center justify-center rounded-xl px-8 py-3.5 text-sm font-semibold transition duration-300 hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-50 sm:w-auto {{ $isLight ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-[0_4px_20px_rgba(37,99,235,0.25)] focus:ring-2 focus:ring-blue-600/40' : 'bg-gradient-to-r from-[#D4A843] to-[#B8871F] text-[#0A0A0B] shadow-[0_4px_20px_rgba(212,168,67,0.25)] hover:brightness-110 active:brightness-95 focus:ring-2 focus:ring-[#D4A843]/40' }}"
                     >
                         <span class="submit-label">{{ __('ui.settings.save') }}</span>
                     </button>
