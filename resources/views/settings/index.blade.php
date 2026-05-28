@@ -37,31 +37,31 @@
         }
 
         .settings-option input:focus-visible + .settings-option-card {
-            outline: 2px solid rgba(212, 168, 67, 0.75);
+            outline: 2px solid var(--manake-accent);
             outline-offset: 2px;
         }
 
         .settings-option-card {
             position: relative;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(10, 10, 11, 0.65);
+            border: 1px solid var(--manake-border);
+            background: var(--manake-surface);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            color: var(--manake-text);
         }
 
         .settings-option-card:hover {
-            border-color: rgba(212, 168, 67, 0.35);
-            background: rgba(212, 168, 67, 0.03);
+            border-color: var(--manake-accent);
+            background: var(--manake-accent-soft);
             transform: translateY(-1px);
         }
 
         .settings-option-card[data-active="true"] {
-            border-color: #D4A843;
-            background: rgba(212, 168, 67, 0.08);
-            box-shadow: 0 0 15px rgba(212, 168, 67, 0.12), inset 0 0 0 1px rgba(212, 168, 67, 0.15);
+            border-color: var(--manake-accent) !important;
+            background: var(--manake-accent-soft) !important;
+            box-shadow: 0 0 15px var(--manake-accent-soft), inset 0 0 0 1px var(--manake-accent) !important;
         }
 
         .settings-option-card .manake-preferences-choice__check {
@@ -70,55 +70,31 @@
 
         .settings-option-card[data-active="true"] .manake-preferences-choice__check {
             display: inline-flex;
+            color: var(--manake-accent) !important;
+        }
+
+        .settings-option-card .manake-preferences-choice__icon {
+            color: var(--manake-text-muted) !important;
+            transition: color 0.15s ease-in-out;
         }
 
         .settings-option-card[data-active="true"] .manake-preferences-choice__icon {
-            color: #D4A843;
+            color: var(--manake-accent) !important;
         }
 
-        /* Light Mode Styling Overrides for visual consistency and high contrast */
+        /* Responsive light card / container styles */
         html[data-theme-resolved='light'] .settings-shell-enter > div {
-            background-color: #FFFFFF !important;
-            border-color: #E5E2DA !important;
+            background-color: var(--manake-surface) !important;
+            border-color: var(--manake-border) !important;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04) !important;
         }
 
         html[data-theme-resolved='light'] fieldset legend {
-            color: #171717 !important;
+            color: var(--manake-text) !important;
         }
 
         html[data-theme-resolved='light'] .h-px {
-            background-color: #E5E2DA !important;
-        }
-
-        html[data-theme-resolved='light'] .settings-option-card {
-            border-color: #E5E2DA;
-            background: #FFFFFF;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
-        }
-
-        html[data-theme-resolved='light'] .settings-option-card:hover {
-            border-color: rgba(37, 99, 235, 0.45);
-            background: rgba(37, 99, 235, 0.03);
-            transform: translateY(-1px);
-        }
-
-        html[data-theme-resolved='light'] .settings-option-card[data-active="true"] {
-            border-color: #2563EB !important;
-            background: rgba(37, 99, 235, 0.08) !important;
-            box-shadow: 0 0 15px rgba(37, 99, 235, 0.12), inset 0 0 0 1px rgba(37, 99, 235, 0.15) !important;
-        }
-
-        html[data-theme-resolved='light'] .settings-option-card .manake-preferences-choice__icon {
-            color: #666666 !important;
-        }
-
-        html[data-theme-resolved='light'] .settings-option-card[data-active="true"] .manake-preferences-choice__icon {
-            color: #2563EB !important;
-        }
-
-        html[data-theme-resolved='light'] .settings-option-card[data-active="true"] .manake-preferences-choice__check {
-            color: #2563EB !important;
+            background-color: var(--manake-border) !important;
         }
 
         @keyframes settings-shell-enter {

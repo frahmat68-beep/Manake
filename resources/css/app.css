@@ -724,9 +724,9 @@
     --manake-text: #171717;
     --manake-text-muted: #666666;
     --manake-text-soft: #8A8175;
-    --manake-accent: #D4A843;
-    --manake-accent-hover: #B88D2D;
-    --manake-accent-soft: rgba(212, 168, 67, 0.16);
+    --manake-accent: #2563EB;
+    --manake-accent-hover: #1D4ED8;
+    --manake-accent-soft: rgba(37, 99, 235, 0.16);
     --manake-danger: #DC2626;
     --manake-success: #059669;
     --manake-warning: #D97706;
