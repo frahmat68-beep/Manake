@@ -141,7 +141,42 @@ class PreferenceSwitchTest extends TestCase
         $response->assertSee('value="en"', false);
         $response->assertSee('value="dark"', false);
         $response->assertSee('checked', false);
-        $response->assertSee('Active Language');
+        $response->assertSee('Manage language and website appearance.');
+        $response->assertSee('Active');
         $response->assertSee('Dark');
+    }
+
+    public function test_english_locale_changes_common_navbar_and_settings_text(): void
+    {
+        $response = $this->withCookie('locale', 'en')->get(route('settings.index'));
+
+        $response->assertOk();
+        $response->assertSee('Settings');
+        $response->assertSee('Manage language and website appearance.');
+
+        $catalogResponse = $this->withCookie('locale', 'en')->get(route('catalog'));
+
+        $catalogResponse->assertOk();
+        $catalogResponse->assertSee('Check Availability');
+        $catalogResponse->assertSee('About');
+        $catalogResponse->assertSee('Rental Guide');
+        $catalogResponse->assertSee('Login');
+    }
+
+    public function test_light_theme_uses_blue_logo_and_dark_theme_uses_white_logo(): void
+    {
+        $lightResponse = $this->withCookie('theme', 'light')
+            ->withCookie('theme_resolved', 'light')
+            ->get(route('catalog'));
+
+        $lightResponse->assertOk();
+        $lightResponse->assertSee('manake-logo-blue.png');
+
+        $darkResponse = $this->withCookie('theme', 'dark')
+            ->withCookie('theme_resolved', 'dark')
+            ->get(route('catalog'));
+
+        $darkResponse->assertOk();
+        $darkResponse->assertSee('manake-logo-white.png');
     }
 }

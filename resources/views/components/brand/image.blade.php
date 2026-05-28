@@ -1,5 +1,5 @@
 @props([
-    'light' => 'manake-logo-white.png',
+    'light' => 'manake-logo-blue.png',
     'dark' => 'manake-logo-white.png',
     'alt' => 'Manake',
     'imgClass' => '',

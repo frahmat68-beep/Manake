@@ -52,6 +52,41 @@
         body[data-manake-shell="app"] main section {
             scroll-margin-top: 5rem;
         }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] {
+            background:
+                radial-gradient(circle at var(--x, 50%) var(--y, 0%), rgba(212, 168, 67, 0.08), transparent 26rem),
+                linear-gradient(180deg, #F8F8F5 0%, #F7F7F4 44%, #F3F1EB 100%);
+            color: #666666;
+        }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] main :is(h1, h2, h4, h5, h6) {
+            color: #171717;
+        }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] main h3 {
+            color: #B8871F;
+        }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] [class*='bg-[#0A0A0B]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] [class*='bg-[#111113]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] [class*='bg-white/[0.03]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] [class*='bg-white/5'] {
+            background-color: #FFFFFF !important;
+        }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] [class*='text-[#E8E8EC]'] {
+            color: #171717 !important;
+        }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] [class*='text-[#A0A0A8]'] {
+            color: #666666 !important;
+        }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] [class*='border-[#1A1A1E]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="app"] [class*='border-white/10'] {
+            border-color: #E5E2DA !important;
+        }
     </style>
 </head>
 <body class="manake-shell antialiased selection:bg-amber-500/10 selection:text-amber-500" data-manake-shell="app">

@@ -5,23 +5,40 @@
     $currentUser = auth('web')->user();
     $displayName = $currentUser?->display_name ?: ($currentUser?->name ?: __('app.user.generic'));
     $userInitial = strtoupper(substr((string) $displayName, 0, 1));
+    $resolvedTheme = $themeResolved ?? request()->attributes->get('theme_resolved', 'light');
+    $isLightShell = $resolvedTheme === 'light';
+    $navShellClass = $isLightShell
+        ? 'border-[#E5E2DA] bg-[#F7F7F4]/95 text-[#171717] shadow-[0_16px_50px_rgba(15,23,42,0.08)]'
+        : 'border-[#1A1A1E] bg-[#0A0A0B]/95 text-[#E8E8EC] shadow-[0_16px_60px_rgba(0,0,0,0.18)]';
+    $navLinkClass = $isLightShell ? 'text-[#666666] hover:text-[#171717]' : 'text-[#A0A0A8] hover:text-[#E8E8EC]';
+    $iconButtonClass = $isLightShell
+        ? 'border-[#E5E2DA] bg-white/80 text-[#171717] hover:border-[#D4A843]/45 hover:text-[#B8871F]'
+        : 'border-white/10 bg-white/5 text-[#E8E8EC] hover:border-[#D4A843]/40 hover:text-[#D4A843]';
+    $dropdownClass = $isLightShell
+        ? 'border-[#E5E2DA] bg-white text-[#171717] shadow-[0_22px_60px_rgba(15,23,42,0.12)]'
+        : 'border-[#1A1A1E] bg-[#111113] text-[#E8E8EC] shadow-2xl';
+    $dropdownItemClass = $isLightShell
+        ? 'text-[#171717] hover:bg-[#F7F7F4] hover:text-[#B8871F]'
+        : 'text-[#E8E8EC] hover:bg-white/5 hover:text-[#D4A843]';
+    $mobilePanelClass = $isLightShell ? 'border-[#E5E2DA] bg-[#F7F7F4]/98' : 'border-[#1A1A1E] bg-[#0A0A0B]/98';
+    $mobileButtonClass = $isLightShell ? 'border-[#E5E2DA] text-[#171717]' : 'border-white/10 text-[#E8E8EC]';
 @endphp
 
 <nav
-    class="sticky top-0 z-50 border-b border-[#1A1A1E] bg-[#0A0A0B]/95 text-[#E8E8EC] shadow-[0_16px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl"
+    class="sticky top-0 z-50 border-b {{ $navShellClass }} backdrop-blur-xl"
     x-data="{ mobileOpen: false, userOpen: false, notifOpen: false }"
 >
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <a href="{{ $homeUrl }}" class="inline-flex shrink-0 items-center" aria-label="{{ $brandName }}">
-            <x-brand.image light="manake-logo-white.png" dark="manake-logo-white.png" :alt="$brandName" img-class="h-8 w-auto" />
+            <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" :alt="$brandName" img-class="h-8 w-auto" />
         </a>
 
-        <div class="hidden flex-1 items-center justify-center gap-8 text-sm font-semibold text-[#A0A0A8] lg:flex">
-            <a href="{{ route('catalog') }}" class="transition hover:text-[#E8E8EC]">{{ __('Equipment') }}</a>
-            <a href="{{ route('availability.board') }}" class="transition hover:text-[#E8E8EC]">{{ __('Cek Alat') }}</a>
-            <a href="{{ route('about') }}" class="transition hover:text-[#E8E8EC]">{{ __('Tentang Kami') }}</a>
-            <a href="{{ route('rental.rules') }}" class="transition hover:text-[#E8E8EC]">{{ __('Cara Sewa') }}</a>
-            <a href="{{ route('contact') }}" class="transition hover:text-[#E8E8EC]">{{ __('Contact') }}</a>
+        <div class="hidden flex-1 items-center justify-center gap-8 text-sm font-semibold lg:flex">
+            <a href="{{ route('catalog') }}" class="transition {{ $navLinkClass }}">{{ __('ui.nav.equipment') }}</a>
+            <a href="{{ route('availability.board') }}" class="transition {{ $navLinkClass }}">{{ __('ui.nav.check_availability') }}</a>
+            <a href="{{ route('about') }}" class="transition {{ $navLinkClass }}">{{ __('ui.nav.about') }}</a>
+            <a href="{{ route('rental.rules') }}" class="transition {{ $navLinkClass }}">{{ __('ui.nav.rental_guide') }}</a>
+            <a href="{{ route('contact') }}" class="transition {{ $navLinkClass }}">{{ __('ui.nav.contact') }}</a>
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
@@ -29,7 +46,7 @@
                 <div class="relative" @click.outside="notifOpen = false">
                     <button
                         type="button"
-                        class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]"
+                        class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border transition {{ $iconButtonClass }}"
                         @click="notifOpen = !notifOpen; userOpen = false"
                         :aria-expanded="notifOpen.toString()"
                         aria-label="{{ __('ui.nav.notifications') }}"
@@ -45,19 +62,19 @@
                         @endif
                     </button>
 
-                    <div x-cloak x-show="notifOpen" x-transition.origin.top.right class="absolute right-0 mt-3 w-80 max-w-[calc(100vw-2rem)] rounded-2xl border border-[#1A1A1E] bg-[#111113] p-3 shadow-2xl">
+                    <div x-cloak x-show="notifOpen" x-transition.origin.top.right class="absolute right-0 mt-3 w-80 max-w-[calc(100vw-2rem)] rounded-2xl border p-3 {{ $dropdownClass }}">
                         <div class="flex items-center justify-between">
                             <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-[#D4A843]">{{ __('ui.nav.notifications') }}</p>
-                            <a href="{{ route('notifications') }}" class="text-xs font-semibold text-[#A0A0A8] transition hover:text-[#D4A843]">{{ __('ui.nav.view_all') }}</a>
+                            <a href="{{ route('notifications') }}" class="text-xs font-semibold transition {{ $navLinkClass }} hover:!text-[#D4A843]">{{ __('ui.nav.view_all') }}</a>
                         </div>
                         <div class="mt-3 max-h-72 space-y-2 overflow-y-auto">
                             @forelse ($notificationItems as $notification)
-                                <a href="{{ $notification['url'] ?? route('notifications') }}" class="block rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-2 transition hover:border-[#D4A843]/40">
-                                    <p class="line-clamp-1 text-xs font-bold text-[#E8E8EC]">{{ $notification['title'] }}</p>
-                                    <p class="mt-1 line-clamp-2 text-xs leading-relaxed text-[#A0A0A8]">{{ $notification['body'] }}</p>
+                                <a href="{{ $notification['url'] ?? route('notifications') }}" class="block rounded-xl border px-3 py-2 transition {{ $isLightShell ? 'border-[#E5E2DA] bg-[#F7F7F4] hover:border-[#D4A843]/40' : 'border-[#1A1A1E] bg-[#0A0A0B] hover:border-[#D4A843]/40' }}">
+                                    <p class="line-clamp-1 text-xs font-bold {{ $isLightShell ? 'text-[#171717]' : 'text-[#E8E8EC]' }}">{{ $notification['title'] }}</p>
+                                    <p class="mt-1 line-clamp-2 text-xs leading-relaxed {{ $isLightShell ? 'text-[#666666]' : 'text-[#A0A0A8]' }}">{{ $notification['body'] }}</p>
                                 </a>
                             @empty
-                                <p class="rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-4 text-center text-xs text-[#A0A0A8]">{{ __('app.notifications.empty') }}</p>
+                                <p class="rounded-xl border px-3 py-4 text-center text-xs {{ $isLightShell ? 'border-[#E5E2DA] bg-[#F7F7F4] text-[#666666]' : 'border-[#1A1A1E] bg-[#0A0A0B] text-[#A0A0A8]' }}">{{ __('app.notifications.empty') }}</p>
                             @endforelse
                         </div>
                     </div>
@@ -65,7 +82,7 @@
 
                 <a
                     href="{{ route('cart') }}"
-                    class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]"
+                    class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border transition {{ $iconButtonClass }}"
                     aria-label="{{ __('ui.nav.cart') }}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -83,34 +100,33 @@
                 <div class="relative hidden sm:block" @click.outside="userOpen = false">
                     <button
                         type="button"
-                        class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 py-1.5 pl-1.5 pr-3 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40"
+                        class="inline-flex items-center gap-2 rounded-full border py-1.5 pl-1.5 pr-3 text-sm font-semibold transition {{ $isLightShell ? 'border-[#E5E2DA] bg-white/80 text-[#171717] hover:border-[#D4A843]/45' : 'border-white/10 bg-white/5 text-[#E8E8EC] hover:border-[#D4A843]/40' }}"
                         @click="userOpen = !userOpen; notifOpen = false"
                         :aria-expanded="userOpen.toString()"
                     >
                         <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#D4A843] text-xs font-bold text-[#0A0A0B]">{{ $userInitial }}</span>
                         <span class="max-w-[9rem] truncate">{{ $displayName }}</span>
                     </button>
-                    <div x-cloak x-show="userOpen" x-transition.origin.top.right class="absolute right-0 mt-3 w-56 rounded-2xl border border-[#1A1A1E] bg-[#111113] p-2 shadow-2xl">
-                        <a href="{{ route('booking.history') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:bg-white/5 hover:text-[#D4A843]">{{ __('ui.nav.my_orders') }}</a>
-                        <a href="{{ route('profile') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:bg-white/5 hover:text-[#D4A843]">{{ __('ui.nav.my_profile') }}</a>
-                        <a href="{{ route('settings.index') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:bg-white/5 hover:text-[#D4A843]">{{ __('ui.nav.settings') }}</a>
-                        <div class="my-1 h-px bg-[#1A1A1E]"></div>
+                    <div x-cloak x-show="userOpen" x-transition.origin.top.right class="absolute right-0 mt-3 w-56 rounded-2xl border p-2 {{ $dropdownClass }}">
+                        <a href="{{ route('profile') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold transition {{ $dropdownItemClass }}">{{ __('ui.nav.my_profile') }}</a>
+                        <a href="{{ route('booking.history') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold transition {{ $dropdownItemClass }}">{{ __('ui.nav.my_orders') }}</a>
+                        <a href="{{ route('settings.index') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold transition {{ $dropdownItemClass }}">{{ __('ui.nav.settings') }}</a>
+                        <div class="my-1 h-px {{ $isLightShell ? 'bg-[#E5E2DA]' : 'bg-[#1A1A1E]' }}"></div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="block w-full rounded-xl px-3 py-2 text-left text-sm font-semibold text-[#E8E8EC] transition hover:bg-white/5 hover:text-[#D4A843]">{{ __('ui.nav.logout') }}</button>
+                            <button type="submit" class="block w-full rounded-xl px-3 py-2 text-left text-sm font-semibold transition {{ $dropdownItemClass }}">{{ __('ui.nav.logout') }}</button>
                         </form>
                     </div>
                 </div>
             @endauth
 
             @guest('web')
-                <a href="{{ route('settings.index') }}" class="hidden text-sm font-semibold text-[#A0A0A8] transition hover:text-[#E8E8EC] sm:inline-flex">{{ __('ui.nav.settings') }}</a>
-                <a href="{{ route('login') }}" class="hidden text-sm font-semibold text-[#A0A0A8] transition hover:text-[#E8E8EC] sm:inline-flex">{{ __('ui.nav.login') }}</a>
+                <a href="{{ route('login') }}" class="hidden text-sm font-semibold transition {{ $navLinkClass }} sm:inline-flex">{{ __('ui.nav.login') }}</a>
             @endguest
 
             <button
                 type="button"
-                class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[#E8E8EC] transition hover:border-[#D4A843]/40 lg:hidden"
+                class="inline-flex h-10 w-10 items-center justify-center rounded-xl border transition {{ $iconButtonClass }} lg:hidden"
                 @click="mobileOpen = !mobileOpen; userOpen = false; notifOpen = false"
                 :aria-expanded="mobileOpen.toString()"
                 aria-label="{{ __('ui.nav.toggle_menu') }}"
@@ -128,32 +144,31 @@
         </div>
     </div>
 
-    <div x-cloak x-show="mobileOpen" x-transition class="border-t border-[#1A1A1E] bg-[#0A0A0B]/98 lg:hidden">
+    <div x-cloak x-show="mobileOpen" x-transition class="border-t lg:hidden {{ $mobilePanelClass }}">
         <div class="mx-auto max-w-7xl space-y-3 px-4 py-4 sm:px-6">
             <div class="grid gap-2">
-                <a href="{{ route('catalog') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Equipment</a>
-                <a href="{{ route('availability.board') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Cek Alat</a>
-                <a href="{{ route('about') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Tentang Kami</a>
-                <a href="{{ route('rental.rules') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Cara Sewa</a>
-                <a href="{{ route('contact') }}" class="rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] hover:bg-white/5" @click="mobileOpen = false">Contact</a>
+                <a href="{{ route('catalog') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.equipment') }}</a>
+                <a href="{{ route('availability.board') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.check_availability') }}</a>
+                <a href="{{ route('about') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.about') }}</a>
+                <a href="{{ route('rental.rules') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.rental_guide') }}</a>
+                <a href="{{ route('contact') }}" class="rounded-xl px-3 py-2 text-sm font-semibold {{ $isLightShell ? 'text-[#171717] hover:bg-white' : 'text-[#E8E8EC] hover:bg-white/5' }}" @click="mobileOpen = false">{{ __('ui.nav.contact') }}</a>
             </div>
 
             @auth('web')
-                <div class="grid grid-cols-2 gap-2 border-t border-[#1A1A1E] pt-3">
-                    <a href="{{ route('cart') }}" class="rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.cart') }}</a>
-                    <a href="{{ route('booking.history') }}" class="rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.my_orders') }}</a>
-                    <a href="{{ route('profile') }}" class="rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.my_profile') }}</a>
-                    <a href="{{ route('settings.index') }}" class="rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.settings') }}</a>
+                <div class="grid grid-cols-2 gap-2 border-t pt-3 {{ $isLightShell ? 'border-[#E5E2DA]' : 'border-[#1A1A1E]' }}">
+                    <a href="{{ route('cart') }}" class="rounded-xl border px-3 py-2 text-center text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.cart') }}</a>
+                    <a href="{{ route('booking.history') }}" class="rounded-xl border px-3 py-2 text-center text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.my_orders') }}</a>
+                    <a href="{{ route('profile') }}" class="rounded-xl border px-3 py-2 text-center text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.my_profile') }}</a>
+                    <a href="{{ route('settings.index') }}" class="rounded-xl border px-3 py-2 text-center text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.settings') }}</a>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="w-full rounded-xl border border-white/10 px-3 py-2 text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.logout') }}</button>
+                    <button type="submit" class="w-full rounded-xl border px-3 py-2 text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.logout') }}</button>
                 </form>
             @endauth
 
             @guest('web')
-                <a href="{{ route('settings.index') }}" class="block rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.settings') }}</a>
-                <a href="{{ route('login') }}" class="block rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.login') }}</a>
+                <a href="{{ route('login') }}" class="block rounded-xl border px-3 py-2 text-center text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.login') }}</a>
             @endguest
         </div>
     </div>

@@ -20,10 +20,8 @@ class SettingsUiTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Pengaturan');
-        $response->assertSee('Atur bahasa dan tampilan akun.');
-        $response->assertSee('Ringkasan');
-        $response->assertSee('Bahasa Aktif');
-        $response->assertSee('Tema Aktif');
+        $response->assertSee('Atur bahasa dan tampilan website.');
+        $response->assertDontSee('Ringkasan');
         $response->assertSee('Simpan Pengaturan');
     }
 
@@ -66,5 +64,13 @@ class SettingsUiTest extends TestCase
         $response->assertOk();
         $response->assertSee('Pengaturan');
         $response->assertSee(route('settings.index'), false);
+    }
+
+    public function test_guest_navbar_does_not_show_settings_link(): void
+    {
+        $response = $this->get(route('catalog'));
+
+        $response->assertOk();
+        $response->assertDontSee(route('settings.index'), false);
     }
 }

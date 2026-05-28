@@ -30,6 +30,33 @@
         body[data-manake-shell="landing"] section {
             scroll-margin-top: 5rem;
         }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] {
+            background:
+                radial-gradient(circle at var(--x, 50%) var(--y, 0%), rgba(212, 168, 67, 0.07), transparent 28rem),
+                #F7F7F4;
+            color: #666666;
+        }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='bg-[#0A0A0B]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='bg-[#111113]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='bg-white/[0.03]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='bg-white/5'] {
+            background-color: #FFFFFF !important;
+        }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='text-[#E8E8EC]'] {
+            color: #171717 !important;
+        }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='text-[#A0A0A8]'] {
+            color: #666666 !important;
+        }
+
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='border-[#1A1A1E]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='border-white/10'] {
+            border-color: #E5E2DA !important;
+        }
     </style>
 </head>
 <body class="ui-shell landing-shell antialiased selection:bg-amber-500/20 selection:text-amber-200" data-manake-shell="landing">
