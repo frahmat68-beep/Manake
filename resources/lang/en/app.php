@@ -322,4 +322,17 @@ return [
     'user' => [
         'generic' => 'User',
     ],
+    'home' => [
+        'hero_kicker' => 'Rent',
+        'hero_title' => 'the right gear, anytime.',
+        'hero_subtitle' => 'Manake gives you access to cinema cameras, professional lighting, audio gear, drones, stabilizers, and more — ready to pick up and use without the burden of ownership.',
+        'snapshot_kicker' => 'Live Snapshot',
+        'snapshot_title' => 'Today’s rental snapshot',
+        'snapshot_rented' => 'Rented today',
+        'snapshot_available' => 'Items available',
+        'snapshot_upcoming' => 'Next bookings',
+        'schedule_kicker' => 'Rental Schedule',
+        'schedule_subtitle' => 'Synced from active bookings in the database',
+        'live_badge' => 'Live',
+    ],
 ];

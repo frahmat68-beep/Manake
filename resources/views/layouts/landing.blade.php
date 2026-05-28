@@ -38,23 +38,23 @@
             color: #666666;
         }
 
-        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='bg-[#0A0A0B]'],
-        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='bg-[#111113]'],
-        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='bg-white/[0.03]'],
-        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='bg-white/5'] {
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] :not(.manake-hero-island):not(.manake-hero-island *) [class*='bg-[#0A0A0B]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] :not(.manake-hero-island):not(.manake-hero-island *) [class*='bg-[#111113]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] :not(.manake-hero-island):not(.manake-hero-island *) [class*='bg-white/[0.03]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] :not(.manake-hero-island):not(.manake-hero-island *) [class*='bg-white/5'] {
             background-color: #FFFFFF !important;
         }
 
-        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='text-[#E8E8EC]'] {
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] :not(.manake-hero-island):not(.manake-hero-island *) [class*='text-[#E8E8EC]'] {
             color: #171717 !important;
         }
 
-        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='text-[#A0A0A8]'] {
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] :not(.manake-hero-island):not(.manake-hero-island *) [class*='text-[#A0A0A8]'] {
             color: #666666 !important;
         }
 
-        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='border-[#1A1A1E]'],
-        html[data-theme-resolved='light'] body[data-manake-shell="landing"] [class*='border-white/10'] {
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] :not(.manake-hero-island):not(.manake-hero-island *) [class*='border-[#1A1A1E]'],
+        html[data-theme-resolved='light'] body[data-manake-shell="landing"] :not(.manake-hero-island):not(.manake-hero-island *) [class*='border-white/10'] {
             border-color: #E5E2DA !important;
         }
     </style>

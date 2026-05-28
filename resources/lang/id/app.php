@@ -322,4 +322,17 @@ return [
     'user' => [
         'generic' => 'Pengguna',
     ],
+    'home' => [
+        'hero_kicker' => 'Sewa',
+        'hero_title' => 'terbaik, kapan saja.',
+        'hero_subtitle' => 'Manake menyediakan akses ke kamera sinema, lighting profesional, perangkat audio, drone, stabilizer, dan lainnya — siap diambil dan digunakan. Tanpa kerumitan kepemilikan, hasil tetap profesional.',
+        'snapshot_kicker' => 'Live Snapshot',
+        'snapshot_title' => 'Ringkasan rental hari ini',
+        'snapshot_rented' => 'Disewa hari ini',
+        'snapshot_available' => 'Item tersedia',
+        'snapshot_upcoming' => 'Booking berikutnya',
+        'schedule_kicker' => 'Jadwal Rental',
+        'schedule_subtitle' => 'Sinkron dari booking aktif di database',
+        'live_badge' => 'Live',
+    ],
 ];

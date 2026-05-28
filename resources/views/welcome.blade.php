@@ -120,18 +120,26 @@
 
 @section('content')
     <div class="bg-[#0A0A0B] text-[#E8E8EC]">
-        <section class="relative min-h-[calc(100svh-8rem)] overflow-hidden">
+        @php
+            $heroCategories = app()->getLocale() === 'en' 
+                ? ['Camera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'Walkie-Talkie'] 
+                : ['Kamera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'HT'];
+            $heroDescriptionText = app()->getLocale() === 'en' 
+                ? __('app.home.hero_subtitle') 
+                : setting('home.hero_subtitle', __('app.home.hero_subtitle'));
+        @endphp
+        <section class="manake-hero-island relative min-h-[calc(100svh-8rem)] overflow-hidden" data-theme-island="dark">
             <div class="absolute inset-0">
                 <img src="{{ site_asset('images/hero-bg.jpg') }}" alt="Set produksi film profesional" class="h-full w-full object-cover object-center" />
-                <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-[#0A0A0B]/45 to-[#0A0A0B]"></div>
-                <div class="absolute inset-0 bg-gradient-to-r from-[#0A0A0B]/82 via-transparent to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-black/45 via-[#0A0A0B]/55 to-[#0A0A0B]"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0A0A0B]/90 via-transparent to-transparent"></div>
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.05),transparent_22%),radial-gradient(circle_at_15%_20%,rgba(212,168,67,0.12),transparent_20%),radial-gradient(circle_at_85%_16%,rgba(255,255,255,0.05),transparent_18%)]"></div>
             </div>
 
             <div class="relative mx-auto grid min-h-[calc(100svh-8rem)] max-w-7xl items-center gap-12 px-6 pb-12 pt-24 md:px-10 lg:grid-cols-[1.08fr_0.92fr]">
                 <div class="max-w-3xl">
-                    <h1 class="text-[clamp(3.1rem,8vw,7rem)] font-semibold leading-[0.93] tracking-[-0.055em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
-                        <span class="block">Sewa</span>
+                    <h1 class="text-[clamp(2.8rem,5.6vw,5rem)] font-semibold leading-[0.98] tracking-[-0.055em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
+                        <span class="block">{{ __('app.home.hero_kicker') }}</span>
                         <span
                             x-data="{
                                 words: @js($heroCategories),
@@ -160,50 +168,50 @@
                                     ></span>
                                 </template>
                             </span>
-                            <span class="inline-block">terbaik, kapan saja.</span>
+                            <span class="inline-block">{{ __('app.home.hero_title') }}</span>
                         </span>
                     </h1>
 
-                    <p class="mt-7 max-w-2xl text-lg leading-8 text-[#A0A0A8] md:text-xl">
-                        {{ $heroDescription }}
+                    <p class="mt-7 max-w-2xl text-base leading-8 text-[#A0A0A8] md:text-lg">
+                        {{ $heroDescriptionText }}
                     </p>
 
                     <div class="mt-10"></div>
                 </div>
 
                 <div class="grid gap-4">
-                    <div class="rounded-[1.5rem] border border-white/10 bg-white/5 p-4 backdrop-blur-md md:p-5">
+                    <div class="rounded-[1.5rem] border border-white/10 bg-[#111113]/80 p-4 backdrop-blur-md md:p-5">
                         <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
                             <div>
-                                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">Live Snapshot</p>
-                                <h2 class="mt-1 text-2xl font-semibold text-[#E8E8EC]">Ringkasan rental hari ini</h2>
+                                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">{{ __('app.home.snapshot_kicker') }}</p>
+                                <h2 class="mt-1 text-2xl font-semibold text-[#E8E8EC]">{{ __('app.home.snapshot_title') }}</h2>
                             </div>
                         </div>
                         <div class="mt-5 grid gap-3 sm:grid-cols-3">
                             @foreach ([
-                                ['label' => 'Disewa hari ini', 'value' => number_format($snapshotNumbers['rented_today']), 'tone' => 'text-[#D4A843]'],
-                                ['label' => 'Item tersedia', 'value' => number_format($snapshotNumbers['available_items']), 'tone' => 'text-emerald-300'],
-                                ['label' => 'Booking berikutnya', 'value' => number_format($snapshotNumbers['upcoming_bookings']), 'tone' => 'text-sky-300'],
+                                ['label' => __('app.home.snapshot_rented'), 'value' => number_format($snapshotNumbers['rented_today']), 'tone' => 'text-[#D4A843]'],
+                                ['label' => __('app.home.snapshot_available'), 'value' => number_format($snapshotNumbers['available_items']), 'tone' => 'text-emerald-300'],
+                                ['label' => __('app.home.snapshot_upcoming'), 'value' => number_format($snapshotNumbers['upcoming_bookings']), 'tone' => 'text-sky-300'],
                             ] as $tile)
-                                <div class="rounded-2xl border border-white/10 bg-black/30 p-4">
-                                    <p class="text-xs uppercase tracking-[0.22em] text-[#A0A0A8]">{{ $tile['label'] }}</p>
-                                    <p class="mt-3 text-3xl font-black {{ $tile['tone'] }}">{{ $tile['value'] }}</p>
+                                <div class="rounded-2xl border border-white/10 bg-black/35 p-4">
+                                    <p class="text-[10px] uppercase tracking-[0.22em] text-[#A0A0A8]">{{ $tile['label'] }}</p>
+                                    <p class="mt-3 text-2xl font-black {{ $tile['tone'] }}">{{ $tile['value'] }}</p>
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    <div class="rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-[#111113]/95 via-[#0A0A0B]/90 to-[#111113]/95 p-4 md:p-5">
+                    <div class="rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-[#111113]/85 via-black/40 to-[#111113]/85 p-4 md:p-5 backdrop-blur-md">
                         <div class="flex items-center justify-between gap-3">
                             <div>
-                                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">Jadwal Rental</p>
-                                <p class="mt-1 text-sm text-[#A0A0A8]">Sinkron dari booking aktif di database</p>
+                                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">{{ __('app.home.schedule_kicker') }}</p>
+                                <p class="mt-1 text-xs text-[#A0A0A8]">{{ __('app.home.schedule_subtitle') }}</p>
                             </div>
-                            <span class="rounded-full border border-emerald-400/20 bg-emerald-950/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-300">Live</span>
+                            <span class="rounded-full border border-emerald-400/20 bg-emerald-950/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-300">{{ __('app.home.live_badge') }}</span>
                         </div>
                         <div class="mt-4 grid gap-2">
                             @forelse ($rentalTimelineItems->take(3) as $rental)
-                                <div class="grid grid-cols-[1fr_auto] gap-3 rounded-xl border border-white/10 bg-black/25 px-3 py-2.5">
+                                <div class="grid grid-cols-[1fr_auto] gap-3 rounded-xl border border-white/10 bg-black/35 px-3 py-2.5">
                                     <div class="min-w-0">
                                         <p class="truncate text-sm font-semibold text-[#E8E8EC]">{{ $rental['name'] }}</p>
                                         <p class="mt-0.5 text-xs text-[#A0A0A8]">{{ $rental['qty'] }} unit disewa</p>
@@ -211,7 +219,7 @@
                                     <p class="self-center text-right text-xs font-semibold text-[#D4A843]">{{ $rental['period'] }}</p>
                                 </div>
                             @empty
-                                <div class="rounded-xl border border-white/10 bg-black/25 px-3 py-3">
+                                <div class="rounded-xl border border-white/10 bg-black/35 px-3 py-3">
                                     <p class="text-sm font-semibold text-[#E8E8EC]">Belum ada booking aktif</p>
                                     <p class="mt-1 text-xs text-[#A0A0A8]">Semua alat siap dicek dari katalog live.</p>
                                 </div>
