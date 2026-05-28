@@ -1,18 +1,7 @@
 <div id="manake-page-loader" class="manake-page-loader is-hidden" aria-hidden="true">
-    <div class="manake-page-loader__inner">
-        <div class="manake-loader-card" role="presentation">
-            <x-brand.image
-                light="MANAKE-FAV-M.png"
-                dark="MANAKE-FAV-M.png"
-                :alt="site_setting('brand.name', 'Manake')"
-                img-class="manake-loader-mark"
-            />
-            <div class="manake-loader-text">
-                <span class="manake-loader-brand">{{ site_setting('brand.name', 'Manake') }}</span>
-                <span class="manake-loader-helper">Menyiapkan katalog alat...</span>
-            </div>
-            <span class="manake-loader-progress" aria-hidden="true"></span>
-        </div>
+    <div class="manake-simple-loader">
+        <span class="manake-simple-spinner"></span>
+        <span class="manake-simple-text">Memuat...</span>
     </div>
 </div>
 
@@ -21,106 +10,49 @@
         position: fixed;
         inset: 0;
         z-index: 99999;
-        background:
-            radial-gradient(circle at 50% 42%, rgba(212, 168, 67, 0.18), transparent 18rem),
-            radial-gradient(circle at 50% 58%, rgba(255, 255, 255, 0.05), transparent 20rem),
-            rgba(5, 5, 7, 0.96);
+        background: rgba(5, 5, 7, 0.58);
         display: flex;
         align-items: center;
         justify-content: center;
         opacity: 1;
         visibility: visible;
-        transition: opacity 0.35s ease, visibility 0.35s ease;
+        transition: opacity .18s ease, visibility .18s ease;
     }
+
     .manake-page-loader.is-hidden {
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
     }
-    .manake-loader-card {
-        display: flex;
-        flex-direction: column;
+
+    .manake-simple-loader {
+        display: inline-flex;
         align-items: center;
-        justify-content: center;
-        gap: 1.25rem;
-        width: 100%;
-        max-width: 20rem;
-        padding: 2rem;
-        border-radius: 1.5rem; /* rounded-3xl equivalent */
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(17, 17, 19, 0.80);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.5);
-        text-align: center;
-    }
-    .manake-loader-mark {
-        width: 4.5rem;
-        height: auto;
-        aspect-ratio: 493/512;
-        object-fit: contain;
-        filter: drop-shadow(0 8px 24px rgba(212, 168, 67, 0.25));
-        animation: manake-loader-breathe 1.8s ease-in-out infinite;
-    }
-    .manake-loader-text {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-    .manake-loader-brand {
-        font-size: 1.125rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        color: #E8E8EC;
-    }
-    .manake-loader-helper {
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: #A0A0A8;
-    }
-    .manake-loader-progress {
-        position: relative;
-        display: block;
-        height: 3px;
-        width: 12rem;
-        overflow: hidden;
+        gap: 10px;
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(17,17,19,.88);
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.10);
+        padding: 10px 14px;
+        color: #E8E8EC;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
     }
-    .manake-loader-progress::after {
-        content: '';
-        position: absolute;
-        inset-block: 0;
-        width: 45%;
-        border-radius: inherit;
-        background: linear-gradient(90deg, transparent, #D4A843, transparent);
-        animation: manake-loader-track 1.2s ease-in-out infinite;
+
+    .manake-simple-spinner {
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+        border: 2px solid rgba(255,255,255,.25);
+        border-top-color: #D4A843;
+        animation: manake-spin .75s linear infinite;
     }
-    @keyframes manake-loader-breathe {
-        0%, 100% {
-            opacity: 0.86;
-            transform: scale(0.96) translateY(0);
-        }
-        50% {
-            opacity: 1;
-            transform: scale(1) translateY(-2px);
-        }
-    }
-    @keyframes manake-loader-track {
-        from { transform: translateX(-120%); }
-        to { transform: translateX(240%); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-        .manake-loader-mark,
-        .manake-loader-progress::after {
-            animation: none !important;
-        }
-        .manake-loader-mark {
-            opacity: 1 !important;
-            transform: none !important;
-        }
+
+    @keyframes manake-spin {
+        to { transform: rotate(360deg); }
     }
 </style>
+
 <noscript>
     <style>
         #manake-page-loader {
@@ -134,6 +66,7 @@
         const root = document.documentElement;
         const loader = () => document.getElementById('manake-page-loader');
         let navigationTimer = null;
+        let safetyTimer = null;
 
         const hideLoader = () => {
             const element = loader();
@@ -144,6 +77,10 @@
             if (navigationTimer) {
                 window.clearTimeout(navigationTimer);
                 navigationTimer = null;
+            }
+            if (safetyTimer) {
+                window.clearTimeout(safetyTimer);
+                safetyTimer = null;
             }
 
             element.classList.add('is-hidden');
@@ -158,6 +95,12 @@
 
             element.classList.remove('is-hidden');
             root.classList.remove('manake-loaded');
+
+            // Safety timeout: Auto hide after 8 seconds to prevent getting stuck
+            if (safetyTimer) {
+                window.clearTimeout(safetyTimer);
+            }
+            safetyTimer = window.setTimeout(hideLoader, 8000);
         };
 
         const showLoaderDeferred = () => {
@@ -185,6 +128,9 @@
             }
 
             const href = link.getAttribute('href') || '';
+            const hrefLower = href.toLowerCase();
+
+            // Skip loader for specific conditions
             if (
                 href === ''
                 || href.startsWith('#')
@@ -193,6 +139,10 @@
                 || href.startsWith('tel:')
                 || link.target === '_blank'
                 || link.dataset.skipLoader === 'true'
+                || link.getAttribute('data-skip-loader') === 'true'
+                || link.hasAttribute('download')
+                || href.includes('/invoice.pdf')
+                || hrefLower.includes('.pdf')
             ) {
                 return;
             }

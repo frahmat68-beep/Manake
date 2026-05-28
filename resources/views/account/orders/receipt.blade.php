@@ -631,7 +631,8 @@
                         <td class="label">Rental Period:</td>
                         <td class="value">
                             @if ($rentalStart && $rentalEnd)
-                                {{ $formatDate($rentalStart, false) }} - {{ $formatDate($rentalEnd, false) }} ({{ $rentalDays }} days)
+                                <div style="margin-bottom: 2px;">{{ $formatDate($rentalStart, false) }} - {{ $formatDate($rentalEnd, false) }}</div>
+                                <span style="font-weight: normal; color: #555558; font-size: 9.5px;">{{ $rentalDays }} {{ $isIndonesia ? 'hari' : ($rentalDays > 1 ? 'days' : 'day') }}</span>
                             @else
                                 -
                             @endif
@@ -755,7 +756,7 @@
 
     <div class="actions" aria-label="Invoice Actions">
         <a href="{{ route('booking.history') }}" class="action-btn">{{ __('ui.orders.back_to_history') }}</a>
-        <a href="{{ $signedPdfUrl ?: '#' }}" class="action-btn" @if (! $signedPdfUrl) aria-disabled="true" @endif>{{ __('ui.invoice.actions.download_pdf') }}</a>
+        <a href="{{ $signedPdfUrl ?: '#' }}" data-skip-loader="true" class="action-btn" @if (! $signedPdfUrl) aria-disabled="true" @endif>{{ __('ui.invoice.actions.download_pdf') }}</a>
         <button type="button" class="action-btn" id="share-invoice-btn">{{ __('ui.invoice.actions.share') }}</button>
     </div>
 

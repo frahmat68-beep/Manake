@@ -511,7 +511,7 @@
                             >
                                 {{ $orderViewInvoiceButton }}
                             </button>
-                            <a href="{{ $signedInvoicePdfUrl }}" class="inline-flex w-full items-center justify-center rounded-2xl bg-[#D4A843] px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] hover:bg-[#e0ba5d]">
+                            <a href="{{ $signedInvoicePdfUrl }}" data-skip-loader="true" class="inline-flex w-full items-center justify-center rounded-2xl bg-[#D4A843] px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] hover:bg-[#e0ba5d]">
                                 {{ $orderDownloadPdfButton }}
                             </a>
                         </div>
@@ -570,6 +570,7 @@
                         <a
                             id="order-detail-invoice-download"
                             href="{{ $signedInvoicePdfUrl }}"
+                            data-skip-loader="true"
                             class="inline-flex items-center justify-center rounded-2xl border border-[#1A1A1E] px-4 py-2 text-sm font-semibold text-[#A0A0A8] transition hover:border-[#D4A843] hover:text-[#D4A843]"
                         >
                             {{ $orderDownloadPdfButton }}
