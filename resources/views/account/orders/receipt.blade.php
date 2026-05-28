@@ -19,7 +19,7 @@
         body.invoice-page {
             margin: 0;
             padding: 24px;
-            background: #F7F6F0;
+            background: #F5F4ED; /* Warm ivory */
             color: #171717;
             font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
             -webkit-print-color-adjust: exact;
@@ -30,19 +30,19 @@
             width: min(100%, 920px);
             margin: 0 auto;
             background: #FFFFFF;
-            border: 1px solid #3300FF;
+            border: 1px solid rgba(51, 0, 255, 0.25);
             border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(17, 17, 19, 0.05);
+            padding: 36px;
+            box-shadow: 0 16px 40px rgba(17, 17, 19, 0.04);
         }
 
         /* Top Header Horizontal Bar */
         .invoice-bar {
             width: 100%;
-            border: 1.5px solid #3300FF;
+            border: 1px solid #3300FF;
             background: #FFFFFF;
             border-radius: 4px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .invoice-bar table {
@@ -53,14 +53,15 @@
         .invoice-bar td {
             padding: 8px 16px;
             vertical-align: middle;
-            font-size: 13px;
+            font-size: 12px;
             color: #3300FF;
             font-weight: bold;
+            letter-spacing: 0.02em;
         }
 
         .invoice-bar .title {
             font-style: italic;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .invoice-bar .number {
@@ -70,23 +71,23 @@
         /* Layout Grid */
         .invoice-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 32px;
+            margin-bottom: 20px;
         }
 
         /* Text Styles */
         .section-label {
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
-            letter-spacing: .08em;
+            letter-spacing: .05em;
             color: #555558;
-            margin: 0 0 4px;
-            font-weight: bold;
+            margin: 0 0 3px;
+            font-weight: 500;
         }
 
         .section-value {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: #111113;
             margin: 0 0 12px;
@@ -99,12 +100,14 @@
 
         .meta-list td {
             padding: 4px 0;
-            font-size: 12px;
+            font-size: 11px;
+            vertical-align: middle;
         }
 
         .meta-list td.label {
             color: #555558;
             width: 40%;
+            font-weight: 500;
         }
 
         .meta-list td.value {
@@ -113,10 +116,31 @@
             text-align: right;
         }
 
+        /* Status Badge Pill */
+        .status-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            font-size: 9px;
+            font-weight: bold;
+            border-radius: 99px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .badge-paid {
+            background: rgba(51, 0, 255, 0.1);
+            color: #3300FF;
+        }
+
+        .badge-pending {
+            background: rgba(212, 168, 67, 0.15);
+            color: #D4A843;
+        }
+
         /* Items Table */
         .table-wrap {
-            margin-bottom: 24px;
-            border: 1px solid #3300FF;
+            margin-bottom: 20px;
+            border: 1px solid rgba(51, 0, 255, 0.2);
             border-radius: 6px;
             overflow: hidden;
         }
@@ -129,19 +153,19 @@
         .items-table th {
             background: #3300FF;
             color: #FFFFFF;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: .06em;
-            padding: 10px 12px;
+            letter-spacing: .04em;
+            padding: 8px 12px;
             text-align: left;
         }
 
         .items-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #3300FF;
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(51, 0, 255, 0.1);
             background: #FFFFFF;
-            font-size: 13px;
+            font-size: 11px;
             color: #111113;
             vertical-align: top;
         }
@@ -151,16 +175,17 @@
         }
 
         .items-table tbody tr:nth-child(even) td {
-            background: #F8F7F2;
+            background: #FCFAF5;
         }
 
         .item-name {
             font-weight: bold;
             margin: 0;
+            font-size: 11px;
         }
 
         .item-category {
-            font-size: 10px;
+            font-size: 9px;
             color: #555558;
             margin: 2px 0 0;
         }
@@ -180,9 +205,9 @@
 
         /* Penalty block */
         .penalty-box {
-            border: 1px solid #3300FF;
+            border: 1px solid rgba(51, 0, 255, 0.25);
             background: #FFFFFF;
-            padding: 14px 16px;
+            padding: 12px 14px;
             border-radius: 6px;
             height: fit-content;
         }
@@ -190,30 +215,30 @@
         .penalty-title {
             color: #3300FF;
             font-weight: bold;
-            font-size: 13px;
-            margin: 0 0 8px;
+            font-size: 11px;
+            margin: 0 0 6px;
             text-transform: uppercase;
-            letter-spacing: .05em;
+            letter-spacing: .04em;
         }
 
         .penalty-list {
             margin: 0;
-            padding-left: 18px;
-            font-size: 12px;
+            padding-left: 16px;
+            font-size: 10px;
             color: #111113;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         .penalty-list li {
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         /* Totals Box */
         .totals-box {
-            border: 1px solid #3300FF;
+            border: 1px solid rgba(51, 0, 255, 0.25);
             background: #FFFFFF;
             border-radius: 6px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             overflow: hidden;
         }
 
@@ -223,9 +248,9 @@
         }
 
         .totals-table td {
-            padding: 8px 12px;
-            border-bottom: 1px solid #F7F6F0;
-            font-size: 12px;
+            padding: 6px 10px;
+            border-bottom: 1px solid #FCFAF5;
+            font-size: 10px;
         }
 
         .totals-table tr:last-child td {
@@ -234,6 +259,7 @@
 
         .totals-table .label {
             color: #555558;
+            font-weight: 500;
         }
 
         .totals-table .value {
@@ -246,25 +272,25 @@
             background: #3300FF;
             color: #FFFFFF;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 11px;
         }
 
         /* Payment details box */
         .payment-box {
-            border: 1.5px solid #3300FF;
+            border: 1px solid rgba(51, 0, 255, 0.25);
             background: #FFFFFF;
             border-radius: 6px;
-            padding: 12px 14px;
+            padding: 10px 12px;
         }
 
         .payment-title {
-            font-size: 11px;
+            font-size: 9px;
             font-weight: bold;
             color: #3300FF;
             text-transform: uppercase;
-            margin: 0 0 8px;
-            border-bottom: 1px solid #3300FF;
-            padding-bottom: 4px;
+            margin: 0 0 5px;
+            border-bottom: 1px solid rgba(51, 0, 255, 0.2);
+            padding-bottom: 2px;
         }
 
         .payment-table {
@@ -273,13 +299,15 @@
         }
 
         .payment-table td {
-            padding: 4px 0;
-            font-size: 12px;
+            padding: 3px 0;
+            font-size: 10px;
+            vertical-align: top;
         }
 
         .payment-table .label {
             color: #555558;
-            width: 40%;
+            width: 32%;
+            font-weight: 500;
         }
 
         .payment-table .value {
@@ -291,7 +319,7 @@
         /* Footer Section */
         .footer-section {
             margin-top: 36px;
-            border-top: 1.5px solid #3300FF;
+            border-top: 1px solid #3300FF;
             padding-top: 16px;
             display: flex;
             justify-content: space-between;
@@ -300,13 +328,13 @@
 
         .footer-logo {
             display: block;
-            height: 52px;
+            height: 42px;
             width: auto;
         }
 
         .footer-info {
             text-align: right;
-            font-size: 11px;
+            font-size: 9px;
             color: #555558;
             line-height: 1.4;
         }
@@ -535,6 +563,10 @@
             ->limit(100)
             ->value();
 
+        $shortRef = $referenceNumber
+            ? (strlen($referenceNumber) > 22 ? substr($referenceNumber, 0, 18) . '...' : $referenceNumber)
+            : '-';
+
         // Visual helper for Event Name / Film Title fallback
         $eventTitle = $order->notes ?: ($order->order_number ?: '-');
     @endphp
@@ -590,7 +622,7 @@
                     <tr>
                         <td class="label">Status:</td>
                         <td class="value">
-                            <span class="{{ $statusRaw === 'paid' ? 'status-paid-text' : 'status-pending-text' }}">
+                            <span class="status-badge {{ $statusRaw === 'paid' ? 'badge-paid' : 'badge-pending' }}">
                                 {{ $statusLabelText }}
                             </span>
                         </td>
@@ -695,13 +727,13 @@
                         </tr>
                         <tr>
                             <td class="label">Ref. Number:</td>
-                            <td class="value">{{ $referenceNumber ?: '-' }}</td>
+                            <td class="value">{{ $shortRef }}</td>
                         </tr>
                         <tr>
-                            <td class="label" style="border-top: 1px dashed #3300FF; padding-top: 4px; margin-top: 2px;">Account:</td>
-                            <td class="value" style="border-top: 1px dashed #3300FF; padding-top: 4px; margin-top: 2px;">
+                            <td class="label" style="border-top: 1px dashed rgba(51, 0, 255, 0.2); padding-top: 4px; margin-top: 2px;">Account:</td>
+                            <td class="value" style="border-top: 1px dashed rgba(51, 0, 255, 0.2); padding-top: 4px; margin-top: 2px;">
                                 Fikri Mulya Rachmat<br>
-                                0851 5664 9015
+                                <span style="font-weight: normal; color: #555558;">0851 5664 9015</span>
                             </td>
                         </tr>
                     </table>
