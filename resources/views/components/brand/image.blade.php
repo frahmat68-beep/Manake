@@ -70,7 +70,7 @@
     }
     /* Dynamic visual scale compensation to align light/dark logos visually by eye */
     html[data-theme-resolved="light"] .manake-navbar-logo__image {
-        transform: scale(1.18) !important;
+        transform: scale(1.36) !important;
     }
     html[data-theme-resolved="dark"] .manake-navbar-logo__image {
         transform: scale(1.0) !important;
