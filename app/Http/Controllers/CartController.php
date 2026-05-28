@@ -37,6 +37,10 @@ class CartController extends Controller
                 $equipmentId = (int) ($item['equipment_id'] ?? $item['product_id'] ?? 0);
                 $equipment = $cartEquipments->get($equipmentId);
                 $item['stock'] = $equipment ? (int) $equipment->stock : 99;
+                if ($equipment) {
+                    $item['image_path'] = (string) ($equipment->image_path ?? $equipment->image ?? '');
+                    $item['image_url'] = $this->resolveEquipmentImage($equipment);
+                }
 
                 return $item;
             })->all();

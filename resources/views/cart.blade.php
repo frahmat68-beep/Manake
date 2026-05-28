@@ -157,7 +157,7 @@
                                 }
 
                                 $lineSubtotal = $itemPrice * $itemQty * $days;
-                                $imageUrl = site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment');
+                                $imageUrl = $item['image_url'] ?? site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment');
                                 $dateRangeLabel = !empty($item['rental_start_date']) && !empty($item['rental_end_date'])
                                     ? \Carbon\Carbon::parse($item['rental_start_date'])->translatedFormat('d M Y') . ' — ' . \Carbon\Carbon::parse($item['rental_end_date'])->translatedFormat('d M Y')
                                     : __('Tanggal belum dipilih');
