@@ -471,6 +471,8 @@
             };
 
             const updateTotal = () => {
+                const qty = Math.max(Number.parseInt(qtyInput?.value || '1', 10) || 1, 1);
+
                 if (!startInput.value || !endInput.value) {
                     totalDays.textContent = '-';
                     totalPrice.textContent = 'Rp -';
@@ -506,7 +508,7 @@
                 }
 
                 totalDays.textContent = `${diff} {{ __('app.product.day_label') }}`;
-                totalPrice.textContent = formatIDR(price * diff);
+                totalPrice.textContent = formatIDR(price * diff * qty);
                 setAddToCartState(false, @json(__('app.product.checking_availability')));
                 updateLoginRentHref();
             };
