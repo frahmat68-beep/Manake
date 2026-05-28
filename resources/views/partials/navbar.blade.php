@@ -59,7 +59,7 @@
                             <path d="M9 17a3 3 0 0 0 6 0" />
                         </svg>
                         @if (($notificationCount ?? 0) > 0)
-                            <span class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D4A843] px-1 text-[10px] font-bold text-[#0A0A0B]">
+                            <span id="notification-badge" class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D4A843] px-1 text-[10px] font-bold text-[#0A0A0B]">
                                 {{ $notificationCount > 99 ? '99+' : $notificationCount }}
                             </span>
                         @endif
@@ -72,8 +72,21 @@
                         </div>
                         <div class="mt-3 max-h-72 space-y-2 overflow-y-auto">
                             @forelse ($notificationItems as $notification)
-                                <a href="{{ $notification['url'] ?? route('notifications') }}" class="block rounded-xl border px-3 py-2 transition {{ $isLightShell ? 'border-[#E5E2DA] bg-[#F7F7F4] hover:border-[#D4A843]/40' : 'border-[#1A1A1E] bg-[#0A0A0B] hover:border-[#D4A843]/40' }}">
-                                    <p class="line-clamp-1 text-xs font-bold {{ $isLightShell ? 'text-[#171717]' : 'text-[#E8E8EC]' }}">{{ $notification['title'] }}</p>
+                                <a
+                                    href="{{ $notification['url'] ?? route('notifications') }}"
+                                    data-notification-link="true"
+                                    data-mark-read-url="{{ $notification['mark_read_url'] }}"
+                                    data-target-url="{{ $notification['url'] ?? route('notifications') }}"
+                                    data-is-new="{{ $notification['is_new'] ? 'true' : 'false' }}"
+                                    data-skip-loader="true"
+                                    class="block rounded-xl border px-3 py-2 transition {{ $notification['is_new'] ? ($isLightShell ? 'border-[#D4A843]/30 bg-[#F7F7F4]' : 'border-[#D4A843]/30 bg-[#0A0A0B]') : ($isLightShell ? 'border-[#E5E2DA] bg-[#F7F7F4] opacity-60' : 'border-[#1A1A1E] bg-[#0A0A0B] opacity-60') }} hover:border-[#D4A843]/40 hover:opacity-100"
+                                >
+                                    <div class="flex items-center justify-between gap-2">
+                                        <p class="line-clamp-1 text-xs font-bold {{ $isLightShell ? 'text-[#171717]' : 'text-[#E8E8EC]' }}">{{ $notification['title'] }}</p>
+                                        @if ($notification['is_new'])
+                                            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4A843] notif-dot"></span>
+                                        @endif
+                                    </div>
                                     <p class="mt-1 line-clamp-2 text-xs leading-relaxed {{ $isLightShell ? 'text-[#666666]' : 'text-[#A0A0A8]' }}">{{ $notification['body'] }}</p>
                                 </a>
                             @empty
@@ -198,5 +211,93 @@
                 <a href="{{ route('login') }}" class="block rounded-xl border px-3 py-2 text-center text-sm font-semibold {{ $mobileButtonClass }}">{{ __('ui.nav.login') }}</a>
             @endguest
         </div>
-    </div>
 </nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const notifLinks = document.querySelectorAll('[data-notification-link="true"]');
+    const badge = document.getElementById('notification-badge');
+
+    notifLinks.forEach(link => {
+        link.addEventListener('click', async (e) => {
+            const isNew = link.getAttribute('data-is-new') === 'true';
+            const markReadUrl = link.getAttribute('data-mark-read-url');
+            const targetUrl = link.getAttribute('data-target-url');
+
+            if (!isNew) {
+                if (!(e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) {
+                    e.preventDefault();
+                    window.location.href = targetUrl;
+                }
+                return;
+            }
+
+            const performVisualMark = () => {
+                link.setAttribute('data-is-new', 'false');
+                link.classList.add('opacity-60');
+                link.classList.remove('border-[#D4A843]/30');
+                const isLight = {{ $isLightShell ? 'true' : 'false' }};
+                if (isLight) {
+                    link.classList.add('border-[#E5E2DA]');
+                } else {
+                    link.classList.add('border-[#1A1A1E]');
+                }
+                const dot = link.querySelector('.notif-dot');
+                if (dot) dot.remove();
+            };
+
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) {
+                performVisualMark();
+                fetch(markReadUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                }).catch(() => {});
+                return;
+            }
+
+            e.preventDefault();
+            performVisualMark();
+
+            const navigate = () => {
+                window.location.href = targetUrl;
+            };
+
+            try {
+                const response = await fetch(markReadUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && typeof data.unread_count !== 'undefined') {
+                        const count = parseInt(data.unread_count, 10);
+                        if (count > 0) {
+                            if (badge) {
+                                badge.textContent = count > 99 ? '99+' : count;
+                            }
+                        } else {
+                            if (badge) {
+                                badge.remove();
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error('Error marking notification as read:', err);
+            } finally {
+                navigate();
+            }
+        });
+    });
+});
+</script>
+

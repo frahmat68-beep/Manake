@@ -1,0 +1,10 @@
+node_modules/
+vendor/
+.git/
+storage/
+bootstrap/cache/
+public/build/
+dist/
+.next/
+coverage/
+.env

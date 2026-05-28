@@ -33,9 +33,9 @@
 
     $statusMeta = match ($paymentStatus) {
         'paid' => ['label' => __('ui.invoice.status.paid'), 'badge' => 'border border-emerald-500/20 bg-emerald-950/75 text-emerald-300'],
-        'failed' => ['label' => __('ui.invoice.status.failed'), 'badge' => 'bg-rose-100 text-rose-700'],
+        'failed' => ['label' => __('ui.invoice.status.failed'), 'badge' => 'border border-rose-500/20 bg-rose-950/75 text-rose-300'],
         'expired' => ['label' => __('ui.invoice.status.expired'), 'badge' => 'border border-slate-500/20 bg-slate-950/75 text-slate-300'],
-        'refunded' => ['label' => __('ui.invoice.status.refunded'), 'badge' => 'border border-indigo-500/20 bg-indigo-950/75 text-indigo-300'],
+        'refunded' => ['label' => __('ui.invoice.status.refunded'), 'badge' => 'border border-amber-500/20 bg-amber-950/20 text-[#D4A843]'],
         default => ['label' => __('ui.invoice.status.pending'), 'badge' => 'border border-amber-500/20 bg-amber-950/75 text-amber-300'],
     };
 
@@ -362,7 +362,7 @@
                     @endif
                 </div>
 
-                <aside class="h-fit space-y-4 rounded-3xl border border-[#1A1A1E] bg-[#111113] p-6 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                <aside class="h-fit space-y-4 rounded-2xl border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl">
                     <h2 class="text-lg font-semibold text-[#D4A843]">{{ $orderPaymentTitle }}</h2>
                     <div class="space-y-2 text-sm">
                         <div class="flex items-start justify-between gap-4 text-[#A0A0A8]">
@@ -386,21 +386,21 @@
                             <span class="min-w-0 max-w-[58%] break-words text-right font-semibold text-[#E8E8EC]">{{ $formatIdr($rentalGrandTotal) }}</span>
                         </div>
                         @if ($additionalFee > 0)
-                            <div class="mt-2 rounded-2xl border border-amber-200 bg-amber-50 px-3 py-3">
+                            <div class="mt-2 rounded-2xl border border-amber-500/20 bg-amber-950/20 p-3.5">
                                 <div class="flex items-center justify-between gap-3">
-                                    <p class="text-xs font-semibold uppercase tracking-wide text-amber-700">{{ $orderAdditionalFeeSectionTitle }}</p>
-                                    <span class="rounded-full px-2 py-0.5 text-[11px] font-semibold {{ $isDamageFeePaid ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700' }}">
+                                    <p class="text-xs font-semibold uppercase tracking-wide text-amber-400">{{ $orderAdditionalFeeSectionTitle }}</p>
+                                    <span class="rounded-full px-2 py-0.5 text-[11px] font-semibold {{ $isDamageFeePaid ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
                                         {{ $isDamageFeePaid ? $orderAdditionalFeePaidLabel : $orderAdditionalFeeUnpaidLabel }}
                                     </span>
                                 </div>
-                                <div class="mt-1 flex items-start justify-between gap-4 text-sm text-amber-700">
+                                <div class="mt-1 flex items-start justify-between gap-4 text-sm text-amber-300">
                                     <span class="shrink-0">{{ $orderAdditionalFeeLabel }}</span>
                                     <span class="min-w-0 max-w-[58%] break-words text-right font-semibold">{{ $formatIdr($additionalFee) }}</span>
                                 </div>
-                                <p class="mt-1 text-xs text-amber-700">{{ $orderAdditionalFeeNoTaxLabel }}</p>
+                                <p class="mt-1 text-xs text-amber-400/80">{{ $orderAdditionalFeeNoTaxLabel }}</p>
                             </div>
                             @if ($order->additional_fee_note)
-                                <p class="rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">{{ $order->additional_fee_note }}</p>
+                                <p class="rounded-2xl border border-amber-500/20 bg-[#0A0A0B] px-3 py-2 text-xs text-amber-300">{{ $order->additional_fee_note }}</p>
                             @endif
                         @endif
                         @if ($isDamageFeePaid && $additionalFee > 0)
@@ -459,41 +459,41 @@
                                     >
                                     <p class="mt-1 text-[11px] text-[#A0A0A8]">{{ strtr($orderRescheduleEndNoteTemplate, [':days' => (string) $rescheduleDurationDays]) }}</p>
                                 </div>
-                                <button type="submit" class="inline-flex w-full items-center justify-center rounded-lg border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs font-semibold text-[#D4A843] transition hover:bg-[#111113]">
+                                <button type="submit" class="inline-flex w-full items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-xs font-semibold text-[#D4A843] transition hover:border-[#D4A843]/40">
                                     {{ $orderRescheduleSaveButton }}
                                 </button>
                             </form>
                         </div>
                     @elseif ($hasPickedUp)
-                        <p class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+                        <p class="rounded-2xl border border-white/5 bg-[#0A0A0B] px-3 py-2 text-xs text-[#A0A0A8]">
                             {{ $orderRescheduleLocked }}
                         </p>
                     @endif
 
                     @if ($isPrimaryPayable)
-                        <button id="pay-now-button" class="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-[#D4A843] px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] hover:bg-[#e0ba5d] transition">
+                        <button id="pay-now-button" class="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#D4A843] to-[#B8871F] px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] hover:brightness-110 transition">
                             {{ $orderPayNowButton }}
                         </button>
-                        <button id="refresh-status-button" class="mt-2 inline-flex w-full items-center justify-center rounded-2xl border border-[#1A1A1E] px-4 py-2.5 text-sm font-semibold text-[#A0A0A8] hover:border-[#D4A843] hover:text-[#D4A843] transition">
+                        <button id="refresh-status-button" class="mt-2 inline-flex w-full items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-4 py-2.5 text-sm font-semibold text-[#A0A0A8] hover:border-[#D4A843] hover:text-[#D4A843] transition">
                             {{ $orderRefreshPaymentButton }}
                         </button>
                         @if ($orderStatus === 'menunggu_pembayaran')
                             <form action="{{ route('account.orders.cancel', $order) }}" method="POST" class="mt-2" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="inline-flex w-full items-center justify-center rounded-2xl border border-rose-500/20 px-4 py-2.5 text-sm font-semibold text-rose-500 hover:bg-rose-500/10 transition">
+                                <button type="submit" class="inline-flex w-full items-center justify-center rounded-xl border border-rose-500/20 bg-rose-950/20 px-4 py-2.5 text-sm font-semibold text-rose-400 hover:bg-rose-950/40 transition">
                                     {{ __('Batalkan Pesanan') }}
                                 </button>
                             </form>
                         @endif
-                        <p class="mt-2 text-xs text-[#A0A0A8]">{{ $orderPaymentNote }}</p>
+                        <p class="mt-2 text-xs text-[#A0A0A8] text-center">{{ $orderPaymentNote }}</p>
                     @endif
 
                     @if ($hasDamageFeeOutstanding)
-                        <button id="pay-damage-fee-button" class="mt-3 inline-flex w-full items-center justify-center rounded-2xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] transition hover:bg-rose-700">
+                        <button id="pay-damage-fee-button" class="mt-3 inline-flex w-full items-center justify-center rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700">
                             {{ $orderPayAdditionalButton }}
                         </button>
-                        <button id="refresh-damage-status-button" class="mt-2 inline-flex w-full items-center justify-center rounded-2xl border border-rose-500/20 px-4 py-2.5 text-sm font-semibold text-rose-500 transition hover:bg-rose-500/10">
+                        <button id="refresh-damage-status-button" class="mt-2 inline-flex w-full items-center justify-center rounded-xl border border-rose-500/20 bg-[#0A0A0B] px-4 py-2.5 text-sm font-semibold text-rose-500 transition hover:bg-rose-500/10">
                             {{ $orderRefreshAdditionalButton }}
                         </button>
                     @endif
@@ -507,16 +507,16 @@
                                 data-invoice-pdf-url="{{ $signedInvoicePdfUrl }}"
                                 data-invoice-preview-url="{{ $signedInvoicePdfPreviewUrl }}"
                                 data-order-number="{{ $order->order_number ?? ('ORD-' . $order->id) }}"
-                                class="inline-flex w-full items-center justify-center rounded-2xl border border-[#1A1A1E] px-4 py-2.5 text-sm font-semibold text-[#A0A0A8] hover:border-[#D4A843] hover:text-[#D4A843]"
+                                class="inline-flex w-full items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-4 py-2.5 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] hover:bg-[#D4A843]/5"
                             >
                                 {{ $orderViewInvoiceButton }}
                             </button>
-                            <a href="{{ $signedInvoicePdfUrl }}" data-skip-loader="true" class="inline-flex w-full items-center justify-center rounded-2xl bg-[#D4A843] px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] hover:bg-[#e0ba5d]">
+                            <a href="{{ $signedInvoicePdfUrl }}" data-skip-loader="true" class="inline-flex w-full items-center justify-center rounded-xl bg-[#D4A843] px-4 py-2.5 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]">
                                 {{ $orderDownloadPdfButton }}
                             </a>
                         </div>
                     @elseif ($isPaid && $hasDamageFeeOutstanding)
-                        <p class="rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
+                        <p class="rounded-2xl border border-amber-500/20 bg-amber-950/20 px-3 py-2 text-xs text-amber-300">
                             {{ $orderInvoiceLockedNote }}
                         </p>
                     @endif

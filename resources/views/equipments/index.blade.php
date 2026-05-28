@@ -175,10 +175,17 @@
                                 <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#66666C]">
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                                 </span>
-                                <input type="text" name="q" value="{{ $search }}" placeholder="Cari kamera, lighting, drone, audio..." 
+                                <input type="text" name="q" id="catalog-search-input" value="{{ $search }}" placeholder="Cari kamera, lighting, drone, audio..." 
                                        aria-label="Cari kamera, lighting, drone, audio..."
                                        autocomplete="off"
-                                       class="w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] pl-12 pr-4 py-3.5 text-sm text-[#E8E8EC] placeholder:text-[#66666C] focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20">
+                                       class="w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] pl-12 pr-12 py-3.5 text-sm text-[#E8E8EC] placeholder:text-[#66666C] focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20">
+                                <div id="search-loading-spinner" class="absolute right-4 top-1/2 -translate-y-1/2 hidden">
+                                    <svg class="animate-spin h-5 w-5 text-[#D4A843]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </div>
+                                <div id="search-suggestions-dropdown" class="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[60] hidden rounded-2xl border border-white/10 bg-[#111113]/95 backdrop-blur-xl p-2 shadow-2xl space-y-1 max-h-80 overflow-y-auto"></div>
                             </div>
                             <button type="submit" class="rounded-xl bg-[#D4A843] px-6 py-3.5 text-sm font-bold text-[#0A0A0B] transition hover:bg-[#e0ba5d] shrink-0 sm:w-auto w-full">
                                 <span>Cari Alat</span>
@@ -774,6 +781,164 @@
                     }
                 },
             }));
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('catalog-search-input');
+            const spinner = document.getElementById('search-loading-spinner');
+            const dropdown = document.getElementById('search-suggestions-dropdown');
+
+            if (!searchInput || !dropdown) return;
+
+            let debounceTimeout = null;
+            let currentFocusIndex = -1;
+            let suggestionsData = [];
+
+            const showDropdown = () => {
+                dropdown.classList.remove('hidden');
+            };
+
+            const hideDropdown = () => {
+                dropdown.classList.add('hidden');
+                currentFocusIndex = -1;
+            };
+
+            const renderSuggestions = (items) => {
+                suggestionsData = items;
+                if (!items || items.length === 0) {
+                    dropdown.innerHTML = `
+                        <div class="p-3 text-center text-xs text-[#A0A0A8]">
+                            Tidak ada saran
+                        </div>
+                    `;
+                    showDropdown();
+                    return;
+                }
+
+                const locale = '{{ $intlLocale }}';
+                const currency = '{{ $currencyPrefix }}';
+                
+                dropdown.innerHTML = items.map((item, index) => {
+                    const priceFormatted = new Intl.NumberFormat(locale).format(item.price_per_day);
+                    return `
+                        <a href="${item.detail_url}" 
+                           data-suggestion-index="${index}"
+                           class="flex items-center gap-3 rounded-xl p-2 transition hover:bg-white/5 group border border-transparent hover:border-[#D4A843]/20 active:scale-[0.99] focus:outline-none focus:bg-white/5 focus:border-[#D4A843]/20">
+                            <div class="h-10 w-14 shrink-0 overflow-hidden rounded-lg bg-[#0A0A0B] p-1 flex items-center justify-center border border-[#1A1A1E]">
+                                <img src="${item.image_url}" alt="${item.name}" class="h-full w-full object-contain">
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="truncate text-xs font-bold text-[#E8E8EC] group-hover:text-[#D4A843] transition-colors">${item.name}</span>
+                                    ${item.is_recommended ? `<span class="rounded bg-[#D4A843]/10 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-[#D4A843]">Rekomendasi</span>` : ''}
+                                </div>
+                                <div class="mt-1 flex items-center gap-2 text-[10px] text-[#A0A0A8] flex-wrap">
+                                    <span class="text-[#D4A843]/90 font-semibold">${item.category_name}</span>
+                                    <span class="h-1 w-1 rounded-full bg-white/10"></span>
+                                    <span>${currency} ${priceFormatted}/hari</span>
+                                    <span class="h-1 w-1 rounded-full bg-white/10"></span>
+                                    <span>Tersedia: ${item.available_units} unit</span>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                }).join('');
+                showDropdown();
+            };
+
+            const fetchSuggestions = async (query) => {
+                if (spinner) spinner.classList.remove('hidden');
+                try {
+                    const response = await fetch(`/search/suggestions?q=${encodeURIComponent(query)}`);
+                    if (response.ok) {
+                        const json = await response.json();
+                        renderSuggestions(json.data || []);
+                    }
+                } catch (err) {
+                    console.error('Error fetching suggestions:', err);
+                } finally {
+                    if (spinner) spinner.classList.add('hidden');
+                }
+            };
+
+            searchInput.addEventListener('input', () => {
+                const val = searchInput.value.trim();
+                
+                if (debounceTimeout) {
+                    clearTimeout(debounceTimeout);
+                }
+
+                if (val.length < 2) {
+                    hideDropdown();
+                    return;
+                }
+
+                debounceTimeout = setTimeout(() => {
+                    fetchSuggestions(val);
+                }, 300);
+            });
+
+            const updateFocus = () => {
+                const items = dropdown.querySelectorAll('a[data-suggestion-index]');
+                items.forEach((item, index) => {
+                    if (index === currentFocusIndex) {
+                        item.classList.add('bg-white/5', 'border-[#D4A843]/20');
+                        item.scrollIntoView({ block: 'nearest' });
+                    } else {
+                        item.classList.remove('bg-white/5', 'border-[#D4A843]/20');
+                    }
+                });
+            };
+
+            searchInput.addEventListener('keydown', (e) => {
+                const items = dropdown.querySelectorAll('a[data-suggestion-index]');
+                if (dropdown.classList.contains('hidden')) {
+                    if (e.key === 'ArrowDown' && searchInput.value.trim().length >= 2) {
+                        fetchSuggestions(searchInput.value.trim());
+                    }
+                    return;
+                }
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (items.length > 0) {
+                        currentFocusIndex = (currentFocusIndex + 1) % items.length;
+                        updateFocus();
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (items.length > 0) {
+                        currentFocusIndex = (currentFocusIndex - 1 + items.length) % items.length;
+                        updateFocus();
+                    }
+                } else if (e.key === 'Enter') {
+                    if (currentFocusIndex >= 0 && suggestionsData[currentFocusIndex]) {
+                        e.preventDefault();
+                        window.location.href = suggestionsData[currentFocusIndex].detail_url;
+                    }
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    hideDropdown();
+                    searchInput.focus();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#catalog-search-input') && !e.target.closest('#search-suggestions-dropdown')) {
+                    hideDropdown();
+                }
+            });
+
+            searchInput.addEventListener('focus', () => {
+                const val = searchInput.value.trim();
+                if (val.length >= 2) {
+                    if (dropdown.children.length > 0) {
+                        showDropdown();
+                    } else {
+                        fetchSuggestions(val);
+                    }
+                }
+            });
         });
     </script>
 @endpush

@@ -151,166 +151,140 @@ class EquipmentController extends Controller
             return response()->json(['data' => []]);
         }
 
+        $needle = Str::lower($query);
+
         $builder = Equipment::query()
             ->with('category');
         if (schema_table_exists_cached('order_items') && schema_table_exists_cached('orders')) {
             $builder->withSum('activeOrderItems as reserved_units', 'qty');
         }
 
-        $applyKeywordSearch = function ($searchBuilder) use ($query) {
-            $searchBuilder->where(function ($nestedBuilder) use ($query) {
-                $nestedBuilder->where('name', 'like', '%' . $query . '%')
-                    ->orWhere('slug', 'like', '%' . $query . '%');
-            });
-        };
+        $allEquipments = $builder->get();
 
-        $items = (clone $builder)
-            ->tap($applyKeywordSearch)
-            ->get()
-            ->sortBy(function (Equipment $equipment) use ($query) {
-                $name = Str::lower((string) $equipment->name);
-                $slug = Str::lower((string) $equipment->slug);
-                $needle = Str::lower($query);
+        $htTerms = [
+            'ht',
+            'handy',
+            'handy talky',
+            'walkie',
+            'walkie talkie',
+            'radio',
+            'radio komunikasi',
+            'wireless control'
+        ];
 
-                return match (true) {
-                    str_starts_with($name, $needle) => 0,
-                    str_contains($name, $needle) => 1,
-                    str_starts_with($slug, $needle) => 2,
-                    str_contains($slug, $needle) => 3,
-                    default => 10,
-                };
-            })
-            ->values()
-            ->take(4)
-            ->values();
-
-        if ($items->isEmpty()) {
-            $normalizedQuery = Str::of($query)
-                ->lower()
-                ->ascii()
-                ->replaceMatches('/[^a-z0-9]+/', ' ')
-                ->squish()
-                ->value();
-
-            $fallbackItems = (clone $builder)
-                ->when(schema_column_exists_cached('equipments', 'status'), fn ($fallbackQuery) => $fallbackQuery->where('status', 'ready'))
-                ->orderBy('name')
-                ->get();
-
-            $rankedFallbackItems = $fallbackItems
-                ->map(function (Equipment $equipment) use ($normalizedQuery) {
-                    $candidates = collect([
-                        (string) $equipment->name,
-                        (string) $equipment->slug,
-                    ])
-                        ->filter()
-                        ->flatMap(function (string $value) {
-                            $normalized = Str::of($value)
-                                ->lower()
-                                ->ascii()
-                                ->replaceMatches('/[^a-z0-9]+/', ' ')
-                                ->squish()
-                                ->value();
-
-                            return collect([$normalized])
-                                ->merge(explode(' ', $normalized));
-                        })
-                        ->filter();
-
-                    $score = $candidates
-                        ->map(function (string $value) use ($normalizedQuery) {
-                            if ($value === '') {
-                                return null;
-                            }
-
-                            if (str_contains($value, $normalizedQuery)) {
-                                return 0;
-                            }
-
-                            similar_text($normalizedQuery, $value, $similarity);
-                            $distance = levenshtein($normalizedQuery, $value);
-
-                            return [
-                                'distance' => $distance,
-                                'similarity' => $similarity,
-                            ];
-                        })
-                        ->filter()
-                        ->sortBy(function ($item) {
-                            if (is_int($item)) {
-                                return -1000;
-                            }
-
-                            return ($item['distance'] * 10) - $item['similarity'];
-                        })
-                        ->first();
-
-                    if ($score === null) {
-                        return null;
-                    }
-
-                    if (is_int($score)) {
-                        return [
-                            'equipment' => $equipment,
-                            'rank' => $score,
-                            'similarity' => 100,
-                            'distance' => 0,
-                        ];
-                    }
-
-                    $queryLength = max(mb_strlen($normalizedQuery), 1);
-                    $distanceThreshold = min(2, max(1, (int) ceil($queryLength / 5)));
-                    $equipmentName = Str::of((string) $equipment->name)->lower()->ascii()->value();
-                    $equipmentSlug = Str::of((string) $equipment->slug)->lower()->ascii()->value();
-                    $startsWithSameLetter = $normalizedQuery !== ''
-                        && (
-                            str_starts_with($equipmentName, $normalizedQuery[0])
-                            || str_starts_with($equipmentSlug, $normalizedQuery[0])
-                        );
-
-                    if (
-                        ! $startsWithSameLetter
-                        || $score['similarity'] < 84
-                        || $score['distance'] > $distanceThreshold
-                    ) {
-                        return null;
-                    }
-
-                    return [
-                        'equipment' => $equipment,
-                        'rank' => ($score['distance'] * 10) - $score['similarity'],
-                        'similarity' => $score['similarity'],
-                        'distance' => $score['distance'],
-                    ];
-                })
-                ->filter()
-                ->sortBy('rank')
-                ->values();
-
-            if ($rankedFallbackItems->isNotEmpty()) {
-                $bestRank = (float) ($rankedFallbackItems->first()['rank'] ?? 0);
-
-                $items = $rankedFallbackItems
-                    ->filter(function (array $item) use ($bestRank) {
-                        return ((float) $item['rank']) <= ($bestRank + 4);
-                    })
-                    ->take(4)
-                    ->pluck('equipment')
-                    ->values();
-            } else {
-                $items = collect();
+        $isHtQuery = false;
+        foreach ($htTerms as $term) {
+            if (str_contains($needle, $term) || str_contains($term, $needle)) {
+                $isHtQuery = true;
+                break;
             }
         }
 
-        $matchingIds = $items
-            ->filter(function (Equipment $equipment) use ($query) {
-                return str_contains(Str::lower((string) $equipment->name), Str::lower($query))
-                    || str_contains(Str::lower((string) $equipment->slug), Str::lower($query));
+        $filtered = $allEquipments->filter(function (Equipment $equipment) use ($needle, $isHtQuery) {
+            $eqName = Str::lower((string) $equipment->name);
+            $eqSlug = Str::lower((string) $equipment->slug);
+            $catName = $equipment->category ? Str::lower((string) $equipment->category->name) : '';
+            $catSlug = $equipment->category ? Str::lower((string) $equipment->category->slug) : '';
+
+            if ($isHtQuery) {
+                if ($needle === 'ht') {
+                    if (str_contains($catName, 'ht') || str_contains($catSlug, 'ht') ||
+                        str_contains($catName, 'handy') || str_contains($catName, 'communication') ||
+                        str_contains($catName, 'radio') || str_contains($catName, 'walkie')
+                    ) {
+                        return true;
+                    }
+                    if (preg_match('/\bht\b/i', $eqName) || preg_match('/\bhandy\b/i', $eqName) ||
+                        preg_match('/\bwalkie\b/i', $eqName) || preg_match('/\bradio\b/i', $eqName)
+                    ) {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+
+            if (str_contains($eqName, $needle) || str_contains($eqSlug, $needle)) {
+                return true;
+            }
+
+            if ($catName !== '' && (str_contains($catName, $needle) || str_contains($catSlug, $needle))) {
+                return true;
+            }
+
+            return false;
+        });
+
+        if ($filtered->isEmpty() && schema_column_exists_cached('equipments', 'description')) {
+            $filtered = $allEquipments->filter(function (Equipment $equipment) use ($needle) {
+                $desc = Str::lower((string) ($equipment->description ?? ''));
+                return str_contains($desc, $needle);
+            });
+        }
+
+        $ranked = $filtered->map(function (Equipment $equipment) use ($needle, $isHtQuery) {
+            $eqName = Str::lower((string) $equipment->name);
+            $eqSlug = Str::lower((string) $equipment->slug);
+            $catName = $equipment->category ? Str::lower((string) $equipment->category->name) : '';
+            $catSlug = $equipment->category ? Str::lower((string) $equipment->category->slug) : '';
+
+            $score = 1000;
+
+            if ($needle === $catName || $needle === $catSlug) {
+                $score -= 500;
+            }
+
+            if ($needle === $eqName || $needle === $eqSlug) {
+                $score -= 400;
+            }
+
+            if (preg_match('/\b' . preg_quote($needle, '/') . '\b/i', $eqName)) {
+                $score -= 300;
+            } elseif (preg_match('/\b' . preg_quote($needle, '/') . '/i', $eqName)) {
+                $score -= 200;
+            }
+
+            if (str_starts_with($eqName, $needle) || str_starts_with($eqSlug, $needle)) {
+                $score -= 150;
+            }
+
+            if ($catName !== '' && (str_contains($catName, $needle) || str_contains($catSlug, $needle))) {
+                $score -= 100;
+            }
+
+            if ($isHtQuery) {
+                if (str_contains($catName, 'ht') || str_contains($catSlug, 'ht') ||
+                    str_contains($catName, 'handy') || str_contains($catName, 'communication') ||
+                    str_contains($catName, 'radio') || str_contains($catName, 'walkie')
+                ) {
+                    $score -= 350;
+                }
+                if (preg_match('/\b(ht|handy|walkie|radio)\b/i', $eqName)) {
+                    $score -= 300;
+                }
+            }
+
+            if ($needle === 'ht' && !preg_match('/\bht\b/i', $eqName) && !str_contains($catName, 'ht') && !str_contains($catSlug, 'ht')) {
+                $score += 800;
+            }
+
+            return [
+                'equipment' => $equipment,
+                'score' => $score
+            ];
+        })
+        ->sortBy('score')
+        ->pluck('equipment')
+        ->values();
+
+        $matchingIds = $ranked
+            ->filter(function (Equipment $equipment) use ($needle) {
+                return str_contains(Str::lower((string) $equipment->name), $needle)
+                    || str_contains(Str::lower((string) $equipment->slug), $needle);
             })
             ->pluck('id')
             ->all();
 
-        $data = $items->map(function (Equipment $equipment) use ($matchingIds) {
+        $data = $ranked->take(5)->map(function (Equipment $equipment) use ($matchingIds) {
             $imagePath = (string) ($equipment->image_path ?? $equipment->image ?? '');
             $imageUrl = site_media_url($imagePath) ?: site_asset('MANAKE-FAV-M.png');
 
@@ -318,6 +292,7 @@ class EquipmentController extends Controller
                 'name' => (string) $equipment->name,
                 'slug' => (string) $equipment->slug,
                 'image_url' => $imageUrl,
+                'category_name' => $equipment->category ? (string) $equipment->category->name : 'Lainnya',
                 'price_per_day' => (int) ($equipment->price_per_day ?? 0),
                 'available_units' => (int) ($equipment->available_units ?? 0),
                 'detail_url' => route('product.show', $equipment->slug),
