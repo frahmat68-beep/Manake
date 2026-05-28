@@ -128,7 +128,7 @@
                 <div class="mt-5 space-y-3">
                     @if (session('success') || session('status') === 'settings-updated')
                         <div class="rounded-2xl border {{ $isLight ? 'border-emerald-500/20 bg-emerald-50 text-emerald-800' : 'border-emerald-400/20 bg-emerald-500/8 text-emerald-200' }} px-4 py-3 text-sm">
-                            {{ session('success', __('ui.settings.saved')) }}
+                            {{ __('ui.settings.saved') }}
                         </div>
                     @endif
 

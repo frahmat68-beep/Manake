@@ -124,7 +124,7 @@
             <div class="relative overflow-hidden rounded-2xl p-5 manake-surface">
                 <div class="flex flex-col justify-between min-h-[160px] gap-4">
                     <div>
-                        <p class="text-[9px] font-black uppercase tracking-[0.22em] manake-accent-text">{{ app()->getLocale() === 'id' ? 'KOORDINAT' : 'COORDINATES' }}</p>
+                        <p class="text-[9px] font-black uppercase tracking-[0.22em] manake-accent-text">{{ __('app.footer.coordinates') }}</p>
                         <p class="mt-2 text-sm font-semibold manake-text">{{ $footerAddressTitle ?: __('Manake Studio & Rental') }}</p>
                         <p class="mt-1.5 text-xs leading-relaxed manake-text-muted">{{ $footerAddressRest->implode(' ') }}</p>
                     </div>

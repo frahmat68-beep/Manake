@@ -304,6 +304,7 @@ return [
         'location_title' => 'Location',
         'location_empty' => 'Location embed is not configured yet. Add it in website settings.',
         'location_open_map' => 'Open in Maps',
+        'coordinates' => 'COORDINATES',
         'rules_title' => 'Rental Guide',
         'rules_link' => 'Rental Rules & Policy',
         'rules_note' => 'Review booking, reschedule, buffer, and operational penalty rules.',
