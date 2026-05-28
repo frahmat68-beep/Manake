@@ -128,17 +128,136 @@
                 ? __('app.home.hero_subtitle') 
                 : setting('home.hero_subtitle', __('app.home.hero_subtitle'));
         @endphp
+        <style>
+            /* Scoped Theme-Aware Hero Styles */
+            .manake-hero-island {
+                transition: background-color 0.25s ease-in-out;
+            }
+            
+            /* Dark Mode Defaults */
+            html[data-theme-resolved="dark"] .hero-title-text {
+                font-family: 'DM Serif Display', Georgia, serif !important;
+                color: #E8E8EC !important;
+                letter-spacing: -0.05em !important;
+            }
+            html[data-theme-resolved="dark"] .hero-rotating-word {
+                color: #D4A843 !important;
+            }
+            html[data-theme-resolved="dark"] .hero-desc-text {
+                color: #A0A0A8 !important;
+            }
+            html[data-theme-resolved="dark"] .hero-card-glass {
+                border-color: rgba(255, 255, 255, 0.10) !important;
+                background-color: rgba(255, 255, 255, 0.05) !important;
+                color: #E8E8EC !important;
+            }
+            html[data-theme-resolved="dark"] .hero-card-solid {
+                border-color: rgba(255, 255, 255, 0.10) !important;
+                background: linear-gradient(to bottom right, rgba(17, 17, 19, 0.95), rgba(10, 10, 11, 0.90)) !important;
+                color: #E8E8EC !important;
+            }
+            html[data-theme-resolved="dark"] .hero-card-title {
+                color: #E8E8EC !important;
+            }
+            html[data-theme-resolved="dark"] .hero-card-kicker {
+                color: #D4A843 !important;
+            }
+            html[data-theme-resolved="dark"] .hero-tile {
+                background-color: rgba(0, 0, 0, 0.35) !important;
+                border-color: rgba(255, 255, 255, 0.10) !important;
+            }
+            html[data-theme-resolved="dark"] .hero-tile-label {
+                color: #A0A0A8 !important;
+            }
+            html[data-theme-resolved="dark"] .hero-tile-val-1 { color: #D4A843 !important; }
+            html[data-theme-resolved="dark"] .hero-tile-val-2 { color: #34D399 !important; }
+            html[data-theme-resolved="dark"] .hero-tile-val-3 { color: #7DD3FC !important; }
+            html[data-theme-resolved="dark"] .hero-schedule-item {
+                background-color: rgba(0, 0, 0, 0.35) !important;
+                border-color: rgba(255, 255, 255, 0.10) !important;
+                color: #E8E8EC !important;
+            }
+            html[data-theme-resolved="dark"] .hero-schedule-item .rented-count {
+                color: #A0A0A8 !important;
+            }
+            html[data-theme-resolved="dark"] .hero-schedule-item .period-text {
+                color: #D4A843 !important;
+            }
+
+            /* Light Mode Overrides */
+            html[data-theme-resolved="light"] .hero-title-text {
+                font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif !important;
+                font-weight: 800 !important;
+                color: #111827 !important;
+                letter-spacing: -0.04em !important;
+            }
+            html[data-theme-resolved="light"] .hero-rotating-word {
+                color: #2563EB !important; /* Manake Blue */
+            }
+            html[data-theme-resolved="light"] .hero-desc-text {
+                color: #4B5563 !important; /* Premium dark gray */
+            }
+            html[data-theme-resolved="light"] .hero-card-glass {
+                border-color: rgba(37, 99, 235, 0.15) !important;
+                background-color: rgba(255, 255, 255, 0.85) !important;
+                color: #111827 !important;
+                box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06) !important;
+            }
+            html[data-theme-resolved="light"] .hero-card-solid {
+                border-color: rgba(37, 99, 235, 0.15) !important;
+                background-color: rgba(255, 255, 255, 0.90) !important;
+                color: #111827 !important;
+                box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06) !important;
+            }
+            html[data-theme-resolved="light"] .hero-card-title {
+                color: #111827 !important;
+            }
+            html[data-theme-resolved="light"] .hero-card-kicker {
+                color: #2563EB !important; /* Manake Blue */
+            }
+            html[data-theme-resolved="light"] .hero-tile {
+                background-color: rgba(37, 99, 235, 0.04) !important;
+                border-color: rgba(37, 99, 235, 0.10) !important;
+            }
+            html[data-theme-resolved="light"] .hero-tile-label {
+                color: #6B7280 !important;
+            }
+            html[data-theme-resolved="light"] .hero-tile-val-1 { color: #2563EB !important; }
+            html[data-theme-resolved="light"] .hero-tile-val-2 { color: #059669 !important; }
+            html[data-theme-resolved="light"] .hero-tile-val-3 { color: #0284C7 !important; }
+            html[data-theme-resolved="light"] .hero-schedule-item {
+                background-color: rgba(37, 99, 235, 0.04) !important;
+                border-color: rgba(37, 99, 235, 0.10) !important;
+                color: #111827 !important;
+            }
+            html[data-theme-resolved="light"] .hero-schedule-item .rented-count {
+                color: #4B5563 !important;
+            }
+            html[data-theme-resolved="light"] .hero-schedule-item .period-text {
+                color: #2563EB !important;
+            }
+        </style>
         <section class="manake-hero-island relative min-h-[calc(100svh-8rem)] overflow-hidden" data-theme-island="dark">
             <div class="absolute inset-0">
-                <img src="{{ site_asset('images/hero-bg.jpg') }}" alt="Set produksi film profesional" class="h-full w-full object-cover object-center" />
-                <div class="absolute inset-0 bg-gradient-to-b from-black/45 via-[#0A0A0B]/55 to-[#0A0A0B]"></div>
-                <div class="absolute inset-0 bg-gradient-to-r from-[#0A0A0B]/90 via-transparent to-transparent"></div>
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.05),transparent_22%),radial-gradient(circle_at_15%_20%,rgba(212,168,67,0.12),transparent_20%),radial-gradient(circle_at_85%_16%,rgba(255,255,255,0.05),transparent_18%)]"></div>
+                <!-- Dark mode background image & overlay -->
+                <div class="absolute inset-0 hidden dark:block">
+                    <img src="{{ site_asset('images/hero-bg.jpg') }}" alt="Set produksi film profesional" class="h-full w-full object-cover object-center" />
+                    <div class="absolute inset-0 bg-gradient-to-b from-black/45 via-[#0A0A0B]/55 to-[#0A0A0B]"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#0A0A0B]/90 via-transparent to-transparent"></div>
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.05),transparent_22%),radial-gradient(circle_at_15%_20%,rgba(212,168,67,0.12),transparent_20%),radial-gradient(circle_at_85%_16%,rgba(255,255,255,0.05),transparent_18%)]"></div>
+                </div>
+                <!-- Light mode background image & overlay -->
+                <div class="absolute inset-0 block dark:hidden">
+                    <img src="{{ site_asset('images/hero-bg-light.jpg') }}" alt="Set produksi film profesional" class="h-full w-full object-cover object-center" />
+                    <div class="absolute inset-0 bg-gradient-to-b from-[#F7F7F4]/30 via-[#F7F7F4]/40 to-[#F7F7F4]"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#F7F7F4]/92 via-[#F7F7F4]/50 to-transparent"></div>
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.15),transparent_30%),radial-gradient(circle_at_15%_20%,rgba(37,99,235,0.06),transparent_22%),radial-gradient(circle_at_85%_16%,rgba(255,255,255,0.15),transparent_25%)]"></div>
+                </div>
             </div>
 
             <div class="relative mx-auto grid min-h-[calc(100svh-8rem)] max-w-7xl items-center gap-12 px-6 pb-12 pt-24 md:px-10 lg:grid-cols-[1.08fr_0.92fr]">
                 <div class="max-w-3xl">
-                    <h1 class="text-[clamp(2.8rem,5.6vw,5rem)] font-semibold leading-[0.98] tracking-[-0.055em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
+                    <h1 class="hero-title-text text-[clamp(2.5rem,5.2vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.055em] text-[#E8E8EC]">
                         <span class="block">{{ __('app.home.hero_kicker') }}</span>
                         <span
                             x-data="{
@@ -153,7 +272,7 @@
                             }"
                             class="block"
                         >
-                            <span class="relative mr-3 inline-grid min-w-[5.4em] overflow-hidden align-baseline text-[#D4A843]">
+                            <span class="relative mr-3 inline-grid min-w-[5.4em] overflow-hidden align-baseline hero-rotating-word">
                                 <template x-for="(word, wordIndex) in words" :key="word">
                                     <span
                                         x-show="index === wordIndex"
@@ -172,7 +291,7 @@
                         </span>
                     </h1>
 
-                    <p class="mt-7 max-w-2xl text-base leading-8 text-[#A0A0A8] md:text-lg">
+                    <p class="mt-7 max-w-2xl text-base leading-8 hero-desc-text md:text-lg">
                         {{ $heroDescriptionText }}
                     </p>
 
@@ -180,48 +299,48 @@
                 </div>
 
                 <div class="grid gap-4">
-                    <div class="rounded-[1.5rem] border border-white/10 bg-[#111113]/80 p-4 backdrop-blur-md md:p-5">
+                    <div class="rounded-[1.5rem] border p-4 backdrop-blur-md md:p-5 hero-card-glass">
                         <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
                             <div>
-                                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">{{ __('app.home.snapshot_kicker') }}</p>
-                                <h2 class="mt-1 text-2xl font-semibold text-[#E8E8EC]">{{ __('app.home.snapshot_title') }}</h2>
+                                <p class="text-xs font-semibold uppercase tracking-[0.28em] hero-card-kicker">{{ __('app.home.snapshot_kicker') }}</p>
+                                <h2 class="mt-1 text-2xl font-semibold hero-card-title">{{ __('app.home.snapshot_title') }}</h2>
                             </div>
                         </div>
                         <div class="mt-5 grid gap-3 sm:grid-cols-3">
                             @foreach ([
-                                ['label' => __('app.home.snapshot_rented'), 'value' => number_format($snapshotNumbers['rented_today']), 'tone' => 'text-[#D4A843]'],
-                                ['label' => __('app.home.snapshot_available'), 'value' => number_format($snapshotNumbers['available_items']), 'tone' => 'text-emerald-300'],
-                                ['label' => __('app.home.snapshot_upcoming'), 'value' => number_format($snapshotNumbers['upcoming_bookings']), 'tone' => 'text-sky-300'],
+                                ['label' => __('app.home.snapshot_rented'), 'value' => number_format($snapshotNumbers['rented_today']), 'tone' => 'hero-tile-val-1'],
+                                ['label' => __('app.home.snapshot_available'), 'value' => number_format($snapshotNumbers['available_items']), 'tone' => 'hero-tile-val-2'],
+                                ['label' => __('app.home.snapshot_upcoming'), 'value' => number_format($snapshotNumbers['upcoming_bookings']), 'tone' => 'hero-tile-val-3'],
                             ] as $tile)
-                                <div class="rounded-2xl border border-white/10 bg-black/35 p-4">
-                                    <p class="text-[10px] uppercase tracking-[0.22em] text-[#A0A0A8]">{{ $tile['label'] }}</p>
+                                <div class="rounded-2xl border p-4 hero-tile">
+                                    <p class="text-[10px] uppercase tracking-[0.22em] hero-tile-label">{{ $tile['label'] }}</p>
                                     <p class="mt-3 text-2xl font-black {{ $tile['tone'] }}">{{ $tile['value'] }}</p>
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    <div class="rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-[#111113]/85 via-black/40 to-[#111113]/85 p-4 md:p-5 backdrop-blur-md">
+                    <div class="rounded-[1.5rem] border p-4 md:p-5 backdrop-blur-md hero-card-solid">
                         <div class="flex items-center justify-between gap-3">
                             <div>
-                                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">{{ __('app.home.schedule_kicker') }}</p>
-                                <p class="mt-1 text-xs text-[#A0A0A8]">{{ __('app.home.schedule_subtitle') }}</p>
+                                <p class="text-xs font-semibold uppercase tracking-[0.28em] hero-card-kicker">{{ __('app.home.schedule_kicker') }}</p>
+                                <p class="mt-1 text-xs hero-tile-label">{{ __('app.home.schedule_subtitle') }}</p>
                             </div>
                             <span class="rounded-full border border-emerald-400/20 bg-emerald-950/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-300">{{ __('app.home.live_badge') }}</span>
                         </div>
                         <div class="mt-4 grid gap-2">
                             @forelse ($rentalTimelineItems->take(3) as $rental)
-                                <div class="grid grid-cols-[1fr_auto] gap-3 rounded-xl border border-white/10 bg-black/35 px-3 py-2.5">
+                                <div class="grid grid-cols-[1fr_auto] gap-3 rounded-xl border px-3 py-2.5 hero-schedule-item">
                                     <div class="min-w-0">
-                                        <p class="truncate text-sm font-semibold text-[#E8E8EC]">{{ $rental['name'] }}</p>
-                                        <p class="mt-0.5 text-xs text-[#A0A0A8]">{{ $rental['qty'] }} unit disewa</p>
+                                        <p class="truncate text-sm font-semibold hero-card-title">{{ $rental['name'] }}</p>
+                                        <p class="mt-0.5 text-xs rented-count">{{ $rental['qty'] }} unit disewa</p>
                                     </div>
-                                    <p class="self-center text-right text-xs font-semibold text-[#D4A843]">{{ $rental['period'] }}</p>
+                                    <p class="self-center text-right text-xs font-semibold period-text">{{ $rental['period'] }}</p>
                                 </div>
                             @empty
-                                <div class="rounded-xl border border-white/10 bg-black/35 px-3 py-3">
-                                    <p class="text-sm font-semibold text-[#E8E8EC]">Belum ada booking aktif</p>
-                                    <p class="mt-1 text-xs text-[#A0A0A8]">Semua alat siap dicek dari katalog live.</p>
+                                <div class="rounded-xl border px-3 py-3 hero-schedule-item">
+                                    <p class="text-sm font-semibold hero-card-title">Belum ada booking aktif</p>
+                                    <p class="mt-1 text-xs rented-count">Semua alat siap dicek dari katalog live.</p>
                                 </div>
                             @endforelse
                         </div>
