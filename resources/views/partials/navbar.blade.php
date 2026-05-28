@@ -30,7 +30,7 @@
 >
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <a href="{{ $homeUrl }}" class="inline-flex shrink-0 items-center" aria-label="{{ $brandName }}">
-            <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" :alt="$brandName" img-class="h-8 w-auto" />
+            <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" :alt="$brandName" img-class="h-9 md:h-10 w-auto" />
         </a>
 
         <div class="hidden flex-1 items-center justify-center gap-8 text-sm font-semibold lg:flex">

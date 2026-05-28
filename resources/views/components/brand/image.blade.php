@@ -9,6 +9,10 @@
 ])
 
 @php
+    // Handle both imgClass and img-class attribute smoothly
+    $resolvedImgClass = $imgClass ?: ($attributes->get('img-class') ?: '');
+    $attributes = $attributes->except(['img-class']);
+
     $managedLogoPath = site_setting('brand.logo_path');
     $managedLogoUrl = site_media_url($managedLogoPath);
     $lightUrl = $managedLogoUrl ?: site_asset($light);
@@ -20,7 +24,7 @@
     $detectedWidth = $width;
     $detectedHeight = $height;
     if (!$detectedWidth && !$detectedHeight) {
-        if ($light === 'manake-logo-white.png') {
+        if ($light === 'manake-logo-white.png' || $light === 'manake-logo-blue.png') {
             $detectedWidth = 640;
             $detectedHeight = 154;
         } elseif ($light === 'MANAKE-FAV-M.png') {
@@ -30,7 +34,7 @@
     }
 @endphp
 
-<span {{ $attributes->class(['manake-themed-asset', 'manake-themed-asset--swap' => $swapInDark]) }}>
+<span {{ $attributes->class(['manake-themed-asset', 'manake-themed-asset--swap' => $swapInDark, 'inline-flex', 'items-center', 'justify-content-center']) }}>
     <img
         src="{{ $initialSrc }}"
         alt="{{ $alt }}"
@@ -43,6 +47,6 @@
         data-light-src="{{ $lightUrl }}"
         data-dark-src="{{ $darkUrl }}"
         data-swap-dark="{{ $swapInDark ? 'true' : 'false' }}"
-        class="manake-themed-asset__image {{ $imgClass }}"
+        class="manake-themed-asset__image object-contain max-h-full max-w-full {{ $resolvedImgClass }}"
     >
 </span>

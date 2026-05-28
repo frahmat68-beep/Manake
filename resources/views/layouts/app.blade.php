@@ -8,10 +8,9 @@
 <!DOCTYPE html>
 <html
     lang="{{ app()->getLocale() }}"
-    class="scroll-smooth {{ $initialThemeResolved === 'dark' ? 'dark' : '' }}"
-    data-theme="manake-brand"
-    data-theme-preference="{{ $initialThemePreference }}"
-    data-theme-resolved="{{ $initialThemeResolved }}"
+    class="scroll-smooth {{ ($themeResolved ?? 'dark') === 'dark' ? 'dark' : '' }}"
+    data-theme="{{ $themePreference ?? 'system' }}"
+    data-theme-resolved="{{ $themeResolved ?? 'dark' }}"
 >
 <head>
     <meta charset="UTF-8">

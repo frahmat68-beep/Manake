@@ -4,7 +4,7 @@
     $isHomepage = request()->routeIs('home');
 @endphp
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" class="scroll-smooth {{ $initialThemeResolved === 'dark' ? 'dark' : '' }}" data-theme="manake-brand" data-theme-preference="{{ $initialThemePreference }}" data-theme-resolved="{{ $initialThemeResolved }}">
+<html lang="{{ app()->getLocale() }}" class="scroll-smooth {{ ($themeResolved ?? 'dark') === 'dark' ? 'dark' : '' }}" data-theme="{{ $themePreference ?? 'system' }}" data-theme-resolved="{{ $themeResolved ?? 'dark' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
