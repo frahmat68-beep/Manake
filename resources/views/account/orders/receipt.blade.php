@@ -574,8 +574,17 @@
                     </tr>
                     @if ($showSeparateOrderReference)
                         <tr>
-                            <td class="label">Order Ref:</td>
+                            <td class="label"><span>{{ __('ui.invoice.meta.invoice_id') }}</span>:</td>
+                            <td class="value">{{ $invoiceId }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label"><span>{{ __('ui.invoice.meta.order_id') }}</span>:</td>
                             <td class="value">{{ $orderReference }}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td class="label"><span>{{ __('ui.invoice.meta.invoice_order_id') }}</span>:</td>
+                            <td class="value">{{ $invoiceId }}</td>
                         </tr>
                     @endif
                     <tr>
