@@ -39,100 +39,105 @@
         return 'tel:' . $sanitized;
     };
     $footerMapUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($footerAddress ?: 'Manake Studio & Rental');
-    $footerMapPreview = $footerAddressTitle ?: __('Manake Studio & Rental');
 @endphp
 
-<footer id="contact" class="border-t border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC]">
-    <div class="mx-auto grid max-w-7xl gap-8 px-6 py-12 lg:grid-cols-[1.1fr,1fr,1.2fr]">
-        <div>
-            <x-brand.image light="manake-logo-white.png" dark="manake-logo-white.png" alt="Manake" img-class="h-12 w-auto" class="mb-5 inline-flex" />
-            <p class="mt-3 max-w-md text-sm leading-relaxed text-[#A0A0A8]">{{ $footerAbout }}</p>
-            <div class="mt-5">
-                <p class="text-sm font-semibold text-[#E8E8EC]">{{ setting('footer.rules_title', __('app.footer.rules_title')) }}</p>
-                <a href="{{ route('rental.rules') }}" class="mt-2 inline-flex items-center gap-1 rounded-md border border-[#1A1A1E] bg-[#111113] px-3 py-1.5 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
+<footer id="contact" class="border-t border-white/5 bg-[#0A0A0B] text-[#E8E8EC]">
+    <div class="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:px-8 lg:grid-cols-[1.1fr,0.9fr,1fr] lg:gap-12 lg:py-20 items-start">
+        {{-- Column 1: Brand Logo & Guidelines --}}
+        <div class="space-y-6">
+            <x-brand.image light="manake-logo-white.png" dark="manake-logo-white.png" alt="Manake" img-class="h-8 md:h-9 w-auto" class="inline-flex" />
+            <p class="max-w-sm text-sm leading-relaxed text-[#A0A0A8]">{{ $footerAbout }}</p>
+            
+            <div class="space-y-3 pt-2">
+                <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[#D4A843]">{{ __('PANDUAN SEWA') }}</p>
+                <a href="{{ route('rental.rules') }}" class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-xs font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] hover:bg-[#D4A843]/5">
                     {{ setting('footer.rules_link', __('app.footer.rules_link')) }}
                     <span aria-hidden="true">→</span>
                 </a>
-                <p class="mt-2 text-sm leading-relaxed text-[#A0A0A8]">{{ setting('footer.rules_note', __('app.footer.rules_note')) }}</p>
+                <p class="max-w-sm text-xs leading-relaxed text-[#A0A0A8]">{{ setting('footer.rules_note', __('app.footer.rules_note')) }}</p>
             </div>
         </div>
 
-        <div>
-            <h3 class="text-sm font-semibold text-[#E8E8EC]">{{ __('app.footer.contact_title') }}</h3>
-            <div class="mt-3 space-y-2 text-sm text-[#A0A0A8]">
-                <p class="text-sm font-semibold text-[#E8E8EC]">WhatsApp</p>
-                <div class="flex flex-wrap gap-1.5">
-                    @forelse ($footerWhatsappEntries as $whatsappNumber)
-                        @php
-                            $whatsappHref = $buildWhatsappHref($whatsappNumber);
-                            $telHref = $buildTelHref($whatsappNumber);
-                        @endphp
-                        @if ($whatsappHref)
-                            <a
-                                href="{{ $whatsappHref }}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="inline-flex items-center gap-1 rounded-md border border-[#1A1A1E] bg-[#111113] px-2.5 py-1 text-xs font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]"
-                            >
-                                {{ $whatsappNumber }}
-                            </a>
-                        @elseif ($telHref)
-                            <a href="{{ $telHref }}" class="inline-flex items-center gap-1 rounded-md border border-[#1A1A1E] bg-[#111113] px-2.5 py-1 text-xs font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]">
-                                {{ $whatsappNumber }}
-                            </a>
-                        @else
-                            <span class="inline-flex items-center gap-1 rounded-md border border-[#1A1A1E] bg-[#111113] px-2.5 py-1 text-xs font-semibold text-[#E8E8EC]">
-                                {{ $whatsappNumber }}
-                            </span>
-                        @endif
-                    @empty
-                        <span class="inline-flex items-center gap-1 rounded-md border border-[#1A1A1E] bg-[#111113] px-2.5 py-1 text-xs font-semibold text-[#E8E8EC]">
-                            {{ $footerWhatsapp }}
-                        </span>
-                    @endforelse
-                </div>
-                <p class="break-all">Email: <span class="text-[#E8E8EC]">{{ $footerEmail }}</span></p>
-                <p>Instagram: <span class="text-[#E8E8EC]">{{ $footerInstagram }}</span></p>
-            </div>
-            <h3 class="mt-5 text-sm font-semibold text-[#E8E8EC]">{{ __('app.footer.address_title') }}</h3>
-            <div class="mt-2 space-y-1 text-sm leading-relaxed text-[#A0A0A8]">
-                @if ($footerAddressTitle)
-                    <p class="font-semibold text-[#E8E8EC]">{{ $footerAddressTitle }}</p>
-                @endif
-                @foreach ($footerAddressRest as $addressLine)
-                    <p>{{ $addressLine }}</p>
-                @endforeach
-            </div>
-        </div>
-
-        <div>
-            <h3 class="text-sm font-semibold text-[#E8E8EC]">{{ __('app.footer.location_title') }}</h3>
-            <div class="mt-3 overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#111113]">
-                <div class="border-b border-[#1A1A1E] px-4 py-3">
-                    <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[#D4A843]">{{ __('app.footer.location_title') }}</p>
-                    <p class="mt-1 text-xs leading-relaxed text-[#A0A0A8]">{{ $footerMapPreview }}</p>
-                </div>
-                <div class="relative min-h-[180px] bg-[radial-gradient(circle_at_top_left,_rgba(212,168,67,0.12),_transparent_26%),linear-gradient(135deg,rgba(10,10,11,0.98),rgba(17,17,19,0.96))] p-4">
-                    <div class="flex h-full min-h-[188px] flex-col justify-between rounded-md border border-[#1A1A1E] bg-[#0A0A0B]/60 p-4">
-                        <div>
-                            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[#D4A843]">{{ __('Lokasi') }}</p>
-                            <p class="mt-3 max-w-sm text-sm leading-relaxed text-[#E8E8EC]">{{ $footerAddressTitle ?: __('Manake Studio & Rental') }}</p>
-                            <p class="mt-2 max-w-sm text-xs leading-relaxed text-[#A0A0A8]">{{ $footerAddressRest->implode(' ') }}</p>
+        {{-- Column 2: Contact & Address --}}
+        <div class="space-y-6">
+            <div>
+                <h3 class="text-[10px] font-black uppercase tracking-[0.24em] text-[#D4A843] mb-4">{{ __('HUBUNGI KAMI') }}</h3>
+                <div class="space-y-3 text-sm text-[#A0A0A8]">
+                    <div class="flex flex-col gap-2">
+                        <span class="text-xs font-bold text-[#E8E8EC]">{{ __('WhatsApp') }}</span>
+                        <div class="flex flex-wrap gap-2">
+                            @forelse ($footerWhatsappEntries as $whatsappNumber)
+                                @php
+                                    $whatsappHref = $buildWhatsappHref($whatsappNumber);
+                                    $telHref = $buildTelHref($whatsappNumber);
+                                @endphp
+                                @if ($whatsappHref)
+                                    <a
+                                        href="{{ $whatsappHref }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/5 px-3 py-1.5 text-xs font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/45 hover:text-[#D4A843] hover:bg-[#D4A843]/5"
+                                    >
+                                        {{ $whatsappNumber }}
+                                    </a>
+                                @elseif ($telHref)
+                                    <a href="{{ $telHref }}" class="inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/5 px-3 py-1.5 text-xs font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/45 hover:text-[#D4A843] hover:bg-[#D4A843]/5">
+                                        {{ $whatsappNumber }}
+                                    </a>
+                                @else
+                                    <span class="inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/5 px-3 py-1.5 text-xs font-semibold text-[#E8E8EC]">
+                                        {{ $whatsappNumber }}
+                                    </span>
+                                @endif
+                            @empty
+                                <span class="inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/5 px-3 py-1.5 text-xs font-semibold text-[#E8E8EC]">
+                                    {{ $footerWhatsapp }}
+                                </span>
+                            @endforelse
                         </div>
-                        <a href="{{ $footerMapUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex w-fit items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#111113] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#D4A843] transition hover:border-[#D4A843]/40 hover:text-[#E8E8EC]">
-                            {{ __('Open in maps') }}
-                            <span aria-hidden="true">↗</span>
-                        </a>
                     </div>
+                    <p class="break-all">Email: <span class="text-[#E8E8EC] font-semibold">{{ $footerEmail }}</span></p>
+                    <p>Instagram: <span class="text-[#E8E8EC] font-semibold">{{ $footerInstagram }}</span></p>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-[10px] font-black uppercase tracking-[0.24em] text-[#D4A843] mb-4">{{ __('ALAMAT') }}</h3>
+                <div class="space-y-1.5 text-sm leading-relaxed text-[#A0A0A8]">
+                    @if ($footerAddressTitle)
+                        <p class="font-bold text-[#E8E8EC]">{{ $footerAddressTitle }}</p>
+                    @endif
+                    @foreach ($footerAddressRest as $addressLine)
+                        <p>{{ $addressLine }}</p>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        {{-- Column 3: Location / Map Card --}}
+        <div>
+            <h3 class="text-[10px] font-black uppercase tracking-[0.24em] text-[#D4A843] mb-4">{{ __('LOKASI') }}</h3>
+            <div class="relative overflow-hidden rounded-2xl border border-white/10 bg-[#111113]/60 backdrop-blur-md p-5 shadow-lg">
+                <div class="flex flex-col justify-between min-h-[160px] gap-4">
+                    <div>
+                        <p class="text-[9px] font-black uppercase tracking-[0.22em] text-[#D4A843]">{{ __('KOORDINAT') }}</p>
+                        <p class="mt-2 text-sm font-semibold text-[#E8E8EC]">{{ $footerAddressTitle ?: __('Manake Studio & Rental') }}</p>
+                        <p class="mt-1.5 text-xs leading-relaxed text-[#A0A0A8]">{{ $footerAddressRest->implode(' ') }}</p>
+                    </div>
+                    <a href="{{ $footerMapUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex w-fit items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-xs font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] hover:bg-[#D4A843]/5">
+                        {{ __('Open in maps') }}
+                        <span aria-hidden="true">↗</span>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="border-t border-[#1A1A1E]">
-        <div class="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-4 text-xs text-[#A0A0A8] sm:flex-row sm:items-center sm:justify-between">
+    {{-- Bottom Bar --}}
+    <div class="border-t border-white/5 bg-[#070708]">
+        <div class="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-5 text-xs text-[#A0A0A8] sm:flex-row sm:items-center sm:justify-between sm:px-8">
             <span>&copy; {{ setting('footer_copyright', __('app.footer.copyright')) }}</span>
-            <span>{{ setting('site_tagline', __('app.footer.tagline')) }}</span>
+            <span class="font-medium text-[#707078]">{{ setting('site_tagline', __('app.footer.tagline')) }}</span>
         </div>
     </div>
 </footer>

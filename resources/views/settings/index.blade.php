@@ -9,9 +9,21 @@
     ];
 
     $themeOptions = [
-        'system' => __('ui.settings.theme_system'),
-        'dark' => __('ui.settings.theme_dark'),
-        'light' => __('ui.settings.theme_light'),
+        'system' => [
+            'label' => __('ui.settings.theme_system'),
+            'meta' => __('ui.settings.theme_system_meta'),
+            'icon' => 'monitor'
+        ],
+        'dark' => [
+            'label' => __('ui.settings.theme_dark'),
+            'meta' => __('ui.settings.theme_dark_meta'),
+            'icon' => 'moon'
+        ],
+        'light' => [
+            'label' => __('ui.settings.theme_light'),
+            'meta' => __('ui.settings.theme_light_meta'),
+            'icon' => 'sun'
+        ],
     ];
 @endphp
 
@@ -26,10 +38,39 @@
             outline-offset: 2px;
         }
 
+        .settings-option-card {
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(10, 10, 11, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .settings-option-card:hover {
+            border-color: rgba(212, 168, 67, 0.35);
+            background: rgba(212, 168, 67, 0.03);
+            transform: translateY(-1px);
+        }
+
         .settings-option-card[data-active="true"] {
-            border-color: rgba(212, 168, 67, 0.42);
+            border-color: #D4A843;
             background: rgba(212, 168, 67, 0.08);
-            box-shadow: inset 0 0 0 1px rgba(212, 168, 67, 0.16);
+            box-shadow: 0 0 15px rgba(212, 168, 67, 0.12), inset 0 0 0 1px rgba(212, 168, 67, 0.15);
+        }
+
+        .settings-option-card .manake-preferences-choice__check {
+            display: none;
+        }
+
+        .settings-option-card[data-active="true"] .manake-preferences-choice__check {
+            display: inline-flex;
+        }
+
+        .settings-option-card[data-active="true"] .manake-preferences-choice__icon {
+            color: #D4A843;
         }
 
         @keyframes settings-shell-enter {
@@ -87,11 +128,20 @@
                         @foreach ($localeOptions as $value => $label)
                             <label class="settings-option block">
                                 <input type="radio" name="locale" value="{{ $value }}" class="sr-only" @checked($locale === $value)>
-                                <span class="settings-option-card flex items-center justify-between rounded-2xl border border-white/10 bg-[#0A0A0B]/75 px-4 py-3 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35" data-active="{{ $locale === $value ? 'true' : 'false' }}">
-                                    <span>{{ $label }}</span>
-                                    @if ($locale === $value)
-                                        <span class="rounded-full border border-emerald-400/20 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-200">{{ __('ui.settings.active_badge') }}</span>
-                                    @endif
+                                <span class="settings-option-card flex items-center gap-3.5 rounded-2xl px-5 py-4 text-sm font-semibold text-[#E8E8EC] transition" data-active="{{ $locale === $value ? 'true' : 'false' }}">
+                                    <span class="manake-preferences-choice__icon shrink-0 text-[#A0A0A8] transition" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                                            <path d="M2 12h20" />
+                                        </svg>
+                                    </span>
+                                    <span class="flex-1 pr-6">{{ $label }}</span>
+                                    <span class="manake-preferences-choice__check absolute right-5 top-1/2 -translate-y-1/2 text-[#D4A843]" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.02 7.08a1 1 0 0 1-1.42.002l-3.02-3.04a1 1 0 1 1 1.42-1.407l2.31 2.327 6.31-6.363a1 1 0 0 1 1.414-.013Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
                                 </span>
                             </label>
                         @endforeach
@@ -105,26 +155,56 @@
                     <p class="text-sm text-[#A0A0A8]">{{ __('ui.settings.section_theme_hint') }}</p>
 
                     <div class="grid gap-3 sm:grid-cols-3">
-                        @foreach ($themeOptions as $value => $label)
+                        @foreach ($themeOptions as $value => $themeOption)
                             <label class="settings-option block">
                                 <input type="radio" name="theme" value="{{ $value }}" class="sr-only" @checked($theme === $value)>
-                                <span class="settings-option-card flex items-center justify-between rounded-2xl border border-white/10 bg-[#0A0A0B]/75 px-4 py-3 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35" data-active="{{ $theme === $value ? 'true' : 'false' }}">
-                                    <span>{{ $label }}</span>
-                                    @if ($theme === $value)
-                                        <span class="rounded-full border border-emerald-400/20 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-200">{{ __('ui.settings.active_badge') }}</span>
-                                    @endif
+                                <span class="settings-option-card flex items-start gap-3.5 rounded-2xl px-5 py-4 text-sm font-semibold text-[#E8E8EC] transition" data-active="{{ $theme === $value ? 'true' : 'false' }}">
+                                    <span class="manake-preferences-choice__icon shrink-0 mt-0.5 text-[#A0A0A8] transition" aria-hidden="true">
+                                        @if ($themeOption['icon'] === 'monitor')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="12" rx="2" />
+                                                <path d="M8 20h8" />
+                                                <path d="M12 16v4" />
+                                            </svg>
+                                        @elseif ($themeOption['icon'] === 'moon')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 12.79A9 9 0 1 1 11.21 3c0 5 3.79 8.79 8.79 8.79Z" />
+                                            </svg>
+                                        @else
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="4" />
+                                                <path d="M12 2v2.5" />
+                                                <path d="M12 19.5V22" />
+                                                <path d="m4.93 4.93 1.77 1.77" />
+                                                <path d="m17.3 17.3 1.77 1.77" />
+                                                <path d="M2 12h2.5" />
+                                                <path d="M19.5 12H22" />
+                                                <path d="m4.93 19.07 1.77-1.77" />
+                                                <path d="m17.3 6.7 1.77-1.77" />
+                                            </svg>
+                                        @endif
+                                    </span>
+                                    <span class="flex-1 pr-6 flex flex-col gap-1">
+                                        <span class="text-sm font-semibold text-[#E8E8EC]">{{ $themeOption['label'] }}</span>
+                                        <span class="text-xs font-normal text-[#A0A0A8] leading-relaxed">{{ $themeOption['meta'] }}</span>
+                                    </span>
+                                    <span class="manake-preferences-choice__check absolute right-5 top-5 text-[#D4A843]" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.02 7.08a1 1 0 0 1-1.42.002l-3.02-3.04a1 1 0 1 1 1.42-1.407l2.31 2.327 6.31-6.363a1 1 0 0 1 1.414-.013Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
                                 </span>
                             </label>
                         @endforeach
                     </div>
                 </fieldset>
 
-                <div class="flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
-                    <p class="text-sm text-[#A0A0A8]">{{ __('ui.settings.summary_note') }}</p>
+                <div class="flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+                    <p class="text-sm text-[#A0A0A8] leading-relaxed">{{ __('ui.settings.summary_note') }}</p>
                     <button
                         type="submit"
                         id="settings-submit-button"
-                        class="inline-flex w-full items-center justify-center rounded-xl bg-[#D4A843] px-6 py-3.5 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/40 sm:w-auto"
+                        class="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#D4A843] to-[#B8871F] px-8 py-3.5 text-sm font-semibold text-[#0A0A0B] shadow-[0_4px_20px_rgba(212,168,67,0.25)] transition duration-300 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 active:brightness-95 focus:outline-none focus:ring-2 focus:ring-[#D4A843]/40 disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
                     >
                         <span class="submit-label">{{ __('ui.settings.save') }}</span>
                     </button>
