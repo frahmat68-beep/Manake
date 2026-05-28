@@ -12,51 +12,6 @@
         }
     </script>
     <style>
-        :root {
-            --invoice-bg: #F8F7F2;
-            --invoice-surface: #ffffff;
-            --invoice-surface-soft: #F8F7F2;
-            --invoice-border: #E5E2DA;
-            --invoice-text: #171717;
-            --invoice-muted: #555558;
-            --invoice-heading: #111113;
-            --invoice-primary: #D4A843;
-            --invoice-primary-strong: #111113;
-            --invoice-primary-soft: rgba(212, 168, 67, 0.08);
-            --invoice-success-bg: #D4A843;
-            --invoice-success-text: #0A0A0B;
-            --invoice-warning-bg: #F8F7F2;
-            --invoice-warning-text: #D4A843;
-            --invoice-danger-bg: #fee2e2;
-            --invoice-danger-text: #b91c1c;
-            --invoice-shadow: 0 10px 30px rgba(17, 17, 19, 0.05);
-            --invoice-radius-xl: 12px;
-            --invoice-radius-lg: 10px;
-            --invoice-brand-gradient: linear-gradient(135deg, #111113 0%, #171717 100%);
-        }
-
-        html[data-theme-resolved='dark'],
-        html.dark {
-            --invoice-bg: #0A0A0B;
-            --invoice-surface: #111113;
-            --invoice-surface-soft: #171717;
-            --invoice-border: #1A1A1E;
-            --invoice-text: #E8E8EC;
-            --invoice-muted: #A0A0A8;
-            --invoice-heading: #ffffff;
-            --invoice-primary: #D4A843;
-            --invoice-primary-strong: #e0ba5d;
-            --invoice-primary-soft: rgba(212, 168, 67, 0.12);
-            --invoice-success-bg: #D4A843;
-            --invoice-success-text: #0A0A0B;
-            --invoice-warning-bg: rgba(212, 168, 67, 0.12);
-            --invoice-warning-text: #D4A843;
-            --invoice-danger-bg: rgba(220, 38, 38, 0.22);
-            --invoice-danger-text: #fda4af;
-            --invoice-shadow: 0 20px 40px rgba(2, 6, 23, 0.35);
-            --invoice-brand-gradient: linear-gradient(135deg, #111113 0%, #0A0A0B 100%);
-        }
-
         * {
             box-sizing: border-box;
         }
@@ -64,345 +19,201 @@
         body.invoice-page {
             margin: 0;
             padding: 24px;
-            background: var(--invoice-bg);
-            color: var(--invoice-text);
+            background: #F7F6F0;
+            color: #171717;
             font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
 
         .invoice-shell {
-            width: min(100%, 980px);
+            width: min(100%, 920px);
             margin: 0 auto;
+            background: #FFFFFF;
+            border: 1px solid #3300FF;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(17, 17, 19, 0.05);
         }
 
-        .invoice-header {
-            border: 1px solid var(--invoice-border);
-            border-bottom: 4px solid var(--invoice-primary);
-            border-radius: var(--invoice-radius-xl);
-            padding: 24px;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
-            gap: 16px;
-            background: var(--invoice-brand-gradient);
-            color: #f8fbff;
-            box-shadow: var(--invoice-shadow);
+        /* Top Header Horizontal Bar */
+        .invoice-bar {
+            width: 100%;
+            border: 1.5px solid #3300FF;
+            background: #FFFFFF;
+            border-radius: 4px;
+            margin-bottom: 24px;
         }
 
-        .brand-logo-wrap {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            border: 1px solid var(--invoice-primary);
-            background: #111113;
-            padding: 8px 12px;
-            margin-bottom: 10px;
-            box-shadow: 0 4px 12px rgba(3, 10, 32, 0.15);
+        .invoice-bar table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .brand-logo {
-            display: block;
-            width: auto;
-            height: 28px;
-            filter: none;
-        }
-
-        .invoice-title {
-            margin: 6px 0 0;
-            font-size: clamp(30px, 4.2vw, 38px);
-            line-height: 1.06;
-            color: #fff;
-        }
-
-        .invoice-subtitle {
-            margin: 8px 0 0;
-            font-size: 14px;
-            line-height: 1.55;
-            color: #A0A0A8;
-        }
-
-        .header-right {
-            border: 1px solid rgba(212, 168, 67, 0.3);
-            border-radius: 10px;
-            padding: 14px;
-            background: #0A0A0B;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-self: flex-start;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: fit-content;
-            border-radius: 999px;
-            padding: 4px 10px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: .05em;
-            text-transform: uppercase;
-        }
-
-        .status-paid {
-            background: var(--invoice-success-bg);
-            color: var(--invoice-success-text);
-        }
-
-        .status-pending {
-            background: var(--invoice-warning-bg);
-            color: var(--invoice-warning-text);
-        }
-
-        .status-danger {
-            background: var(--invoice-danger-bg);
-            color: var(--invoice-danger-text);
-        }
-
-        .status-damage {
-            background: #fce7f3;
-            color: #9d174d;
-        }
-
-        .header-total-label {
-            margin: 0;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: .12em;
-            text-transform: uppercase;
-            color: #dbe7ff;
-        }
-
-        .header-total-amount {
-            margin: 0;
-            font-size: 28px;
-            line-height: 1.1;
-            font-weight: 700;
-            color: #fff;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .invoice-grid {
-            margin-top: 16px;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            gap: 14px;
-        }
-
-        .stack {
-            display: grid;
-            gap: 14px;
-        }
-
-        .invoice-card {
-            border: 1px solid var(--invoice-border);
-            border-radius: var(--invoice-radius-lg);
-            background: var(--invoice-surface);
-            padding: 16px;
-            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
-        }
-
-        .card-title {
-            margin: 0;
-            color: var(--invoice-heading);
+        .invoice-bar td {
+            padding: 8px 16px;
+            vertical-align: middle;
             font-size: 13px;
-            font-weight: 700;
-            letter-spacing: .08em;
+            color: #3300FF;
+            font-weight: bold;
+        }
+
+        .invoice-bar .title {
+            font-style: italic;
+            font-size: 15px;
+        }
+
+        .invoice-bar .number {
+            text-align: right;
+        }
+
+        /* Layout Grid */
+        .invoice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Text Styles */
+        .section-label {
+            font-size: 10px;
             text-transform: uppercase;
+            letter-spacing: .08em;
+            color: #555558;
+            margin: 0 0 4px;
+            font-weight: bold;
+        }
+
+        .section-value {
+            font-size: 13px;
+            font-weight: bold;
+            color: #111113;
+            margin: 0 0 12px;
         }
 
         .meta-list {
-            margin-top: 10px;
-            display: grid;
-            gap: 8px;
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .meta-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            font-size: 13px;
+        .meta-list td {
+            padding: 4px 0;
+            font-size: 12px;
         }
 
-        .meta-row span:first-child {
-            color: var(--invoice-muted);
+        .meta-list td.label {
+            color: #555558;
+            width: 40%;
         }
 
-        .meta-row span:last-child {
-            color: var(--invoice-text);
-            font-weight: 600;
+        .meta-list td.value {
+            font-weight: bold;
+            color: #111113;
             text-align: right;
-            font-variant-numeric: tabular-nums;
         }
 
-        .person-name {
-            margin-top: 10px;
-            font-size: 20px;
-            line-height: 1.2;
-            font-weight: 700;
-            color: var(--invoice-heading);
-        }
-
-        .person-lines {
-            margin-top: 8px;
-            display: grid;
-            gap: 4px;
-            color: var(--invoice-muted);
-            font-size: 14px;
-            line-height: 1.45;
-        }
-
-        .rental-summary-value {
-            margin-top: 9px;
-            font-size: 15px;
-            line-height: 1.4;
-            color: var(--invoice-text);
-            font-weight: 600;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .more-details {
-            margin-top: 10px;
-            border-top: 1px dashed var(--invoice-border);
-            padding-top: 10px;
-        }
-
-        .more-details > summary {
-            cursor: pointer;
-            color: var(--invoice-primary);
-            font-size: 12px;
-            font-weight: 600;
-            list-style: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .more-details > summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .more-details > summary::before {
-            content: '+';
-            font-weight: 700;
-        }
-
-        .more-details[open] > summary::before {
-            content: '−';
-        }
-
-        .items-card {
-            margin-top: 16px;
-        }
-
-        .section-header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 8px;
-            align-items: baseline;
-        }
-
-        .section-note {
-            color: var(--invoice-muted);
-            font-size: 12px;
-        }
-
+        /* Items Table */
         .table-wrap {
-            margin-top: 12px;
-            border: 1px solid var(--invoice-border);
-            border-radius: 12px;
-            overflow: auto;
-            background: var(--invoice-surface-soft);
+            margin-bottom: 24px;
+            border: 1px solid #3300FF;
+            border-radius: 6px;
+            overflow: hidden;
         }
 
         .items-table {
             width: 100%;
-            min-width: 760px;
             border-collapse: collapse;
         }
 
         .items-table th {
-            position: sticky;
-            top: 0;
-            z-index: 1;
-            background: var(--invoice-primary-soft);
-            border-bottom: 1px solid var(--invoice-border);
-            color: var(--invoice-heading);
+            background: #3300FF;
+            color: #FFFFFF;
             font-size: 11px;
-            letter-spacing: .08em;
+            font-weight: bold;
             text-transform: uppercase;
-            font-weight: 700;
+            letter-spacing: .06em;
             padding: 10px 12px;
             text-align: left;
         }
 
         .items-table td {
             padding: 10px 12px;
-            border-bottom: 1px solid var(--invoice-border);
-            vertical-align: top;
-            color: var(--invoice-text);
+            border-bottom: 1px solid #3300FF;
+            background: #FFFFFF;
             font-size: 13px;
-        }
-
-        .items-table tbody tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        html[data-theme-resolved='dark'] .items-table tbody tr:nth-child(even),
-        html.dark .items-table tbody tr:nth-child(even) {
-            background: rgba(7, 14, 30, 0.22);
+            color: #111113;
+            vertical-align: top;
         }
 
         .items-table tbody tr:last-child td {
             border-bottom: none;
         }
 
-        .item-title {
+        .items-table tbody tr:nth-child(even) td {
+            background: #F8F7F2;
+        }
+
+        .item-name {
+            font-weight: bold;
             margin: 0;
-            color: var(--invoice-heading);
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 1.35;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
 
-        .item-sub {
-            margin-top: 3px;
-            color: var(--invoice-muted);
-            font-size: 12px;
+        .item-category {
+            font-size: 10px;
+            color: #555558;
+            margin: 2px 0 0;
         }
 
-        .period-main {
-            color: var(--invoice-text);
-            font-size: 13px;
-            font-weight: 600;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .period-sub {
-            margin-top: 2px;
-            color: var(--invoice-muted);
-            font-size: 12px;
-        }
-
-        .num {
+        .items-table th.num,
+        .items-table td.num {
             text-align: right;
-            white-space: nowrap;
             font-variant-numeric: tabular-nums;
         }
 
-        .totals-card {
-            margin: 12px 0 0 auto;
-            width: min(100%, 360px);
-            border: 1px solid var(--invoice-border);
-            border-radius: 12px;
-            background: var(--invoice-surface);
+        /* Bottom Grid */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Penalty block */
+        .penalty-box {
+            border: 1px solid #3300FF;
+            background: #FFFFFF;
+            padding: 14px 16px;
+            border-radius: 6px;
+            height: fit-content;
+        }
+
+        .penalty-title {
+            color: #3300FF;
+            font-weight: bold;
+            font-size: 13px;
+            margin: 0 0 8px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .penalty-list {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 12px;
+            color: #111113;
+            line-height: 1.5;
+        }
+
+        .penalty-list li {
+            margin-bottom: 6px;
+        }
+
+        /* Totals Box */
+        .totals-box {
+            border: 1px solid #3300FF;
+            background: #FFFFFF;
+            border-radius: 6px;
+            margin-bottom: 16px;
             overflow: hidden;
         }
 
@@ -412,136 +223,175 @@
         }
 
         .totals-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--invoice-border);
-            font-size: 13px;
-            color: var(--invoice-text);
-            font-variant-numeric: tabular-nums;
+            padding: 8px 12px;
+            border-bottom: 1px solid #F7F6F0;
+            font-size: 12px;
         }
 
         .totals-table tr:last-child td {
             border-bottom: none;
         }
 
-        .totals-table td:first-child {
-            color: var(--invoice-muted);
+        .totals-table .label {
+            color: #555558;
         }
 
-        .totals-table td:last-child {
+        .totals-table .value {
             text-align: right;
-            font-weight: 600;
+            font-weight: bold;
+            color: #111113;
         }
 
         .totals-table .grand-row td {
-            background: var(--invoice-primary-soft);
-            color: var(--invoice-primary-strong);
-            font-size: 15px;
-            font-weight: 700;
-        }
-
-        .terms-card {
-            margin-top: 14px;
-        }
-
-        .terms-details > summary {
-            cursor: pointer;
-            list-style: none;
-            color: var(--invoice-heading);
-            font-size: 14px;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .terms-details > summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .terms-details > summary::before {
-            content: '▸';
-            color: var(--invoice-primary);
-            transition: transform .2s ease;
-        }
-
-        .terms-details[open] > summary::before {
-            transform: rotate(90deg);
-        }
-
-        .terms-body {
-            margin-top: 8px;
-            color: var(--invoice-muted);
+            background: #3300FF;
+            color: #FFFFFF;
+            font-weight: bold;
             font-size: 13px;
-            line-height: 1.6;
         }
 
-        .terms-body ul {
-            margin: 0;
-            padding-left: 18px;
+        /* Payment details box */
+        .payment-box {
+            border: 1.5px solid #3300FF;
+            background: #FFFFFF;
+            border-radius: 6px;
+            padding: 12px 14px;
         }
 
-        .invoice-foot {
-            margin-top: 12px;
-            border-top: 1px solid var(--invoice-border);
-            padding-top: 12px;
-            color: var(--invoice-muted);
+        .payment-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #3300FF;
+            text-transform: uppercase;
+            margin: 0 0 8px;
+            border-bottom: 1px solid #3300FF;
+            padding-bottom: 4px;
+        }
+
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .payment-table td {
+            padding: 4px 0;
             font-size: 12px;
-            line-height: 1.55;
         }
 
+        .payment-table .label {
+            color: #555558;
+            width: 40%;
+        }
+
+        .payment-table .value {
+            font-weight: bold;
+            color: #111113;
+            text-align: right;
+        }
+
+        /* Footer Section */
+        .footer-section {
+            margin-top: 36px;
+            border-top: 1.5px solid #3300FF;
+            padding-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            display: block;
+            height: 52px;
+            width: auto;
+        }
+
+        .footer-info {
+            text-align: right;
+            font-size: 11px;
+            color: #555558;
+            line-height: 1.4;
+        }
+
+        .status-paid-text {
+            color: #3300FF;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-pending-text {
+            color: #D4A843;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Actions panel */
         .actions {
-            width: min(100%, 980px);
-            margin: 14px auto 0;
+            width: min(100%, 920px);
+            margin: 16px auto 0;
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-end;
             gap: 8px;
         }
 
-        html.invoice-embedded .actions {
-            display: none;
-        }
-
-        html.invoice-embedded .pickup-guide-overlay,
-        html.invoice-embedded .toast {
-            display: none !important;
-        }
-
         .action-btn {
-            border: 1px solid var(--invoice-border);
-            background: var(--invoice-surface);
-            color: var(--invoice-text);
-            border-radius: 12px;
-            padding: 9px 12px;
+            border: 1px solid #3300FF;
+            background: #FFFFFF;
+            color: #3300FF;
+            border-radius: 8px;
+            padding: 10px 16px;
             font-size: 13px;
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
             font-family: inherit;
-        }
-
-        .action-btn.primary {
-            border-color: transparent;
-            background: var(--invoice-primary);
-            color: #fff;
+            transition: all 0.2s ease;
         }
 
         .action-btn:hover {
-            border-color: color-mix(in oklab, var(--invoice-primary) 42%, var(--invoice-border));
-            color: var(--invoice-primary-strong);
+            background: #3300FF;
+            color: #FFFFFF;
         }
 
-        .action-btn.primary:hover {
-            background: var(--invoice-primary-strong);
-            color: #fff;
+        /* Embedded overrides */
+        html.invoice-embedded body.invoice-page {
+            padding: 0;
+            background: #FFFFFF;
         }
 
-        .action-btn[aria-disabled='true'] {
-            opacity: .55;
-            pointer-events: none;
-            cursor: not-allowed;
+        html.invoice-embedded .invoice-shell {
+            border: none;
+            box-shadow: none;
+            padding: 10px;
         }
 
+        html.invoice-embedded .actions {
+            display: none !important;
+        }
+
+        /* Responsive Layouts */
+        @media (max-width: 768px) {
+            .invoice-shell {
+                padding: 16px;
+            }
+
+            .invoice-grid,
+            .bottom-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .footer-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .footer-info {
+                text-align: left;
+            }
+        }
+
+        /* Toast styling */
         .toast {
             position: fixed;
             right: 18px;
@@ -555,225 +405,12 @@
             transform: translateY(8px);
             pointer-events: none;
             transition: .2s ease;
+            z-index: 99999;
         }
 
         .toast.show {
             opacity: 1;
             transform: translateY(0);
-        }
-
-        .pickup-guide-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 120;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 14px;
-            background: rgba(2, 6, 23, 0.62);
-        }
-
-        .pickup-guide-overlay.is-visible {
-            display: flex;
-        }
-
-        .pickup-guide-card {
-            width: min(100%, 620px);
-            border: 1px solid var(--invoice-border);
-            border-radius: 16px;
-            background: var(--invoice-surface);
-            box-shadow: var(--invoice-shadow);
-            overflow: hidden;
-        }
-
-        .pickup-guide-head {
-            padding: 16px 18px;
-            background: var(--invoice-primary-soft);
-            border-bottom: 1px solid var(--invoice-border);
-        }
-
-        .pickup-guide-title {
-            margin: 0;
-            color: var(--invoice-heading);
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .pickup-guide-subtitle {
-            margin: 6px 0 0;
-            color: var(--invoice-muted);
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .pickup-guide-body {
-            padding: 16px 18px;
-            display: grid;
-            gap: 10px;
-        }
-
-        .pickup-guide-item {
-            border: 1px solid var(--invoice-border);
-            border-radius: 12px;
-            background: var(--invoice-surface-soft);
-            padding: 11px 12px;
-        }
-
-        .pickup-guide-item strong {
-            display: block;
-            color: var(--invoice-heading);
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-
-        .pickup-guide-item p {
-            margin: 0;
-            color: var(--invoice-text);
-            font-size: 13px;
-            line-height: 1.55;
-        }
-
-        .pickup-guide-item .receipt-code {
-            margin-top: 6px;
-            font-weight: 700;
-            color: var(--invoice-primary-strong);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .pickup-guide-item .pickup-name {
-            margin-top: 4px;
-            color: var(--invoice-muted);
-            font-size: 12px;
-        }
-
-        .pickup-guide-actions {
-            padding: 0 18px 18px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: flex-end;
-        }
-
-        .pickup-guide-close {
-            border: 0;
-            border-radius: 10px;
-            background: var(--invoice-primary);
-            color: #fff;
-            padding: 9px 14px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .pickup-guide-close:hover {
-            background: var(--invoice-primary-strong);
-        }
-
-        @media (max-width: 920px) {
-            body.invoice-page {
-                padding: 14px;
-            }
-
-            .invoice-header {
-                grid-template-columns: 1fr;
-            }
-
-            .invoice-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .invoice-shell {
-                width: 100%;
-            }
-
-            .invoice-header,
-            .invoice-card {
-                padding: 14px;
-            }
-
-            .header-total-amount {
-                font-size: 24px;
-            }
-
-            .actions {
-                justify-content: stretch;
-            }
-
-            .action-btn {
-                flex: 1 1 calc(50% - 8px);
-                text-align: center;
-            }
-
-            .totals-card {
-                width: 100%;
-            }
-        }
-
-        @media print {
-            @page {
-                size: auto;
-                margin: 10mm;
-            }
-
-            :root,
-            html.dark,
-            html[data-theme-resolved='dark'] {
-                --invoice-bg: #ffffff;
-                --invoice-surface: #ffffff;
-                --invoice-surface-soft: #ffffff;
-                --invoice-border: #d6deed;
-                --invoice-text: #0f172a;
-                --invoice-muted: #64748b;
-                --invoice-heading: #0f172a;
-                --invoice-primary: #1d4ed8;
-                --invoice-primary-strong: #1d4ed8;
-                --invoice-primary-soft: #eef3ff;
-                --invoice-shadow: none;
-            }
-
-            body.invoice-page {
-                background: #fff !important;
-                padding: 0;
-            }
-
-            .invoice-shell {
-                width: 100%;
-            }
-
-            .invoice-header,
-            .invoice-card,
-            .totals-card {
-                box-shadow: none;
-            }
-
-            .actions,
-            .toast,
-            .pickup-guide-overlay {
-                display: none !important;
-            }
-
-            .table-wrap {
-                overflow: visible;
-            }
-
-            .items-table th {
-                position: static;
-            }
-
-            .terms-details > summary::before {
-                display: none;
-            }
-
-            .terms-details > summary {
-                cursor: default;
-            }
-
-            .terms-body {
-                display: block !important;
-            }
         }
     </style>
 </head>
@@ -855,18 +492,14 @@
         $grandTotal = max($subtotal + $tax + $shipping + $penalty - $discount, 0);
 
         $statusRaw = strtolower((string) ($order->status_pembayaran ?? 'pending'));
-        $statusConfig = match ($statusRaw) {
-            'paid' => ['label' => __('ui.invoice.status.paid'), 'class' => 'status-paid'],
-            'pending' => ['label' => __('ui.invoice.status.pending'), 'class' => 'status-pending'],
-            'expired' => ['label' => __('ui.invoice.status.expired'), 'class' => 'status-danger'],
-            'failed', 'deny', 'cancel' => ['label' => __('ui.invoice.status.failed'), 'class' => 'status-danger'],
-            'refunded' => ['label' => __('ui.invoice.status.refunded'), 'class' => 'status-danger'],
-            default => ['label' => strtoupper($statusRaw), 'class' => 'status-pending'],
+        $statusLabelText = match ($statusRaw) {
+            'paid' => __('ui.invoice.status.paid'),
+            'pending' => __('ui.invoice.status.pending'),
+            'expired' => __('ui.invoice.status.expired'),
+            'failed', 'deny', 'cancel' => __('ui.invoice.status.failed'),
+            'refunded' => __('ui.invoice.status.refunded'),
+            default => strtoupper($statusRaw),
         };
-
-        if ($penalty > 0 && $statusRaw === 'paid') {
-            $statusConfig = ['label' => __('ui.invoice.status.damage_invoice'), 'class' => 'status-damage'];
-        }
 
         $rentalStart = $order->rental_start_date;
         $rentalEnd = $order->rental_end_date;
@@ -901,242 +534,183 @@
             ->trim()
             ->limit(100)
             ->value();
-        $pickupAddressRaw = (string) setting('footer.address', $footerAddressRaw);
-        $pickupAddressLines = collect(preg_split('/\R+/', trim((string) strip_tags($pickupAddressRaw))))
-            ->map(static fn ($line) => trim((string) $line))
-            ->filter()
-            ->values();
-        if ($pickupAddressLines->isEmpty() && $footerAddress !== '') {
-            $pickupAddressLines = collect([$footerAddress]);
-        }
-        $pickupRecipientName = (string) ($profile?->full_name ?? $order->user->name ?? '-');
-        $pickupGuideStorageKey = 'manake.invoice_pickup_guide_seen.' . md5((string) $invoiceId);
+
+        // Visual helper for Event Name / Film Title fallback
+        $eventTitle = $order->notes ?: ($order->order_number ?: '-');
     @endphp
 
     <main class="invoice-shell">
-        <header class="invoice-header" aria-label="Invoice Header">
-            <div>
-                <span class="brand-logo-wrap">
-                    <img src="{{ site_asset('manake-logo-white.png') }}" alt="Manake" class="brand-logo">
-                </span>
-                <h1 class="invoice-title">{{ __('ui.invoice.title') }}</h1>
-                <p class="invoice-subtitle">{{ __('ui.invoice.subtitle') }}</p>
-            </div>
-            <aside class="header-right" aria-label="Invoice Summary Header">
-                <span class="status-badge {{ $statusConfig['class'] }}">{{ $statusConfig['label'] }}</span>
-                <p class="header-total-label">{{ __('ui.invoice.header_total') }}</p>
-                <p class="header-total-amount">{{ $formatCurrency($grandTotal) }}</p>
-            </aside>
+        <!-- Top Horizontal Bar -->
+        <header class="invoice-bar" aria-label="Invoice Header">
+            <table>
+                <tr>
+                    <td class="title">Invoice</td>
+                    <td class="number">No. {{ $invoiceId }}</td>
+                </tr>
+            </table>
         </header>
 
+        <!-- Customer / Date Block -->
         <section class="invoice-grid" aria-label="Invoice Details">
-            <div class="stack">
-                <article class="invoice-card">
-                    <h2 class="card-title">{{ __('ui.invoice.sections.billed_to') }}</h2>
-                    <p class="person-name">{{ $profile?->full_name ?? $order->user->name ?? '-' }}</p>
-                    <div class="person-lines">
-                        <span>{{ $order->user->email ?? '-' }}</span>
-                        <span>{{ $profile?->phone ?: ($order->user->phone ?? '-') }}</span>
-                        <span>{{ $profile?->address_text ?: ($order->user->address ?? '-') }}</span>
-                    </div>
-                </article>
+            <div>
+                <p class="section-label">Issued to:</p>
+                <p class="section-value">{{ $profile?->full_name ?? $order->user->name ?? '-' }}</p>
+                
+                <p class="section-label">Event Name/Film Title:</p>
+                <p class="section-value">{{ $eventTitle }}</p>
 
-                <article class="invoice-card">
-                    <h2 class="card-title">{{ __('ui.invoice.sections.rental_summary') }}</h2>
-                    <div class="meta-list">
-                        <div class="meta-row">
-                            <span>{{ __('ui.invoice.meta.rental_period') }}</span>
-                            <span>
-                                @if ($rentalStart && $rentalEnd)
-                                    {{ $formatDate($rentalStart, false) }} - {{ $formatDate($rentalEnd, false) }}
-                                @else
-                                    -
-                                @endif
-                            </span>
-                        </div>
-                        <div class="meta-row">
-                            <span>{{ __('ui.invoice.meta.rental_days') }}</span>
-                            <span>{{ $rentalDays > 0 ? __('ui.invoice.days_count', ['count' => $rentalDays]) : '-' }}</span>
-                        </div>
-                    </div>
-                </article>
+                <p class="section-label">Address / Phone:</p>
+                <div class="line" style="font-size: 11px; color: #171717;">
+                    {{ $profile?->address_text ?: ($order->user->address ?? '-') }}<br>
+                    {{ $profile?->phone ?: ($order->user->phone ?? '-') }}
+                </div>
             </div>
-
-            <div class="stack">
-                <article class="invoice-card">
-                    <h2 class="card-title">{{ __('ui.invoice.sections.invoice_meta') }}</h2>
-                    <div class="meta-list">
-                        @if ($showSeparateOrderReference)
-                            <div class="meta-row">
-                                <span>{{ __('ui.invoice.meta.invoice_id') }}</span>
-                                <span>{{ $invoiceId }}</span>
-                            </div>
-                            <div class="meta-row">
-                                <span>{{ __('ui.invoice.meta.order_id') }}</span>
-                                <span>{{ $orderReference }}</span>
-                            </div>
-                        @else
-                            <div class="meta-row">
-                                <span>{{ __('ui.invoice.meta.invoice_order_id') }}</span>
-                                <span>{{ $invoiceId }}</span>
-                            </div>
-                        @endif
-                        <div class="meta-row">
-                            <span>{{ __('ui.invoice.meta.issued_at') }}</span>
-                            <span>{{ $formatDate($issuedAt) }}</span>
-                        </div>
-                        @if ($order->paid_at)
-                            <div class="meta-row">
-                                <span>{{ __('ui.invoice.meta.paid_at') }}</span>
-                                <span>{{ $formatDate($order->paid_at) }}</span>
-                            </div>
-                        @endif
-                    </div>
-
-                    <details class="more-details">
-                        <summary>{{ __('ui.invoice.sections.more_details') }}</summary>
-                        <div class="meta-list mt-2">
-                            <div class="meta-row">
-                                <span>{{ __('ui.invoice.meta.printed_at') }}</span>
-                                <span>{{ $formatDate($printedAt) }}</span>
-                            </div>
-                        </div>
-                    </details>
-                </article>
-
-                <article class="invoice-card">
-                    <h2 class="card-title">{{ __('ui.invoice.sections.payment_details') }}</h2>
-                    <div class="meta-list">
-                        <div class="meta-row">
-                            <span>{{ __('ui.invoice.meta.method') }}</span>
-                            <span>{{ $paymentMethodLabel }}</span>
-                        </div>
-                        <div class="meta-row">
-                            <span>{{ __('ui.invoice.meta.bank') }}</span>
-                            <span>{{ strtoupper((string) $bankName) }}</span>
-                        </div>
-                        <div class="meta-row">
-                            <span>{{ __('ui.invoice.meta.reference') }}</span>
-                            <span>{{ $referenceNumber ?: '-' }}</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section class="invoice-card items-card" aria-label="{{ __('ui.invoice.sections.items') }}">
-            <div class="section-header">
-                <h2 class="card-title">{{ __('ui.invoice.sections.items') }}</h2>
-                <span class="section-note">{{ $order->items->count() }} item</span>
-            </div>
-
-            <div class="table-wrap" role="region" aria-label="{{ __('ui.invoice.sections.items') }}" tabindex="0">
-                <table class="items-table">
-                    <thead>
+            <div>
+                <p class="section-label" style="text-align: right;">Date & Details:</p>
+                <table class="meta-list">
+                    <tr>
+                        <td class="label">Date:</td>
+                        <td class="value">{{ $formatDate($issuedAt, false) }}</td>
+                    </tr>
+                    @if ($showSeparateOrderReference)
                         <tr>
-                            <th>{{ __('ui.invoice.table.item') }}</th>
-                            <th>{{ __('ui.invoice.table.period') }}</th>
-                            <th class="num">{{ __('ui.invoice.table.qty') }}</th>
-                            <th class="num">{{ __('ui.invoice.table.rate') }}</th>
-                            <th class="num">{{ __('ui.invoice.table.line_total') }}</th>
+                            <td class="label">Order Ref:</td>
+                            <td class="value">{{ $orderReference }}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($order->items as $item)
-                            @php
-                                $itemStart = $item->rental_start_date ? \Carbon\Carbon::parse($item->rental_start_date) : $rentalStart;
-                                $itemEnd = $item->rental_end_date ? \Carbon\Carbon::parse($item->rental_end_date) : $rentalEnd;
-                                $itemDays = max((int) ($item->rental_days ?? (($itemStart && $itemEnd) ? $itemStart->diffInDays($itemEnd) + 1 : 1)), 1);
-                                $itemPeriod = ($itemStart && $itemEnd)
-                                    ? ($formatDate($itemStart, false) . ' - ' . $formatDate($itemEnd, false))
-                                    : '-';
-                                $lineTotal = (int) ($item->subtotal ?? ((int) ($item->price ?? 0) * (int) ($item->qty ?? 1) * $itemDays));
-                            @endphp
-                            <tr>
-                                <td>
-                                    <p class="item-title">{{ $item->equipment->name ?? 'Alat' }}</p>
-                                    <p class="item-sub">{{ $item->equipment->category->name ?? __('ui.cart.gear_generic') }}</p>
-                                </td>
-                                <td>
-                                    <p class="period-main">{{ $itemPeriod }}</p>
-                                    <p class="period-sub">{{ __('ui.invoice.days_count', ['count' => $itemDays]) }}</p>
-                                </td>
-                                <td class="num">{{ (int) ($item->qty ?? 1) }}</td>
-                                <td class="num">{{ $formatCurrency((int) ($item->price ?? 0)) }} {{ __('ui.invoice.per_day_short') }}</td>
-                                <td class="num">{{ $formatCurrency($lineTotal) }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" style="text-align:center; color: var(--invoice-muted);">{{ __('ui.invoice.table.empty') }}</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="totals-card" aria-label="{{ __('ui.invoice.sections.totals') }}">
-                <table class="totals-table">
-                    @include('account.orders.partials.totals-rows', ['visibleTotalsRows' => $visibleTotalsRows, 'formatCurrency' => $formatCurrency, 'grandTotal' => $grandTotal])
+                    @endif
+                    <tr>
+                        <td class="label">Status:</td>
+                        <td class="value">
+                            <span class="{{ $statusRaw === 'paid' ? 'status-paid-text' : 'status-pending-text' }}">
+                                {{ $statusLabelText }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Rental Period:</td>
+                        <td class="value">
+                            @if ($rentalStart && $rentalEnd)
+                                {{ $formatDate($rentalStart, false) }} - {{ $formatDate($rentalEnd, false) }} ({{ $rentalDays }} days)
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
                 </table>
             </div>
         </section>
 
-        <section class="invoice-card terms-card">
-            <details class="terms-details">
-                <summary>{{ __('ui.invoice.sections.terms') }}</summary>
-                <div class="terms-body">
-                    @include('account.orders.partials.terms-list', ['terms' => $terms])
-                </div>
-            </details>
-
-            <div class="invoice-foot">
-                <strong>Manake</strong> • {{ $contactPhone }} • {{ $contactEmail }} • {{ $footerAddress }}<br>
-                {{ __('ui.invoice.auto_note') }}
-            </div>
-        </section>
-    </main>
-
-    <div
-        id="pickup-guide-modal"
-        class="pickup-guide-overlay"
-        data-storage-key="{{ $pickupGuideStorageKey }}"
-        data-enabled="{{ $statusRaw === 'paid' ? '1' : '0' }}"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="pickup-guide-title"
-    >
-        <div class="pickup-guide-card">
-            <div class="pickup-guide-head">
-                <h2 id="pickup-guide-title" class="pickup-guide-title">{{ __('ui.invoice.pickup_popup.title') }}</h2>
-                <p class="pickup-guide-subtitle">{{ __('ui.invoice.pickup_popup.subtitle') }}</p>
-            </div>
-            <div class="pickup-guide-body">
-                <div class="pickup-guide-item">
-                    <strong>{{ __('ui.invoice.pickup_popup.where_title') }}</strong>
-                    <p>
-                        @foreach ($pickupAddressLines as $line)
-                            {{ $line }}@if (! $loop->last)<br>@endif
-                        @endforeach
-                    </p>
-                </div>
-                <div class="pickup-guide-item">
-                    <strong>{{ __('ui.invoice.pickup_popup.receipt_title') }}</strong>
-                    <p>{{ __('ui.invoice.pickup_popup.receipt_body') }}</p>
-                    <p class="receipt-code">{{ __('ui.invoice.pickup_popup.receipt_label') }}: {{ $invoiceId }}</p>
-                    <p class="pickup-name">{{ $pickupRecipientName }}</p>
-                </div>
-                <div class="pickup-guide-item">
-                    <strong>{{ __('ui.invoice.pickup_popup.delegate_title') }}</strong>
-                    <p>{{ __('ui.invoice.pickup_popup.delegate_body') }}</p>
-                </div>
-            </div>
-            <div class="pickup-guide-actions">
-                <button type="button" class="pickup-guide-close" data-close-pickup-guide>
-                    {{ __('ui.invoice.pickup_popup.close_button') }}
-                </button>
-            </div>
+        <!-- Item Table -->
+        <div class="table-wrap">
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th class="num">Unit Price</th>
+                        <th class="num">Qty</th>
+                        <th class="num">Days</th>
+                        <th class="num">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($order->items as $item)
+                        @php
+                            $itemStart = $item->rental_start_date ? \Carbon\Carbon::parse($item->rental_start_date) : $rentalStart;
+                            $itemEnd = $item->rental_end_date ? \Carbon\Carbon::parse($item->rental_end_date) : $rentalEnd;
+                            $itemDays = max((int) ($item->rental_days ?? (($itemStart && $itemEnd) ? $itemStart->diffInDays($itemEnd) + 1 : 1)), 1);
+                            $lineTotal = (int) ($item->subtotal ?? ((int) ($item->price ?? 0) * (int) ($item->qty ?? 1) * $itemDays));
+                        @endphp
+                        <tr>
+                            <td>
+                                <p class="item-name">{{ $item->equipment->name ?? 'Alat' }}</p>
+                                <p class="item-category">{{ $item->equipment->category->name ?? __('ui.cart.gear_generic') }}</p>
+                            </td>
+                            <td class="num">{{ $formatCurrency((int) ($item->price ?? 0)) }}</td>
+                            <td class="num">{{ (int) ($item->qty ?? 1) }}</td>
+                            <td class="num">{{ $itemDays }}</td>
+                            <td class="num">{{ $formatCurrency($lineTotal) }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="text-align:center; color:#555558;">{{ __('ui.invoice.table.empty') }}</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
-    </div>
+
+        <!-- Lower Section Layout -->
+        <section class="bottom-grid">
+            <!-- Penalty Section -->
+            <div class="penalty-box">
+                <p class="penalty-title">Penalty</p>
+                <ol class="penalty-list">
+                    <li>Late returns
+                        <ul style="margin: 2px 0; padding-left: 14px; list-style-type: lower-alpha;">
+                            <li>3 hours (30%)</li>
+                            <li>6 hours (50%)</li>
+                            <li>9 hours (100%)</li>
+                        </ul>
+                    </li>
+                    <li>Unit damaged per item (50%)</li>
+                    <li>Unit lost per item (100%)</li>
+                </ol>
+            </div>
+
+            <div>
+                <!-- Totals Table -->
+                <div class="totals-box">
+                    <table class="totals-table">
+                        @foreach ($visibleTotalsRows as $row)
+                            <tr>
+                                <td class="label">{{ $row['label'] }}</td>
+                                <td class="value">
+                                    {{ !empty($row['negative']) ? '-' : '' }}{{ $formatCurrency($row['amount']) }}
+                                </td>
+                            </tr>
+                        @endforeach
+                        <tr class="grand-row">
+                            <td style="border-bottom-left-radius: 4px;">Total</td>
+                            <td class="value" style="color: #FFFFFF; border-bottom-right-radius: 4px; text-align: right;">{{ $formatCurrency($grandTotal) }}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Payment Details Box -->
+                <div class="payment-box">
+                    <p class="payment-title">Payment details</p>
+                    <table class="payment-table">
+                        <tr>
+                            <td class="label">Method:</td>
+                            <td class="value">{{ $paymentMethodLabel }} ({{ strtoupper((string) $bankName) }})</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Ref. Number:</td>
+                            <td class="value">{{ $referenceNumber ?: '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label" style="border-top: 1px dashed #3300FF; padding-top: 4px; margin-top: 2px;">Account:</td>
+                            <td class="value" style="border-top: 1px dashed #3300FF; padding-top: 4px; margin-top: 2px;">
+                                Fikri Mulya Rachmat<br>
+                                0851 5664 9015
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Section -->
+        <footer class="footer-section">
+            <img src="{{ site_asset('manake-logo-blue.png') }}" alt="Manake Logo" class="footer-logo">
+            <div class="footer-info">
+                <strong>Manake Rental</strong><br>
+                WhatsApp: {{ $contactPhone }}<br>
+                Email: {{ $contactEmail }}<br>
+                Address: {{ $footerAddress }}
+            </div>
+        </footer>
+    </main>
 
     <div class="actions" aria-label="Invoice Actions">
         <a href="{{ route('booking.history') }}" class="action-btn">{{ __('ui.orders.back_to_history') }}</a>
@@ -1150,7 +724,6 @@
         (function () {
             const toast = document.getElementById('invoice-toast');
             const shareButton = document.getElementById('share-invoice-btn');
-            const pickupGuideModal = document.getElementById('pickup-guide-modal');
             const invoiceId = @json($invoiceId);
 
             const showToast = (message) => {
@@ -1180,61 +753,6 @@
                     showToast(@json(__('ui.invoice.toast.failed')));
                 }
             });
-
-            if (pickupGuideModal) {
-                const isEnabled = pickupGuideModal.dataset.enabled === '1';
-                const storageKey = pickupGuideModal.dataset.storageKey || '';
-                const closeButtons = pickupGuideModal.querySelectorAll('[data-close-pickup-guide]');
-
-                const closeGuide = () => {
-                    pickupGuideModal.classList.remove('is-visible');
-                    document.body.style.overflow = '';
-
-                    if (storageKey) {
-                        try {
-                            localStorage.setItem(storageKey, '1');
-                        } catch (error) {
-                            // ignore storage failures
-                        }
-                    }
-                };
-
-                if (isEnabled) {
-                    let shouldOpen = true;
-
-                    if (storageKey) {
-                        try {
-                            shouldOpen = localStorage.getItem(storageKey) !== '1';
-                        } catch (error) {
-                            shouldOpen = true;
-                        }
-                    }
-
-                    if (shouldOpen) {
-                        window.setTimeout(() => {
-                            pickupGuideModal.classList.add('is-visible');
-                            document.body.style.overflow = 'hidden';
-                        }, 350);
-                    }
-                }
-
-                closeButtons.forEach((button) => {
-                    button.addEventListener('click', closeGuide);
-                });
-
-                pickupGuideModal.addEventListener('click', (event) => {
-                    if (event.target === pickupGuideModal) {
-                        closeGuide();
-                    }
-                });
-
-                document.addEventListener('keydown', (event) => {
-                    if (event.key === 'Escape' && pickupGuideModal.classList.contains('is-visible')) {
-                        closeGuide();
-                    }
-                });
-            }
-
         })();
     </script>
 </body>
