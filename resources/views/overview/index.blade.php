@@ -175,8 +175,8 @@
         </article>
     </div>
 
-    <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.85fr)] lg:items-stretch">
-        <section class="history-card-in flex h-full flex-col rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 160ms">
+    <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.85fr)] lg:items-start">
+        <section class="history-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 160ms">
             <div class="flex items-center justify-between gap-4">
                 <div>
                     <h3 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('Rental Aktif') }}</h3>
@@ -321,14 +321,14 @@
             </div>
         </section>
 
-        <section class="history-card-in flex h-full flex-col rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 220ms">
+        <section class="history-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 220ms">
             <div>
                 <h3 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('Riwayat Terbaru') }}</h3>
                 <p class="mt-1 text-sm text-[#A0A0A8]">{{ __('Pesanan terbaru, pembayaran, dan akses detail order Anda.') }}</p>
             </div>
 
-            <div class="mt-5 flex-1 space-y-3 lg:max-h-[540px] lg:overflow-y-auto lg:pr-1">
-                @forelse ($recentBookings as $order)
+            <div class="mt-5 space-y-3">
+                @forelse ($recentBookings->take(3) as $order)
                     @php
                         $orderNumber = $order->order_number ?? ('ORD-' . $order->id);
                     @endphp
@@ -374,11 +374,17 @@
                     </div>
                 @endforelse
             </div>
+
+            @if ($recentBookings->count() > 3)
+                <p class="mt-4 text-center text-xs text-[#7C7C84]">
+                    {{ __('Gunakan pagination di bawah untuk melihat riwayat lainnya.') }}
+                </p>
+            @endif
         </section>
     </div>
 
     @if (isset($orders) && method_exists($orders, 'links'))
-        <div class="mt-6">
+        <div class="mt-6 pr-16 sm:pr-0">
             {{ $orders->links() }}
         </div>
     @endif
