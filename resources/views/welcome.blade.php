@@ -184,7 +184,7 @@
                 color: #F8FAFC !important;
                 text-shadow: 0 3px 18px rgba(0,0,0,0.55), 0 14px 38px rgba(0,0,0,0.35) !important;
             }
-            html[data-theme-resolved="light"] .manake-hero-island .hero-title-text span,
+            html[data-theme-resolved="light"] .manake-hero-island .hero-title-text span:not(.hero-rotating-word):not(.hero-rotating-word *),
             html[data-theme-resolved="light"] .manake-hero-island .hero-title-text .inline-block {
                 color: #F8FAFC !important;
             }
