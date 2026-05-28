@@ -321,14 +321,14 @@
             </div>
         </section>
 
-        <section class="history-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 220ms">
+        <section class="history-card-in self-start rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 220ms">
             <div>
                 <h3 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('Riwayat Terbaru') }}</h3>
                 <p class="mt-1 text-sm text-[#A0A0A8]">{{ __('Pesanan terbaru, pembayaran, dan akses detail order Anda.') }}</p>
             </div>
 
             <div class="mt-5 space-y-3">
-                @forelse ($recentBookings->take(3) as $order)
+                @forelse ($recentBookings->take(2) as $order)
                     @php
                         $orderNumber = $order->order_number ?? ('ORD-' . $order->id);
                     @endphp
@@ -375,16 +375,14 @@
                 @endforelse
             </div>
 
-            @if ($recentBookings->count() > 3)
-                <p class="mt-4 text-center text-xs text-[#7C7C84]">
-                    {{ __('Gunakan pagination di bawah untuk melihat riwayat lainnya.') }}
-                </p>
-            @endif
+            <p class="pt-3 text-xs text-[#7C7C84]">
+                {{ __('Gunakan pagination di bawah untuk melihat riwayat lainnya.') }}
+            </p>
         </section>
     </div>
 
     @if (isset($orders) && method_exists($orders, 'links'))
-        <div class="mt-6 pr-16 sm:pr-0">
+        <div class="mt-6 pr-20 sm:pr-0">
             {{ $orders->links() }}
         </div>
     @endif
