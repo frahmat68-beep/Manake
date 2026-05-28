@@ -45,20 +45,15 @@
     @endphp
 
     <section class="min-h-screen bg-[#0A0A0B] py-12 md:py-16 text-[#E8E8EC] selection:bg-amber-500/10 selection:text-amber-500">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10">
             
-            <!-- 1. Hero Section: Balanced 2-Column Card -->
+            <!-- 1. Hero Section: Clean 2-Column Card -->
             <div class="relative overflow-hidden rounded-3xl border border-[#1A1A1E] bg-[#111113]/70 p-6 sm:p-8 lg:p-10 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)] backdrop-blur-md">
                 <div class="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-[#D4A843]/5 blur-3xl" aria-hidden="true"></div>
                 
-                <div class="relative z-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-center">
+                <div class="relative z-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] items-center">
                     <!-- Left Side Info -->
-                    <div class="space-y-5">
-                        <span class="inline-flex items-center gap-1.5 rounded-full border border-[#D4A843]/20 bg-[#D4A843]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4A843]">
-                            <span class="h-1.5 w-1.5 rounded-full bg-[#D4A843] animate-pulse" aria-hidden="true"></span>
-                            Production Support Hub
-                        </span>
-                        
+                    <div class="space-y-4">
                         <h1 class="text-[clamp(2rem,4.5vw,3rem)] font-extrabold leading-[1.1] tracking-tight text-[#E8E8EC]">
                             Hubungi Tim <span class="text-[#D4A843]">Manake</span>
                         </h1>
@@ -80,11 +75,8 @@
                     </div>
 
                     <!-- Right Side: Siapkan Detail Sewa Checklist -->
-                    <div class="rounded-2xl border border-white/5 bg-[#0A0A0B]/60 p-5 sm:p-6 space-y-4">
-                        <div>
-                            <h3 class="text-sm font-bold text-[#E8E8EC] uppercase tracking-wider">Siapkan detail sewa</h3>
-                            <p class="text-xs text-[#A0A0A8] mt-1">Konsultasikan kebutuhan produksi Anda secara instan.</p>
-                        </div>
+                    <div class="rounded-2xl border border-white/5 bg-[#0A0A0B]/60 p-5 sm:p-6 space-y-3.5">
+                        <h3 class="text-sm font-bold text-[#E8E8EC] uppercase tracking-wider">Siapkan detail sewa</h3>
                         
                         <ul class="grid gap-2 text-xs text-[#A0A0A8]">
                             <li class="flex items-center gap-2.5">
@@ -108,83 +100,80 @@
                 </div>
             </div>
 
-            <!-- 2. Contact Channel Cards: Symmetrical 3-Column Grid -->
+            <!-- 2. Contact Channel Cards: Clean 3-Column Grid -->
             <div class="grid gap-5 md:grid-cols-3">
                 <!-- Card A: WhatsApp -->
                 <div class="rounded-3xl border border-[#D4A843]/20 bg-[#D4A843]/5 p-6 flex flex-col justify-between h-full transition duration-300 hover:border-[#D4A843]/40">
-                    <div class="space-y-4">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4A843]/10 border border-[#D4A843]/20 text-[#D4A843]" aria-hidden="true">
+                    <div class="flex items-start gap-4">
+                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#D4A843]/10 border border-[#D4A843]/20 text-[#D4A843]" aria-hidden="true">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.62.962 3.22 1.463 4.832 1.464 5.489 0 9.954-4.468 9.957-9.96.002-2.66-1.023-5.158-2.883-7.02C16.69 1.777 14.2 1.752 11.998 1.752c-5.49 0-9.954 4.469-9.957 9.961-.002 1.814.49 3.586 1.42 5.178l-.99 3.616 3.73-.978zM17.06 14.54c-.274-.138-1.62-.8-1.874-.892-.252-.093-.437-.138-.62.138-.184.276-.713.892-.873 1.077-.16.184-.32.207-.593.07-.273-.138-1.155-.426-2.2-1.358-.813-.725-1.36-1.62-1.52-1.896-.16-.276-.017-.425.12-.562.123-.123.273-.32.41-.482.137-.16.183-.275.273-.458.09-.184.046-.344-.022-.482-.068-.138-.62-1.492-.85-2.043-.224-.54-.45-.466-.62-.475-.16-.008-.344-.01-.527-.01-.184 0-.482.07-.733.344-.252.276-.96.938-.96 2.29 0 1.35 1.054 2.656 1.202 2.84.148.184 2.075 3.17 5.027 4.444.702.302 1.25.483 1.677.62.705.224 1.346.192 1.854.116.565-.084 1.62-.662 1.848-1.298.227-.636.227-1.182.16-1.297-.07-.115-.25-.184-.523-.322z"/></svg>
                         </div>
-                        <div>
-                            <span class="text-[9px] font-bold uppercase tracking-wider text-[#D4A843]">WhatsApp</span>
-                            <h3 class="text-base font-bold text-[#E8E8EC] mt-0.5">Hotline</h3>
-                            <p class="text-xs text-[#A0A0A8] mt-1">Cepat & praktis untuk cek ketersediaan alat langsung via chat.</p>
-                        </div>
-                        <div class="flex flex-col gap-2 pt-2">
-                            @forelse ($contactWhatsappEntries as $whatsappNumber)
-                                @php $whatsappHref = $buildWhatsappHref($whatsappNumber); @endphp
-                                @if ($whatsappHref)
-                                    <a href="{{ $whatsappHref }}" target="_blank" rel="noopener noreferrer" class="inline-flex w-full items-center justify-center rounded-xl bg-[#D4A843] py-2 text-xs font-bold text-[#0A0A0B] hover:bg-[#e0ba5d] transition duration-300" aria-label="Hubungi WhatsApp {{ $whatsappNumber }}">
-                                        {{ $whatsappNumber }}
-                                    </a>
-                                @else
-                                    <span class="inline-flex items-center justify-center rounded-xl bg-[#111113] py-2 text-xs font-semibold text-[#E8E8EC]">
-                                        {{ $whatsappNumber }}
-                                    </span>
-                                @endif
-                            @empty
-                                <span class="text-xs text-[#A0A0A8]">{{ $contactWhatsapp }}</span>
-                            @endforelse
+                        <div class="space-y-1">
+                            <h3 class="text-base sm:text-lg font-bold text-[#E8E8EC]">WhatsApp</h3>
+                            <p class="text-xs text-[#A0A0A8]">Cek ketersediaan alat langsung via chat.</p>
+                            <div class="flex flex-col gap-2 pt-2">
+                                @forelse ($contactWhatsappEntries as $whatsappNumber)
+                                    @php $whatsappHref = $buildWhatsappHref($whatsappNumber); @endphp
+                                    @if ($whatsappHref)
+                                        <a href="{{ $whatsappHref }}" target="_blank" rel="noopener noreferrer" class="inline-flex w-full items-center justify-center rounded-xl bg-[#D4A843] py-2 text-xs font-bold text-[#0A0A0B] hover:bg-[#e0ba5d] transition duration-300" aria-label="Hubungi WhatsApp {{ $whatsappNumber }}">
+                                            {{ $whatsappNumber }}
+                                        </a>
+                                    @else
+                                        <span class="inline-flex items-center justify-center rounded-xl bg-[#111113] py-2 text-xs font-semibold text-[#E8E8EC]">
+                                            {{ $whatsappNumber }}
+                                        </span>
+                                    @endif
+                                @empty
+                                    <span class="text-xs text-[#A0A0A8]">{{ $contactWhatsapp }}</span>
+                                @endforelse
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Card B: Email -->
                 <div class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 flex flex-col justify-between h-full transition duration-300 hover:border-white/20">
-                    <div class="space-y-4">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] border border-white/10 text-[#A0A0A8]" aria-hidden="true">
+                    <div class="flex items-start gap-4">
+                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/[0.03] border border-white/10 text-[#A0A0A8]" aria-hidden="true">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <div>
-                            <span class="text-[9px] font-bold uppercase tracking-wider text-[#A0A0A8]">Email</span>
-                            <h3 class="text-base font-bold text-[#E8E8EC] mt-0.5">Surat Resmi</h3>
-                            <p class="text-xs text-[#A0A0A8] mt-1">Terbaik untuk proposal penawaran, invoice kantor, & kolaborasi.</p>
-                        </div>
-                        <div class="pt-2">
-                            <a href="mailto:{{ $contactEmail }}" class="inline-flex w-full items-center justify-center rounded-xl bg-white/[0.03] border border-white/10 py-2.5 text-xs font-semibold text-[#E8E8EC] hover:bg-[#111113] hover:text-[#D4A843] transition duration-300 break-all px-2 text-center" aria-label="Kirim Email ke {{ $contactEmail }}">
-                                {{ $contactEmail }}
-                            </a>
+                        <div class="space-y-1">
+                            <h3 class="text-base sm:text-lg font-bold text-[#E8E8EC]">Email</h3>
+                            <p class="text-xs text-[#A0A0A8]">Proposal penawaran, invoice kantor, & kolaborasi.</p>
+                            <div class="pt-2">
+                                <a href="mailto:{{ $contactEmail }}" class="inline-flex w-full items-center justify-center rounded-xl bg-white/[0.03] border border-white/10 py-2.5 text-xs font-semibold text-[#E8E8EC] hover:bg-[#111113] hover:text-[#D4A843] transition duration-300 break-all px-2 text-center" aria-label="Kirim Email ke {{ $contactEmail }}">
+                                    {{ $contactEmail }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Card C: Instagram -->
                 <div class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 flex flex-col justify-between h-full transition duration-300 hover:border-white/20">
-                    <div class="space-y-4">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] border border-white/10 text-[#A0A0A8]" aria-hidden="true">
+                    <div class="flex items-start gap-4">
+                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/[0.03] border border-white/10 text-[#A0A0A8]" aria-hidden="true">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <div>
-                            <span class="text-[9px] font-bold uppercase tracking-wider text-[#A0A0A8]">Instagram</span>
-                            <h3 class="text-base font-bold text-[#E8E8EC] mt-0.5">Media Sosial</h3>
-                            <p class="text-xs text-[#A0A0A8] mt-1">Lihat portofolio kru, pembaruan katalog unit, & DM cepat.</p>
-                        </div>
-                        <div class="pt-2">
-                            @if ($instagramUrl)
-                                <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex w-full items-center justify-center rounded-xl bg-white/[0.03] border border-white/10 py-2.5 text-xs font-semibold text-[#E8E8EC] hover:bg-[#111113] hover:text-[#D4A843] transition duration-300 text-center px-2" aria-label="Buka Instagram Manake">
-                                    {{ $contactInstagram }}
-                                </a>
-                            @else
-                                <span class="inline-flex w-full items-center justify-center rounded-xl bg-[#111113] py-2.5 text-xs font-semibold text-[#E8E8EC] text-center px-2">
-                                    {{ $contactInstagram }}
-                                </span>
-                            @endif
+                        <div class="space-y-1">
+                            <h3 class="text-base sm:text-lg font-bold text-[#E8E8EC]">Instagram</h3>
+                            <p class="text-xs text-[#A0A0A8]">Portofolio kru, pembaruan katalog unit, & DM cepat.</p>
+                            <div class="pt-2">
+                                @if ($instagramUrl)
+                                    <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex w-full items-center justify-center rounded-xl bg-white/[0.03] border border-white/10 py-2.5 text-xs font-semibold text-[#E8E8EC] hover:bg-[#111113] hover:text-[#D4A843] transition duration-300 text-center px-2" aria-label="Buka Instagram Manake">
+                                        {{ $contactInstagram }}
+                                    </a>
+                                @else
+                                    <span class="inline-flex w-full items-center justify-center rounded-xl bg-[#111113] py-2.5 text-xs font-semibold text-[#E8E8EC] text-center px-2">
+                                        {{ $contactInstagram }}
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -195,15 +184,14 @@
                 <!-- Left: Studio & Pickup Point (lg:col-span-5) -->
                 <div class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 md:p-8 flex flex-col justify-between h-full lg:col-span-5">
                     <div class="space-y-6">
-                        <div class="flex items-start gap-4 border-b border-white/5 pb-4">
+                        <div class="flex items-center gap-4 border-b border-white/5 pb-4">
                             <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#D4A843]/10 border border-[#D4A843]/20 text-[#D4A843]" aria-hidden="true">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                 </svg>
                             </div>
                             <div>
-                                <span class="text-[9px] font-bold uppercase tracking-wider text-[#D4A843]">Titik Pengambilan</span>
-                                <h3 class="text-lg font-bold text-[#E8E8EC] mt-0.5">Studio & Pickup Point</h3>
+                                <h3 class="text-base sm:text-lg font-bold text-[#E8E8EC]">Titik Pengambilan</h3>
                             </div>
                         </div>
 
@@ -242,7 +230,6 @@
                 <!-- Right: Interactive Google Map (lg:col-span-7) -->
                 <div class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 md:p-8 flex flex-col justify-between h-full min-h-[420px] lg:col-span-7">
                     <div class="space-y-1">
-                        <span class="text-[9px] font-bold uppercase tracking-wider text-[#D4A843]" aria-hidden="true">Interactive Map</span>
                         <h3 class="text-lg font-bold text-[#E8E8EC]">{{ __('ui.contact.map_title') }}</h3>
                         <p class="text-xs text-[#A0A0A8]">Gunakan rute peta di bawah untuk menavigasi langsung ke studio kami.</p>
                     </div>
@@ -266,10 +253,7 @@
                 <!-- Left Panel: Biar chat cepat diproses -->
                 <div class="rounded-3xl border border-white/10 bg-[#111113]/40 p-6 md:p-8 flex flex-col justify-between h-full">
                     <div class="space-y-4">
-                        <div>
-                            <span class="text-[9px] font-bold uppercase tracking-wider text-[#D4A843]">Panduan Chat</span>
-                            <h3 class="text-lg font-bold text-[#E8E8EC] mt-0.5">Biar chat kamu cepat diproses</h3>
-                        </div>
+                        <h3 class="text-lg font-bold text-[#E8E8EC]">Biar chat kamu cepat diproses</h3>
                         
                         <div class="grid gap-3 pt-2">
                             <div class="flex gap-3 items-start rounded-xl border border-white/5 bg-[#0A0A0B]/50 p-4">
@@ -307,10 +291,7 @@
                 <!-- Right Panel: Pertanyaan singkat FAQs -->
                 <div class="rounded-3xl border border-white/10 bg-[#111113]/40 p-6 md:p-8 flex flex-col justify-between h-full">
                     <div class="space-y-4">
-                        <div>
-                            <span class="text-[9px] font-bold uppercase tracking-wider text-[#D4A843]">FAQ Singkat</span>
-                            <h3 class="text-lg font-bold text-[#E8E8EC] mt-0.5">Pertanyaan singkat</h3>
-                        </div>
+                        <h3 class="text-lg font-bold text-[#E8E8EC]">Pertanyaan singkat</h3>
 
                         <div class="divide-y divide-white/5 space-y-4">
                             <div class="space-y-1">
