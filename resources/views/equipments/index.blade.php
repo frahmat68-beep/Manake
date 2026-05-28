@@ -154,42 +154,22 @@
     >
         <section class="relative overflow-hidden pt-6 pb-4">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
-                <!-- Balanced Header Card -->
+                <!-- Clean Header Card -->
                 <div class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8 lg:p-10 shadow-2xl catalog-enter">
-                    <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] items-center">
-                        <!-- Left Side: Catalog Head -->
-                        <div class="space-y-3">
+                    <div class="space-y-4 max-w-3xl">
+                        <div>
                             <p class="section-kicker font-bold tracking-widest uppercase text-[#D4A843]/80">{{ __('ui.nav.catalog') }}</p>
-                            <h1 class="text-2xl font-extrabold tracking-tight text-[#E8E8EC] sm:text-4xl leading-tight">
+                            <h1 class="text-2xl font-extrabold tracking-tight text-[#E8E8EC] sm:text-4xl leading-tight mt-1">
                                 {{ $catalogTitle }}
                             </h1>
-                            <p class="text-sm text-[#A0A0A8] leading-relaxed max-w-2xl">
+                            <p class="text-sm text-[#A0A0A8] leading-relaxed mt-2">
                                 {{ $catalogSubtitle }}
                             </p>
-                        </div>
-
-                        <!-- Right Side: Helper Summary Panel -->
-                        @php
-                            $catalogTotalItems = $groups->sum(fn ($group) => collect($group['items'] ?? [])->count());
-                        @endphp
-                        <div class="rounded-2xl border border-white/5 bg-[#0A0A0B]/60 p-5 grid grid-cols-3 gap-3 text-center">
-                            <div>
-                                <span class="block text-[10px] font-bold uppercase tracking-wider text-[#A0A0A8]">Kategori</span>
-                                <span class="block mt-1.5 text-lg sm:text-2xl font-extrabold text-[#D4A843]">{{ $categories->count() }}</span>
-                            </div>
-                            <div class="border-x border-white/5">
-                                <span class="block text-[10px] font-bold uppercase tracking-wider text-[#A0A0A8]">Total Item</span>
-                                <span class="block mt-1.5 text-lg sm:text-2xl font-extrabold text-[#D4A843]">{{ $catalogTotalItems }}</span>
-                            </div>
-                            <div class="flex flex-col justify-center items-center">
-                                <span class="block text-[10px] font-bold uppercase tracking-wider text-[#A0A0A8]">Akses</span>
-                                <span class="block mt-1 text-[9px] font-bold text-emerald-300 uppercase tracking-widest leading-none pt-1">Bebas Login</span>
-                            </div>
                         </div>
                     </div>
 
                     <!-- Balanced Search Bar -->
-                    <div class="max-w-2xl mt-6">
+                    <div class="max-w-3xl mt-6">
                         <form action="{{ route('catalog') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
                             <div class="relative flex-1">
                                 <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#66666C]">
@@ -207,7 +187,7 @@
                     </div>
 
                     <!-- Clean Category Filter Layout -->
-                    <div class="mt-6 border-t border-[#1A1A1E] pt-5">
+                    <div class="mt-5 border-t border-[#1A1A1E] pt-4">
                         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                             <p class="text-[10px] font-bold uppercase tracking-widest text-[#A0A0A8]">{{ $categoryLabel }}</p>
                             @if ($search !== '')
