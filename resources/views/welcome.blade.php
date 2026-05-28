@@ -249,9 +249,12 @@
                 <!-- Light mode background image & overlay -->
                 <div class="absolute inset-0 block dark:hidden">
                     <img src="{{ site_asset('images/hero-bg-light.jpg') }}" alt="Set produksi film profesional" class="h-full w-full object-cover object-center" />
-                    <div class="absolute inset-0 bg-gradient-to-b from-[#F7F7F4]/30 via-[#F7F7F4]/40 to-[#F7F7F4]"></div>
-                    <div class="absolute inset-0 bg-gradient-to-r from-[#F7F7F4]/92 via-[#F7F7F4]/50 to-transparent"></div>
-                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.15),transparent_30%),radial-gradient(circle_at_15%_20%,rgba(37,99,235,0.06),transparent_22%),radial-gradient(circle_at_85%_16%,rgba(255,255,255,0.15),transparent_25%)]"></div>
+                    <!-- Left gradient: off-white at 92% opacity to ensure perfect text contrast -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#F7F7F4]/92 via-[#F7F7F4]/60 to-transparent"></div>
+                    <!-- Bottom gradient: blends seamlessly into the rest of the light page background -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#F7F7F4]/40 to-[#F7F7F4]"></div>
+                    <!-- Subtle blue decorative lighting glow that echoes the blue accent -->
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(37,99,235,0.08),transparent_25%),radial-gradient(circle_at_85%_16%,rgba(37,99,235,0.04),transparent_20%)]"></div>
                 </div>
             </div>
 
