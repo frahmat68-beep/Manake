@@ -15,11 +15,11 @@
 
         body {
             margin: 0;
-            color: #0f172a;
+            color: #171717;
             font-family: DejaVu Sans, sans-serif;
             font-size: 10.8px;
             line-height: 1.45;
-            background: #f4f7ff;
+            background: #FFFFFF;
         }
 
         .sheet {
@@ -29,11 +29,11 @@
 
         .invoice-header {
             padding: 16px 18px;
-            border: 1px solid #d8e2f0;
-            border-radius: 18px;
-            background-color: #1f409f;
-            background-image: linear-gradient(135deg, #1f409f 0%, #345fd5 54%, #1b367f 100%);
-            color: #f8fbff;
+            border: 1px solid #111113;
+            border-bottom: 4px solid #D4A843;
+            border-radius: 12px;
+            background-color: #111113;
+            color: #FFFFFF;
         }
 
         .layout {
@@ -47,59 +47,61 @@
 
         .brand-logo-wrap {
             display: inline-block;
-            border: 1px solid #bfd0ff;
-            border-radius: 12px;
-            background: #ffffff;
-            padding: 7px 11px;
-            margin-bottom: 10px;
+            border: 1px solid #D4A843;
+            border-radius: 8px;
+            background: #111113;
+            padding: 6px 10px;
+            margin-bottom: 8px;
         }
 
         .brand-logo {
             display: block;
-            height: 30px;
+            height: 24px;
             width: auto;
             margin: 0;
         }
 
         .invoice-title {
             margin: 4px 0 0;
-            font-size: 29px;
-            color: #f8fbff;
+            font-size: 26px;
+            color: #FFFFFF;
             line-height: 1.1;
             font-weight: 700;
         }
 
         .invoice-subtitle {
-            margin: 8px 0 0;
-            color: #dbe7ff;
-            font-size: 10.4px;
+            margin: 6px 0 0;
+            color: #A0A0A8;
+            font-size: 10px;
         }
 
         .header-right {
-            border: 1px solid #4363c8;
-            border-radius: 12px;
-            background: #1a2f74;
-            padding: 11px 12px;
+            border: 1px solid #D4A843/30;
+            border-radius: 8px;
+            background: #0A0A0B;
+            padding: 10px 12px;
+            text-align: right;
         }
 
         .status-badge {
             display: inline-block;
             border-radius: 999px;
             padding: 3px 8px;
-            font-size: 8.4px;
+            font-size: 8px;
             font-weight: 700;
             letter-spacing: .08em;
             text-transform: uppercase;
         }
 
         .status-paid {
-            background: #dcfce7;
-            color: #166534;
+            background: #D4A843;
+            color: #0A0A0B;
         }
 
         .status-pending {
-            background: #fef3c7;
-            color: #b45309;
+            background: #F8F7F2;
+            color: #D4A843;
+            border: 1px solid #D4A843;
         }
 
         .status-danger {
@@ -114,17 +116,17 @@
 
         .summary-label {
             margin: 8px 0 2px;
-            font-size: 8.3px;
+            font-size: 8px;
             text-transform: uppercase;
             letter-spacing: .12em;
-            color: #dbe7ff;
+            color: #A0A0A8;
             font-weight: 700;
         }
 
         .summary-amount {
             margin: 0;
-            color: #fff;
-            font-size: 25px;
+            color: #D4A843;
+            font-size: 22px;
             font-weight: 700;
             font-variant-numeric: tabular-nums;
         }
@@ -142,34 +144,36 @@
 
         .cards-grid td {
             width: 50%;
-            border: 1px solid #d4def1;
-            border-radius: 14px;
+            border: 1px solid #E5E2DA;
+            border-radius: 12px;
             padding: 12px;
             vertical-align: top;
-            background: #fcfdff;
+            background: #F8F7F2;
         }
 
         .card-title {
             margin: 0 0 7px;
-            color: #334155;
-            font-size: 8.7px;
+            color: #111113;
+            font-size: 8.5px;
             text-transform: uppercase;
             letter-spacing: .08em;
             font-weight: 700;
+            border-bottom: 1px solid #E5E2DA;
+            padding-bottom: 4px;
         }
 
         .person-name {
-            margin: 0;
-            color: #0b1530;
-            font-size: 15px;
+            margin: 4px 0 0;
+            color: #111113;
+            font-size: 14px;
             font-weight: 700;
             line-height: 1.2;
         }
 
         .line {
             margin: 3px 0 0;
-            color: #64748b;
-            font-size: 9.9px;
+            color: #555558;
+            font-size: 9.5px;
             line-height: 1.35;
         }
 
@@ -182,17 +186,17 @@
         .meta-row td {
             border: none;
             padding: 2px 0;
-            font-size: 9.8px;
+            font-size: 9.5px;
             vertical-align: top;
         }
 
         .meta-row td:first-child {
-            color: #64748b;
+            color: #555558;
             width: 45%;
         }
 
         .meta-row td:last-child {
-            color: #0f172a;
+            color: #111113;
             font-weight: 700;
             text-align: right;
             font-variant-numeric: tabular-nums;
@@ -200,9 +204,9 @@
 
         .items {
             margin-top: 14px;
-            border: 1px solid #d8e2f0;
-            border-radius: 14px;
-            background: #fcfdff;
+            border: 1px solid #E5E2DA;
+            border-radius: 12px;
+            background: #FFFFFF;
             padding: 14px 16px;
         }
 
@@ -218,8 +222,8 @@
 
         .section-note {
             text-align: right;
-            color: #64748b;
-            font-size: 9px;
+            color: #555558;
+            font-size: 8.5px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: .06em;
@@ -227,8 +231,8 @@
 
         .section-title {
             margin: 0;
-            color: #0b1530;
-            font-size: 16px;
+            color: #111113;
+            font-size: 15px;
             font-weight: 700;
         }
 
@@ -237,12 +241,12 @@
             border-collapse: collapse;
             margin-top: 6px;
             table-layout: fixed;
-            font-size: 10px;
+            font-size: 9.5px;
             page-break-inside: auto;
-            border: 1px solid #d8e2f0;
-            border-radius: 10px;
+            border: 1px solid #E5E2DA;
+            border-radius: 8px;
             overflow: hidden;
-            background: #f8fbff;
+            background: #FFFFFF;
         }
 
         .items-table thead {
@@ -255,21 +259,20 @@
 
         .items-table thead th {
             padding: 7px 8px;
-            background: #eaf0ff;
-            border-top: 1px solid #d8e2f0;
-            border-bottom: 1px solid #d8e2f0;
-            color: #334155;
+            background: #111113;
+            color: #D4A843;
+            border-bottom: 2px solid #D4A843;
             text-transform: uppercase;
             letter-spacing: .07em;
-            font-size: 8.6px;
+            font-size: 8.5px;
             text-align: left;
         }
 
         .items-table tbody td {
             padding: 7px 8px;
-            border-bottom: 1px solid #dfe7f5;
+            border-bottom: 1px solid #E5E2DA;
             vertical-align: top;
-            color: #0f172a;
+            color: #111113;
         }
 
         .items-table tr {
@@ -277,7 +280,7 @@
         }
 
         .items-table tbody tr:nth-child(even) {
-            background: #eef4ff;
+            background: #F8F7F2;
         }
 
         .items-table th:nth-child(1),
@@ -293,22 +296,22 @@
 
         .item-title {
             margin: 0;
-            font-size: 10.7px;
+            font-size: 10px;
             font-weight: 700;
-            color: #0b1530;
+            color: #111113;
             line-height: 1.35;
         }
 
         .item-sub {
             margin-top: 2px;
-            font-size: 9.4px;
-            color: #64748b;
+            font-size: 8.5px;
+            color: #555558;
         }
 
         .period-sub {
             margin-top: 2px;
-            font-size: 9.3px;
-            color: #64748b;
+            font-size: 8.5px;
+            color: #555558;
         }
 
         .num {
@@ -320,32 +323,32 @@
         .totals-wrap {
             width: 46%;
             margin: 9px 0 0 auto;
-            border: 1px solid #d8e2f0;
-            border-radius: 10px;
+            border: 1px solid #E5E2DA;
+            border-radius: 8px;
             overflow: hidden;
             page-break-inside: avoid;
-            background: #fcfdff;
+            background: #FFFFFF;
         }
 
         .totals-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 10.2px;
+            font-size: 10px;
         }
 
         .totals-table td {
             padding: 7px 9px;
-            border-bottom: 1px solid #dfe7f5;
+            border-bottom: 1px solid #E5E2DA;
             font-variant-numeric: tabular-nums;
         }
 
         .totals-table td:first-child {
-            color: #64748b;
+            color: #555558;
         }
 
         .totals-table td:last-child {
             text-align: right;
-            color: #0f172a;
+            color: #111113;
             font-weight: 700;
         }
 
@@ -354,24 +357,24 @@
         }
 
         .totals-table .grand-row td {
-            background: #eaf0ff;
-            color: #2248ca;
-            font-size: 11.6px;
+            background: #111113;
+            color: #D4A843;
+            font-size: 11px;
             font-weight: 700;
         }
 
         .terms {
             margin-top: 14px;
-            border: 1px solid #d8e2f0;
-            border-radius: 14px;
+            border: 1px solid #E5E2DA;
+            border-radius: 12px;
             padding: 12px 16px;
-            background: #f8fbff;
+            background: #F8F7F2;
         }
 
         .terms-title {
             margin: 0;
-            color: #334155;
-            font-size: 8.6px;
+            color: #111113;
+            font-size: 8.5px;
             text-transform: uppercase;
             letter-spacing: .08em;
             font-weight: 700;
@@ -380,8 +383,8 @@
         .terms ul {
             margin: 6px 0 0;
             padding-left: 16px;
-            color: #475569;
-            font-size: 9.6px;
+            color: #555558;
+            font-size: 9px;
         }
 
         .terms li {
@@ -390,10 +393,10 @@
 
         .footer-mini {
             margin-top: 10px;
-            border-top: 1px solid #d8e2f0;
+            border-top: 1px solid #E5E2DA;
             padding-top: 8px;
-            color: #64748b;
-            font-size: 9.4px;
+            color: #555558;
+            font-size: 9px;
             line-height: 1.4;
         }
     </style>
@@ -677,7 +680,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" style="text-align:center; color:#64748b;">{{ __('ui.invoice.table.empty') }}</td>
+                        <td colspan="5" style="text-align:center; color:#555558;">{{ __('ui.invoice.table.empty') }}</td>
                     </tr>
                 @endforelse
             </tbody>

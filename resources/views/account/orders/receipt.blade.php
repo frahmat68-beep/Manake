@@ -13,48 +13,48 @@
     </script>
     <style>
         :root {
-            --invoice-bg: #f6f8fc;
+            --invoice-bg: #F8F7F2;
             --invoice-surface: #ffffff;
-            --invoice-surface-soft: #f9fbff;
-            --invoice-border: #d8e2f0;
-            --invoice-text: #0f172a;
-            --invoice-muted: #64748b;
-            --invoice-heading: #0b1530;
-            --invoice-primary: #2f5ff5;
-            --invoice-primary-strong: #2248ca;
-            --invoice-primary-soft: #eaf0ff;
-            --invoice-success-bg: #dcfce7;
-            --invoice-success-text: #15803d;
-            --invoice-warning-bg: #fef3c7;
-            --invoice-warning-text: #b45309;
+            --invoice-surface-soft: #F8F7F2;
+            --invoice-border: #E5E2DA;
+            --invoice-text: #171717;
+            --invoice-muted: #555558;
+            --invoice-heading: #111113;
+            --invoice-primary: #D4A843;
+            --invoice-primary-strong: #111113;
+            --invoice-primary-soft: rgba(212, 168, 67, 0.08);
+            --invoice-success-bg: #D4A843;
+            --invoice-success-text: #0A0A0B;
+            --invoice-warning-bg: #F8F7F2;
+            --invoice-warning-text: #D4A843;
             --invoice-danger-bg: #fee2e2;
             --invoice-danger-text: #b91c1c;
-            --invoice-shadow: 0 20px 40px rgba(15, 23, 42, 0.08), 0 8px 18px rgba(15, 23, 42, 0.05);
-            --invoice-radius-xl: 18px;
-            --invoice-radius-lg: 14px;
-            --invoice-brand-gradient: linear-gradient(135deg, #1f409f 0%, #345fd5 54%, #1b367f 100%);
+            --invoice-shadow: 0 10px 30px rgba(17, 17, 19, 0.05);
+            --invoice-radius-xl: 12px;
+            --invoice-radius-lg: 10px;
+            --invoice-brand-gradient: linear-gradient(135deg, #111113 0%, #171717 100%);
         }
 
         html[data-theme-resolved='dark'],
         html.dark {
-            --invoice-bg: #0b1220;
-            --invoice-surface: #101a2d;
-            --invoice-surface-soft: #14203a;
-            --invoice-border: #2a3a58;
-            --invoice-text: #e7eefb;
-            --invoice-muted: #9eb0ce;
-            --invoice-heading: #f8fbff;
-            --invoice-primary: #4f7dff;
-            --invoice-primary-strong: #3a64de;
-            --invoice-primary-soft: rgba(79, 125, 255, 0.16);
-            --invoice-success-bg: rgba(22, 163, 74, 0.22);
-            --invoice-success-text: #86efac;
-            --invoice-warning-bg: rgba(217, 119, 6, 0.2);
-            --invoice-warning-text: #fcd34d;
+            --invoice-bg: #0A0A0B;
+            --invoice-surface: #111113;
+            --invoice-surface-soft: #171717;
+            --invoice-border: #1A1A1E;
+            --invoice-text: #E8E8EC;
+            --invoice-muted: #A0A0A8;
+            --invoice-heading: #ffffff;
+            --invoice-primary: #D4A843;
+            --invoice-primary-strong: #e0ba5d;
+            --invoice-primary-soft: rgba(212, 168, 67, 0.12);
+            --invoice-success-bg: #D4A843;
+            --invoice-success-text: #0A0A0B;
+            --invoice-warning-bg: rgba(212, 168, 67, 0.12);
+            --invoice-warning-text: #D4A843;
             --invoice-danger-bg: rgba(220, 38, 38, 0.22);
             --invoice-danger-text: #fda4af;
-            --invoice-shadow: 0 22px 48px rgba(2, 6, 23, 0.45), 0 12px 24px rgba(2, 6, 23, 0.32);
-            --invoice-brand-gradient: linear-gradient(135deg, #0f245f 0%, #2546a9 54%, #0f2d73 100%);
+            --invoice-shadow: 0 20px 40px rgba(2, 6, 23, 0.35);
+            --invoice-brand-gradient: linear-gradient(135deg, #111113 0%, #0A0A0B 100%);
         }
 
         * {
@@ -64,7 +64,7 @@
         body.invoice-page {
             margin: 0;
             padding: 24px;
-            background: radial-gradient(980px 420px at -15% -10%, rgba(47, 95, 245, 0.14), transparent 60%), var(--invoice-bg);
+            background: var(--invoice-bg);
             color: var(--invoice-text);
             font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
             -webkit-print-color-adjust: exact;
@@ -78,6 +78,7 @@
 
         .invoice-header {
             border: 1px solid var(--invoice-border);
+            border-bottom: 4px solid var(--invoice-primary);
             border-radius: var(--invoice-radius-xl);
             padding: 24px;
             display: grid;
@@ -92,18 +93,18 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border-radius: 14px;
-            border: 1px solid #bfd0ff;
-            background: #ffffff;
-            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--invoice-primary);
+            background: #111113;
+            padding: 8px 12px;
             margin-bottom: 10px;
-            box-shadow: 0 8px 18px rgba(3, 10, 32, 0.24);
+            box-shadow: 0 4px 12px rgba(3, 10, 32, 0.15);
         }
 
         .brand-logo {
             display: block;
             width: auto;
-            height: 34px;
+            height: 28px;
             filter: none;
         }
 
@@ -118,14 +119,14 @@
             margin: 8px 0 0;
             font-size: 14px;
             line-height: 1.55;
-            color: #dbe7ff;
+            color: #A0A0A8;
         }
 
         .header-right {
-            border: 1px solid #4363c8;
-            border-radius: 14px;
+            border: 1px solid rgba(212, 168, 67, 0.3);
+            border-radius: 10px;
             padding: 14px;
-            background: #1a2f74;
+            background: #0A0A0B;
             display: flex;
             flex-direction: column;
             gap: 10px;
