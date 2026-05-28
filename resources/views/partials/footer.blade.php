@@ -70,7 +70,7 @@
     <div class="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:px-8 lg:grid-cols-[1.1fr,0.9fr,1fr] lg:gap-12 lg:py-20 items-start">
         {{-- Column 1: Brand Logo & Guidelines --}}
         <div class="space-y-6">
-            <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" alt="Manake" img-class="h-8 md:h-9 w-auto" class="inline-flex" />
+            <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" alt="Manake" class="manake-footer-logo" img-class="manake-footer-logo__image" />
             <p class="max-w-sm text-sm leading-relaxed {{ $textMutedClass }}">{{ $footerAbout }}</p>
 
             <div class="space-y-3 pt-2">

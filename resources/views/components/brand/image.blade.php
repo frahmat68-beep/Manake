@@ -76,4 +76,29 @@
     html[data-theme-resolved="dark"] .manake-navbar-logo__image {
         transform: scale(1.0) !important;
     }
+
+    /* Prevent layout shifting, establish consistent logo containment for footer logo */
+    .manake-footer-logo {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        height: 36px !important;
+        width: 160px !important;
+        overflow: visible !important;
+    }
+    .manake-footer-logo__image {
+        height: 36px !important;
+        max-height: 36px !important;
+        width: auto !important;
+        object-fit: contain !important;
+        transition: transform 0.15s ease-in-out;
+        transform-origin: left center !important;
+    }
+    /* Dynamic visual scale compensation to align light/dark footer logos visually by eye */
+    html[data-theme-resolved="light"] .manake-footer-logo__image {
+        transform: scale(1.65) !important;
+    }
+    html[data-theme-resolved="dark"] .manake-footer-logo__image {
+        transform: scale(1.0) !important;
+    }
 </style>
