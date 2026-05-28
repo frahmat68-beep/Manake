@@ -251,8 +251,8 @@
         transform: translateY(-1px);
     }
 
-    .manake-shell,
-    .landing-shell {
+    body.manake-shell,
+    body.landing-shell {
         min-height: 100vh;
     }
 
