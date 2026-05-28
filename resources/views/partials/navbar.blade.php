@@ -23,7 +23,7 @@
     $mobilePanelClass = $isLightShell ? 'border-[#E5E2DA] bg-[#F7F7F4]/98' : 'border-[#1A1A1E] bg-[#0A0A0B]/98';
     $mobileButtonClass = $isLightShell ? 'border-[#E5E2DA] text-[#171717]' : 'border-white/10 text-[#E8E8EC]';
     $settingsActiveClass = request()->routeIs('settings.*')
-        ? ($isLightShell ? 'border-blue-600/60 text-blue-600 bg-blue-50/50' : 'border-[#D4A843]/50 text-[#D4A843] bg-[#D4A843]/5')
+        ? 'border-[var(--manake-accent)]/50 text-[var(--manake-accent)] bg-[var(--manake-accent-soft)]'
         : $iconButtonClass;
 @endphp
 
@@ -59,7 +59,7 @@
                             <path d="M9 17a3 3 0 0 0 6 0" />
                         </svg>
                         @if (($notificationCount ?? 0) > 0)
-                            <span id="notification-badge" class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D4A843] px-1 text-[10px] font-bold text-[#0A0A0B]">
+                            <span id="notification-badge" class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[var(--manake-accent)] px-1 text-[10px] font-bold text-[var(--manake-bg)]">
                                 {{ $notificationCount > 99 ? '99+' : $notificationCount }}
                             </span>
                         @endif
@@ -67,8 +67,8 @@
 
                     <div x-cloak x-show="notifOpen" x-transition.origin.top.right class="absolute right-0 mt-3 w-80 max-w-[calc(100vw-2rem)] rounded-2xl border p-3 {{ $dropdownClass }}">
                         <div class="flex items-center justify-between">
-                            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-[#D4A843]">{{ __('ui.nav.notifications') }}</p>
-                            <a href="{{ route('notifications') }}" class="text-xs font-semibold transition {{ $navLinkClass }} hover:!text-[#D4A843]">{{ __('ui.nav.view_all') }}</a>
+                            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--manake-accent)]">{{ __('ui.nav.notifications') }}</p>
+                            <a href="{{ route('notifications') }}" class="text-xs font-semibold transition {{ $navLinkClass }} hover:!text-[var(--manake-accent)]">{{ __('ui.nav.view_all') }}</a>
                         </div>
                         <div class="mt-3 max-h-72 space-y-2 overflow-y-auto">
                             @forelse ($notificationItems as $notification)
@@ -84,7 +84,7 @@
                                     <div class="flex items-center justify-between gap-2">
                                         <p class="line-clamp-1 text-xs font-bold {{ $isLightShell ? 'text-[#171717]' : 'text-[#E8E8EC]' }}">{{ $notification['title'] }}</p>
                                         @if ($notification['is_new'])
-                                            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4A843] notif-dot"></span>
+                                            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--manake-accent)] notif-dot"></span>
                                         @endif
                                     </div>
                                     <p class="mt-1 line-clamp-2 text-xs leading-relaxed {{ $isLightShell ? 'text-[#666666]' : 'text-[#A0A0A8]' }}">{{ $notification['body'] }}</p>
@@ -107,7 +107,7 @@
                         <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6" />
                     </svg>
                     @if (($cartCount ?? 0) > 0)
-                        <span class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#D4A843] px-1 text-[10px] font-bold text-[#0A0A0B]">
+                        <span class="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[var(--manake-accent)] px-1 text-[10px] font-bold text-[var(--manake-bg)]">
                             {{ $cartCount > 99 ? '99+' : $cartCount }}
                         </span>
                     @endif
@@ -120,7 +120,7 @@
                         @click="userOpen = !userOpen; notifOpen = false"
                         :aria-expanded="userOpen.toString()"
                     >
-                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#D4A843] text-xs font-bold text-[#0A0A0B]">{{ $userInitial }}</span>
+                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--manake-accent)] text-xs font-bold text-[var(--manake-bg)]">{{ $userInitial }}</span>
                         <span class="max-w-[9rem] truncate">{{ $displayName }}</span>
                     </button>
                     <div x-cloak x-show="userOpen" x-transition.origin.top.right class="absolute right-0 mt-3 w-56 rounded-2xl border p-2 {{ $dropdownClass }}">

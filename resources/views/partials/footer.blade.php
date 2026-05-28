@@ -43,53 +43,32 @@
         return 'tel:' . $sanitized;
     };
     $footerMapUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($footerAddress ?: 'Manake Studio & Rental');
-
-    $resolvedTheme = $themeResolved ?? request()->attributes->get('theme_resolved', 'light');
-    $isLightShell = $resolvedTheme === 'light';
-
-    $footerShellClass = $isLightShell
-        ? 'border-t border-[#E5E2DA] bg-[#F7F7F4] text-[#171717] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]'
-        : 'border-t border-white/5 bg-[#0A0A0B] text-[#E8E8EC]';
-
-    $kickerClass = $isLightShell ? 'text-blue-600' : 'text-[#D4A843]';
-
-    $linkClass = $isLightShell
-        ? 'text-[#171717] hover:text-blue-600 border-[#E5E2DA] bg-white hover:border-blue-600/50 hover:bg-blue-50/20'
-        : 'text-[#E8E8EC] hover:text-[#D4A843] border-white/10 bg-white/5 hover:border-[#D4A843]/45 hover:bg-[#D4A843]/5';
-
-    $mapCardClass = $isLightShell
-        ? 'border-[#E5E2DA] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.03)]'
-        : 'border-white/10 bg-[#111113]/60 backdrop-blur-md shadow-lg';
-
-    $bottomBarClass = $isLightShell ? 'border-t border-[#E5E2DA] bg-[#F2F0EA]' : 'border-t border-white/5 bg-[#070708]';
-    $textMutedClass = $isLightShell ? 'text-[#666666]' : 'text-[#A0A0A8]';
-    $textPrimaryClass = $isLightShell ? 'text-[#171717]' : 'text-[#E8E8EC]';
 @endphp
 
-<footer id="contact" class="{{ $footerShellClass }}">
+<footer id="contact" class="border-t manake-shell manake-border">
     <div class="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:px-8 lg:grid-cols-[1.1fr,0.9fr,1fr] lg:gap-12 lg:py-20 items-start">
         {{-- Column 1: Brand Logo & Guidelines --}}
         <div class="space-y-6">
             <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" alt="Manake" class="manake-footer-logo" img-class="manake-footer-logo__image" />
-            <p class="max-w-sm text-sm leading-relaxed {{ $textMutedClass }}">{{ $footerAbout }}</p>
+            <p class="max-w-sm text-sm leading-relaxed manake-text-muted">{{ $footerAbout }}</p>
 
             <div class="space-y-3 pt-2">
-                <p class="text-[10px] font-black uppercase tracking-[0.24em] {{ $kickerClass }}">{{ __('app.footer.rules_title') }}</p>
-                <a href="{{ route('rental.rules') }}" class="inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-semibold transition {{ $linkClass }}">
+                <p class="manake-kicker">{{ __('app.footer.rules_title') }}</p>
+                <a href="{{ route('rental.rules') }}" class="manake-secondary-button px-4 py-2.5 text-xs">
                     {{ app()->getLocale() === 'en' ? __('app.footer.rules_link') : setting('footer.rules_link', __('app.footer.rules_link')) }}
-                    <span aria-hidden="true">→</span>
+                    <span aria-hidden="true" class="ml-1">→</span>
                 </a>
-                <p class="max-w-sm text-xs leading-relaxed {{ $textMutedClass }}">{{ app()->getLocale() === 'en' ? __('app.footer.rules_note') : setting('footer.rules_note', __('app.footer.rules_note')) }}</p>
+                <p class="max-w-sm text-xs leading-relaxed manake-text-muted">{{ app()->getLocale() === 'en' ? __('app.footer.rules_note') : setting('footer.rules_note', __('app.footer.rules_note')) }}</p>
             </div>
         </div>
 
         {{-- Column 2: Contact & Address --}}
         <div class="space-y-6">
             <div>
-                <h3 class="text-[10px] font-black uppercase tracking-[0.24em] {{ $kickerClass }} mb-4">{{ __('app.footer.contact_title') }}</h3>
-                <div class="space-y-3 text-sm {{ $textMutedClass }}">
+                <h3 class="manake-kicker mb-4">{{ __('app.footer.contact_title') }}</h3>
+                <div class="space-y-3 text-sm manake-text-muted">
                     <div class="flex flex-col gap-2">
-                        <span class="text-xs font-bold {{ $textPrimaryClass }}">{{ __('WhatsApp') }}</span>
+                        <span class="text-xs font-bold manake-text">{{ __('WhatsApp') }}</span>
                         <div class="flex flex-wrap gap-2">
                             @forelse ($footerWhatsappEntries as $whatsappNumber)
                                 @php
@@ -101,36 +80,36 @@
                                         href="{{ $whatsappHref }}"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition {{ $linkClass }}"
+                                        class="px-3 py-1.5 text-xs manake-secondary-button"
                                     >
                                         {{ $whatsappNumber }}
                                     </a>
                                 @elseif ($telHref)
-                                    <a href="{{ $telHref }}" class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition {{ $linkClass }}">
+                                    <a href="{{ $telHref }}" class="px-3 py-1.5 text-xs manake-secondary-button">
                                         {{ $whatsappNumber }}
                                     </a>
                                 @else
-                                    <span class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold text-current">
+                                    <span class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold manake-border text-current">
                                         {{ $whatsappNumber }}
                                     </span>
                                 @endif
                             @empty
-                                <span class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold text-current">
+                                <span class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold manake-border text-current">
                                     {{ $footerWhatsapp }}
                                 </span>
                             @endforelse
                         </div>
                     </div>
-                    <p class="break-all">Email: <span class="{{ $textPrimaryClass }} font-semibold">{{ $footerEmail }}</span></p>
-                    <p>Instagram: <span class="{{ $textPrimaryClass }} font-semibold">{{ $footerInstagram }}</span></p>
+                    <p class="break-all">Email: <span class="manake-text font-semibold">{{ $footerEmail }}</span></p>
+                    <p>Instagram: <span class="manake-text font-semibold">{{ $footerInstagram }}</span></p>
                 </div>
             </div>
 
             <div>
-                <h3 class="text-[10px] font-black uppercase tracking-[0.24em] {{ $kickerClass }} mb-4">{{ __('app.footer.address_title') }}</h3>
-                <div class="space-y-1.5 text-sm leading-relaxed {{ $textMutedClass }}">
+                <h3 class="manake-kicker mb-4">{{ __('app.footer.address_title') }}</h3>
+                <div class="space-y-1.5 text-sm leading-relaxed manake-text-muted">
                     @if ($footerAddressTitle)
-                        <p class="font-bold {{ $textPrimaryClass }}">{{ $footerAddressTitle }}</p>
+                        <p class="font-bold manake-text">{{ $footerAddressTitle }}</p>
                     @endif
                     @foreach ($footerAddressRest as $addressLine)
                         <p>{{ $addressLine }}</p>
@@ -141,17 +120,17 @@
 
         {{-- Column 3: Location / Map Card --}}
         <div>
-            <h3 class="text-[10px] font-black uppercase tracking-[0.24em] {{ $kickerClass }} mb-4">{{ __('app.footer.location_title') }}</h3>
-            <div class="relative overflow-hidden rounded-2xl border p-5 {{ $mapCardClass }}">
+            <h3 class="manake-kicker mb-4">{{ __('app.footer.location_title') }}</h3>
+            <div class="relative overflow-hidden rounded-2xl p-5 manake-surface">
                 <div class="flex flex-col justify-between min-h-[160px] gap-4">
                     <div>
-                        <p class="text-[9px] font-black uppercase tracking-[0.22em] {{ $kickerClass }}">{{ app()->getLocale() === 'id' ? 'KOORDINAT' : 'COORDINATES' }}</p>
-                        <p class="mt-2 text-sm font-semibold {{ $textPrimaryClass }}">{{ $footerAddressTitle ?: __('Manake Studio & Rental') }}</p>
-                        <p class="mt-1.5 text-xs leading-relaxed {{ $textMutedClass }}">{{ $footerAddressRest->implode(' ') }}</p>
+                        <p class="text-[9px] font-black uppercase tracking-[0.22em] manake-accent-text">{{ app()->getLocale() === 'id' ? 'KOORDINAT' : 'COORDINATES' }}</p>
+                        <p class="mt-2 text-sm font-semibold manake-text">{{ $footerAddressTitle ?: __('Manake Studio & Rental') }}</p>
+                        <p class="mt-1.5 text-xs leading-relaxed manake-text-muted">{{ $footerAddressRest->implode(' ') }}</p>
                     </div>
-                    <a href="{{ $footerMapUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex w-fit items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-semibold transition {{ $linkClass }}">
+                    <a href="{{ $footerMapUrl }}" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 text-xs manake-secondary-button">
                         {{ __('app.footer.location_open_map') }}
-                        <span aria-hidden="true">↗</span>
+                        <span aria-hidden="true" class="ml-1">↗</span>
                     </a>
                 </div>
             </div>
@@ -159,8 +138,8 @@
     </div>
 
     {{-- Bottom Bar --}}
-    <div class="{{ $bottomBarClass }}">
-        <div class="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-5 text-xs {{ $textMutedClass }} sm:flex-row sm:items-center sm:justify-between sm:px-8">
+    <div class="border-t manake-border bg-[var(--manake-bg-soft)]">
+        <div class="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-5 text-xs manake-text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
             <span>&copy; {{ app()->getLocale() === 'en' ? __('app.footer.copyright') : setting('footer_copyright', __('app.footer.copyright')) }}</span>
             <span class="font-medium opacity-80">{{ app()->getLocale() === 'en' ? __('app.footer.tagline') : setting('site_tagline', __('app.footer.tagline')) }}</span>
         </div>

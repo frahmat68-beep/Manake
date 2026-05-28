@@ -118,10 +118,10 @@
 
 @section('content')
     <section class="mx-auto max-w-4xl settings-shell-enter">
-        <div class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.9)] sm:p-8">
+        <div class="rounded-3xl border manake-border p-6 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.9)] sm:p-8" style="background-color: var(--manake-surface);">
             <div class="space-y-2">
-                <h1 class="text-2xl font-bold tracking-tight text-[#E8E8EC] sm:text-3xl">{{ __('ui.settings.title') }}</h1>
-                <p class="text-sm leading-6 text-[#A0A0A8] sm:text-base">{{ __('ui.settings.subtitle') }}</p>
+                <h1 class="text-2xl font-bold tracking-tight manake-text sm:text-3xl">{{ __('ui.settings.title') }}</h1>
+                <p class="text-sm leading-6 manake-text-muted sm:text-base">{{ __('ui.settings.subtitle') }}</p>
             </div>
 
             @if (session('success') || session('status') === 'settings-updated' || $errors->any())
@@ -145,15 +145,15 @@
                 <input type="hidden" name="resolved_theme" id="resolved_theme_input" value="{{ $resolvedTheme }}">
 
                 <fieldset class="space-y-4">
-                    <legend class="text-lg font-semibold text-[#E8E8EC]">{{ __('ui.settings.section_language') }}</legend>
-                    <p class="text-sm text-[#A0A0A8]">{{ __('ui.settings.section_language_hint') }}</p>
+                    <legend class="text-lg font-semibold manake-text">{{ __('ui.settings.section_language') }}</legend>
+                    <p class="text-sm manake-text-muted">{{ __('ui.settings.section_language_hint') }}</p>
 
                     <div class="grid gap-3 sm:grid-cols-2">
                         @foreach ($localeOptions as $value => $label)
                             <label class="settings-option block">
                                 <input type="radio" name="locale" value="{{ $value }}" class="sr-only" @checked($locale === $value)>
-                                <span class="settings-option-card flex items-center gap-3.5 rounded-2xl px-5 py-4 text-sm font-semibold text-[#E8E8EC] transition" data-active="{{ $locale === $value ? 'true' : 'false' }}">
-                                    <span class="manake-preferences-choice__icon shrink-0 text-[#A0A0A8] transition" aria-hidden="true">
+                                <span class="settings-option-card flex items-center gap-3.5 rounded-2xl px-5 py-4 text-sm font-semibold transition" data-active="{{ $locale === $value ? 'true' : 'false' }}">
+                                    <span class="manake-preferences-choice__icon shrink-0 transition" aria-hidden="true">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                             <circle cx="12" cy="12" r="10" />
                                             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
@@ -161,7 +161,7 @@
                                         </svg>
                                     </span>
                                     <span class="flex-1 pr-6">{{ $label }}</span>
-                                    <span class="manake-preferences-choice__check absolute right-5 top-1/2 -translate-y-1/2 text-[#D4A843]" aria-hidden="true">
+                                    <span class="manake-preferences-choice__check absolute right-5 top-1/2 -translate-y-1/2" aria-hidden="true">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.02 7.08a1 1 0 0 1-1.42.002l-3.02-3.04a1 1 0 1 1 1.42-1.407l2.31 2.327 6.31-6.363a1 1 0 0 1 1.414-.013Z" clip-rule="evenodd" />
                                         </svg>
@@ -172,18 +172,18 @@
                     </div>
                 </fieldset>
 
-                <div class="h-px bg-white/10"></div>
+                <div class="h-px bg-[var(--manake-border)]"></div>
 
                 <fieldset class="space-y-4">
-                    <legend class="text-lg font-semibold text-[#E8E8EC]">{{ __('ui.settings.section_theme') }}</legend>
-                    <p class="text-sm text-[#A0A0A8]">{{ __('ui.settings.section_theme_hint') }}</p>
+                    <legend class="text-lg font-semibold manake-text">{{ __('ui.settings.section_theme') }}</legend>
+                    <p class="text-sm manake-text-muted">{{ __('ui.settings.section_theme_hint') }}</p>
 
                     <div class="grid gap-3 sm:grid-cols-3">
                         @foreach ($themeOptions as $value => $themeOption)
                             <label class="settings-option block">
                                 <input type="radio" name="theme" value="{{ $value }}" class="sr-only" @checked($theme === $value)>
-                                <span class="settings-option-card flex items-start gap-3.5 rounded-2xl px-5 py-4 text-sm font-semibold text-[#E8E8EC] transition" data-active="{{ $theme === $value ? 'true' : 'false' }}">
-                                    <span class="manake-preferences-choice__icon shrink-0 mt-0.5 text-[#A0A0A8] transition" aria-hidden="true">
+                                <span class="settings-option-card flex items-start gap-3.5 rounded-2xl px-5 py-4 text-sm font-semibold transition" data-active="{{ $theme === $value ? 'true' : 'false' }}">
+                                    <span class="manake-preferences-choice__icon shrink-0 mt-0.5 transition" aria-hidden="true">
                                         @if ($themeOption['icon'] === 'monitor')
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                                 <rect x="3" y="4" width="18" height="12" rx="2" />
@@ -209,10 +209,10 @@
                                         @endif
                                     </span>
                                     <span class="flex-1 pr-6 flex flex-col gap-1">
-                                        <span class="text-sm font-semibold text-[#E8E8EC]">{{ $themeOption['label'] }}</span>
-                                        <span class="text-xs font-normal text-[#A0A0A8] leading-relaxed">{{ $themeOption['meta'] }}</span>
+                                        <span class="text-sm font-semibold manake-text">{{ $themeOption['label'] }}</span>
+                                        <span class="text-xs font-normal manake-text-muted leading-relaxed">{{ $themeOption['meta'] }}</span>
                                     </span>
-                                    <span class="manake-preferences-choice__check absolute right-5 top-5 text-[#D4A843]" aria-hidden="true">
+                                    <span class="manake-preferences-choice__check absolute right-5 top-5" aria-hidden="true">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.02 7.08a1 1 0 0 1-1.42.002l-3.02-3.04a1 1 0 1 1 1.42-1.407l2.31 2.327 6.31-6.363a1 1 0 0 1 1.414-.013Z" clip-rule="evenodd" />
                                         </svg>
@@ -223,12 +223,12 @@
                     </div>
                 </fieldset>
 
-                <div class="flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-                    <p class="text-sm text-[#A0A0A8] leading-relaxed">{{ __('ui.settings.summary_note') }}</p>
+                <div class="flex flex-col gap-4 border-t border-manake-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+                    <p class="text-sm manake-text-muted leading-relaxed">{{ __('ui.settings.summary_note') }}</p>
                     <button
                         type="submit"
                         id="settings-submit-button"
-                        class="inline-flex w-full items-center justify-center rounded-xl px-8 py-3.5 text-sm font-semibold transition duration-300 hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-50 sm:w-auto {{ $isLight ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-[0_4px_20px_rgba(37,99,235,0.25)] focus:ring-2 focus:ring-blue-600/40' : 'bg-gradient-to-r from-[#D4A843] to-[#B8871F] text-[#0A0A0B] shadow-[0_4px_20px_rgba(212,168,67,0.25)] hover:brightness-110 active:brightness-95 focus:ring-2 focus:ring-[#D4A843]/40' }}"
+                        class="manake-primary-button px-8 py-3.5 text-sm disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
                     >
                         <span class="submit-label">{{ __('ui.settings.save') }}</span>
                     </button>
