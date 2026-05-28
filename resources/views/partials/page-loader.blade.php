@@ -165,11 +165,15 @@
 
         document.addEventListener('submit', (event) => {
             const form = event.target;
-            if (!(form instanceof HTMLFormElement)) {
+            if (!(form instanceof HTMLFormElement) || event.defaultPrevented) {
                 return;
             }
 
             if (form.target && form.target !== '_self') {
+                return;
+            }
+
+            if (form.dataset.skipLoader === 'true' || form.hasAttribute('data-skip-loader')) {
                 return;
             }
 

@@ -180,7 +180,7 @@
 
         <!-- Input -->
         <div class="border-t border-[#1A1A1E] bg-[#0A0A0B]/95 p-4 backdrop-blur">
-            <form @submit.prevent="sendMessage()" class="flex items-center gap-2">
+            <form @submit.prevent="sendMessage()" data-skip-loader="true" class="flex items-center gap-2">
                 <input
                     type="text"
                     id="chatbot-search-input"
