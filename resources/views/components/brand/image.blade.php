@@ -28,8 +28,8 @@
             $detectedWidth = 640;
             $detectedHeight = 154;
         } elseif ($light === 'MANAKE-FAV-M.png') {
-            $detectedWidth = 493;
-            $detectedHeight = 512;
+            $detectedWidth = 640;
+            $detectedHeight = 154;
         }
     }
 @endphp
@@ -70,7 +70,7 @@
     }
     /* Dynamic visual scale compensation to align light/dark logos visually by eye */
     html[data-theme-resolved="light"] .manake-navbar-logo__image {
-        transform: scale(1.36) !important;
+        transform: scale(1.0) !important;
     }
     html[data-theme-resolved="dark"] .manake-navbar-logo__image {
         transform: scale(1.0) !important;
