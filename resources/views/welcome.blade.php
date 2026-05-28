@@ -177,20 +177,18 @@
             }
 
             /* Light Mode Overrides */
-            html[data-theme-resolved="light"] .hero-title-text {
+            html[data-theme-resolved="light"] .hero-title-text,
+            html[data-theme-resolved="light"] .hero-title-text span,
+            html[data-theme-resolved="light"] .hero-rotating-word {
                 font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif !important;
                 font-weight: 800 !important;
-                color: #FFFFFF !important;
                 letter-spacing: -0.04em !important;
-                text-shadow: 0 4px 18px rgba(0,0,0,0.5), 0 12px 34px rgba(0,0,0,0.38) !important;
-            }
-            html[data-theme-resolved="light"] .hero-rotating-word {
-                color: #FFFFFF !important;
-                text-shadow: 0 4px 18px rgba(0,0,0,0.5), 0 12px 34px rgba(0,0,0,0.38) !important;
+                color: #F8FAFC !important;
+                text-shadow: 0 3px 18px rgba(0,0,0,0.55), 0 14px 38px rgba(0,0,0,0.35) !important;
             }
             html[data-theme-resolved="light"] .hero-desc-text {
-                color: #F3F4F6 !important; /* Soft light gray for premium look on dark overlay */
-                text-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+                color: rgba(248, 250, 252, 0.92) !important;
+                text-shadow: 0 2px 12px rgba(0,0,0,0.45) !important;
             }
             html[data-theme-resolved="light"] .hero-card-glass {
                 border-color: rgba(37, 99, 235, 0.15) !important;
@@ -455,8 +453,8 @@
                 <!-- Light mode background image & overlay -->
                 <div class="absolute inset-0 block dark:hidden">
                     <img src="{{ site_asset('images/hero-bg-light.jpg') }}" alt="Set produksi film profesional" class="h-full w-full object-cover object-center" />
-                    <!-- Left gradient: dark overlay for premium high-contrast white text in light mode -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+                    <!-- Left gradient: high-contrast dark overlay to ensure readable off-white text -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-[rgba(5,8,15,0.72)] via-[rgba(5,8,15,0.36)] to-transparent"></div>
                     <!-- Bottom gradient: blends seamlessly into the rest of the light page background -->
                     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#F7F7F4]/20 to-[#F7F7F4]"></div>
                     <!-- Subtle blue decorative lighting glow that echoes the blue accent -->
