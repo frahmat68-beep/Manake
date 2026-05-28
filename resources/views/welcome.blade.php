@@ -18,9 +18,13 @@
 
         return match ($normalized) {
             'maintenance' => 'Maintenance',
-            'unavailable' => 'Tidak Tersedia',
-            'ready' => $availableUnits > 0 ? 'Tersedia' : 'Penuh / Sedang Disewa',
-            default => $availableUnits > 0 ? 'Tersedia' : 'Tidak Tersedia',
+            'unavailable' => app()->getLocale() === 'en' ? 'Unavailable' : 'Tidak Tersedia',
+            'ready' => $availableUnits > 0 
+                ? (app()->getLocale() === 'en' ? 'Available' : 'Tersedia') 
+                : (app()->getLocale() === 'en' ? 'Fully Booked' : 'Penuh / Sedang Disewa'),
+            default => $availableUnits > 0 
+                ? (app()->getLocale() === 'en' ? 'Available' : 'Tersedia') 
+                : (app()->getLocale() === 'en' ? 'Unavailable' : 'Tidak Tersedia'),
         };
     };
     $resolveStatusClasses = static function (string $statusValue, int $availableUnits): string {
@@ -98,35 +102,23 @@
                 'name' => (string) data_get($item, 'name', 'Equipment'),
                 'qty' => (int) data_get($item, 'qty', 1),
                 'period' => $start && $end
-                    ? \Carbon\Carbon::parse((string) $start)->locale('id')->translatedFormat('d M').' - '.\Carbon\Carbon::parse((string) $end)->locale('id')->translatedFormat('d M Y')
-                    : 'Jadwal belum dikunci',
+                    ? \Carbon\Carbon::parse((string) $start)->locale(app()->getLocale())->translatedFormat('d M').' - '.\Carbon\Carbon::parse((string) $end)->locale(app()->getLocale())->translatedFormat('d M Y')
+                    : (app()->getLocale() === 'en' ? 'Schedule not locked' : 'Jadwal belum dikunci'),
             ];
         })
         ->values();
     $carouselItems = $equipmentItems->isNotEmpty()
         ? $equipmentItems->concat($equipmentItems)->take(max(12, $equipmentItems->count() * 2))->values()
         : collect();
-    $heroDescription = setting('home.hero_subtitle', 'Manake menyediakan akses ke kamera sinema, lighting profesional, perangkat audio, drone, stabilizer, dan lainnya — siap diambil dan digunakan. Tanpa kerumitan kepemilikan, hasil tetap profesional.');
-    $equipmentSectionTitle = setting('copy.landing.ready_panel_title', 'Tersedia untuk disewa hari ini.');
-    $flowKicker = setting('copy.landing.flow_kicker', 'Cara Sewa');
-    $flowTitle = setting('copy.landing.flow_title', 'Sewa peralatan dalam empat langkah mudah.');
-    $rentalSteps = [
-        ['number' => '01', 'title' => setting('copy.landing.step_1_title', 'Pilih Peralatan'), 'body' => setting('copy.landing.step_1_desc', 'Telusuri katalog kami dan pilih peralatan yang sesuai dengan kebutuhan produksi Anda. Filter berdasarkan kategori, ketersediaan, dan harga.')],
-        ['number' => '02', 'title' => setting('copy.landing.step_2_title', 'Ajukan Pemesanan'), 'body' => setting('copy.landing.step_2_desc', 'Isi formulir pemesanan dengan tanggal sewa, durasi, dan detail produksi Anda. Kami akan mengkonfirmasi dalam waktu 1x24 jam.')],
-        ['number' => '03', 'title' => setting('copy.landing.step_3_title', 'Ambil atau Terima'), 'body' => setting('copy.landing.step_3_desc', 'Ambil peralatan langsung di studio kami di Jakarta, atau pilih layanan pengiriman ke lokasi produksi Anda.')],
-        ['number' => '04', 'title' => setting('copy.landing.step_4_title', 'Shoot & Kembalikan'), 'body' => setting('copy.landing.step_4_desc', 'Gunakan peralatan untuk produksi Anda, lalu kembalikan sesuai jadwal. Tim kami siap membantu jika ada kendala teknis.')],
-    ];
+    $heroDescriptionText = __('app.home.hero_subtitle');
 @endphp
 
 @section('content')
-    <div class="bg-[#0A0A0B] text-[#E8E8EC]">
+    <div class="bg-[#0A0A0B] text-[#E8E8EC] transition-colors duration-200">
         @php
             $heroCategories = app()->getLocale() === 'en' 
                 ? ['Camera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'Walkie-Talkie'] 
                 : ['Kamera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'HT'];
-            $heroDescriptionText = app()->getLocale() === 'en' 
-                ? __('app.home.hero_subtitle') 
-                : setting('home.hero_subtitle', __('app.home.hero_subtitle'));
         @endphp
         <style>
             /* Scoped Theme-Aware Hero Styles */
@@ -236,6 +228,217 @@
             html[data-theme-resolved="light"] .hero-schedule-item .period-text {
                 color: #2563EB !important;
             }
+
+            /* Scoped Theme-Aware Core Classes for Landing Page */
+            .home-kicker {
+                font-size: 0.75rem; /* text-xs */
+                font-weight: 600; /* font-semibold */
+                text-transform: uppercase;
+                letter-spacing: 0.28em;
+                transition: color 0.25s ease-in-out;
+            }
+            .home-heading {
+                font-size: clamp(2.4rem, 4vw, 4rem);
+                line-height: 0.96;
+                letter-spacing: -0.04em;
+                transition: font-family 0.25s ease-in-out, color 0.25s ease-in-out;
+            }
+            .home-copy {
+                font-size: 1.125rem; /* text-lg */
+                line-height: 2rem; /* leading-8 */
+                transition: color 0.25s ease-in-out;
+            }
+            .home-card {
+                border-radius: 0.5rem; /* rounded-lg */
+                border-width: 1px;
+                padding: 1.5rem; /* p-6 */
+                transition: background-color 0.25s ease-in-out, border-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+            }
+            .home-carousel-card {
+                display: flex;
+                min-height: 33rem;
+                width: 82vw;
+                max-width: 24rem;
+                flex-shrink: 0;
+                scroll-snap-align: start;
+                overflow: hidden;
+                border-radius: 1.35rem;
+                border-width: 1px;
+                transition: background-color 0.25s ease-in-out, border-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+            }
+            @media (min-width: 640px) {
+                .home-carousel-card { width: 21rem; }
+            }
+            @media (min-width: 1024px) {
+                .home-carousel-card { width: 23rem; }
+            }
+            
+            .home-primary-button {
+                display: inline-flex;
+                width: 100%;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                border-radius: 0.375rem; /* rounded-md */
+                padding: 0.75rem 1rem; /* py-3 px-4 */
+                font-size: 0.75rem; /* text-xs */
+                font-weight: 600; /* font-semibold */
+                transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+            }
+            .home-secondary-button {
+                display: inline-flex;
+                height: 2.75rem; /* h-11 */
+                width: 2.75rem; /* w-11 */
+                align-items: center;
+                justify-content: center;
+                border-radius: 9999px; /* rounded-full */
+                border-width: 1px;
+                font-size: 1.25rem; /* text-xl */
+                font-weight: 600; /* font-semibold */
+                transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+            }
+
+            /* DARK MODE (Master/Cinematic) */
+            html[data-theme-resolved="dark"] .home-kicker {
+                color: #D4A843 !important; /* Gold */
+            }
+            html[data-theme-resolved="dark"] .home-heading {
+                font-family: 'DM Serif Display', Georgia, serif !important;
+                color: #E8E8EC !important;
+            }
+            html[data-theme-resolved="dark"] .home-copy {
+                color: #A0A0A8 !important;
+            }
+            html[data-theme-resolved="dark"] .home-card {
+                background-color: #0A0A0B !important;
+                border-color: #1A1A1E !important;
+                color: #E8E8EC !important;
+            }
+            html[data-theme-resolved="dark"] .home-carousel-card {
+                background-color: #111113 !important;
+                border-color: #1A1A1E !important;
+                box-shadow: 0 18px 50px -28px rgba(0,0,0,0.8) !important;
+            }
+            html[data-theme-resolved="dark"] .home-carousel-card-img-bg {
+                background-color: #111113 !important;
+            }
+            html[data-theme-resolved="dark"] .home-carousel-card-meta {
+                border-color: rgba(255, 255, 255, 0.08) !important;
+                background-color: rgba(0, 0, 0, 0.2) !important;
+            }
+            html[data-theme-resolved="dark"] .home-primary-button.btn-available {
+                background-color: #D4A843 !important;
+                color: #0A0A0B !important;
+            }
+            html[data-theme-resolved="dark"] .home-primary-button.btn-available:hover {
+                background-color: #e0ba5d !important;
+            }
+            html[data-theme-resolved="dark"] .home-primary-button.btn-booked {
+                background-color: #1A1A1E !important;
+                color: #A0A0A8 !important;
+            }
+            html[data-theme-resolved="dark"] .home-primary-button.btn-booked:hover {
+                color: #E8E8EC !important;
+            }
+            html[data-theme-resolved="dark"] .home-secondary-button.btn-outline {
+                border-color: rgba(255, 255, 255, 0.1) !important;
+                background-color: #111113 !important;
+                color: #E8E8EC !important;
+            }
+            html[data-theme-resolved="dark"] .home-secondary-button.btn-outline:hover {
+                border-color: rgba(212, 168, 67, 0.5) !important;
+                color: #D4A843 !important;
+            }
+            html[data-theme-resolved="dark"] .home-secondary-button.btn-solid {
+                border-color: transparent !important;
+                background-color: #D4A843 !important;
+                color: #0A0A0B !important;
+            }
+            html[data-theme-resolved="dark"] .home-secondary-button.btn-solid:hover {
+                background-color: #e0ba5d !important;
+            }
+            html[data-theme-resolved="dark"] .home-card-number {
+                color: #D4A843 !important;
+            }
+            html[data-theme-resolved="dark"] .home-badge-category {
+                border-color: rgba(255, 255, 255, 0.1) !important;
+                background-color: rgba(10, 10, 11, 0.8) !important;
+                color: #E8E8EC !important;
+            }
+
+            /* LIGHT MODE (Clean/Blue) */
+            html[data-theme-resolved="light"] .home-kicker {
+                color: #2563EB !important; /* Blue */
+            }
+            html[data-theme-resolved="light"] .home-heading {
+                font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif !important;
+                font-weight: 800 !important;
+                color: #111827 !important;
+                letter-spacing: -0.04em !important;
+            }
+            html[data-theme-resolved="light"] .home-copy {
+                color: #4B5563 !important;
+            }
+            html[data-theme-resolved="light"] .home-card {
+                background-color: #FFFFFF !important;
+                border-color: #E5E2DA !important;
+                color: #111827 !important;
+                box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03) !important;
+            }
+            html[data-theme-resolved="light"] .home-carousel-card {
+                background-color: #FFFFFF !important;
+                border-color: #E5E2DA !important;
+                box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04) !important;
+            }
+            html[data-theme-resolved="light"] .home-carousel-card-img-bg {
+                background-color: #F9FAFB !important; /* Warm light gray background for product images */
+            }
+            html[data-theme-resolved="light"] .home-carousel-card-meta {
+                border-color: #F3F4F6 !important;
+                background-color: #F9FAFB !important;
+            }
+            html[data-theme-resolved="light"] .home-primary-button.btn-available {
+                background-color: #2563EB !important; /* Blue */
+                color: #FFFFFF !important;
+            }
+            html[data-theme-resolved="light"] .home-primary-button.btn-available:hover {
+                background-color: #1d4ed8 !important;
+            }
+            html[data-theme-resolved="light"] .home-primary-button.btn-booked {
+                background-color: #F3F4F6 !important;
+                color: #4B5563 !important;
+            }
+            html[data-theme-resolved="light"] .home-primary-button.btn-booked:hover {
+                color: #111827 !important;
+            }
+            html[data-theme-resolved="light"] .home-secondary-button.btn-outline {
+                border-color: #E5E2DA !important;
+                background-color: #FFFFFF !important;
+                color: #4B5563 !important;
+            }
+            html[data-theme-resolved="light"] .home-secondary-button.btn-outline:hover {
+                border-color: rgba(37, 99, 235, 0.5) !important;
+                color: #2563EB !important;
+            }
+            html[data-theme-resolved="light"] .home-secondary-button.btn-solid {
+                border-color: transparent !important;
+                background-color: #2563EB !important;
+                color: #FFFFFF !important;
+            }
+            html[data-theme-resolved="light"] .home-secondary-button.btn-solid:hover {
+                background-color: #1d4ed8 !important;
+            }
+            html[data-theme-resolved="light"] .home-card-number {
+                color: #2563EB !important;
+            }
+            html[data-theme-resolved="light"] .home-badge-category {
+                border-color: rgba(37, 99, 235, 0.15) !important;
+                background-color: rgba(37, 99, 235, 0.05) !important;
+                color: #2563EB !important;
+            }
+            html[data-theme-resolved="light"] .card-img-overlay {
+                display: none !important;
+            }
         </style>
         <section class="manake-hero-island relative min-h-[calc(100svh-8rem)] overflow-hidden" data-theme-island="dark">
             <div class="absolute inset-0">
@@ -336,14 +539,14 @@
                                 <div class="grid grid-cols-[1fr_auto] gap-3 rounded-xl border px-3 py-2.5 hero-schedule-item">
                                     <div class="min-w-0">
                                         <p class="truncate text-sm font-semibold hero-card-title">{{ $rental['name'] }}</p>
-                                        <p class="mt-0.5 text-xs rented-count">{{ $rental['qty'] }} unit disewa</p>
+                                        <p class="mt-0.5 text-xs rented-count">{{ $rental['qty'] }} {{ $rental['qty'] > 1 ? __('app.home.units_rented') : __('app.home.unit_rented') }}</p>
                                     </div>
                                     <p class="self-center text-right text-xs font-semibold period-text">{{ $rental['period'] }}</p>
                                 </div>
                             @empty
                                 <div class="rounded-xl border px-3 py-3 hero-schedule-item">
-                                    <p class="text-sm font-semibold hero-card-title">Belum ada booking aktif</p>
-                                    <p class="mt-1 text-xs rented-count">Semua alat siap dicek dari katalog live.</p>
+                                    <p class="text-sm font-semibold hero-card-title">{{ __('app.home.empty_bookings') ?? 'Belum ada booking aktif' }}</p>
+                                    <p class="mt-1 text-xs rented-count">{{ __('app.home.empty_bookings_desc') ?? 'Semua alat siap dicek dari katalog live.' }}</p>
                                 </div>
                             @endforelse
                         </div>
@@ -397,25 +600,25 @@
                     }"
                 >
                     <div>
-                        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">Peralatan Unggulan</p>
-                        <h2 class="text-[clamp(2.5rem,4vw,4rem)] leading-[0.96] tracking-[-0.04em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
-                            {{ $equipmentSectionTitle }}
+                        <p class="mb-3 home-kicker">{{ __('app.home.featured_kicker') }}</p>
+                        <h2 class="home-heading">
+                            {{ __('app.home.featured_title') }}
                         </h2>
                     </div>
                     @if ($carouselItems->isNotEmpty())
                         <div class="flex items-center gap-2">
                             <button
                                 type="button"
-                                class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-[#111113] text-xl font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/50 hover:text-[#D4A843]"
-                                aria-label="Peralatan sebelumnya"
+                                class="home-secondary-button btn-outline"
+                                aria-label="{{ __('app.actions.previous') }}"
                                 @click="scroll(-1)"
                             >
                                 ←
                             </button>
                             <button
                                 type="button"
-                                class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-[#D4A843] text-xl font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]"
-                                aria-label="Peralatan berikutnya"
+                                class="home-secondary-button btn-solid"
+                                aria-label="{{ __('app.actions.next') }}"
                                 @click="scroll(1)"
                             >
                                 →
@@ -448,9 +651,9 @@
                                 $itemStatusLabel = (string) data_get($item, 'status_label', $resolveStatusLabel($itemStatusValue, $itemAvailableUnits));
                                 $itemStatusClass = (string) data_get($item, 'status_class', $resolveStatusClasses($itemStatusValue, $itemAvailableUnits));
                             @endphp
-                            <article data-carousel-card class="group flex min-h-[33rem] w-[82vw] max-w-[24rem] shrink-0 snap-start overflow-hidden rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] shadow-[0_18px_50px_-28px_rgba(0,0,0,0.8)] sm:w-[21rem] lg:w-[23rem]">
+                            <article data-carousel-card class="group home-carousel-card">
                                 <div class="flex w-full flex-col">
-                                <div class="relative aspect-[4/3] overflow-hidden bg-[#111113]">
+                                <div class="relative aspect-[4/3] overflow-hidden home-carousel-card-img-bg">
                                     <img
                                         src="{{ $itemImage }}"
                                         alt="{{ $itemName }}"
@@ -460,36 +663,36 @@
                                         fetchpriority="{{ $loop->index === 0 ? 'high' : 'auto' }}"
                                         decoding="async"
                                     >
-                                    <div class="absolute left-3 top-3 rounded-sm border border-white/10 bg-[#0A0A0B]/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E8E8EC]">
+                                    <div class="absolute left-3 top-3 rounded-sm border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] home-badge-category">
                                         {{ $itemCategory }}
                                     </div>
                                     <div class="absolute right-3 top-3 rounded-sm border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] {{ $itemStatusClass }}">
                                         {{ $itemStatusLabel }}
                                     </div>
-                                    <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                    <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent card-img-overlay"></div>
                                 </div>
                                 <div class="flex flex-1 flex-col gap-3 p-5">
                                     <div>
-                                        <h3 class="text-base font-semibold leading-snug text-[#E8E8EC]">{{ $itemName }}</h3>
-                                        <p class="mt-1 text-xs text-[#A0A0A8]">{{ $itemCategory }}</p>
+                                        <h3 class="text-base font-semibold leading-snug">{{ $itemName }}</h3>
+                                        <p class="mt-1 text-xs opacity-60">{{ $itemCategory }}</p>
                                     </div>
-                                    <div class="flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-black/20 px-3 py-2.5">
+                                    <div class="flex items-center justify-between gap-3 rounded-2xl border px-3 py-2.5 home-carousel-card-meta">
                                         <div>
-                                            <p class="text-[10px] uppercase tracking-[0.22em] text-[#A0A0A8]">Harga sewa</p>
-                                            <p class="mt-1 text-sm font-semibold text-[#E8E8EC]">
-                                                Rp {{ number_format($itemPrice, 0, ',', '.') }} <span class="text-[#A0A0A8]">/ hari</span>
+                                            <p class="text-[10px] uppercase tracking-[0.22em] opacity-60">{{ __('app.home.price_label') }}</p>
+                                            <p class="mt-1 text-sm font-semibold">
+                                                Rp {{ number_format($itemPrice, 0, ',', '.') }} <span class="opacity-60">/ {{ __('app.product.day_label') }}</span>
                                             </p>
                                         </div>
                                         <div class="text-right">
-                                            <p class="text-[10px] uppercase tracking-[0.22em] text-[#A0A0A8]">Status</p>
-                                            <p class="mt-1 text-sm font-semibold {{ $isAvailable ? 'text-emerald-300' : 'text-amber-200' }}">
-                                                {{ $isAvailable ? 'Available' : 'Booked' }}
+                                            <p class="text-[10px] uppercase tracking-[0.22em] opacity-60">{{ __('app.home.status_label') }}</p>
+                                            <p class="mt-1 text-sm font-semibold {{ $isAvailable ? 'text-emerald-500 dark:text-emerald-300' : 'text-amber-600 dark:text-amber-200' }}">
+                                                {{ $isAvailable ? __('app.home.status_available') : __('app.home.status_booked') }}
                                             </p>
                                         </div>
                                     </div>
                                     <div class="mt-auto">
-                                        <a href="{{ $itemUrl }}" class="inline-flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-xs font-semibold {{ $isAvailable ? 'bg-[#D4A843] text-[#0A0A0B] transition hover:bg-[#e0ba5d]' : 'cursor-pointer bg-[#1A1A1E] text-[#A0A0A8] transition hover:text-[#E8E8EC]' }}">
-                                            {{ $isAvailable ? 'Lihat Detail & Booking' : 'Lihat Detail' }}
+                                        <a href="{{ $itemUrl }}" class="home-primary-button {{ $isAvailable ? 'btn-available' : 'btn-booked' }}">
+                                            {{ $isAvailable ? __('app.home.btn_view_book') : __('app.home.btn_view_details') }}
                                             @if($isAvailable)
                                                 <span aria-hidden="true">→</span>
                                             @endif
@@ -502,9 +705,9 @@
                         </div>
                     </div>
                 @else
-                    <div class="rounded-[1.35rem] border border-[#1A1A1E] bg-[#111113] p-8 text-center">
-                        <p class="text-base font-semibold text-[#E8E8EC]">Belum ada alat ready di database</p>
-                        <p class="mx-auto mt-2 max-w-xl text-sm leading-6 text-[#A0A0A8]">Carousel ini hanya menampilkan data equipment berstatus ready dari database utama, jadi tidak ada item dummy yang ditampilkan.</p>
+                    <div class="rounded-[1.35rem] border p-8 text-center home-card">
+                        <p class="text-base font-semibold">{{ __('app.home.empty_featured') }}</p>
+                        <p class="mx-auto mt-2 max-w-xl text-sm leading-6 opacity-75">{{ __('app.home.empty_featured_desc') }}</p>
                     </div>
                 @endif
             </div>
@@ -513,24 +716,24 @@
         <section id="about" class="border-y border-[#1A1A1E] bg-[#111113] py-24 md:py-28">
             <div class="mx-auto grid max-w-7xl gap-14 px-6 md:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
                 <div>
-                    <p class="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">Tentang Manake</p>
-                    <h2 class="max-w-xl text-[clamp(2.6rem,4vw,4rem)] leading-[0.96] tracking-[-0.04em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
-                        Peralatan produksi yang Anda butuhkan, tepat saat Anda membutuhkannya.
+                    <p class="mb-3 home-kicker">{{ __('app.home.about_kicker') }}</p>
+                    <h2 class="home-heading max-w-xl">
+                        {{ __('app.home.about_title') }}
                     </h2>
-                    <p class="mt-6 max-w-2xl text-lg leading-8 text-[#A0A0A8]">
-                        Manake adalah platform rental peralatan media profesional yang dibangun untuk sutradara, sinematografer, kreator konten, dan rumah produksi. Kami menghadirkan hanya gear terbaik berkelas sinema — mulai dari kamera cinema, lensa broadcast, audio profesional, drone, hingga stabilizer.
+                    <p class="mt-6 max-w-2xl home-copy">
+                        {{ __('app.home.about_desc') }}
                     </p>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2">
                     @foreach ([
-                        ['title' => 'Peralatan Terverifikasi', 'body' => 'Setiap item diuji, dikalibrasi, dan dirawat sebelum setiap penyewaan. Tidak ada kejutan di lokasi syuting.'],
-                        ['title' => 'Pengambilan & Pengiriman Fleksibel', 'body' => 'Ambil di studio kami atau minta peralatan dikirim ke lokasi Anda. Tersedia same-day untuk produksi lokal.'],
-                        ['title' => 'Terlindungi & Diasuransikan', 'body' => 'Semua penyewaan dilengkapi opsi perlindungan kerusakan agar produksi Anda tetap berjalan sesuai jadwal.'],
-                        ['title' => 'Dukungan di Lokasi Syuting', 'body' => 'Tim operator berpengalaman kami siap memberikan dukungan teknis sepanjang hari syuting Anda.'],
+                        ['title' => __('app.home.pillar_1_title'), 'body' => __('app.home.pillar_1_desc')],
+                        ['title' => __('app.home.pillar_2_title'), 'body' => __('app.home.pillar_2_desc')],
+                        ['title' => __('app.home.pillar_3_title'), 'body' => __('app.home.pillar_3_desc')],
+                        ['title' => __('app.home.pillar_4_title'), 'body' => __('app.home.pillar_4_desc')],
                     ] as $pillar)
-                        <div class="rounded-lg border border-[#1A1A1E] bg-[#0A0A0B] p-6">
-                            <h3 class="text-sm font-semibold text-[#E8E8EC]">{{ $pillar['title'] }}</h3>
-                            <p class="mt-3 text-sm leading-7 text-[#A0A0A8]">{{ $pillar['body'] }}</p>
+                        <div class="home-card">
+                            <h3 class="text-sm font-semibold">{{ $pillar['title'] }}</h3>
+                            <p class="mt-3 text-sm leading-7 opacity-80">{{ $pillar['body'] }}</p>
                         </div>
                     @endforeach
                 </div>
@@ -540,21 +743,26 @@
         <section id="cara-sewa" class="bg-[#0A0A0B] py-24 md:py-28">
             <div class="mx-auto max-w-7xl px-6 md:px-10">
                 <div class="max-w-2xl">
-                    <p class="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#D4A843]">{{ $flowKicker }}</p>
-                    <h2 class="text-[clamp(2.4rem,4vw,3.8rem)] leading-[0.96] tracking-[-0.04em] text-[#E8E8EC]" style="font-family: 'DM Serif Display', Georgia, serif;">
-                        {{ $flowTitle }}
+                    <p class="mb-3 home-kicker">{{ __('app.home.flow_kicker') }}</p>
+                    <h2 class="home-heading">
+                        {{ __('app.home.flow_title') }}
                     </h2>
                 </div>
 
                 <div class="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                    @foreach ($rentalSteps as $step)
-                        <article class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6">
+                    @foreach ([
+                        ['number' => __('app.home.step_1_num'), 'title' => __('app.home.step_1_title'), 'body' => __('app.home.step_1_desc')],
+                        ['number' => __('app.home.step_2_num'), 'title' => __('app.home.step_2_title'), 'body' => __('app.home.step_2_desc')],
+                        ['number' => __('app.home.step_3_num'), 'title' => __('app.home.step_3_title'), 'body' => __('app.home.step_3_desc')],
+                        ['number' => __('app.home.step_4_num'), 'title' => __('app.home.step_4_title'), 'body' => __('app.home.step_4_desc')],
+                    ] as $step)
+                        <article class="home-card">
                             <div class="flex items-center justify-between">
-                                <span class="text-xs font-semibold tracking-[0.24em] text-[#D4A843]">{{ $step['number'] }}</span>
-                                <span class="text-xs font-medium text-[#A0A0A8]">›</span>
+                                <span class="text-xs font-semibold tracking-[0.24em] home-card-number">{{ $step['number'] }}</span>
+                                <span class="text-xs font-medium opacity-60">›</span>
                             </div>
-                            <h3 class="mt-4 text-lg font-semibold text-[#E8E8EC]">{{ $step['title'] }}</h3>
-                            <p class="mt-3 text-sm leading-7 text-[#A0A0A8]">{{ $step['body'] }}</p>
+                            <h3 class="mt-4 text-lg font-semibold">{{ $step['title'] }}</h3>
+                            <p class="mt-3 text-sm leading-7 opacity-80">{{ $step['body'] }}</p>
                         </article>
                     @endforeach
                 </div>
