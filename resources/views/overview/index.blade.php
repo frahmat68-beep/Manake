@@ -175,8 +175,8 @@
         </article>
     </div>
 
-    <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.85fr)] lg:items-start">
-        <section class="history-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 160ms">
+    <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.85fr)] lg:items-stretch">
+        <section class="history-card-in flex h-full flex-col rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 160ms">
             <div class="flex items-center justify-between gap-4">
                 <div>
                     <h3 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('Rental Aktif') }}</h3>
@@ -234,17 +234,25 @@
                                 </div>
                             </div>
 
-                            <div class="w-full xl:w-[280px] xl:shrink-0">
+                            <div class="w-full xl:w-[300px] xl:shrink-0">
                                 <div class="rounded-2xl border border-[#1A1A1E] bg-[#111113] p-4">
-                                    <p class="text-xs font-medium text-[#A0A0A8]">{{ __('Total') }}</p>
-                                    <p class="mt-1 text-2xl font-bold tracking-tight text-[#E8E8EC]">
-                                        {{ $formatIdr($order->grand_total ?? $order->total_amount) }}
-                                    </p>
+                                    <div class="flex items-baseline justify-between border-b border-white/5 pb-3">
+                                        <p class="text-xs font-medium text-[#A0A0A8]">{{ __('Total') }}</p>
+                                        <p class="text-2xl font-bold tracking-tight text-[#E8E8EC]">
+                                            {{ $formatIdr($order->grand_total ?? $order->total_amount) }}
+                                        </p>
+                                    </div>
 
-                                    <div class="mt-4 flex flex-wrap gap-2">
+                                    @php
+                                        $hasRefresh = $canRefreshStatus($order);
+                                        $hasCancel = $canCancelOrder($order);
+                                        $bothExist = $hasRefresh && $hasCancel;
+                                    @endphp
+
+                                    <div class="mt-4 grid grid-cols-2 gap-2">
                                         <a
                                             href="{{ route('account.orders.show', $order) }}"
-                                            class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35 hover:text-[#D4A843]"
+                                            class="col-span-2 inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-center text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35 hover:text-[#D4A843]"
                                         >
                                             {!! 'Detail & Ubah Jadwal' !!}
                                         </a>
@@ -252,20 +260,38 @@
                                         @if ($canPayOrder($order))
                                             <a
                                                 href="{{ route('booking.pay', $order) }}"
-                                                class="inline-flex items-center justify-center rounded-xl bg-[#D4A843] px-3.5 py-2 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]"
+                                                class="col-span-2 inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl bg-[#D4A843] px-3.5 py-2 text-center text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]"
                                             >
                                                 {{ __('Bayar Sekarang') }}
                                             </a>
                                         @endif
 
-                                        @if ($canRefreshStatus($order))
-                                            <form method="POST" action="{{ route('payments.refresh-status', $order) }}">
+                                        @if ($hasRefresh)
+                                            <form method="POST" action="{{ route('payments.refresh-status', $order) }}" class="{{ $bothExist ? 'col-span-1' : 'col-span-2' }} w-full">
                                                 @csrf
                                                 <button
                                                     type="submit"
-                                                    class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35 hover:text-[#D4A843]"
+                                                    class="inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-center text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35 hover:text-[#D4A843]"
                                                 >
                                                     {{ __('Refresh Status') }}
+                                                </button>
+                                            </form>
+                                        @endif
+
+                                        @if ($hasCancel)
+                                            <form
+                                                method="POST"
+                                                action="{{ route('account.orders.cancel', $order) }}"
+                                                onsubmit="return confirm('{{ __('Apakah Anda yakin ingin membatalkan pesanan ini?') }}');"
+                                                class="{{ $bothExist ? 'col-span-1' : 'col-span-2' }} w-full"
+                                            >
+                                                @csrf
+                                                @method('DELETE')
+                                                <button
+                                                    type="submit"
+                                                    class="inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border border-rose-400/25 bg-rose-500/5 px-3.5 py-2 text-center text-sm font-semibold text-rose-300 transition hover:border-rose-300/40 hover:bg-rose-500/10"
+                                                >
+                                                    {{ __('Batalkan') }}
                                                 </button>
                                             </form>
                                         @endif
@@ -273,27 +299,10 @@
                                         @if ($signedInvoiceUrl)
                                             <a
                                                 href="{{ $signedInvoiceUrl }}"
-                                                class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35 hover:text-[#D4A843]"
+                                                class="col-span-2 inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-center text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35 hover:text-[#D4A843]"
                                             >
                                                 {{ __('Invoice') }}
                                             </a>
-                                        @endif
-
-                                        @if ($canCancelOrder($order))
-                                            <form
-                                                method="POST"
-                                                action="{{ route('account.orders.cancel', $order) }}"
-                                                onsubmit="return confirm('{{ __('Apakah Anda yakin ingin membatalkan pesanan ini?') }}');"
-                                            >
-                                                @csrf
-                                                @method('DELETE')
-                                                <button
-                                                    type="submit"
-                                                    class="inline-flex items-center justify-center rounded-xl border border-rose-400/25 bg-rose-500/5 px-3.5 py-2 text-sm font-semibold text-rose-300 transition hover:border-rose-300/40 hover:bg-rose-500/10"
-                                                >
-                                                    {{ __('Batalkan') }}
-                                                </button>
-                                            </form>
                                         @endif
                                     </div>
                                 </div>
@@ -312,13 +321,13 @@
             </div>
         </section>
 
-        <section class="history-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 220ms">
+        <section class="history-card-in flex h-full flex-col rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 220ms">
             <div>
                 <h3 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('Riwayat Terbaru') }}</h3>
                 <p class="mt-1 text-sm text-[#A0A0A8]">{{ __('Pesanan terbaru, pembayaran, dan akses detail order Anda.') }}</p>
             </div>
 
-            <div class="mt-5 space-y-3">
+            <div class="mt-5 flex-1 space-y-3 lg:max-h-[540px] lg:overflow-y-auto lg:pr-1">
                 @forelse ($recentBookings as $order)
                     @php
                         $orderNumber = $order->order_number ?? ('ORD-' . $order->id);
