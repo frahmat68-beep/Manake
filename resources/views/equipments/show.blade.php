@@ -69,182 +69,176 @@
 
 @section('content')
 
-    <div class="manake-page">
-        <section class="manake-section">
-            <div class="manake-page-frame">
-                <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl">
-                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                        <div class="max-w-3xl">
-                            <div class="flex flex-wrap items-center gap-2.5 mb-3">
-                                <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
-                                    {{ $statusLabel }}
-                                </span>
-                            </div>
-                            <h1 class="text-2xl font-extrabold leading-tight tracking-tight text-[#E8E8EC] sm:text-3xl">
-                                {{ $equipment->name }}
-                            </h1>
-                            <div class="mt-5 flex flex-wrap gap-3">
-                                @if ($canRent)
-                                    <a href="#rental-summary" data-scroll-to-rental class="mk-button-primary px-5 py-2.5 text-sm">
-                                        Pilih Tanggal Sewa
-                                    </a>
-                                @endif
-                                <a href="{{ route('catalog') }}" class="mk-button-secondary px-5 py-2.5 text-sm">
-                                    {{ __('app.actions.back_to_catalog') }}
-                                </a>
-                            </div>
-                        </div>
+    <div class="min-h-screen bg-[#0A0A0B] text-[#E8E8EC] pt-6 pb-24">
+        <!-- Breadcrumbs Navigation -->
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 mb-6">
+            <a href="{{ route('catalog') }}" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#A0A0A8] transition-colors duration-300 hover:text-[#D4A843]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
+                Kembali ke Katalog
+            </a>
+        </div>
+
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr,0.8fr]">
+            <!-- Left Column: Product Info, Visuals & Specs -->
+            <div class="space-y-6">
+                <!-- Title & Badge Block -->
+                <div class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 sm:p-8 shadow-xl">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#D4A843]">{{ $equipment->category?->name }}</span>
+                        <span class="h-1 w-1 rounded-full bg-[#1A1A1E]"></span>
+                        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-[9px] font-extrabold uppercase tracking-widest {{ $statusClass }}">
+                            {{ $statusLabel }}
+                        </span>
                     </div>
+                    <h1 class="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-[#E8E8EC] sm:text-4xl">
+                        {{ $equipment->name }}
+                    </h1>
+                </div>
+
+                <!-- Main Product Image -->
+                <div class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl">
+                    <div class="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-2xl bg-[#0A0A0B] sm:aspect-[16/10]">
+                        <img
+                            src="{{ $mainImage }}"
+                            alt="{{ $equipment->name }}"
+                            class="max-h-full max-w-full object-contain drop-shadow-md transition-all duration-500 hover:scale-[1.02]"
+                            onerror="this.onerror=null;this.src='{{ $fallbackImage }}';"
+                        >
+                    </div>
+                </div>
+
+                @if (count($gallery) > 1)
+                    <div class="grid grid-cols-4 gap-3">
+                        @foreach (array_slice($gallery, 1) as $image)
+                            <button class="rounded-2xl border border-white/5 bg-[#111113]/40 p-3 transition hover:-translate-y-0.5" type="button">
+                                <img
+                                    src="{{ $image }}"
+                                    alt="Gallery {{ $equipment->name }}"
+                                    class="h-16 w-full object-contain transition-transform duration-300 hover:scale-[1.03]"
+                                    onerror="this.onerror=null;this.src='{{ $fallbackImage }}';"
+                                    loading="lazy"
+                                >
+                            </button>
+                        @endforeach
+                    </div>
+                @endif
+
+                <!-- Streamlined Specifications -->
+                <div class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 sm:p-8 shadow-xl">
+                    <div class="flex items-center gap-3.5 mb-6">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4A843] text-[#0A0A0B]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                        </div>
+                        <h3 class="text-lg font-bold tracking-tight text-[#E8E8EC]">{{ __('app.product.specs') }}</h3>
+                    </div>
+
+                    @if ($specifications->isEmpty())
+                        <div class="rounded-2xl border border-white/5 bg-[#0A0A0B]/40 p-6 text-center">
+                            <p class="text-sm font-medium text-[#A0A0A8]">{{ __('app.product.spec_unavailable') }}</p>
+                        </div>
+                    @else
+                        <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3.5">
+                            @foreach ($specifications as $specification)
+                                <li class="flex items-start gap-3 text-sm text-[#A0A0A8] leading-relaxed">
+                                    <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4A843]"></span>
+                                    <span>{{ $specification }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             </div>
-        </section>
 
-        <section class="manake-section pb-24">
-            <div class="manake-page-frame grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr,0.9fr] lg:gap-8">
-                <!-- Left Column: Visual & Specs -->
-                <div class="order-2 space-y-6 lg:order-1">
-                    <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6">
-                        <div class="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-md bg-[#0A0A0B] sm:aspect-[16/10]">
-                            <img
-                                src="{{ $mainImage }}"
-                                alt="{{ $equipment->name }}"
-                                class="max-h-full max-w-full object-contain drop-shadow-md transition-transform duration-500 hover:scale-[1.01]"
-                                onerror="this.onerror=null;this.src='{{ $fallbackImage }}';"
-                            >
-                        </div>
-                    </div>
-
-                    @if (count($gallery) > 1)
-                        <div class="grid grid-cols-4 gap-3">
-                            @foreach (array_slice($gallery, 1) as $image)
-                                <button class="mk-card p-3 hover:-translate-y-0.5 group" type="button">
-                                    <img
-                                        src="{{ $image }}"
-                                        alt="Gallery {{ $equipment->name }}"
-                                        class="h-16 w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
-                                        onerror="this.onerror=null;this.src='{{ $fallbackImage }}';"
-                                        loading="lazy"
-                                    >
-                                </button>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8">
-                        <div class="flex items-center gap-3.5 mb-6">
-                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#D4A843] text-[#0A0A0B]">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            <!-- Right Column: Pricing & Booking -->
+            <div class="space-y-6 lg:sticky lg:top-24 self-start">
+                <!-- Pricing Card -->
+                <div class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 sm:p-8 shadow-xl">
+                    <div class="space-y-6">
+                        <div class="space-y-1">
+                            <p class="text-[9px] font-extrabold uppercase tracking-widest text-[#D4A843]/80">Harga Sewa</p>
+                            <div class="flex items-baseline gap-1.5">
+                                <span class="text-3xl font-extrabold tracking-tight text-[#E8E8EC]">Rp {{ number_format($equipment->price_per_day, 0, ',', '.') }}</span>
+                                <span class="text-xs font-bold uppercase tracking-wider text-[#A0A0A8]">{{ __('app.product.per_day') }}</span>
                             </div>
-                            <h3 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('app.product.specs') }}</h3>
                         </div>
 
-                        @if ($specifications->isEmpty())
-                            <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-6 text-center">
-                                <p class="text-sm font-medium text-[#A0A0A8]">{{ __('app.product.spec_unavailable') }}</p>
+                        <!-- Stock Status -->
+                        <div class="grid grid-cols-3 gap-2.5">
+                            <div class="rounded-2xl border border-white/5 bg-[#0A0A0B]/40 p-3 text-center">
+                                <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#A0A0A8]">Total Stok</p>
+                                <p class="mt-1 text-base font-extrabold text-[#E8E8EC]">{{ $equipment->stock }}</p>
                             </div>
-                        @else
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                @foreach ($specifications as $specification)
-                                    <div class="flex items-start gap-3 rounded-md border border-transparent p-3.5 transition-colors duration-300 hover:border-[#1A1A1E] hover:bg-[#0A0A0B]">
-                                        <div class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4A843]"></div>
-                                        <span class="text-sm font-semibold leading-relaxed text-[#E8E8EC]">{{ $specification }}</span>
-                                    </div>
-                                @endforeach
+                            <div class="rounded-2xl border border-white/5 bg-[#0A0A0B]/40 p-3 text-center">
+                                <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#A0A0A8]">Disewa</p>
+                                <p class="mt-1 text-base font-extrabold text-[#D4A843]">{{ $reservedUnits }}</p>
                             </div>
-                        @endif
+                            <div class="rounded-2xl border border-white/5 bg-[#0A0A0B]/40 p-3 text-center">
+                                <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#A0A0A8]">Tersedia</p>
+                                <p class="mt-1 text-base font-extrabold {{ $availableUnits > 0 ? 'text-emerald-400' : 'text-rose-400' }}">{{ $availableUnits }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Buffer / Blocked Schedules -->
+                        <div class="rounded-2xl border border-white/5 bg-[#111113] p-4">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="h-1.5 w-1.5 rounded-full bg-[#D4A843] animate-pulse"></div>
+                                <p class="text-[9px] font-extrabold uppercase tracking-widest text-[#D4A843]">{{ __('app.product.schedule_title') }}</p>
+                            </div>
+                            
+                            @if ($bookingRanges->isEmpty())
+                                <p class="text-xs font-medium text-[#A0A0A8] italic">{{ __('app.product.no_active_schedule') }}</p>
+                            @else
+                                <p class="mb-3 text-[10px] font-medium text-[#A0A0A8] leading-normal">Jadwal tidak tersedia (alat sedang dibooking/maintenance):</p>
+                                <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                                    @foreach ($bookingRanges as $range)
+                                        @php
+                                            $rangeType = $range['type'] ?? 'booking';
+                                            $isCurrentUserSchedule = (bool) ($range['is_current_user'] ?? false);
+                                            $rangeLabel = match ($rangeType) {
+                                                'buffer_before', 'buffer_after' => $isCurrentUserSchedule ? __('app.product.my_buffer_label') : __('app.product.buffer_label'),
+                                                'maintenance' => __('app.product.maintenance_label'),
+                                                'booking' => $isCurrentUserSchedule ? __('app.product.my_booking_label') : __('app.product.booked_label'),
+                                                default => __('app.product.booked_label'),
+                                            };
+                                            $rangeDotClass = match ($rangeType) {
+                                                'buffer_before', 'buffer_after' => 'bg-indigo-500',
+                                                'maintenance' => 'bg-rose-500',
+                                                default => 'bg-amber-500',
+                                            };
+                                            $startDate = \Carbon\Carbon::parse($range['start_date'])->translatedFormat('d M Y');
+                                            $endDate = \Carbon\Carbon::parse($range['end_date'])->translatedFormat('d M Y');
+                                            $dateText = $startDate === $endDate ? $startDate : ($startDate . ' - ' . $endDate);
+                                        @endphp
+                                        <div class="flex items-center gap-2 px-3 py-2 bg-[#0A0A0B]/40 rounded-xl border border-white/5 shadow-sm">
+                                            <div class="h-1.5 w-1.5 shrink-0 rounded-full {{ $rangeDotClass }}"></div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-xs font-bold text-[#E8E8EC] truncate">{{ $dateText }}</p>
+                                                <p class="text-[9px] font-extrabold text-[#A0A0A8] uppercase tracking-tight truncate">
+                                                    {{ $rangeLabel }} 
+                                                    @if (($range['qty'] ?? 0) > 0) • Qty {{ $range['qty'] }} @endif
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Pricing & Booking -->
-                <div class="order-1 space-y-6 lg:order-2 lg:sticky lg:top-24">
-                    <!-- Pricing Card -->
-                    <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8">
-                        <div class="flex flex-col gap-5">
-                            <div class="space-y-1">
-                                <p class="text-[9px] font-extrabold uppercase tracking-[0.15em] text-[#D4A843]/80">{{ __('app.product.price_per_day') }}</p>
-                                <div class="flex items-baseline gap-1.5">
-                                    <span class="text-3xl font-extrabold tracking-tight text-[#E8E8EC]">Rp {{ number_format($equipment->price_per_day, 0, ',', '.') }}</span>
-                                    <span class="text-xs font-bold uppercase tracking-wider text-[#A0A0A8]">{{ __('app.product.per_day') }}</span>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-3 gap-3">
-                                <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-3 text-center">
-                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#A0A0A8]">{{ __('app.product.total_stock') }}</p>
-                                    <p class="mt-1.5 text-lg font-extrabold text-[#E8E8EC]">{{ $equipment->stock }}</p>
-                                </div>
-                                <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-3 text-center">
-                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#A0A0A8]">{{ __('app.product.in_use') }}</p>
-                                    <p class="mt-1.5 text-lg font-extrabold text-[#D4A843]">{{ $reservedUnits }}</p>
-                                </div>
-                                <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-3 text-center">
-                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#A0A0A8]">{{ __('app.product.available_stock') }}</p>
-                                    <p class="mt-1.5 text-lg font-extrabold {{ $availableUnits > 0 ? 'text-emerald-400' : 'text-rose-400' }}">{{ $availableUnits }}</p>
-                                </div>
-                            </div>
-
-                            <div class="mk-card-soft p-5">
-                                <div class="flex items-center gap-2 mb-3.5">
-                                    <div class="h-1.5 w-1.5 rounded-full bg-[#D4A843] animate-pulse"></div>
-                                    <p class="text-[9px] font-extrabold uppercase tracking-wider text-[#D4A843]">{{ __('app.product.schedule_title') }}</p>
-                                </div>
-                                
-                                @if ($bookingRanges->isEmpty())
-                                    <p class="text-xs font-semibold text-[#A0A0A8] italic">{{ __('app.product.no_active_schedule') }}</p>
-                                @else
-                                    <p class="mb-3 text-[11px] font-medium text-[#A0A0A8] leading-relaxed">{{ __('app.product.blocked_schedule_note') }}</p>
-                                    <div class="space-y-2">
-                                        @foreach ($bookingRanges as $range)
-                                            @php
-                                                $rangeType = $range['type'] ?? 'booking';
-                                                $isCurrentUserSchedule = (bool) ($range['is_current_user'] ?? false);
-                                                $rangeLabel = match ($rangeType) {
-                                                    'buffer_before', 'buffer_after' => $isCurrentUserSchedule ? __('app.product.my_buffer_label') : __('app.product.buffer_label'),
-                                                    'maintenance' => __('app.product.maintenance_label'),
-                                                    'booking' => $isCurrentUserSchedule ? __('app.product.my_booking_label') : __('app.product.booked_label'),
-                                                    default => __('app.product.booked_label'),
-                                                };
-                                                $rangeDotClass = match ($rangeType) {
-                                                    'buffer_before', 'buffer_after' => 'bg-indigo-500',
-                                                    'maintenance' => 'bg-rose-500',
-                                                    default => 'bg-amber-500',
-                                                };
-                                                $startDate = \Carbon\Carbon::parse($range['start_date'])->translatedFormat('d M Y');
-                                                $endDate = \Carbon\Carbon::parse($range['end_date'])->translatedFormat('d M Y');
-                                                $dateText = $startDate === $endDate ? $startDate : ($startDate . ' - ' . $endDate);
-                                            @endphp
-                                            <div class="flex items-center gap-2.5 p-2.5 bg-[#111113] rounded-xl border border-[#1A1A1E] shadow-sm">
-                                                <div class="h-1.5 w-1.5 shrink-0 rounded-full {{ $rangeDotClass }}"></div>
-                                                <div class="flex-1 min-w-0">
-                                                    <p class="text-xs font-bold text-[#E8E8EC] truncate">{{ $dateText }}</p>
-                                                    <p class="text-[9px] font-extrabold text-[#A0A0A8] uppercase tracking-tight truncate mt-0.5">
-                                                        {{ $rangeLabel }} 
-                                                        @if (($range['qty'] ?? 0) > 0) • Qty {{ $range['qty'] }} @endif
-                                                        @if (($range['reason'] ?? null)) • {{ $range['reason'] }} @endif
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @endif
-                                <p class="mt-3.5 text-[9px] font-semibold text-[#A0A0A8] text-center italic">{{ __('app.product.checkout_reject_note') }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Rental Form Card -->
-                    <div
-                        id="rental-summary"
-                        data-price="{{ $equipment->price_per_day }}"
-                        data-availability-url="{{ $availabilityEndpoint }}"
-                        data-min-date="{{ $bookingMinDate }}"
-                        data-max-date="{{ $bookingMaxDate }}"
-                        data-lock-dates="{{ $lockDates ? '1' : '0' }}"
-                        data-locked-start="{{ $prefillStartDate }}"
-                        data-locked-end="{{ $prefillEndDate }}"
-                        class="mk-card p-6 sm:p-8"
-                    >
-                        <h3 class="text-lg font-bold tracking-tight text-[#E8E8EC] mb-6">{{ __('app.product.rental_date') }}</h3>
+                <!-- Rental Form Card -->
+                <div
+                    id="rental-summary"
+                    data-price="{{ $equipment->price_per_day }}"
+                    data-availability-url="{{ $availabilityEndpoint }}"
+                    data-min-date="{{ $bookingMinDate }}"
+                    data-max-date="{{ $bookingMaxDate }}"
+                    data-lock-dates="{{ $lockDates ? '1' : '0' }}"
+                    data-locked-start="{{ $prefillStartDate }}"
+                    data-locked-end="{{ $prefillEndDate }}"
+                    class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 sm:p-8 shadow-xl"
+                >
+                    <h3 class="text-base font-bold tracking-tight text-[#E8E8EC] mb-5">Pilih Tanggal Sewa</h3>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                             <div class="space-y-1.5">
