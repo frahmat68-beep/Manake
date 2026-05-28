@@ -47,5 +47,35 @@ return [
             'answer' => 'Jika ada biaya tambahan seperti kerusakan, sistem bisa membuat tagihan tambahan terpisah. Status order tidak dianggap benar-benar selesai sampai kewajiban tambahan yang relevan sudah dibereskan.',
             'keywords' => ['rusak', 'denda', 'biaya tambahan', 'damage fee', 'kerusakan'],
         ],
+        [
+            'question' => 'Apakah bisa cek katalog tanpa login?',
+            'answer' => 'Ya, Anda bisa melihat seluruh daftar alat, spesifikasi, dan harga sewa di katalog kami secara bebas tanpa perlu login terlebih dahulu.',
+            'keywords' => ['cek katalog', 'tanpa login', 'katalog bebas', 'lihat alat'],
+        ],
+        [
+            'question' => 'Kapan harus login?',
+            'answer' => 'Login hanya wajib dilakukan saat Anda ingin menambahkan alat ke keranjang belanja (cart) dan melanjutkan proses checkout booking sewa.',
+            'keywords' => ['kapan login', 'login wajib', 'harus login', 'masuk akun'],
+        ],
+        [
+            'question' => 'Bagaimana cara cek jadwal alat?',
+            'answer' => 'Anda bisa melihat jadwal aktif di Availability Board untuk memantau tanggal ketersediaan unit, atau langsung memilih rentang tanggal di halaman detail alat.',
+            'keywords' => ['cek jadwal', 'board', 'ketersediaan', 'tanggal kosong'],
+        ],
+        [
+            'question' => 'Bagaimana kalau tanggal alat penuh?',
+            'answer' => 'Jika tanggal yang Anda inginkan sudah terisi atau tertutup oleh buffer 1 hari, silakan pilih tanggal alternatif lain atau hubungi admin untuk rekomendasi unit sejenis.',
+            'keywords' => ['tanggal penuh', 'penuh', 'bentrok', 'alat alternatif'],
+        ],
+        [
+            'question' => 'Apa yang perlu disiapkan sebelum ambil alat?',
+            'answer' => 'Siapkan kartu identitas asli (KTP/SIM) penyewa yang sesuai dengan data booking untuk diverifikasi oleh tim studio saat serah terima alat.',
+            'keywords' => ['sebelum ambil', 'syarat ambil', 'verifikasi identitas', 'ktp'],
+        ],
+        [
+            'question' => 'Apakah bisa tanya admin untuk rekomendasi alat?',
+            'answer' => 'Tentu! Anda bisa masuk ke halaman kontak untuk mendapatkan bantuan langsung dari tim admin dalam merekomendasikan paket alat produksi yang paling sesuai.',
+            'keywords' => ['tanya admin', 'rekomendasi', 'bantuan paket', 'admin help'],
+        ],
     ],
 ];

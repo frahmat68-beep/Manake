@@ -45,10 +45,10 @@
                 if (response.ok) {
                     this.messages.push({ role: 'assistant', content: data.message });
                 } else {
-                    this.messages.push({ role: 'assistant', content: 'Maaf, sepertinya ada masalah teknis. Coba lagi nanti ya!' });
+                    this.messages.push({ role: 'assistant', content: 'Maaf, Manake Guide sedang bermasalah. Coba lagi sebentar.' });
                 }
             } catch (error) {
-                this.messages.push({ role: 'assistant', content: 'Koneksi terputus. Pastikan internetmu stabil.' });
+                this.messages.push({ role: 'assistant', content: 'Koneksi terputus. Cek internet lalu coba lagi.' });
             } finally {
                 this.isLoading = false;
                 this.$nextTick(() => this.scrollToBottom());
@@ -106,7 +106,7 @@
         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
         x-transition:leave-end="opacity-0 translate-y-10 scale-95"
         x-cloak
-        class="absolute bottom-16 right-0 flex h-[540px] w-[360px] flex-col overflow-hidden rounded-[2rem] border border-[#1A1A1E] bg-[#0A0A0B]/95 shadow-[0_30px_80px_-35px_rgba(0,0,0,0.8)] backdrop-blur-xl sm:w-[410px]"
+        class="absolute bottom-16 right-0 flex max-h-[min(540px,calc(100vh-7rem))] w-[calc(100vw-2rem)] sm:w-[410px] flex-col overflow-hidden rounded-[2rem] border border-[#1A1A1E] bg-[#0A0A0B]/95 shadow-[0_30px_80px_-35px_rgba(0,0,0,0.8)] backdrop-blur-xl"
     >
         <!-- Header -->
         <div class="flex items-center justify-between bg-[#111113] border-b border-[#1A1A1E] p-4 text-[#E8E8EC]">
@@ -118,31 +118,40 @@
                     <h3 class="text-sm font-bold tracking-[0.01em]">Manake Guide</h3>
                     <div class="flex items-center gap-1.5">
                         <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span class="text-[10px] text-[#A0A0A8]">Rental copilot + FAQ live help</span>
+                        <span class="text-[10px] text-[#A0A0A8]">Bantuan sewa alat</span>
                     </div>
                 </div>
             </div>
-            <button @click="resetChat()" class="rounded-xl p-2 transition hover:bg-[#1A1A1E] text-[#A0A0A8] hover:text-[#E8E8EC]" title="Reset Chat">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-            </button>
+            <div class="flex items-center gap-1.5">
+                <button @click="resetChat()" class="rounded-xl p-2 transition hover:bg-[#1A1A1E] text-[#A0A0A8] hover:text-[#E8E8EC]" aria-label="Reset percakapan Manake Guide" title="Reset Chat">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                </button>
+                <button @click="isOpen = false" class="rounded-xl p-2 transition hover:bg-[#1A1A1E] text-[#A0A0A8] hover:text-[#E8E8EC]" aria-label="Tutup Manake Guide" title="Tutup Chat">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- Chat Container -->
         <div
             x-ref="chatContainer"
-            class="flex-1 space-y-4 overflow-y-auto bg-[#0A0A0B] p-4"
+            role="log"
+            aria-live="polite"
+            class="flex-1 space-y-4 overflow-y-auto bg-[#0A0A0B] p-4 scrollbar-thin"
         >
             <template x-if="messages.length === 1 && faqPreview.length > 0">
-                <div class="rounded-[1.5rem] border border-[#1A1A1E] bg-[#111113] p-3 shadow-sm backdrop-blur">
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4A843]">FAQ cepat</p>
-                    <p class="mt-1 text-xs leading-relaxed text-[#A0A0A8]">Pilih pertanyaan umum untuk balasan instan, atau ketik pertanyaan Anda sendiri.</p>
+                <div class="rounded-[1.5rem] border border-[#1A1A1E] bg-[#111113] p-4 shadow-sm backdrop-blur">
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4A843]">Pertanyaan cepat</p>
+                    <p class="mt-1 text-xs leading-relaxed text-[#A0A0A8]">Pilih topik umum atau ketik pertanyaan sendiri.</p>
                     <div class="mt-3 grid gap-2">
                         <template x-for="(faq, index) in faqPreview" :key="`faq-${index}`">
                             <button
                                 type="button"
-                                class="w-full rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-2.5 text-left text-xs font-medium text-[#E8E8EC] shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#D4A843]/40 hover:text-[#D4A843] hover:shadow-md"
+                                class="w-full rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B] px-3.5 py-2.5 text-left text-xs font-medium text-[#E8E8EC] shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#D4A843]/40 hover:text-[#D4A843] hover:shadow-md"
                                 @click="useFaq(faq.question, faq.answer)"
                                 x-text="faq.question"
                             ></button>
@@ -169,7 +178,7 @@
 
             <!-- Loading Indicator -->
             <div x-show="isLoading" class="flex flex-col gap-1.5" x-transition>
-                <span class="text-[10px] font-medium tracking-wider text-[#D4A843]/80 pl-1.5 animate-pulse">Manake Guide sedang memikirkan jawaban...</span>
+                <span class="text-[10px] font-medium tracking-wider text-[#D4A843]/80 pl-1.5 animate-pulse">Menyiapkan jawaban...</span>
                 <div class="flex items-center gap-1.5 self-start rounded-[1.35rem] border border-[#D4A843]/20 bg-[#111113] px-5 py-3.5 shadow-[0_10px_25px_-10px_rgba(0,0,0,0.5)]">
                     <div class="h-2 w-2 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.3s"></div>
                     <div class="h-2 w-2 animate-bounce rounded-full bg-[#D4A843]" style="animation-delay: -0.15s"></div>
@@ -186,6 +195,7 @@
                     id="chatbot-search-input"
                     name="chatbot_query"
                     x-model="userInput"
+                    autocomplete="off"
                     placeholder="Tanya seputar sewa alat..."
                     aria-label="Tanya seputar sewa alat..."
                     data-chatbot-input
@@ -204,7 +214,7 @@
                     </svg>
                 </button>
             </form>
-            <p class="mt-2 text-center text-[10px] text-[#A0A0A8]">Manake Guide • FAQ + AI fallback + catalog-aware help</p>
+            <p class="mt-2 text-center text-[10px] text-[#A0A0A8]">Manake Guide membantu soal katalog, jadwal, dan cara sewa.</p>
         </div>
     </div>
 </div>

@@ -75,4 +75,65 @@ class ChatbotFeatureTest extends TestCase
             ->assertOk()
             ->assertJsonPath('message', fn (string $message) => str_contains($message, 'hanya bisa membantu pertanyaan seputar Manake'));
     }
+
+    public function test_chatbot_rejects_empty_message(): void
+    {
+        $response = $this->postJson(route('chatbot.message'), [
+            'message' => '',
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    public function test_chatbot_rejects_too_long_message(): void
+    {
+        $response = $this->postJson(route('chatbot.message'), [
+            'message' => str_repeat('a', 501),
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    public function test_chatbot_accepts_common_short_rental_queries(): void
+    {
+        $this->mock(LocalAiService::class, function ($mock): void {
+            $mock->shouldReceive('chat')->andReturn('Harga sewa tertera di katalog.');
+        });
+
+        $response = $this->postJson(route('chatbot.message'), [
+            'message' => 'berapa sewanya?',
+        ]);
+
+        $response->assertOk()->assertJsonStructure(['message']);
+    }
+
+    public function test_chatbot_accepts_catalog_login_question(): void
+    {
+        $this->mock(LocalAiService::class, function ($mock): void {
+            $mock->shouldReceive('chat')->andReturn('Cek katalog bebas tanpa login.');
+        });
+
+        $response = $this->postJson(route('chatbot.message'), [
+            'message' => 'bisa cek tanpa login?',
+        ]);
+
+        $response->assertOk()->assertJsonStructure(['message']);
+    }
+
+    public function test_chatbot_rejects_unrelated_recipe_questions(): void
+    {
+        $response = $this->postJson(route('chatbot.message'), [
+            'message' => 'buatkan resep masakan nasi goreng',
+        ]);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('message', fn (string $message) => str_contains($message, 'hanya bisa membantu pertanyaan seputar Manake'));
+    }
+
+    public function test_chatbot_reset_clears_session_history(): void
+    {
+        $response = $this->postJson(route('chatbot.reset'));
+        $response->assertOk()->assertJson(['status' => 'success']);
+    }
 }

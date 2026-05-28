@@ -79,6 +79,8 @@ class ChatbotController extends Controller
             return response()->json([
                 'message' => $aiResponse,
             ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            throw $e;
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error('Chatbot Controller Error: ' . $e->getMessage(), [
                 'exception' => $e,
@@ -86,7 +88,7 @@ class ChatbotController extends Controller
             ]);
 
             return response()->json([
-                'message' => "Maaf, sistem AI sedang mengalami gangguan teknis. Silakan coba lagi nanti.",
+                'message' => "Maaf, Manake Guide sedang bermasalah. Coba lagi sebentar.",
             ], 500);
         }
     }
@@ -153,6 +155,9 @@ class ChatbotController extends Controller
             'register', 'lokasi', 'alamat', 'maps', 'jam', 'pickup', 'ambil', 'pengambilan',
             'return', 'pengembalian', 'buffer', 'reschedule', 'refund', 'denda', 'rusak', 'damage',
             'support', 'kontak', 'admin', 'website',
+            'berapa', 'harganya', 'harga sewa', 'berapa sewa', 'unit', 'ready', 'kosong', 'penuh',
+            'kapan', 'dimana', 'balikin', 'telat', 'ktp', 'identitas', 'syarat', 'dp', 'deposit',
+            'transfer', 'va', 'virtual account', 'e-wallet', 'faktur',
         ] as $keyword) {
             if (str_contains($normalized, $keyword)) {
                 return false;
