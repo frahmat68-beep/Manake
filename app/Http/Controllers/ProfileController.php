@@ -155,7 +155,7 @@ class ProfileController extends Controller
         }
 
         $user->setRelation('profile', $profile);
-        $profile->is_completed = $user->profileIsComplete();
+        $profile->is_completed = $user->hasCompleteRentalProfile();
         $profile->completed_at = $profile->is_completed ? ($profile->completed_at ?: now()) : null;
         $profile->save();
 
@@ -164,16 +164,21 @@ class ProfileController extends Controller
             $user->save();
         }
 
+        if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
+            return redirect()
+                ->route('profile.complete')
+                ->with('warning', __('Profil berhasil disimpan. Verifikasi email terlebih dahulu sebelum memesan.'));
+        }
+
         if (! $user->hasVerifiedPhone()) {
             return redirect()
                 ->route('phone.verify')
-                ->with('status', __('Profil tersimpan. Lanjut verifikasi nomor telepon untuk aktivasi checkout.'));
+                ->with('warning', __('Profil tersimpan. Lanjutkan verifikasi nomor telepon sebelum memesan.'));
         }
 
         return redirect()
             ->route('profile.complete')
-            ->with('status', 'profile-completed')
-            ->with('success', __('ui.profile_complete.saved_badge'));
+            ->with('success', __('Profil lengkap. Kamu sudah bisa memesan alat.'));
     }
 
     /**

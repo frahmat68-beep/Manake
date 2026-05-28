@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 
 class EnsureProfileCompleted
 {
@@ -16,9 +15,7 @@ class EnsureProfileCompleted
             return redirect()->route('login');
         }
 
-        if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
-            return redirect()->route('verification.notice');
-        }
+        $user->load('profile');
 
         if (! schema_table_exists_cached('profiles')) {
             return redirect()
@@ -26,16 +23,22 @@ class EnsureProfileCompleted
                 ->with('error', __('Profil belum siap, jalankan migrasi terlebih dahulu.'));
         }
 
-        $user->load('profile');
+        if (! $user->hasCompleteRentalProfile()) {
+            return redirect()
+                ->route('profile.complete')
+                ->with('warning', __('Lengkapi profil penyewaan sebelum memesan alat.'));
+        }
 
-        if (! $user->profileIsComplete()) {
-            return redirect()->guest(route('profile.complete'))
-                ->with('error', __('Lengkapi profil dulu sebelum checkout.'));
+        if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
+            return redirect()
+                ->route('verification.notice')
+                ->with('warning', __('Verifikasi email terlebih dahulu sebelum checkout.'));
         }
 
         if (! $user->hasVerifiedPhone()) {
-            return redirect()->guest(route('phone.verify'))
-                ->with('error', __('Verifikasi nomor telepon dulu sebelum checkout.'));
+            return redirect()
+                ->route('phone.verify')
+                ->with('warning', __('Verifikasi nomor telepon terlebih dahulu sebelum checkout.'));
         }
 
         return $next($request);

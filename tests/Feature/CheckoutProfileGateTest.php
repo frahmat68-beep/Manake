@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Profile;
+use App\Models\Category;
+use App\Models\Equipment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -10,6 +12,24 @@ use Tests\TestCase;
 class CheckoutProfileGateTest extends TestCase
 {
     use RefreshDatabase;
+
+    private function createEquipment(): Equipment
+    {
+        $category = Category::create([
+            'name' => 'Profile Gate Category',
+            'slug' => 'profile-gate-category',
+        ]);
+
+        return Equipment::create([
+            'category_id' => $category->id,
+            'name' => 'Profile Gate Gear',
+            'slug' => 'profile-gate-gear',
+            'description' => 'Gear for profile gate test',
+            'price_per_day' => 150000,
+            'stock' => 4,
+            'status' => 'ready',
+        ]);
+    }
 
     private function completeProfilePayload(): array
     {
@@ -39,6 +59,13 @@ class CheckoutProfileGateTest extends TestCase
         $response->assertRedirect(route('login'));
     }
 
+    public function test_guest_cannot_access_profile_complete_page(): void
+    {
+        $response = $this->get(route('profile.complete'));
+
+        $response->assertRedirect(route('login'));
+    }
+
     public function test_authenticated_user_without_completed_profile_is_redirected(): void
     {
         $user = User::factory()->create();
@@ -55,6 +82,24 @@ class CheckoutProfileGateTest extends TestCase
         $response = $this->get(route('checkout'));
 
         $response->assertRedirect(route('profile.complete'));
+    }
+
+    public function test_incomplete_profile_cannot_add_item_to_cart(): void
+    {
+        $user = User::factory()->create();
+        $equipment = $this->createEquipment();
+
+        $this->actingAs($user);
+
+        $response = $this->post(route('cart.add'), [
+            'equipment_id' => $equipment->id,
+            'qty' => 1,
+            'rental_start_date' => now()->addDay()->toDateString(),
+            'rental_end_date' => now()->addDays(2)->toDateString(),
+        ]);
+
+        $response->assertRedirect(route('profile.complete'));
+        $response->assertSessionHas('warning', __('Lengkapi profil penyewaan sebelum memesan alat.'));
     }
 
     public function test_profile_completion_persists_and_allows_checkout(): void
@@ -120,6 +165,33 @@ class CheckoutProfileGateTest extends TestCase
         $checkoutResponse->assertRedirect(route('phone.verify'));
     }
 
+    public function test_authenticated_user_with_unverified_phone_cannot_add_item_to_cart(): void
+    {
+        $user = User::factory()->create();
+        $equipment = $this->createEquipment();
+
+        $user->profile()->updateOrCreate(
+            ['user_id' => $user->id],
+            array_merge($this->completeProfilePayload(), [
+                'is_completed' => true,
+                'completed_at' => now(),
+                'phone_verified_at' => null,
+            ])
+        );
+
+        $this->actingAs($user);
+
+        $response = $this->post(route('cart.add'), [
+            'equipment_id' => $equipment->id,
+            'qty' => 1,
+            'rental_start_date' => now()->addDay()->toDateString(),
+            'rental_end_date' => now()->addDays(2)->toDateString(),
+        ]);
+
+        $response->assertRedirect(route('phone.verify'));
+        $response->assertSessionHas('warning', __('Verifikasi nomor telepon terlebih dahulu sebelum checkout.'));
+    }
+
     public function test_authenticated_user_with_unverified_email_is_redirected_to_verification_notice(): void
     {
         $user = User::factory()->unverified()->create();
@@ -136,5 +208,67 @@ class CheckoutProfileGateTest extends TestCase
         $response = $this->get(route('checkout'));
 
         $response->assertRedirect(route('verification.notice'));
+    }
+
+    public function test_authenticated_user_with_unverified_email_cannot_add_item_to_cart(): void
+    {
+        $user = User::factory()->unverified()->create();
+        $equipment = $this->createEquipment();
+
+        $user->profile()->updateOrCreate(
+            ['user_id' => $user->id],
+            array_merge($this->completeProfilePayload(), [
+                'is_completed' => true,
+                'completed_at' => now(),
+                'phone_verified_at' => now(),
+            ])
+        );
+
+        $this->actingAs($user);
+
+        $response = $this->post(route('cart.add'), [
+            'equipment_id' => $equipment->id,
+            'qty' => 1,
+            'rental_start_date' => now()->addDay()->toDateString(),
+            'rental_end_date' => now()->addDays(2)->toDateString(),
+        ]);
+
+        $response->assertRedirect(route('verification.notice'));
+        $response->assertSessionHas('warning', __('Verifikasi email terlebih dahulu sebelum checkout.'));
+    }
+
+    public function test_complete_profile_with_verified_email_and_phone_can_add_item_to_cart(): void
+    {
+        $user = User::factory()->create();
+        $equipment = $this->createEquipment();
+
+        $user->profile()->updateOrCreate(
+            ['user_id' => $user->id],
+            array_merge($this->completeProfilePayload(), [
+                'is_completed' => true,
+                'completed_at' => now(),
+                'phone_verified_at' => now(),
+            ])
+        );
+
+        $this->actingAs($user);
+
+        $response = $this->post(route('cart.add'), [
+            'equipment_id' => $equipment->id,
+            'qty' => 1,
+            'rental_start_date' => now()->addDay()->toDateString(),
+            'rental_end_date' => now()->addDays(2)->toDateString(),
+        ]);
+
+        $response->assertRedirect(route('cart'));
+        $response->assertSessionHas('success');
+    }
+
+    public function test_catalog_and_product_browsing_still_work_without_profile_completion(): void
+    {
+        $equipment = $this->createEquipment();
+
+        $this->get(route('catalog'))->assertOk();
+        $this->get(route('product.show', $equipment->slug))->assertOk();
     }
 }

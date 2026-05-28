@@ -72,7 +72,7 @@ Route::post('/chatbot/reset', [ChatbotController::class, 'reset'])->name('chatbo
 
 Route::middleware('auth.feature')->group(function () {
     Route::get('/cart', [CartController::class, 'show'])->name('cart');
-    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/add', [CartController::class, 'add'])->middleware('ensure.profile.completed')->name('cart.add');
     Route::patch('/cart/{key}/increment', [CartController::class, 'increment'])->name('cart.increment');
     Route::patch('/cart/{key}/decrement', [CartController::class, 'decrement'])->name('cart.decrement');
     Route::patch('/cart/{key}', [CartController::class, 'update'])->name('cart.update');
@@ -102,13 +102,13 @@ Route::middleware(['auth', 'otp'])->group(function () {
 
     Route::redirect('/booking', '/booking/history')->name('booking.index');
     Route::get('/booking/history', [OrderController::class, 'index'])->name('booking.history');
-    Route::get('/booking/pay/{order:order_number}', [OrderController::class, 'pay'])->name('booking.pay');
+    Route::get('/booking/pay/{order:order_number}', [OrderController::class, 'pay'])->middleware('ensure.profile.completed')->name('booking.pay');
     Route::get('/booking/{order:order_number}', [OrderController::class, 'show'])->name('booking.show');
 
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.index');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
-    Route::post('/payments/{order:order_number}/snap-token', [PaymentController::class, 'createSnapToken'])->name('payments.snap-token');
+    Route::post('/payments/{order:order_number}/snap-token', [PaymentController::class, 'createSnapToken'])->middleware('ensure.profile.completed')->name('payments.snap-token');
     Route::post('/payments/{order:order_number}/refresh-status', [PaymentController::class, 'refreshStatus'])->name('payments.refresh-status');
     Route::post('/payments/{order:order_number}/damage-fee/snap-token', [PaymentController::class, 'createDamageFeeSnapToken'])->name('payments.damage-fee.snap-token');
     Route::post('/payments/{order:order_number}/damage-fee/refresh-status', [PaymentController::class, 'refreshDamageFeeStatus'])->name('payments.damage-fee.refresh-status');

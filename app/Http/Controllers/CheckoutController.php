@@ -50,9 +50,15 @@ class CheckoutController extends Controller
 
         $user = $request->user()->load('profile');
 
-        if (! $user->profileIsComplete()) {
+        if (! $user->hasCompleteRentalProfile()) {
             return response()->json([
                 'message' => __('Profil belum lengkap. Silakan lengkapi data diri.'),
+            ], 422);
+        }
+
+        if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
+            return response()->json([
+                'message' => __('Email belum terverifikasi. Silakan verifikasi email dulu.'),
             ], 422);
         }
 

@@ -103,7 +103,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $profile->phone_verified_at !== null;
     }
 
-    public function profileIsComplete(): bool
+    public function hasCompleteRentalProfile(): bool
     {
         $profile = $this->profile;
         if (! $profile) {
@@ -137,6 +137,18 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return true;
+    }
+
+    public function profileIsComplete(): bool
+    {
+        return $this->hasCompleteRentalProfile();
+    }
+
+    public function hasVerifiedRentalIdentity(): bool
+    {
+        return $this->hasCompleteRentalProfile()
+            && $this->hasVerifiedEmail()
+            && $this->hasVerifiedPhone();
     }
 
     public function getDisplayNameAttribute(): string

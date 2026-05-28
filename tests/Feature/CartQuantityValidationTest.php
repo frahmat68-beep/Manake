@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Equipment;
 use App\Models\Order;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,6 +17,7 @@ class CartQuantityValidationTest extends TestCase
     public function test_cart_add_rejects_quantity_above_stock(): void
     {
         $user = User::factory()->create();
+        $this->seedVerifiedRentalProfile($user);
         $equipment = $this->createEquipment([
             'stock' => 1,
         ]);
@@ -35,6 +37,7 @@ class CartQuantityValidationTest extends TestCase
     public function test_cart_increment_rejects_when_quantity_exceeds_stock(): void
     {
         $user = User::factory()->create();
+        $this->seedVerifiedRentalProfile($user);
         $equipment = $this->createEquipment([
             'stock' => 1,
         ]);
@@ -66,6 +69,7 @@ class CartQuantityValidationTest extends TestCase
     public function test_cart_update_rejects_when_quantity_exceeds_stock(): void
     {
         $user = User::factory()->create();
+        $this->seedVerifiedRentalProfile($user);
         $equipment = $this->createEquipment([
             'stock' => 1,
         ]);
@@ -99,6 +103,7 @@ class CartQuantityValidationTest extends TestCase
     public function test_cart_add_rejects_when_same_user_existing_booking_exceeds_remaining_stock(): void
     {
         $user = User::factory()->create();
+        $this->seedVerifiedRentalProfile($user);
         $equipment = $this->createEquipment([
             'stock' => 20,
         ]);
@@ -162,5 +167,39 @@ class CartQuantityValidationTest extends TestCase
             'status' => 'ready',
             'image' => null,
         ], $overrides));
+    }
+
+    private function seedVerifiedRentalProfile(User $user): void
+    {
+        $user->forceFill([
+            'email_verified_at' => now(),
+        ])->save();
+
+        Profile::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'full_name' => 'Valid Rental User',
+                'nik' => '3276020202020001',
+                'date_of_birth' => '1997-02-02',
+                'gender' => 'male',
+                'phone' => '081234567890',
+                'phone_verified_at' => now(),
+                'address_line' => 'Jl. Contoh No. 123 RT 01/03',
+                'kelurahan' => 'Cijerah',
+                'kecamatan' => 'Bandung Kulon',
+                'city' => 'Bandung',
+                'province' => 'Jawa Barat',
+                'postal_code' => '40213',
+                'maps_url' => 'https://maps.google.com/?q=bandung',
+                'emergency_name' => 'Alya',
+                'emergency_relation' => 'Saudara',
+                'emergency_phone' => '081234000000',
+                'identity_number' => '3276020202020001',
+                'address' => 'Jl. Contoh No. 123 RT 01/03',
+                'emergency_contact' => 'Alya (Saudara) - 081234000000',
+                'is_completed' => true,
+                'completed_at' => now(),
+            ]
+        );
     }
 }
