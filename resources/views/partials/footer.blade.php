@@ -1,6 +1,10 @@
 @php
-    $footerAbout = setting('footer.about', setting('footer_description', site_content('footer.about', __('app.footer.about_body'))));
-    $footerAddress = setting('footer.address', setting('footer_address', site_content('footer.address', __('app.footer.address_body'))));
+    $footerAbout = app()->getLocale() === 'en'
+        ? __('app.footer.about_body')
+        : setting('footer.about', setting('footer_description', site_content('footer.about', __('app.footer.about_body'))));
+    $footerAddress = app()->getLocale() === 'en'
+        ? __('app.footer.address_body')
+        : setting('footer.address', setting('footer_address', site_content('footer.address', __('app.footer.address_body'))));
     $footerWhatsapp = setting('footer.whatsapp', setting('social_whatsapp', site_content('footer.whatsapp', setting('footer_phone', '+62 812-3456-7890'))));
     $footerEmail = setting('contact.email', setting('footer_email', site_content('contact.email', 'hello@manakerental.id')));
     $footerInstagram = setting('footer.instagram', setting('social_instagram', site_content('footer.instagram', '@manakerental')));
@@ -57,7 +61,7 @@
         ? 'border-[#E5E2DA] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.03)]'
         : 'border-white/10 bg-[#111113]/60 backdrop-blur-md shadow-lg';
 
-    $bottomBarClass = $isLightShell ? 'border-t border-[#E5E2DA] bg-[#EFEDE7]' : 'border-t border-white/5 bg-[#070708]';
+    $bottomBarClass = $isLightShell ? 'border-t border-[#E5E2DA] bg-[#F2F0EA]' : 'border-t border-white/5 bg-[#070708]';
     $textMutedClass = $isLightShell ? 'text-[#666666]' : 'text-[#A0A0A8]';
     $textPrimaryClass = $isLightShell ? 'text-[#171717]' : 'text-[#E8E8EC]';
 @endphp
@@ -72,10 +76,10 @@
             <div class="space-y-3 pt-2">
                 <p class="text-[10px] font-black uppercase tracking-[0.24em] {{ $kickerClass }}">{{ __('app.footer.rules_title') }}</p>
                 <a href="{{ route('rental.rules') }}" class="inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-semibold transition {{ $linkClass }}">
-                    {{ setting('footer.rules_link', __('app.footer.rules_link')) }}
+                    {{ app()->getLocale() === 'en' ? __('app.footer.rules_link') : setting('footer.rules_link', __('app.footer.rules_link')) }}
                     <span aria-hidden="true">→</span>
                 </a>
-                <p class="max-w-sm text-xs leading-relaxed {{ $textMutedClass }}">{{ setting('footer.rules_note', __('app.footer.rules_note')) }}</p>
+                <p class="max-w-sm text-xs leading-relaxed {{ $textMutedClass }}">{{ app()->getLocale() === 'en' ? __('app.footer.rules_note') : setting('footer.rules_note', __('app.footer.rules_note')) }}</p>
             </div>
         </div>
 
@@ -157,8 +161,8 @@
     {{-- Bottom Bar --}}
     <div class="{{ $bottomBarClass }}">
         <div class="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-5 text-xs {{ $textMutedClass }} sm:flex-row sm:items-center sm:justify-between sm:px-8">
-            <span>&copy; {{ setting('footer_copyright', __('app.footer.copyright')) }}</span>
-            <span class="font-medium opacity-80">{{ setting('site_tagline', __('app.footer.tagline')) }}</span>
+            <span>&copy; {{ app()->getLocale() === 'en' ? __('app.footer.copyright') : setting('footer_copyright', __('app.footer.copyright')) }}</span>
+            <span class="font-medium opacity-80">{{ app()->getLocale() === 'en' ? __('app.footer.tagline') : setting('site_tagline', __('app.footer.tagline')) }}</span>
         </div>
     </div>
 </footer>
