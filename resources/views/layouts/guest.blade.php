@@ -53,6 +53,15 @@
         <div class="flex min-h-screen w-full bg-[#0A0A0B] text-[#E8E8EC]">
             <!-- Left Side: Image / Showcase (hidden on mobile) -->
             <div class="relative hidden w-1/2 lg:block">
+                <a href="{{ route('home') }}" class="absolute top-10 left-12 z-10 transition-transform hover:scale-105 w-fit" data-skip-loader="true">
+                    <x-brand.image
+                        light="manake-logo-white.png"
+                        dark="manake-logo-white.png"
+                        alt="{{ $brandName }}"
+                        img-class="h-10 w-auto object-contain"
+                        :swap-in-dark="false"
+                    />
+                </a>
                 <img src="{{ site_asset('images/camera-arri.jpg') }}" alt="Cinematic Camera" class="absolute inset-0 h-full w-full object-cover">
                 <!-- Gradient Overlay -->
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/60 to-[#0A0A0B]/20"></div>
@@ -96,7 +105,7 @@
                 <div class="pointer-events-none absolute inset-0 lg:hidden bg-[radial-gradient(circle_at_top,_rgba(212,168,67,0.12),transparent_28%),radial-gradient(circle_at_bottom,_rgba(212,168,67,0.06),transparent_22%)]"></div>
 
                 <div class="mx-auto w-full max-w-md relative z-10">
-                    <a href="{{ route('home') }}" class="mb-12 flex items-center transition-transform hover:scale-105 w-fit" data-skip-loader="true">
+                    <a href="{{ route('home') }}" class="mb-12 flex items-center transition-transform hover:scale-105 w-fit lg:hidden" data-skip-loader="true">
                         <x-brand.image
                             light="manake-logo-white.png"
                             dark="manake-logo-white.png"
