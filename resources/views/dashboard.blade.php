@@ -106,7 +106,7 @@
                             <a href="{{ route('booking.history') }}" class="btn-secondary w-full justify-start">
                                 {{ __('Riwayat Saya') }}
                             </a>
-                            <a href="{{ route('profile.complete') }}" class="btn-secondary w-full justify-start">
+                            <a href="{{ route('profile') }}" class="btn-secondary w-full justify-start">
                                 {{ __('Profil Akun') }}
                             </a>
                         </nav>

@@ -92,7 +92,7 @@
                     </button>
                     <div x-cloak x-show="userOpen" x-transition.origin.top.right class="absolute right-0 mt-3 w-56 rounded-2xl border border-[#1A1A1E] bg-[#111113] p-2 shadow-2xl">
                         <a href="{{ route('booking.history') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:bg-white/5 hover:text-[#D4A843]">{{ __('ui.nav.my_orders') }}</a>
-                        <a href="{{ route('profile.complete') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:bg-white/5 hover:text-[#D4A843]">{{ __('ui.nav.my_profile') }}</a>
+                        <a href="{{ route('profile') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:bg-white/5 hover:text-[#D4A843]">{{ __('ui.nav.my_profile') }}</a>
                         <a href="{{ route('settings.index') }}" class="block rounded-xl px-3 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:bg-white/5 hover:text-[#D4A843]">{{ __('ui.nav.settings') }}</a>
                         <div class="my-1 h-px bg-[#1A1A1E]"></div>
                         <form method="POST" action="{{ route('logout') }}">
@@ -141,7 +141,7 @@
                 <div class="grid grid-cols-2 gap-2 border-t border-[#1A1A1E] pt-3">
                     <a href="{{ route('cart') }}" class="rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.cart') }}</a>
                     <a href="{{ route('booking.history') }}" class="rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.my_orders') }}</a>
-                    <a href="{{ route('profile.complete') }}" class="rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.my_profile') }}</a>
+                    <a href="{{ route('profile') }}" class="rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.my_profile') }}</a>
                     <a href="{{ route('settings.index') }}" class="rounded-xl border border-white/10 px-3 py-2 text-center text-sm font-semibold text-[#E8E8EC]">{{ __('ui.nav.settings') }}</a>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">

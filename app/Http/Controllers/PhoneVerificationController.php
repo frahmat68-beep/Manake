@@ -162,7 +162,7 @@ class PhoneVerificationController extends Controller
 
         $verification->delete();
 
-        return redirect()->intended(route('profile.complete'))
+        return redirect()->intended(route('profile'))
             ->with('success', __('Nomor telepon berhasil diverifikasi.'));
     }
 

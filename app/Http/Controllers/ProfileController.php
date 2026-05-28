@@ -33,15 +33,26 @@ class ProfileController extends Controller
     /**
      * Display the profile completion form.
      */
-    public function complete(Request $request): View
+    public function complete(Request $request): View|RedirectResponse
     {
         $profile = null;
         $profilesTableMissing = ! schema_table_exists_cached('profiles');
+        $canonicalRoute = 'profile';
 
         if (! $profilesTableMissing && $request->user()) {
             $profile = $request->user()->profile()->firstOrCreate([], [
                 'is_completed' => false,
             ]);
+
+            $request->user()->setRelation('profile', $profile);
+
+            if ($request->user()->hasVerifiedRentalIdentity()) {
+                $canonicalRoute = 'profile.complete';
+            }
+        }
+
+        if ($request->route()?->getName() !== $canonicalRoute) {
+            return redirect()->route($canonicalRoute);
         }
 
         return view('profile.complete', [
@@ -58,7 +69,7 @@ class ProfileController extends Controller
     {
         if (! schema_table_exists_cached('profiles')) {
             return redirect()
-                ->route('profile.complete')
+                ->route('profile')
                 ->with('error', __('Profil belum siap, jalankan migrasi terlebih dahulu.'));
         }
 
@@ -111,14 +122,14 @@ class ProfileController extends Controller
 
         if ($existingFullName !== '' && strcasecmp($existingFullName, $incomingFullName) !== 0) {
             return redirect()
-                ->route('profile.complete', ['edit' => 1])
+                ->route('profile', ['edit' => 1])
                 ->withInput()
                 ->with('error', __('Nama yang sudah tersimpan tidak dapat diubah demi keamanan data.'));
         }
 
         if ($existingNik !== '' && $existingNik !== $incomingNik) {
             return redirect()
-                ->route('profile.complete', ['edit' => 1])
+                ->route('profile', ['edit' => 1])
                 ->withInput()
                 ->with('error', __('NIK yang sudah tersimpan tidak dapat diubah demi keamanan data.'));
         }
@@ -166,7 +177,7 @@ class ProfileController extends Controller
 
         if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
             return redirect()
-                ->route('profile.complete')
+                ->route('profile')
                 ->with('warning', __('Profil berhasil disimpan. Verifikasi email terlebih dahulu sebelum memesan.'));
         }
 

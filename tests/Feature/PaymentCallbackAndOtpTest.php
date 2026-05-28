@@ -245,7 +245,7 @@ class PaymentCallbackAndOtpTest extends TestCase
             'otp' => '123456',
         ]);
 
-        $response->assertRedirect(route('profile.complete'));
+        $response->assertRedirect(route('profile'));
 
         $user->refresh();
         $this->assertTrue((bool) $user->is_otp_verified);

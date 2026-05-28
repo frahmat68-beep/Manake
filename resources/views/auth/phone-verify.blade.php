@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="mt-5 flex flex-wrap gap-2">
-                    <a href="{{ route('profile.complete') }}" class="inline-flex items-center rounded-xl border border-[#1A1A1E] px-4 py-2 text-sm font-semibold text-[#E8E8EC] hover:border-[#D4A843]/40 hover:text-[#D4A843]">
+                    <a href="{{ route('profile') }}" class="inline-flex items-center rounded-xl border border-[#1A1A1E] px-4 py-2 text-sm font-semibold text-[#E8E8EC] hover:border-[#D4A843]/40 hover:text-[#D4A843]">
                         {{ __('Kembali ke Profil') }}
                     </a>
                     <a href="{{ route('checkout') }}" class="inline-flex items-center rounded-xl bg-[#D4A843] px-4 py-2 text-sm font-semibold text-[#0A0A0B] hover:bg-[#e0ba5d]">

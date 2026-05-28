@@ -162,7 +162,7 @@
             @endif
 
             <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)] lg:items-start">
-                <form method="POST" action="{{ route('profile.complete.store') }}" class="space-y-6">
+                <form method="POST" action="{{ route('profile.store') }}" class="space-y-6">
                     @csrf
 
                     <article class="profile-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8">

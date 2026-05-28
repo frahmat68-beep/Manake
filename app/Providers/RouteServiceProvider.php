@@ -9,5 +9,5 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Where to redirect users after login/registration.
      */
-    public const HOME = '/profile/complete';
+    public const HOME = '/profile';
 }

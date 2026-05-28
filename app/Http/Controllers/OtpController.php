@@ -67,7 +67,7 @@ class OtpController extends Controller
         Cache::forget($attemptKey);
         $request->session()->put('otp_verified', true);
 
-        return redirect()->route('profile.complete')->with('status', __('OTP berhasil diverifikasi.'));
+        return redirect()->route('profile')->with('status', __('OTP berhasil diverifikasi.'));
     }
 
     public function resend(Request $request)

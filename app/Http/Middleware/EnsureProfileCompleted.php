@@ -19,13 +19,13 @@ class EnsureProfileCompleted
 
         if (! schema_table_exists_cached('profiles')) {
             return redirect()
-                ->route('profile.complete')
+                ->route('profile')
                 ->with('error', __('Profil belum siap, jalankan migrasi terlebih dahulu.'));
         }
 
         if (! $user->hasCompleteRentalProfile()) {
             return redirect()
-                ->route('profile.complete')
+                ->route('profile')
                 ->with('warning', __('Lengkapi profil penyewaan sebelum memesan alat.'));
         }
 

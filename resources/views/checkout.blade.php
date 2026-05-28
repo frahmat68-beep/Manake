@@ -140,7 +140,7 @@
                                     </div>
                                     <div class="mt-5 flex flex-col gap-3 rounded-md border border-[#1A1A1E] bg-[#111113] p-4 sm:flex-row sm:items-center sm:justify-between">
                                         <p class="text-xs font-semibold text-[#A0A0A8]">{{ $checkoutProfileHint }}</p>
-                                        <a href="{{ route('profile.complete') }}" class="text-xs font-black uppercase tracking-[0.18em] text-[#D4A843] hover:text-[#e0ba5d]">
+                                        <a href="{{ route('profile') }}" class="text-xs font-black uppercase tracking-[0.18em] text-[#D4A843] hover:text-[#e0ba5d]">
                                             {{ $checkoutProfileUpdateLinkLabel }}
                                         </a>
                                     </div>
