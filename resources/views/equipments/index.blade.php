@@ -30,6 +30,44 @@
                 opacity: 0.3;
             }
         }
+        
+        /* Subtle Entrance Animations */
+        .catalog-enter {
+            animation: catalog-enter 520ms ease-out both;
+        }
+
+        .catalog-stagger {
+            animation: catalog-card-in 520ms ease-out both;
+        }
+
+        @keyframes catalog-enter {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes catalog-card-in {
+            from {
+                opacity: 0;
+                transform: translateY(14px) scale(.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .catalog-enter,
+            .catalog-stagger {
+                animation: none !important;
+            }
+        }
     </style>
 @endpush
 
@@ -116,25 +154,41 @@
     >
         <section class="relative overflow-hidden pt-6 pb-4">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
-                <div class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl sm:p-8">
-                    <div class="flex flex-col gap-3">
-                        <div class="max-w-3xl">
+                <!-- Balanced Header Card -->
+                <div class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8 lg:p-10 shadow-2xl catalog-enter">
+                    <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] items-center">
+                        <!-- Left Side: Catalog Head -->
+                        <div class="space-y-3">
                             <p class="section-kicker font-bold tracking-widest uppercase text-[#D4A843]/80">{{ __('ui.nav.catalog') }}</p>
-                            <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-[#E8E8EC] sm:text-4xl leading-tight">
+                            <h1 class="text-2xl font-extrabold tracking-tight text-[#E8E8EC] sm:text-4xl leading-tight">
                                 {{ $catalogTitle }}
                             </h1>
-                            <p class="mt-2 text-sm text-[#A0A0A8] sm:text-base max-w-2xl leading-relaxed">
+                            <p class="text-sm text-[#A0A0A8] leading-relaxed max-w-2xl">
                                 {{ $catalogSubtitle }}
                             </p>
-                            <div class="mt-5 flex flex-wrap gap-3">
-                                <a href="{{ route('contact') }}" class="mk-button-secondary px-5 py-2.5 text-sm">
-                                    Tanya Admin
-                                </a>
+                        </div>
+
+                        <!-- Right Side: Helper Summary Panel -->
+                        @php
+                            $catalogTotalItems = $groups->sum(fn ($group) => collect($group['items'] ?? [])->count());
+                        @endphp
+                        <div class="rounded-2xl border border-white/5 bg-[#0A0A0B]/60 p-5 grid grid-cols-3 gap-3 text-center">
+                            <div>
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-[#A0A0A8]">Kategori</span>
+                                <span class="block mt-1.5 text-lg sm:text-2xl font-extrabold text-[#D4A843]">{{ $categories->count() }}</span>
+                            </div>
+                            <div class="border-x border-white/5">
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-[#A0A0A8]">Total Item</span>
+                                <span class="block mt-1.5 text-lg sm:text-2xl font-extrabold text-[#D4A843]">{{ $catalogTotalItems }}</span>
+                            </div>
+                            <div class="flex flex-col justify-center items-center">
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-[#A0A0A8]">Akses</span>
+                                <span class="block mt-1 text-[9px] font-bold text-emerald-300 uppercase tracking-widest leading-none pt-1">Bebas Login</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Modern Search Bar -->
+                    <!-- Balanced Search Bar -->
                     <div class="max-w-2xl mt-6">
                         <form action="{{ route('catalog') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
                             <div class="relative flex-1">
@@ -143,27 +197,29 @@
                                 </span>
                                 <input type="text" name="q" value="{{ $search }}" placeholder="Cari kamera, lighting, drone, audio..." 
                                        aria-label="Cari kamera, lighting, drone, audio..."
-                                       class="mk-input pl-12 py-3.5 bg-[#0A0A0B] border-[#1A1A1E] text-[#E8E8EC] placeholder:text-[#66666C] focus:border-[#D4A843] focus:ring-[#D4A843]/20">
+                                       autocomplete="off"
+                                       class="w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] pl-12 pr-4 py-3.5 text-sm text-[#E8E8EC] placeholder:text-[#66666C] focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20">
                             </div>
-                            <button type="submit" class="rounded-md bg-[#D4A843] px-6 py-3.5 font-bold text-[#0A0A0B] transition hover:bg-[#e0ba5d]">
-                                <span>Cari</span>
+                            <button type="submit" class="rounded-xl bg-[#D4A843] px-6 py-3.5 text-sm font-bold text-[#0A0A0B] transition hover:bg-[#e0ba5d] shrink-0 sm:w-auto w-full">
+                                <span>Cari Alat</span>
                             </button>
                         </form>
                     </div>
 
-                    <div class="mt-8 border-t border-[#1A1A1E] pt-6">
+                    <!-- Clean Category Filter Layout -->
+                    <div class="mt-6 border-t border-[#1A1A1E] pt-5">
                         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                            <p class="text-xs font-bold uppercase tracking-wider text-[#A0A0A8]">{{ $categoryLabel }}</p>
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-[#A0A0A8]">{{ $categoryLabel }}</p>
                             @if ($search !== '')
-                                <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="inline-flex rounded-md border border-[#1A1A1E] bg-[#111113] px-4 py-2 text-xs font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/30 hover:text-[#D4A843]">
+                                <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="inline-flex rounded-xl border border-[#1A1A1E] bg-[#111113] px-4 py-2 text-xs font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/30 hover:text-[#D4A843]">
                                     {{ $catalogResetSearchLabel }}
                                 </a>
                             @endif
                         </div>
-                        <div class="mt-4 flex flex-wrap gap-3 pb-1">
+                        <div class="mt-3 flex flex-wrap gap-2.5 pb-1">
                             <a
                                 href="{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}"
-                                class="rounded-full border px-5 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === '' ? 'bg-[#D4A843] text-[#0A0A0B] border-[#D4A843]' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] hover:border-[#D4A843]/40 hover:text-[#E8E8EC]' }}"
+                                class="rounded-full border px-4 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === '' ? 'bg-[#D4A843] text-[#0A0A0B] border-[#D4A843]' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] hover:border-[#D4A843]/40 hover:text-[#E8E8EC]' }}"
                             >
                                 {{ $catalogAllCategoriesLabel }}
                             </a>
@@ -176,7 +232,7 @@
                                 @endphp
                                 <a
                                     href="{{ route('catalog', $categoryParams) }}"
-                                    class="relative rounded-full border px-5 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === $category->slug ? 'bg-[#D4A843] text-[#0A0A0B] border-[#D4A843]' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] hover:border-[#D4A843]/40 hover:text-[#E8E8EC]' }}"
+                                    class="relative rounded-full border px-4 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === $category->slug ? 'bg-[#D4A843] text-[#0A0A0B] border-[#D4A843]' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] hover:border-[#D4A843]/40 hover:text-[#E8E8EC]' }}"
                                 >
                                     {{ $category->name }}
                                 </a>
@@ -186,7 +242,7 @@
                 </div>
 
                 @if ($search !== '')
-                    <div class="mt-8 inline-flex items-center gap-3 rounded-2xl border border-[#1A1A1E] bg-[#111113] px-4 py-3">
+                    <div class="mt-6 inline-flex items-center gap-3 rounded-2xl border border-[#1A1A1E] bg-[#111113] px-4 py-3 catalog-enter">
                         <div class="h-2 w-2 rounded-full bg-[#D4A843] animate-pulse"></div>
                         <p class="text-sm font-medium text-[#A0A0A8]">
                             {{ $catalogSearchResultPrefix }} <span class="font-bold text-[#E8E8EC]">&quot;{{ $search }}&quot;</span>
@@ -196,6 +252,7 @@
             </div>
         </section>
 
+        <!-- Product Grid Sections -->
         <section class="pb-24">
             <div class="mx-auto max-w-7xl px-4 sm:px-6">
                 @forelse ($groups as $group)
@@ -204,21 +261,21 @@
                         $items = collect($group['items'] ?? []);
                     @endphp
 
-                    <div class="mb-16">
-                        <div class="mb-8 flex flex-col gap-2 border-b border-[#1A1A1E] pb-6 sm:flex-row sm:items-end sm:justify-between">
+                    <div class="mb-12 catalog-enter">
+                        <div class="mb-6 flex flex-col gap-2 border-b border-[#1A1A1E] pb-4 sm:flex-row sm:items-end sm:justify-between">
                             <div>
-                                <h2 class="text-3xl font-bold tracking-tight text-[#E8E8EC]">{{ $category->name }}</h2>
+                                <h2 class="text-2xl font-bold tracking-tight text-[#E8E8EC]">{{ $category->name }}</h2>
                                 @if (!empty($category->description))
-                                    <p class="mt-2 max-w-2xl text-sm font-medium text-[#A0A0A8]">{{ $category->description }}</p>
+                                    <p class="mt-1 max-w-2xl text-xs font-medium text-[#A0A0A8]">{{ $category->description }}</p>
                                 @endif
                             </div>
-                            <span class="inline-flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#111113] px-4 py-1.5 text-xs font-bold text-[#A0A0A8] shadow-sm">
+                            <span class="inline-flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#111113]/80 px-4 py-1 text-xs font-bold text-[#A0A0A8] shadow-sm self-start sm:self-auto">
                                 <span class="h-1.5 w-1.5 rounded-full bg-[#D4A843]"></span>
                                 {{ $items->count() }} {{ $catalogItemSuffix }}
                             </span>
                         </div>
 
-                        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             @foreach ($items as $item)
                             @php
                                 $statusValue = (string) ($item->status ?? ($item->stock > 0 ? 'ready' : 'unavailable'));
@@ -262,7 +319,8 @@
                                     }
                                 }"
                                 @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')"
-                                class="group flex h-full cursor-pointer flex-col overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#111113]"
+                                class="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-[#1A1A1E] bg-[#111113] transition-all duration-300 hover:-translate-y-1 hover:border-[#D4A843]/30 hover:shadow-[0_24px_60px_-36px_rgba(212,168,67,0.45)] catalog-stagger"
+                                style="animation-delay: {{ min($loop->index * 45, 240) }}ms"
                             >
                                 <div class="relative aspect-[4/3] overflow-hidden bg-[#0A0A0B] p-5 flex items-center justify-center border-b border-[#1A1A1E]">
                                     <img
