@@ -807,7 +807,7 @@
                 };
 
                 const syncRentalPaymentStatus = async (redirectWhenPaid = false) => {
-                    const response = await fetchWithCsrf(@json(route('payments.refresh-status', $order)), {
+                    const response = await window.fetchWithCsrf(@json(route('payments.refresh-status', $order)), {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -828,7 +828,7 @@
                                     previewUrl: data.invoice_pdf_preview_url || '',
                                     pdfUrl: data.invoice_pdf_url || '',
                                     orderNumber: data.receipt_number || '',
-                                });
+                                    });
                             } else {
                                 window.location.href = data.invoice_url;
                             }
@@ -841,7 +841,7 @@
                 };
 
                 const syncDamagePaymentStatus = async () => {
-                    const response = await fetchWithCsrf(@json(route('payments.damage-fee.refresh-status', $order)), {
+                    const response = await window.fetchWithCsrf(@json(route('payments.damage-fee.refresh-status', $order)), {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -867,7 +867,7 @@
                     showAlert(@json($orderCreatingSession), 'info');
 
                     try {
-                        const response = await fetchWithCsrf(config.tokenEndpoint, {
+                        const response = await window.fetchWithCsrf(config.tokenEndpoint, {
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json',

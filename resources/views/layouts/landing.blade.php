@@ -84,21 +84,32 @@
     @endunless
 </div>
 
-@include('partials.ui-feedback')
-@stack('scripts')
-@include('partials.theme-toggle')
 <script>
+    window.fetchWithCsrf = async function (url, options = {}) {
+        const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        const headers = {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            ...(token ? { 'X-CSRF-TOKEN': token } : {}),
+            ...(options.headers || {}),
+        };
+
+        return fetch(url, {
+            credentials: 'same-origin',
+            ...options,
+            headers,
+        });
+    };
     window.csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
     if (window.axios && window.csrfToken) {
         window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.csrfToken;
     }
-    window.fetchWithCsrf = (url, options = {}) => {
-        const headers = new Headers(options.headers || {});
-        if (window.csrfToken) {
-            headers.set('X-CSRF-TOKEN', window.csrfToken);
-        }
-        return fetch(url, { ...options, headers });
-    };
+</script>
+@include('partials.ui-feedback')
+@stack('scripts')
+@include('partials.theme-toggle')
+<script>
     document.addEventListener('open-auth-modal', (event) => {
         const requestedView = typeof event.detail === 'string' ? event.detail : 'login';
         const target = requestedView === 'register' ? @json(route('register')) : @json(route('login'));

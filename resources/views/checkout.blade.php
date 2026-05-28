@@ -266,7 +266,7 @@
                     return null;
                 }
 
-                const response = await fetchWithCsrf(refreshUrl, {
+                const response = await window.fetchWithCsrf(refreshUrl, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
