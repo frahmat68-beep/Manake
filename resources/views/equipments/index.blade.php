@@ -341,6 +341,19 @@
                                     normalizeQty() {
                                         this.quickQty = Math.max(1, Math.min(this.maxQty, Number(this.quickQty) || 1));
                                     },
+                                    openDatePicker(event) {
+                                        const input = event?.target;
+                                        if (!(input instanceof HTMLInputElement)) return;
+                                        if (typeof input.showPicker === 'function') {
+                                            try {
+                                                input.showPicker();
+                                            } catch (error) {
+                                                input.focus();
+                                            }
+                                        } else {
+                                            input.focus();
+                                        }
+                                    },
                                     decreaseQty() {
                                         this.quickQty = Math.max(1, Number(this.quickQty) - 1);
                                         this.normalizeQty();
@@ -543,9 +556,9 @@
                                                                     :max="maxDate"
                                                                     class="mk-input cursor-pointer"
                                                                     @click.stop
-                                                                    @mousedown.stop
-                                                                    @pointerdown.stop
+                                                                    @focus="openDatePicker($event)"
                                                                     @change="onStartChanged()"
+                                                                    @input="onStartChanged()"
                                                                     required
                                                                 >
                                                             </div>
@@ -560,9 +573,9 @@
                                                                     :max="maxDate"
                                                                     class="mk-input cursor-pointer"
                                                                     @click.stop
-                                                                    @mousedown.stop
-                                                                    @pointerdown.stop
+                                                                    @focus="openDatePicker($event)"
                                                                     @change="onEndChanged()"
+                                                                    @input="onEndChanged()"
                                                                     required
                                                                 >
                                                             </div>
@@ -591,8 +604,7 @@
                                                                     x-model.number="quickQty"
                                                                     class="mk-input no-spinner text-center"
                                                                     @click.stop
-                                                                    @mousedown.stop
-                                                                    @pointerdown.stop
+                                                                    @input="normalizeQty()"
                                                                     @change="normalizeQty()"
                                                                     required
                                                                 >
