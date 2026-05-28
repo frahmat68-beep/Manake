@@ -631,8 +631,13 @@
                     <div
                         class="relative -mx-6 md:-mx-10"
                     >
-                        <div class="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-24 bg-gradient-to-r from-[#0A0A0B] to-transparent md:block"></div>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-24 bg-gradient-to-l from-[#0A0A0B] to-transparent md:block"></div>
+                        <!-- Dark mode overlays -->
+                        <div class="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-24 bg-gradient-to-r from-[#0A0A0B] to-transparent md:dark:block"></div>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-24 bg-gradient-to-l from-[#0A0A0B] to-transparent md:dark:block"></div>
+
+                        <!-- Light mode overlays -->
+                        <div class="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-20 bg-gradient-to-r from-[#F7F7F4] to-transparent md:block dark:hidden"></div>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-20 bg-gradient-to-l from-[#F7F7F4] to-transparent md:block dark:hidden"></div>
                         <div
                             id="featured-equipment-track"
                             class="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-6 pb-4 md:px-10"
