@@ -563,6 +563,11 @@
             ->limit(100)
             ->value();
 
+        $businessName = (string) setting('business_name', setting('site_name', 'Manake Rental'));
+        $businessPhone = $contactPhone ?: '-';
+        $businessEmail = $contactEmail ?: '-';
+        $businessAddress = $footerAddress;
+
         $shortRef = $referenceNumber
             ? (strlen($referenceNumber) > 22 ? substr($referenceNumber, 0, 18) . '...' : $referenceNumber)
             : '-';
@@ -733,8 +738,11 @@
                         <tr>
                             <td class="label" style="border-top: 1px dashed rgba(51, 0, 255, 0.2); padding-top: 4px; margin-top: 2px;">Account:</td>
                             <td class="value" style="border-top: 1px dashed rgba(51, 0, 255, 0.2); padding-top: 4px; margin-top: 2px;">
-                                Fikri Mulya Rachmat<br>
-                                <span style="font-weight: normal; color: #555558;">0851 5664 9015</span>
+                                {{ $businessName }}<br>
+                                <span style="font-weight: normal; color: #555558;">{{ $businessPhone }}</span>
+                                @if ($businessEmail && $businessEmail !== '-')
+                                    <br><span style="font-weight: normal; color: #555558; font-size: 9px;">{{ $businessEmail }}</span>
+                                @endif
                             </td>
                         </tr>
                     </table>
