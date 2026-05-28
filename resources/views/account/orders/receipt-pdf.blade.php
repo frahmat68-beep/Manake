@@ -504,10 +504,10 @@
         ->limit(100)
         ->value();
 
-    $businessName = (string) setting('business_name', setting('site_name', 'Manake Rental'));
-    $businessPhone = $contactPhone ?: '-';
-    $businessEmail = $contactEmail ?: '-';
-    $businessAddress = $footerAddress;
+    $invoiceBusinessName = 'Manake Rental';
+    $invoiceBusinessPhone = $contactPhone ?: '-';
+    $invoiceBusinessEmail = $contactEmail ?: '-';
+    $invoiceBusinessAddress = $footerAddress ?: '-';
 
     $shortRef = $referenceNumber
         ? (strlen($referenceNumber) > 22 ? substr($referenceNumber, 0, 18) . '...' : $referenceNumber)
@@ -684,10 +684,10 @@
                                     <tr>
                                         <td class="label" style="border-top: 1px dashed rgba(51, 0, 255, 0.2); padding-top: 4px; margin-top: 2px;">Account:</td>
                                         <td class="value" style="border-top: 1px dashed rgba(51, 0, 255, 0.2); padding-top: 4px; margin-top: 2px;">
-                                            {{ $businessName }}<br>
-                                            <span style="font-weight: normal; color: #555558;">{{ $businessPhone }}</span>
-                                            @if ($businessEmail && $businessEmail !== '-')
-                                                <br><span style="font-weight: normal; color: #555558; font-size: 8px;">{{ $businessEmail }}</span>
+                                            {{ $invoiceBusinessName }}<br>
+                                            <span style="font-weight: normal; color: #555558;">{{ $invoiceBusinessPhone }}</span>
+                                            @if ($invoiceBusinessEmail && $invoiceBusinessEmail !== '-')
+                                                <br><span style="font-weight: normal; color: #555558; font-size: 8px;">{{ $invoiceBusinessEmail }}</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -707,10 +707,10 @@
                             <img src="{{ $logoUrl }}" alt="Manake Logo" class="footer-logo">
                         </td>
                         <td class="footer-info-col">
-                            <strong>Manake Rental</strong><br>
-                            WhatsApp: {{ $contactPhone }}<br>
-                            Email: {{ $contactEmail }}<br>
-                            Address: {{ $footerAddress }}
+                            <strong>{{ $invoiceBusinessName }}</strong><br>
+                            WhatsApp: {{ $invoiceBusinessPhone }}<br>
+                            Email: {{ $invoiceBusinessEmail }}<br>
+                            Address: {{ $invoiceBusinessAddress }}
                         </td>
                     </tr>
                 </table>
