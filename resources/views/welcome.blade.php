@@ -177,16 +177,23 @@
             }
 
             /* Light Mode Overrides */
-            html[data-theme-resolved="light"] .hero-title-text,
-            html[data-theme-resolved="light"] .hero-title-text span,
-            html[data-theme-resolved="light"] .hero-rotating-word {
+            html[data-theme-resolved="light"] .manake-hero-island .hero-title-text {
                 font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif !important;
                 font-weight: 800 !important;
                 letter-spacing: -0.04em !important;
                 color: #F8FAFC !important;
                 text-shadow: 0 3px 18px rgba(0,0,0,0.55), 0 14px 38px rgba(0,0,0,0.35) !important;
             }
-            html[data-theme-resolved="light"] .hero-desc-text {
+            html[data-theme-resolved="light"] .manake-hero-island .hero-title-text span,
+            html[data-theme-resolved="light"] .manake-hero-island .hero-title-text .inline-block {
+                color: #F8FAFC !important;
+            }
+            html[data-theme-resolved="light"] .manake-hero-island .hero-rotating-word,
+            html[data-theme-resolved="light"] .manake-hero-island .hero-rotating-word span {
+                color: #D4A843 !important;
+                text-shadow: 0 3px 18px rgba(0,0,0,0.55), 0 14px 38px rgba(0,0,0,0.35) !important;
+            }
+            html[data-theme-resolved="light"] .manake-hero-island .hero-desc-text {
                 color: rgba(248, 250, 252, 0.92) !important;
                 text-shadow: 0 2px 12px rgba(0,0,0,0.45) !important;
             }
@@ -206,7 +213,7 @@
                 color: #111827 !important;
             }
             html[data-theme-resolved="light"] .hero-card-kicker {
-                color: #2563EB !important; /* Manake Blue */
+                color: #D4A843 !important; /* Manake Gold */
             }
             html[data-theme-resolved="light"] .hero-tile {
                 background-color: rgba(37, 99, 235, 0.04) !important;
