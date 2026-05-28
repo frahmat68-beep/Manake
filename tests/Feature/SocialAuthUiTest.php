@@ -8,6 +8,11 @@ class SocialAuthUiTest extends TestCase
 {
     public function test_login_page_shows_google_auth_option(): void
     {
+        config([
+            'services.google.client_id' => 'test-google-client-id',
+            'services.google.client_secret' => 'test-google-client-secret',
+        ]);
+
         $response = $this->get(route('login'));
 
         $response->assertOk();
@@ -17,6 +22,11 @@ class SocialAuthUiTest extends TestCase
 
     public function test_register_page_shows_google_auth_option(): void
     {
+        config([
+            'services.google.client_id' => 'test-google-client-id',
+            'services.google.client_secret' => 'test-google-client-secret',
+        ]);
+
         $response = $this->get(route('register'));
 
         $response->assertOk();
