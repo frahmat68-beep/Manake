@@ -4,7 +4,6 @@
 @section('meta_description', __('ui.rental_rules.meta_description'))
 
 @php
-    $rulesKicker = setting('copy.rules_page.kicker', __('ui.rental_rules.kicker'));
     $rulesTitle = setting('copy.rules_page.title', __('ui.rental_rules.title'));
     $rulesSubtitle = setting('copy.rules_page.subtitle', __('ui.rental_rules.subtitle'));
     $rulesOperationalTitle = setting('copy.rules_page.operational_title', __('ui.rental_rules.operational_title'));
@@ -56,10 +55,6 @@
             <div class="relative overflow-hidden rounded-3xl border border-[#1A1A1E] bg-[#111113]/70 p-8 sm:p-12 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)] backdrop-blur-md">
                 <div class="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-[#D4A843]/5 blur-3xl" aria-hidden="true"></div>
                 <div class="relative z-10 max-w-3xl space-y-4">
-                    <span class="inline-flex items-center gap-1.5 rounded-full border border-[#D4A843]/20 bg-[#D4A843]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4A843]">
-                        <span class="h-1.5 w-1.5 rounded-full bg-[#D4A843] animate-pulse" aria-hidden="true"></span>
-                        {{ $rulesKicker }}
-                    </span>
                     <h1 class="text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold leading-[1.05] tracking-tight text-[#E8E8EC]">
                         {{ $rulesTitle }}
                     </h1>
