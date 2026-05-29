@@ -302,31 +302,32 @@
             box-shadow: 0 0 0 2px var(--availability-accent), 0 8px 20px -12px var(--availability-accent) !important;
         }
 
-        .availability-board-input {
+        .availability-page .availability-board-input {
+            width: 100%;
             border-radius: 0.75rem;
             border: 1px solid #1A1A1E;
-            background: #0A0A0B;
+            background-color: #0A0A0B;
             color: #E8E8EC;
             outline: none;
             transition:
+                background-color 160ms ease,
                 border-color 160ms ease,
                 box-shadow 160ms ease,
-                background-color 160ms ease,
                 color 160ms ease;
         }
 
-        .availability-board-input::placeholder {
+        .availability-page .availability-board-input::placeholder {
             color: #66666C;
         }
 
-        .availability-board-input-icon {
+        .availability-page .availability-board-input-icon {
             color: #6A6A78;
             pointer-events: none;
         }
 
-        .availability-board-input:focus {
-            border-color: var(--availability-accent);
-            box-shadow: 0 0 0 2px var(--availability-accent-soft);
+        .availability-page .availability-board-input:focus {
+            border-color: var(--availability-accent, #D4A843);
+            box-shadow: 0 0 0 2px var(--availability-accent-soft, rgba(212, 168, 67, 0.18));
         }
 
         .availability-suggestions-dropdown {
@@ -353,23 +354,23 @@
         }
 
         html[data-theme-resolved="light"] .availability-page .availability-board-input {
-            border-color: #E5E7EB;
-            background: #FFFFFF;
-            color: #111827;
-            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+            background-color: #FFFFFF !important;
+            color: #111827 !important;
+            border-color: #DADDE3 !important;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
         }
 
         html[data-theme-resolved="light"] .availability-page .availability-board-input::placeholder {
-            color: #6B7280;
+            color: #6B7280 !important;
         }
 
         html[data-theme-resolved="light"] .availability-page .availability-board-input-icon {
-            color: #6B7280;
+            color: #6B7280 !important;
         }
 
         html[data-theme-resolved="light"] .availability-page .availability-board-input:focus {
-            border-color: #2563EB;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.14);
+            border-color: #2563EB !important;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.14) !important;
         }
 
         html[data-theme-resolved="light"] .availability-page .availability-suggestions-dropdown {
@@ -394,6 +395,18 @@
 
         html[data-theme-resolved="light"] .availability-page .availability-suggestion-meta {
             color: #4B5563;
+        }
+
+        html[data-theme-resolved="light"] .availability-page input[type="month"].availability-board-input,
+        html[data-theme-resolved="light"] .availability-page input[type="date"].availability-board-input {
+            color-scheme: light !important;
+            background-color: #FFFFFF !important;
+            color: #111827 !important;
+        }
+
+        html[data-theme-resolved="dark"] .availability-page input[type="month"].availability-board-input,
+        html[data-theme-resolved="dark"] .availability-page input[type="date"].availability-board-input {
+            color-scheme: dark;
         }
 
         .board-input-group {
