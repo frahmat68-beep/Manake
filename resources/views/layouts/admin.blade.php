@@ -209,6 +209,163 @@
             background-color: var(--admin-surface-raised) !important;
             color: var(--admin-text) !important;
         }
+
+        /* ── Admin Settings Trigger ────────────────────────────────── */
+        body[data-manake-shell="admin"] .admin-settings-trigger {
+            background: transparent !important;
+            border: 1px solid transparent !important;
+            color: var(--admin-muted) !important;
+            transition: background 0.18s, border-color 0.18s, color 0.18s !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-settings-trigger:hover,
+        body[data-manake-shell="admin"] .admin-settings-trigger.is-open {
+            background: var(--admin-accent-soft) !important;
+            border-color: var(--admin-accent-border) !important;
+            color: var(--admin-accent) !important;
+        }
+
+        /* ── Admin Preferences Popover ─────────────────────────────── */
+        body[data-manake-shell="admin"] .admin-preferences-popover {
+            width: 100% !important;
+            overflow: hidden !important;
+            border-radius: 1.25rem !important;
+            background: var(--admin-surface) !important;
+            border: 1px solid var(--admin-border) !important;
+            color: var(--admin-text) !important;
+            box-shadow: 0 28px 80px -35px rgba(0,0,0,0.65),
+                        0 8px 30px -12px rgba(0,0,0,0.35) !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-preferences-popover {
+            box-shadow: 0 28px 70px -40px rgba(15,23,42,0.28),
+                        0 8px 28px -10px rgba(15,23,42,0.12) !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-popover__title {
+            color: var(--admin-text) !important;
+            font-size: 0.95rem !important;
+            font-weight: 800 !important;
+            line-height: 1.25 !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-popover__label {
+            color: var(--admin-muted) !important;
+            font-size: 0.68rem !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.16em !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-divider {
+            background: var(--admin-border) !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-grid {
+            display: grid !important;
+            gap: 0.4rem !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-grid--two {
+            grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-grid--stacked {
+            grid-template-columns: 1fr !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.65rem !important;
+            width: 100% !important;
+            background: var(--admin-surface-raised) !important;
+            border: 1px solid var(--admin-border) !important;
+            color: var(--admin-text) !important;
+            padding: 0.7rem 0.875rem !important;
+            text-align: left !important;
+            border-radius: 0.85rem !important;
+            box-shadow: none !important;
+            transition: background 0.15s, border-color 0.15s, color 0.15s !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice:hover {
+            background: var(--admin-accent-soft) !important;
+            border-color: var(--admin-accent-border) !important;
+            color: var(--admin-accent) !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice.is-active,
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice[data-ui-active="true"] {
+            background: var(--admin-accent-soft) !important;
+            border-color: var(--admin-accent-border) !important;
+            color: var(--admin-accent) !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice__body {
+            min-width: 0 !important;
+            flex: 1 1 auto !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice__title {
+            color: inherit !important;
+            display: block !important;
+            font-size: 0.83rem !important;
+            font-weight: 700 !important;
+            line-height: 1.3 !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice__meta {
+            color: var(--admin-muted) !important;
+            display: block !important;
+            font-size: 0.7rem !important;
+            line-height: 1.35 !important;
+            margin-top: 0.1rem !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice.is-active .manake-preferences-choice__meta,
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice[data-ui-active="true"] .manake-preferences-choice__meta {
+            color: var(--admin-accent) !important;
+            opacity: 0.75 !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice__icon,
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice__dot {
+            flex: 0 0 auto !important;
+            color: inherit !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice__dot {
+            display: inline-block !important;
+            width: 0.55rem !important;
+            height: 0.55rem !important;
+            border-radius: 50% !important;
+            background: currentColor !important;
+            opacity: 0.45 !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice.is-active .manake-preferences-choice__dot,
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice[data-ui-active="true"] .manake-preferences-choice__dot {
+            opacity: 1 !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice__check {
+            flex: 0 0 auto !important;
+            color: var(--admin-accent) !important;
+            opacity: 0 !important;
+            transition: opacity 0.15s !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice.is-active .manake-preferences-choice__check,
+        body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-choice[data-ui-active="true"] .manake-preferences-choice__check {
+            opacity: 1 !important;
+        }
+
+        @media (max-width: 480px) {
+            body[data-manake-shell="admin"] .admin-preferences-popover .manake-preferences-grid--two {
+                grid-template-columns: 1fr !important;
+            }
+        }
     </style>
 </head>
 <body class="manake-shell" data-admin-panel="true" data-manake-shell="admin">
@@ -268,8 +425,8 @@
                         <div class="relative" @click.outside="adminSettingsOpen = false">
                             <button
                                 type="button"
-                                data-ui-icon-button
-                                class="inline-flex h-9 w-9 items-center justify-center rounded-xl transition"
+                                class="admin-settings-trigger inline-flex h-9 w-9 items-center justify-center rounded-xl"
+                                :class="{ 'is-open': adminSettingsOpen }"
                                 @click="adminSettingsOpen = !adminSettingsOpen"
                                 :aria-expanded="adminSettingsOpen.toString()"
                                 aria-label="{{ __('ui.nav.settings') }}"
@@ -279,8 +436,18 @@
                                     <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3 1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8 1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
                                 </svg>
                             </button>
-                            <div x-cloak x-show="adminSettingsOpen" x-transition.origin.top.right class="absolute right-0 mt-2 z-50 w-[min(18.5rem,calc(100vw-1.5rem))]">
-                                <x-preferences.popover :locale="$locale" :current-theme="$currentTheme" :redirect="url()->full()" />
+                            <div
+                                x-cloak
+                                x-show="adminSettingsOpen"
+                                x-transition.origin.top.right
+                                class="absolute right-0 z-[100] mt-3 w-[20rem] max-w-[calc(100vw-2rem)] origin-top-right"
+                            >
+                                <x-preferences.popover
+                                    :locale="$locale"
+                                    :current-theme="$currentTheme"
+                                    :redirect="url()->full()"
+                                    class="admin-preferences-popover"
+                                />
                             </div>
                         </div>
                         <div class="inline-flex h-9 w-9 items-center justify-center rounded-full admin-accent-bg text-sm font-semibold">
