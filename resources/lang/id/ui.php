@@ -542,6 +542,11 @@ return [
         'save_profile' => 'Simpan Profil',
         'back_to_catalog' => 'Kembali ke Katalog',
         'migration_hint' => 'Profil belum siap. Jalankan migrasi database terlebih dahulu.',
+        'quick_help_title' => 'Butuh bantuan cepat?',
+        'quick_help_email' => 'Email',
+        'quick_help_phone' => 'Nomor Telepon',
+        'quick_help_location' => 'Tautan Lokasi',
+        'quick_help_location_cta' => 'Buka lokasi di Google Maps',
     ],
     'contact' => [
         'page_title' => 'Kontak | Manake',

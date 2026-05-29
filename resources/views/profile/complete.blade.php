@@ -560,21 +560,23 @@
                     </article>
 
                     <article class="profile-card profile-card-in rounded-3xl border p-6 shadow-2xl animate-delay-[120ms]">
-                        <h3 class="text-base font-semibold profile-title">{{ __('ui.overview.quick_help_title') }}</h3>
+                        <h3 class="text-base font-semibold profile-title">{{ $profileCopy['quick_help_title'] }}</h3>
                         <dl class="mt-4 space-y-3 text-sm">
                             <div class="flex justify-between gap-4">
-                                <dt class="profile-muted">{{ __('ui.profile_complete.labels.email') }}</dt>
+                                <dt class="profile-muted">{{ $profileCopy['quick_help_email'] }}</dt>
                                 <dd class="text-right font-medium profile-title">{{ $user?->email ?? '-' }}</dd>
                             </div>
                             <div class="flex justify-between gap-4">
-                                <dt class="profile-muted">{{ $profileCopy['labels']['phone'] }}</dt>
+                                <dt class="profile-muted">{{ $profileCopy['quick_help_phone'] }}</dt>
                                 <dd class="text-right font-medium profile-title">{{ $profile?->phone ?? '-' }}</dd>
                             </div>
                             <div class="flex justify-between gap-4">
-                                <dt class="profile-muted">{{ __('ui.contact.labels.instagram') }}</dt>
+                                <dt class="profile-muted">{{ $profileCopy['quick_help_location'] }}</dt>
                                 <dd class="text-right font-medium profile-title">
                                     @if ($safeMapsUrl)
-                                        <a href="{{ $safeMapsUrl }}" target="_blank" rel="noopener noreferrer" class="profile-accent-text hover:underline">{{ __('ui.contact.whatsapp_desc') }}</a>
+                                        <a href="{{ $safeMapsUrl }}" target="_blank" rel="noopener noreferrer" class="profile-accent-text hover:underline">
+                                            {{ $profileCopy['quick_help_location_cta'] }}
+                                        </a>
                                     @else
                                         -
                                     @endif

@@ -542,6 +542,11 @@ return [
         'save_profile' => 'Save Profile',
         'back_to_catalog' => 'Back to Catalog',
         'migration_hint' => 'Profile is not ready. Run database migrations first.',
+        'quick_help_title' => 'Need quick help?',
+        'quick_help_email' => 'Email',
+        'quick_help_phone' => 'Phone Number',
+        'quick_help_location' => 'Location Link',
+        'quick_help_location_cta' => 'Open location in Google Maps',
     ],
     'contact' => [
         'page_title' => 'Contact | Manake',
