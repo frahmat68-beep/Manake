@@ -552,7 +552,6 @@
                                             @if ($canRent)
                                                 <a
                                                     href="{{ route('login', ['reason' => 'cart']) }}"
-                                                    @click.prevent="window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: 'login' }))"
                                                     class="w-full rounded-md catalog-accent-bg py-3 text-center font-bold transition"
                                                 >
                                                     {{ $catalogLoginToOrderButton }}
