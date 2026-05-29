@@ -302,6 +302,100 @@
             box-shadow: 0 0 0 2px var(--availability-accent), 0 8px 20px -12px var(--availability-accent) !important;
         }
 
+        .availability-board-input {
+            border-radius: 0.75rem;
+            border: 1px solid #1A1A1E;
+            background: #0A0A0B;
+            color: #E8E8EC;
+            outline: none;
+            transition:
+                border-color 160ms ease,
+                box-shadow 160ms ease,
+                background-color 160ms ease,
+                color 160ms ease;
+        }
+
+        .availability-board-input::placeholder {
+            color: #66666C;
+        }
+
+        .availability-board-input-icon {
+            color: #6A6A78;
+            pointer-events: none;
+        }
+
+        .availability-board-input:focus {
+            border-color: var(--availability-accent);
+            box-shadow: 0 0 0 2px var(--availability-accent-soft);
+        }
+
+        .availability-suggestions-dropdown {
+            border-color: rgba(255, 255, 255, 0.10);
+            background: rgba(17, 17, 19, 0.96);
+        }
+
+        .availability-suggestion-link:hover,
+        .availability-suggestion-link:focus {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .availability-suggestion-image-box {
+            background: #0A0A0B;
+            border-color: #1A1A1E;
+        }
+
+        .availability-suggestion-name {
+            color: #E8E8EC;
+        }
+
+        .availability-suggestion-meta {
+            color: #A0A0A8;
+        }
+
+        html[data-theme-resolved="light"] .availability-page .availability-board-input {
+            border-color: #E5E7EB;
+            background: #FFFFFF;
+            color: #111827;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        }
+
+        html[data-theme-resolved="light"] .availability-page .availability-board-input::placeholder {
+            color: #6B7280;
+        }
+
+        html[data-theme-resolved="light"] .availability-page .availability-board-input-icon {
+            color: #6B7280;
+        }
+
+        html[data-theme-resolved="light"] .availability-page .availability-board-input:focus {
+            border-color: #2563EB;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.14);
+        }
+
+        html[data-theme-resolved="light"] .availability-page .availability-suggestions-dropdown {
+            border-color: #E5E7EB;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 24px 60px -30px rgba(15, 23, 42, 0.25);
+        }
+
+        html[data-theme-resolved="light"] .availability-page .availability-suggestion-link:hover,
+        html[data-theme-resolved="light"] .availability-page .availability-suggestion-link:focus {
+            background: rgba(37, 99, 235, 0.06);
+        }
+
+        html[data-theme-resolved="light"] .availability-page .availability-suggestion-image-box {
+            background: #F8FAFC;
+            border-color: #E5E7EB;
+        }
+
+        html[data-theme-resolved="light"] .availability-page .availability-suggestion-name {
+            color: #111827;
+        }
+
+        html[data-theme-resolved="light"] .availability-page .availability-suggestion-meta {
+            color: #4B5563;
+        }
+
         .board-input-group {
             position: relative;
             display: flex;
@@ -682,19 +776,27 @@
                 <form method="GET" action="{{ route('availability.board') }}" class="w-full space-y-3">
                     <div class="grid w-full gap-3 grid-cols-1 sm:grid-cols-[minmax(0,1.4fr)_180px_180px_auto]">
                         <div class="board-input-group">
-                            <svg class="absolute left-4 h-5 w-5 text-[#6A6A78]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <svg class="availability-board-input-icon absolute left-4 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                             <input
+                                id="availability-search-input"
                                 type="text"
                                 name="q"
                                 value="{{ $search }}"
                                 autocomplete="off"
                                 placeholder="{{ $availabilitySearchPlaceholder }}"
                                 aria-label="{{ $availabilitySearchPlaceholder }}"
-                                class="mk-input pl-11 py-3.5 text-sm"
+                                class="availability-board-input w-full pl-11 pr-12 py-3.5 text-sm"
                             >
+                            <div id="availability-search-loading-spinner" class="absolute right-4 top-1/2 -translate-y-1/2 hidden">
+                                <svg class="availability-accent-text h-5 w-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </div>
+                            <div id="availability-search-suggestions-dropdown" class="availability-suggestions-dropdown absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[80] hidden max-h-80 overflow-y-auto rounded-2xl border p-2 shadow-2xl backdrop-blur-xl space-y-1"></div>
                         </div>
                         <div class="board-input-group">
-                            <svg class="absolute left-4 h-5 w-5 text-[#6A6A78]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <svg class="availability-board-input-icon absolute left-4 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             <input
                                 type="month"
                                 name="month"
@@ -702,11 +804,11 @@
                                 min="{{ $windowStartMonthValue }}"
                                 max="{{ $windowEndMonthValue }}"
                                 aria-label="{{ $availabilityMonthFilterAria }}"
-                                class="mk-input pl-11 py-3.5 text-sm"
+                                class="availability-board-input w-full pl-11 py-3.5 text-sm"
                             >
                         </div>
                         <div class="board-input-group">
-                            <svg class="absolute left-4 h-5 w-5 text-[#6A6A78]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <svg class="availability-board-input-icon absolute left-4 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             <input
                                 type="date"
                                 name="date"
@@ -714,7 +816,7 @@
                                 min="{{ $windowStartValue }}"
                                 max="{{ $windowEndValue }}"
                                 aria-label="{{ $availabilityDateFilterAria }}"
-                                class="mk-input pl-11 py-3.5 text-sm"
+                                class="availability-board-input w-full pl-11 py-3.5 text-sm"
                             >
                         </div>
                         <div class="flex gap-2">
@@ -1133,3 +1235,183 @@
     </div>
     </section>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('availability-search-input');
+    const spinner = document.getElementById('availability-search-loading-spinner');
+    const dropdown = document.getElementById('availability-search-suggestions-dropdown');
+
+    if (!searchInput || !dropdown) return;
+
+    let debounceTimeout = null;
+    let currentFocusIndex = -1;
+    let suggestionsData = [];
+
+    const showDropdown = () => {
+        dropdown.classList.remove('hidden');
+    };
+
+    const hideDropdown = () => {
+        dropdown.classList.add('hidden');
+        currentFocusIndex = -1;
+    };
+
+    const renderSuggestions = (items) => {
+        suggestionsData = items || [];
+        const noSuggestionsLabel = @js(app()->getLocale() === 'en' ? 'No suggestions' : 'Tidak ada saran');
+
+        if (!items || items.length === 0) {
+            dropdown.innerHTML = `
+                <div class="p-3 text-center text-xs availability-suggestion-meta">
+                    ${noSuggestionsLabel}
+                </div>
+            `;
+            showDropdown();
+            return;
+        }
+
+        const locale = @js($intlLocale);
+        const currency = @js($currencyPrefix);
+        const recommendationLabel = @js(app()->getLocale() === 'en' ? 'Recommended' : 'Rekomendasi');
+        const perDayLabel = @js(app()->getLocale() === 'en' ? '/day' : '/hari');
+        const availableLabel = @js(app()->getLocale() === 'en' ? 'Available' : 'Tersedia');
+        const unitLabel = @js(app()->getLocale() === 'en' ? 'units' : 'unit');
+
+        dropdown.innerHTML = items.map((item, index) => {
+            const priceFormatted = new Intl.NumberFormat(locale).format(item.price_per_day || 0);
+
+            return `
+                <a href="${item.detail_url}"
+                   data-availability-suggestion-index="${index}"
+                   class="availability-suggestion-link flex items-center gap-3 rounded-xl border border-transparent p-2 transition active:scale-[0.99] focus:outline-none">
+                    <div class="availability-suggestion-image-box flex h-10 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border p-1">
+                        <img src="${item.image_url}" alt="${item.name}" class="h-full w-full object-contain">
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            <span class="availability-suggestion-name truncate text-xs font-bold transition-colors">${item.name}</span>
+                            ${item.is_recommended ? `<span class="rounded px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider availability-accent-bg">${recommendationLabel}</span>` : ''}
+                        </div>
+                        <div class="availability-suggestion-meta mt-1 flex flex-wrap items-center gap-2 text-[10px]">
+                            <span class="font-semibold">${item.category_name || ''}</span>
+                            <span class="h-1 w-1 rounded-full bg-current opacity-25"></span>
+                            <span>${currency} ${priceFormatted}${perDayLabel}</span>
+                            <span class="h-1 w-1 rounded-full bg-current opacity-25"></span>
+                            <span>${availableLabel}: ${item.available_units ?? 0} ${unitLabel}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }).join('');
+
+        showDropdown();
+    };
+
+    const fetchSuggestions = async (query) => {
+        if (spinner) spinner.classList.remove('hidden');
+
+        try {
+            const response = await fetch(`/search/suggestions?q=${encodeURIComponent(query)}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                renderSuggestions(json.data || []);
+            }
+        } catch (error) {
+            console.error('Error fetching availability suggestions:', error);
+        } finally {
+            if (spinner) spinner.classList.add('hidden');
+        }
+    };
+
+    searchInput.addEventListener('input', () => {
+        const value = searchInput.value.trim();
+
+        if (debounceTimeout) {
+            clearTimeout(debounceTimeout);
+        }
+
+        if (value.length < 2) {
+            hideDropdown();
+            return;
+        }
+
+        debounceTimeout = setTimeout(() => {
+            fetchSuggestions(value);
+        }, 300);
+    });
+
+    const updateFocus = () => {
+        const items = dropdown.querySelectorAll('a[data-availability-suggestion-index]');
+
+        items.forEach((item, index) => {
+            if (index === currentFocusIndex) {
+                item.classList.add('availability-accent-border');
+                item.scrollIntoView({ block: 'nearest' });
+            } else {
+                item.classList.remove('availability-accent-border');
+            }
+        });
+    };
+
+    searchInput.addEventListener('keydown', (event) => {
+        const items = dropdown.querySelectorAll('a[data-availability-suggestion-index]');
+
+        if (dropdown.classList.contains('hidden')) {
+            if (event.key === 'ArrowDown' && searchInput.value.trim().length >= 2) {
+                fetchSuggestions(searchInput.value.trim());
+            }
+            return;
+        }
+
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            if (items.length > 0) {
+                currentFocusIndex = (currentFocusIndex + 1) % items.length;
+                updateFocus();
+            }
+        } else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            if (items.length > 0) {
+                currentFocusIndex = (currentFocusIndex - 1 + items.length) % items.length;
+                updateFocus();
+            }
+        } else if (event.key === 'Enter') {
+            if (currentFocusIndex >= 0 && suggestionsData[currentFocusIndex]) {
+                event.preventDefault();
+                window.location.href = suggestionsData[currentFocusIndex].detail_url;
+            }
+        } else if (event.key === 'Escape') {
+            event.preventDefault();
+            hideDropdown();
+            searchInput.focus();
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('#availability-search-input') && !event.target.closest('#availability-search-suggestions-dropdown')) {
+            hideDropdown();
+        }
+    });
+
+    searchInput.addEventListener('focus', () => {
+        const value = searchInput.value.trim();
+
+        if (value.length >= 2) {
+            if (dropdown.children.length > 0) {
+                showDropdown();
+            } else {
+                fetchSuggestions(value);
+            }
+        }
+    });
+});
+</script>
+@endpush
