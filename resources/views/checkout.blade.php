@@ -244,20 +244,23 @@
         $checkoutEmptyCatalogCta = __('ui.checkout.empty_catalog_cta');
     @endphp
 
-    <div class="checkout-page checkout-page-bg manake-page">
-        <div class="manake-page-frame space-y-8">
-            <header class="checkout-card rounded-3xl border p-6 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.30)] animate-fade-up sm:p-8">
-                <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+    <div class="checkout-page checkout-page-bg min-h-screen">
+        <div class="mx-auto w-full max-w-[1280px] px-4 py-8 sm:px-6 lg:px-8 lg:py-10 space-y-8">
+            <header class="checkout-card rounded-3xl border p-6 shadow-[0_24px_70px_-50px_rgba(0,0,0,0.35)] animate-fade-up sm:p-7">
+                <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                     <div class="max-w-3xl">
-                        <p class="checkout-accent-text text-xs font-black uppercase tracking-[0.2em]">{{ $checkoutKicker }}</p>
-                        <h1 class="checkout-title mt-3 font-serif text-4xl font-black sm:text-5xl">
+                        <p class="checkout-accent-text text-xs font-black uppercase tracking-[0.2em]">
+                            {{ $checkoutKicker ?? __('ui.checkout.kicker') }}
+                        </p>
+                        <h1 class="checkout-title mt-3 text-[clamp(2rem,4vw,3.1rem)] font-black leading-[0.98] tracking-tight">
                             {{ $checkoutTitle }}
                         </h1>
-                        <p class="checkout-muted mt-3 max-w-2xl text-sm leading-7 sm:text-base">
+                        <p class="checkout-muted mt-3 max-w-2xl text-sm leading-6 sm:text-base">
                             {{ $checkoutSubtitle }}
                         </p>
                     </div>
-                    <a href="{{ route('cart') }}" class="checkout-secondary-button inline-flex w-full items-center justify-center rounded-xl px-5 py-3 font-bold transition lg:w-auto">
+
+                    <a href="{{ route('cart') }}" class="checkout-secondary-button inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition md:w-auto">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
@@ -266,15 +269,17 @@
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
-                <div class="lg:col-span-8 space-y-8">
-                    <div id="checkout-alert" class="hidden rounded-md border px-5 py-4 text-sm font-semibold"></div>
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start">
+                <div class="space-y-6">
+                    <div id="checkout-alert" class="hidden rounded-xl border px-4 py-3 text-sm font-semibold"></div>
 
-                    <article class="checkout-card rounded-3xl border p-6 shadow-2xl animate-fade-up sm:p-8">
-                        <h2 class="checkout-title flex items-center gap-3 text-2xl font-black">
+                    <article class="checkout-card rounded-3xl border p-6 shadow-2xl animate-fade-up sm:p-7">
+                        <div class="mb-6 flex items-center gap-3">
                             <span class="checkout-accent-dot h-8 w-1.5 rounded-full"></span>
-                            {{ $checkoutDetailTitle }}
-                        </h2>
+                            <h2 class="checkout-title text-2xl font-black">
+                                {{ $checkoutDetailTitle }}
+                            </h2>
+                        </div>
 
                         @if ($isCartEmpty)
                             <div class="checkout-border mt-8 rounded-md border border-dashed px-6 py-12 text-center">
@@ -284,108 +289,123 @@
                                 </a>
                             </div>
                         @else
-                            <div class="mt-8 space-y-4">
+                            <div class="space-y-4">
                                 @foreach ($cartItems as $item)
                                     @php
                                         $startDate = ! empty($item['rental_start_date']) ? \Carbon\Carbon::parse($item['rental_start_date']) : null;
                                         $endDate = ! empty($item['rental_end_date']) ? \Carbon\Carbon::parse($item['rental_end_date']) : null;
                                         $lineEstimate = (int) ($item['estimated_total'] ?? ((int) ($item['price'] ?? 0) * (int) ($item['qty'] ?? 1)));
                                     @endphp
-                                    <div class="checkout-inner flex flex-col gap-4 rounded-2xl border p-5 sm:flex-row sm:items-center sm:justify-between">
-                                        <div class="flex items-center gap-4">
-                                            <div class="checkout-card-solid h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border p-2 shadow-sm">
-                                                <img src="{{ site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment') }}" alt="{{ $item['name'] }}" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
-                                            </div>
-                                            <div>
-                                                <p class="checkout-title text-lg font-black">{{ $item['name'] }}</p>
-                                                <p class="checkout-muted mt-1 text-xs font-semibold uppercase tracking-[0.18em]">
-                                                    {{ strtr($checkoutQtyTemplate, [
-                                                        ':qty' => (string) ($item['qty'] ?? 0),
-                                                        ':price' => $formatIdr((int) ($item['price'] ?? 0)),
-                                                    ]) }}
-                                                </p>
-                                                @if ($startDate && $endDate)
-                                                    <span class="checkout-accent-soft mt-3 inline-flex rounded-full border px-3 py-1 text-[10px] font-black uppercase tracking-widest">
-                                                        {{ $startDate->translatedFormat('d M') }} - {{ $endDate->translatedFormat('d M Y') }}
-                                                    </span>
-                                                @else
-                                                    <p class="mt-2 text-xs font-semibold text-rose-400">{{ $checkoutInvalidDateNote }}</p>
-                                                @endif
-                                            </div>
+                                    <div class="checkout-inner grid gap-4 rounded-2xl border p-4 sm:grid-cols-[auto_1fr_auto] sm:items-center sm:p-5">
+                                        <div class="checkout-card-solid h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border p-2">
+                                            <img src="{{ site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment') }}" alt="{{ $item['name'] }}" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
                                         </div>
-                                        <p class="checkout-title text-xl font-black tracking-tight">{{ $formatIdr($lineEstimate) }}</p>
+
+                                        <div class="min-w-0">
+                                            <p class="checkout-title truncate text-lg font-black">{{ $item['name'] }}</p>
+                                            <p class="checkout-muted mt-1 text-xs font-semibold uppercase tracking-[0.16em]">
+                                                {{ strtr($checkoutQtyTemplate, [
+                                                    ':qty' => (string) ($item['qty'] ?? 0),
+                                                    ':price' => $formatIdr((int) ($item['price'] ?? 0)),
+                                                ]) }}
+                                            </p>
+                                            @if ($startDate && $endDate)
+                                                <span class="checkout-accent-soft mt-3 inline-flex rounded-full border px-3 py-1 text-[10px] font-black uppercase tracking-widest">
+                                                    {{ $startDate->translatedFormat('d M') }} - {{ $endDate->translatedFormat('d M Y') }}
+                                                </span>
+                                            @else
+                                                <p class="mt-2 text-xs font-semibold text-rose-400">{{ $checkoutInvalidDateNote }}</p>
+                                            @endif
+                                        </div>
+                                        <p class="checkout-title text-left text-xl font-black tracking-tight sm:text-right">{{ $formatIdr($lineEstimate) }}</p>
                                     </div>
                                 @endforeach
                             </div>
-
-                            <form id="checkout-form" class="mt-10 space-y-8">
-                                @csrf
-                                <div class="checkout-inner rounded-2xl border p-6">
-                                    <h3 class="checkout-title mb-5 flex items-center gap-3 text-xl font-black">
-                                        <svg class="checkout-accent-text h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                        {{ $checkoutProfileTitle }}
-                                    </h3>
-                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                        <div>
-                                            <label class="checkout-muted mb-2 block text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutProfileNameLabel }}</label>
-                                            <input type="text" value="{{ $profile?->full_name ?? '-' }}" class="checkout-input w-full px-4 py-3 text-sm" disabled>
-                                        </div>
-                                        <div>
-                                            <label class="checkout-muted mb-2 block text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutProfilePhoneLabel }}</label>
-                                            <input type="text" value="{{ $profile?->phone ?? '-' }}" class="checkout-input w-full px-4 py-3 text-sm" disabled>
-                                        </div>
-                                        <div class="md:col-span-2">
-                                            <label class="checkout-muted mb-2 block text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutProfileAddressLabel }}</label>
-                                            <textarea rows="3" class="checkout-textarea w-full px-4 py-3 text-sm" disabled>{{ $profile?->address_text ?? $profile?->address ?? '-' }}</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="checkout-card-solid mt-5 flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between">
-                                        <p class="checkout-muted text-xs font-semibold">{{ $checkoutProfileHint }}</p>
-                                        <a href="{{ route('profile') }}" class="checkout-accent-text checkout-accent-link text-xs font-black uppercase tracking-[0.18em] transition">
-                                            {{ $checkoutProfileUpdateLinkLabel }}
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-4">
-                                    <label class="checkout-card-solid flex cursor-pointer items-start gap-4 rounded-2xl border p-5">
-                                        <input type="checkbox" name="confirm_profile" class="checkout-checkbox mt-1 h-5 w-5 rounded" required>
-                                        <span class="checkout-muted text-sm font-semibold leading-7">{{ $checkoutConfirmProfile }}</span>
-                                    </label>
-
-                                    <button type="submit" id="checkout-submit" class="checkout-accent-bg flex w-full items-center justify-center gap-2 rounded-xl py-4 text-base font-black transition disabled:cursor-not-allowed disabled:opacity-60">
-                                        {{ $checkoutSubmitButton }}
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </form>
                         @endif
                     </article>
 
-                    <article class="checkout-card-solid flex items-center gap-5 rounded-2xl border p-5">
-                        <div class="checkout-accent-bg flex h-14 w-14 items-center justify-center rounded-2xl">
-                            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.041 11.955 11.955 0 013 12c0 5.391 3.991 9.928 9 10.822 5.009-.894 9-5.43 9-10.822 0-2.08-.528-4.047-1.455-5.764z"></path></svg>
-                        </div>
-                        <div>
-                            <h3 class="checkout-title text-xl font-black">{{ $checkoutPaymentTitle }}</h3>
-                            <p class="checkout-muted mt-1 text-sm leading-7">{{ $checkoutPaymentNote }}</p>
-                        </div>
-                    </article>
+                    @if (!$isCartEmpty)
+                        <form id="checkout-form" class="space-y-6">
+                            @csrf
+
+                            <article class="checkout-card rounded-3xl border p-6 shadow-2xl sm:p-7">
+                                <div class="mb-6 flex items-center gap-3">
+                                    <span class="checkout-accent-soft flex h-10 w-10 items-center justify-center rounded-2xl border">
+                                        <svg class="checkout-accent-text h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                    </span>
+                                    <div>
+                                        <h3 class="checkout-title text-xl font-black">{{ $checkoutProfileTitle }}</h3>
+                                        <p class="checkout-muted mt-1 text-xs">{{ $checkoutProfileHint }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <div>
+                                        <label class="checkout-muted mb-2 block text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutProfileNameLabel }}</label>
+                                        <input type="text" value="{{ $profile?->full_name ?? '-' }}" class="checkout-input w-full px-4 py-3 text-sm" disabled>
+                                    </div>
+                                    <div>
+                                        <label class="checkout-muted mb-2 block text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutProfilePhoneLabel }}</label>
+                                        <input type="text" value="{{ $profile?->phone ?? '-' }}" class="checkout-input w-full px-4 py-3 text-sm" disabled>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="checkout-muted mb-2 block text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutProfileAddressLabel }}</label>
+                                        <textarea rows="3" class="checkout-textarea w-full px-4 py-3 text-sm" disabled>{{ $profile?->address_text ?? $profile?->address ?? '-' }}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="checkout-inner mt-5 flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between">
+                                    <p class="checkout-muted text-xs font-semibold">{{ $checkoutProfileHint }}</p>
+                                    <a href="{{ route('profile') }}" class="checkout-accent-text checkout-accent-link text-xs font-black uppercase tracking-[0.18em] transition">
+                                        {{ $checkoutProfileUpdateLinkLabel }}
+                                    </a>
+                                </div>
+                            </article>
+
+                            <article class="checkout-card rounded-3xl border p-6 shadow-2xl sm:p-7">
+                                <label class="checkout-inner flex cursor-pointer items-start gap-4 rounded-2xl border p-5">
+                                    <input type="checkbox" name="confirm_profile" class="checkout-checkbox mt-1 h-5 w-5 rounded" required>
+                                    <span class="checkout-muted text-sm font-semibold leading-7">
+                                        {{ $checkoutConfirmProfile }}
+                                    </span>
+                                </label>
+
+                                <button type="submit" id="checkout-submit" class="checkout-accent-bg mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-4 text-base font-black transition disabled:cursor-not-allowed disabled:opacity-60">
+                                    {{ $checkoutSubmitButton }}
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                    </svg>
+                                </button>
+                            </article>
+                        </form>
+
+                        <article class="checkout-card-solid flex items-start gap-4 rounded-3xl border p-5">
+                            <div class="checkout-accent-bg flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.041 11.955 11.955 0 013 12c0 5.391 3.991 9.928 9 10.822 5.009-.894 9-5.43 9-10.822 0-2.08-.528-4.047-1.455-5.764z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="checkout-title text-lg font-black">{{ $checkoutPaymentTitle }}</h3>
+                                <p class="checkout-muted mt-1 text-sm leading-6">{{ $checkoutPaymentNote }}</p>
+                            </div>
+                        </article>
+                    @endif
                 </div>
 
-                <aside class="lg:col-span-4">
-                    <div class="sticky top-6 space-y-6 animate-fade-up" style="animation-delay: 200ms">
+                <aside class="lg:sticky lg:top-28">
+                    <div class="space-y-5 animate-fade-up" style="animation-delay: 200ms">
                         <article class="checkout-card-solid relative overflow-hidden rounded-3xl border p-6 shadow-2xl">
                             <div class="checkout-accent-glow absolute right-0 top-0 h-40 w-40 translate-x-1/3 -translate-y-1/3 rounded-full blur-3xl"></div>
                             <div class="relative z-10">
-                                <h2 class="checkout-title flex items-center gap-3 text-2xl font-black">
-                                    <svg class="checkout-accent-text h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                                    {{ $checkoutSummaryTitle }}
-                                </h2>
+                                <div class="mb-6 flex items-center gap-3">
+                                    <span class="checkout-accent-soft flex h-10 w-10 items-center justify-center rounded-2xl border">
+                                        <svg class="checkout-accent-text h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                    </span>
+                                    <h2 class="checkout-title text-2xl font-black">
+                                        {{ $checkoutSummaryTitle }}
+                                    </h2>
+                                </div>
 
-                                <div class="checkout-border mt-6 space-y-3 border-t pt-6">
+                                <div class="space-y-3 border-t checkout-border pt-5">
                                     <div class="flex items-center justify-between text-sm checkout-muted">
                                         <span>{{ $checkoutSummarySubtotal }}</span>
                                         <span class="font-bold checkout-title">{{ $formatIdr($subtotalPerDay ?? 0) }}</span>
@@ -398,24 +418,28 @@
                                         <span>{{ $checkoutSummaryTax }}</span>
                                         <span class="font-bold checkout-title">{{ $formatIdr($taxAmount) }}</span>
                                     </div>
-                                    <div class="checkout-border mt-4 border-t pt-4">
-                                        <p class="checkout-accent-text text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutSummaryTotal }}</p>
-                                        <p class="checkout-title mt-2 text-4xl font-black tracking-tight" id="summary-total-side">{{ $formatIdr($estimatedTotal) }}</p>
+                                    <div class="mt-5 border-t checkout-border pt-5">
+                                        <p class="checkout-accent-text text-xs font-bold uppercase tracking-[0.2em]">
+                                            {{ $checkoutSummaryTotal }}
+                                        </p>
+                                        <p class="checkout-title mt-2 text-[clamp(2rem,3vw,2.6rem)] font-black tracking-tight" id="summary-total-side">
+                                            {{ $formatIdr($estimatedTotal) }}
+                                        </p>
                                     </div>
                                 </div>
 
                                 <div class="mt-6 space-y-3">
                                     @foreach ($cartItems as $item)
+                                        @php
+                                            $sidebarQty = (int) ($item['qty'] ?? 0);
+                                            $sidebarUnitLabel = $sidebarQty === 1 ? $checkoutUnitSingular : $checkoutUnitPlural;
+                                        @endphp
                                         <div class="checkout-inner flex items-center gap-3 rounded-2xl border p-3">
-                                            <div class="checkout-card-solid h-10 w-10 flex-shrink-0 rounded-md p-1.5">
+                                            <div class="checkout-card-solid h-11 w-11 flex-shrink-0 rounded-xl border p-1.5">
                                                 <img src="{{ site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment') }}" alt="" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
                                             </div>
                                             <div class="min-w-0 flex-1">
-                                                <p class="truncate text-[11px] font-black uppercase tracking-wider">{{ $item['name'] }}</p>
-                                                @php
-                                                    $sidebarQty = (int) ($item['qty'] ?? 0);
-                                                    $sidebarUnitLabel = $sidebarQty === 1 ? $checkoutUnitSingular : $checkoutUnitPlural;
-                                                @endphp
+                                                <p class="checkout-title truncate text-[11px] font-black uppercase tracking-wider">{{ $item['name'] }}</p>
                                                 <p class="checkout-muted text-[10px] font-semibold">{{ $sidebarQty }} {{ $sidebarUnitLabel }}</p>
                                             </div>
                                         </div>
