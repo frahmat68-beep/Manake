@@ -188,10 +188,16 @@
             html[data-theme-resolved="light"] .manake-hero-island .hero-title-text .inline-block {
                 color: #F8FAFC !important;
             }
+            html[data-theme-resolved="light"] .manake-hero-island .hero-rotating-word {
+                background-color: rgba(37, 99, 235, 0.14) !important;
+                border-radius: 0.375rem;
+                padding-left: 0.375rem !important;
+                padding-right: 0.375rem !important;
+            }
             html[data-theme-resolved="light"] .manake-hero-island .hero-rotating-word,
             html[data-theme-resolved="light"] .manake-hero-island .hero-rotating-word span {
-                color: #3B82F6 !important;
-                text-shadow: 0 2px 10px rgba(0,0,0,0.35), 0 10px 28px rgba(0,0,0,0.28) !important;
+                color: #2563EB !important;
+                text-shadow: 0 2px 10px rgba(0,0,0,0.38), 0 10px 28px rgba(0,0,0,0.28) !important;
             }
             html[data-theme-resolved="light"] .manake-hero-island .hero-desc-text {
                 color: rgba(248, 250, 252, 0.92) !important;
