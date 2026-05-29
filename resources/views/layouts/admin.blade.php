@@ -634,6 +634,193 @@
             display: block !important;
             transform: scale(1.00) !important;
         }
+
+        /* ── Admin Categories Page Styles ──────────────────────────── */
+        body[data-manake-shell="admin"] .admin-categories-page {
+            color: var(--admin-text);
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-card {
+            background: var(--admin-surface);
+            border: 1px solid var(--admin-border);
+            color: var(--admin-text);
+            border-radius: 1.35rem;
+            box-shadow: 0 18px 50px -36px rgba(0,0,0,0.45);
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-card {
+            background: #FFFFFF !important;
+            border-color: #E5E7EB !important;
+            box-shadow: 0 22px 55px -38px rgba(15,23,42,0.22);
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-card {
+            background: #111113 !important;
+            border-color: #1A1A1E !important;
+            box-shadow: 0 18px 50px -36px rgba(0,0,0,0.65);
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-title {
+            color: var(--admin-text);
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-muted {
+            color: var(--admin-muted);
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-subtle {
+            color: var(--admin-subtle);
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-kicker {
+            color: var(--admin-accent);
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-input,
+        body[data-manake-shell="admin"] .admin-categories-textarea {
+            width: 100%;
+            border: 1px solid var(--admin-border);
+            background: var(--admin-surface);
+            color: var(--admin-text);
+            border-radius: 0.95rem;
+            padding: 0.85rem 1rem;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-input {
+            min-height: 3.05rem;
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-textarea {
+            min-height: 7.5rem;
+            resize: vertical;
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-input:focus,
+        body[data-manake-shell="admin"] .admin-categories-textarea:focus {
+            border-color: var(--admin-accent);
+            box-shadow: 0 0 0 3px var(--admin-accent-soft);
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-input::placeholder,
+        body[data-manake-shell="admin"] .admin-categories-textarea::placeholder {
+            color: var(--admin-subtle);
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-input,
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-textarea {
+            background: #FFFFFF !important;
+            border-color: #E5E7EB !important;
+            color: #111827 !important;
+            color-scheme: light;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-input,
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-textarea {
+            background: #0A0A0B !important;
+            border-color: #1A1A1E !important;
+            color: #E8E8EC !important;
+            color-scheme: dark;
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-table thead {
+            background: var(--admin-surface-raised);
+            color: var(--admin-muted);
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table thead {
+            background: #F8FAFC !important;
+            color: #4B5563 !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table thead {
+            background: #0A0A0B !important;
+            color: #A0A0A8 !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-table tbody tr {
+            background: transparent !important;
+            color: var(--admin-text) !important;
+            border-bottom: 1px solid var(--admin-border);
+            transition: background-color 160ms ease, color 160ms ease;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr {
+            border-bottom-color: #E5E7EB !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr {
+            border-bottom-color: #1A1A1E !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-categories-table tbody tr:last-child {
+            border-bottom: 0 !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover {
+            background: #F8FAFC !important;
+            color: #111827 !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover {
+            background: #151519 !important;
+            color: #E8E8EC !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover .admin-categories-title {
+            color: #111827 !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover .admin-categories-muted {
+            color: #4B5563 !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover .admin-categories-title {
+            color: #E8E8EC !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover .admin-categories-muted {
+            color: #A0A0A8 !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-category-locked-button {
+            border: 1px solid var(--admin-border);
+            background: var(--admin-surface-raised);
+            color: var(--admin-subtle);
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-category-locked-button {
+            background: #F8FAFC !important;
+            border-color: #E5E7EB !important;
+            color: #6B7280 !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-category-locked-button {
+            background: #0A0A0B !important;
+            border-color: #1A1A1E !important;
+            color: #66666C !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-category-label {
+            display: block;
+            color: var(--admin-muted);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        body[data-manake-shell="admin"] .admin-category-help {
+            margin-top: 0.45rem;
+            color: var(--admin-subtle);
+            font-size: 0.75rem;
+            line-height: 1.45;
+        }
     </style>
 </head>
 <body class="manake-shell" data-admin-panel="true" data-manake-shell="admin">

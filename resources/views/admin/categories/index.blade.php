@@ -1,84 +1,134 @@
 @extends('layouts.admin', ['activePage' => 'categories'])
 
-@section('title', __('Kategori'))
-@section('page_title', __('Kategori'))
+@section('title', __('ui.admin_categories.title'))
+@section('page_title', __('ui.admin_categories.page_title'))
 
 @section('content')
-    <div class="max-w-7xl mx-auto space-y-6">
+    @php
+        $categoriesCopy = __('ui.admin_categories');
+    @endphp
+
+    <div class="admin-categories-page mx-auto max-w-7xl space-y-5 sm:space-y-6">
         @if (session('success'))
-            <div class="mk-card border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
                 {{ session('success') }}
             </div>
         @endif
         @if (session('error'))
-            <div class="mk-card border-rose-500/30 bg-rose-950/40 px-4 py-3 text-sm text-rose-200">
+            <div class="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-700 dark:text-rose-300">
                 {{ session('error') }}
             </div>
         @endif
 
-        <section class="mk-card p-6">
-            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {{-- Filter / Search Card --}}
+        <section class="admin-categories-card p-5 sm:p-6">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>
-                    <h2 class="text-xl font-bold text-blue-700 dark:text-blue-400">{{ __('Daftar Kategori Katalog') }}</h2>
-                    <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('Kelola pengelompokan alat dan optimasi slug untuk struktur katalog.') }}</p>
+                    <p class="admin-categories-kicker">{{ $categoriesCopy['kicker'] }}</p>
+                    <h2 class="admin-categories-title mt-2 text-2xl font-black">
+                        {{ $categoriesCopy['heading'] }}
+                    </h2>
+                    <p class="admin-categories-muted mt-1 text-sm">
+                        {{ $categoriesCopy['subtitle'] }}
+                    </p>
                 </div>
+
                 <a
                     href="{{ route('admin.categories.create') }}"
-                    class="btn-primary inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition"
+                    class="admin-accent-bg inline-flex min-h-10 items-center justify-center rounded-xl px-4 text-sm font-bold transition"
                 >
-                    {{ __('+ Tambah Kategori') }}
+                    {{ $categoriesCopy['add_category'] }}
                 </a>
             </div>
 
-            <form method="GET" action="{{ route('admin.categories.index') }}" class="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div class="flex items-center gap-2">
-                    <input
-                        type="text"
-                        name="q"
-                        value="{{ $search ?? '' }}"
-                        placeholder="{{ __('Cari kategori...') }}"
-                        class="input w-full rounded-xl px-3 py-2 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none md:w-72"
-                    >
-                    <button class="btn-primary rounded-xl px-4 py-2 text-sm font-semibold transition">{{ __('Cari') }}</button>
-                </div>
+            <form method="GET" action="{{ route('admin.categories.index') }}" class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ $search ?? '' }}"
+                    placeholder="{{ $categoriesCopy['filters']['search_placeholder'] }}"
+                    class="admin-categories-input sm:max-w-md"
+                >
+
+                <button class="admin-accent-bg inline-flex min-h-[3.05rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition">
+                    {{ $categoriesCopy['filters']['search'] }}
+                </button>
+
+                @if (!empty($search))
+                    <a href="{{ route('admin.categories.index') }}" class="admin-secondary-button inline-flex min-h-[3.05rem] items-center justify-center rounded-xl px-4 text-sm font-semibold transition">
+                        {{ $categoriesCopy['filters']['reset'] }}
+                    </a>
+                @endif
             </form>
         </section>
 
-        <section class="mk-card overflow-hidden">
+        {{-- Table Card --}}
+        <section class="admin-categories-card overflow-hidden p-0">
+            <div class="flex flex-col gap-1 border-b px-5 py-4 admin-border">
+                <h3 class="admin-categories-title text-lg font-black">
+                    {{ $categoriesCopy['table']['title'] }}
+                </h3>
+                <p class="admin-categories-muted text-sm">
+                    {{ $categoriesCopy['table']['subtitle'] }}
+                </p>
+            </div>
+
             <div class="overflow-x-auto">
-                <table class="w-full min-w-[680px] text-sm">
-                    <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900/60 dark:text-slate-400">
-                        <tr>
-                            <th class="px-5 py-3">{{ __('Kategori') }}</th>
-                            <th class="px-5 py-3">{{ __('Slug') }}</th>
-                            <th class="px-5 py-3">{{ __('Peralatan') }}</th>
-                            <th class="px-5 py-3 text-right">{{ __('Aksi') }}</th>
+                <table class="admin-categories-table w-full min-w-[760px] table-fixed text-sm">
+                    <colgroup>
+                        <col class="w-[32%]">
+                        <col class="w-[28%]">
+                        <col class="w-[18%]">
+                        <col class="w-[22%]">
+                    </colgroup>
+                    <thead>
+                        <tr class="admin-categories-table-thead">
+                            <th class="px-5 py-4 text-left text-[11px] font-black uppercase tracking-[0.16em]">{{ $categoriesCopy['table']['category'] }}</th>
+                            <th class="px-5 py-4 text-left text-[11px] font-black uppercase tracking-[0.16em]">{{ $categoriesCopy['table']['slug'] }}</th>
+                            <th class="px-5 py-4 text-left text-[11px] font-black uppercase tracking-[0.16em]">{{ $categoriesCopy['table']['equipment'] }}</th>
+                            <th class="px-5 py-4 text-right text-[11px] font-black uppercase tracking-[0.16em]">{{ $categoriesCopy['table']['action'] }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    <tbody>
                         @forelse ($categories as $category)
-                            <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-900/60">
-                                <td class="px-5 py-4 font-semibold text-slate-900 dark:text-slate-50">{{ $category->name }}</td>
-                                <td class="px-5 py-4 text-slate-600 dark:text-slate-400">{{ $category->slug }}</td>
-                                <td class="px-5 py-4 text-slate-600 dark:text-slate-400">{{ $category->equipments_count }} {{ __('alat') }}</td>
-                                <td class="px-5 py-4">
-                                    <div class="flex justify-end gap-2">
+                            <tr>
+                                <td class="px-5 py-4 align-middle">
+                                    <p class="truncate font-bold admin-categories-title" title="{{ $category->name }}">
+                                        {{ $category->name }}
+                                    </p>
+                                </td>
+                                <td class="px-5 py-4 align-middle admin-categories-muted">
+                                    <p class="truncate" title="{{ $category->slug }}">
+                                        {{ $category->slug }}
+                                    </p>
+                                </td>
+                                <td class="px-5 py-4 align-middle admin-categories-muted">
+                                    {{ str_replace(':count', $category->equipments_count, $categoriesCopy['table']['tool_count']) }}
+                                </td>
+                                <td class="px-5 py-4 align-middle">
+                                    <div class="flex items-center justify-end gap-2 whitespace-nowrap">
                                         <a
                                             href="{{ route('admin.categories.edit', $category->slug) }}"
-                                            class="btn-secondary rounded-xl px-3 py-1.5 text-xs font-semibold transition"
+                                            class="admin-secondary-button inline-flex min-h-9 items-center justify-center rounded-lg px-3 text-xs font-bold transition"
                                         >
-                                            {{ __('Ubah') }}
+                                            {{ $categoriesCopy['table']['edit'] }}
                                         </a>
+
                                         @if ((int) $category->equipments_count > 0)
-                                            <button type="button" disabled class="rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-semibold text-[#66666C]" title="{{ __('Kategori masih punya alat') }}">
-                                                {{ __('Terkunci') }}
+                                            <button
+                                                type="button"
+                                                disabled
+                                                class="admin-category-locked-button inline-flex min-h-9 cursor-not-allowed items-center justify-center rounded-lg px-3 text-xs font-bold"
+                                                title="{{ $categoriesCopy['table']['locked_title'] }}"
+                                            >
+                                                {{ $categoriesCopy['table']['locked'] }}
                                             </button>
                                         @else
                                             <form method="POST" action="{{ route('admin.categories.destroy', $category->slug) }}" data-confirm="{{ __('ui.dialog.delete_admin_item') }}" data-confirm-title="{{ __('ui.dialog.title') }}" data-confirm-button="{{ __('ui.actions.remove') }}" data-cancel-button="{{ __('ui.dialog.cancel') }}" data-confirm-variant="danger">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="rounded-xl bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:bg-rose-950/50">
-                                                    {{ __('Hapus') }}
+                                                <button class="inline-flex min-h-9 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 text-xs font-bold text-rose-600 transition hover:bg-rose-500 hover:text-white dark:text-rose-300">
+                                                    {{ $categoriesCopy['table']['delete'] }}
                                                 </button>
                                             </form>
                                         @endif
@@ -87,8 +137,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-5 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
-                                    {{ __('Belum ada kategori.') }}
+                                <td colspan="4" class="px-5 py-10 text-center text-sm admin-categories-muted">
+                                    {{ $categoriesCopy['table']['empty'] }}
                                 </td>
                             </tr>
                         @endforelse
