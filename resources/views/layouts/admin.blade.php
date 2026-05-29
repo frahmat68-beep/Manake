@@ -366,6 +366,89 @@
                 grid-template-columns: 1fr !important;
             }
         }
+
+        /* ── Admin Topbar ───────────────────────────────────────────── */
+        body[data-manake-shell="admin"] .admin-topbar {
+            background: rgba(17, 17, 19, 0.96) !important;
+            color: var(--admin-text) !important;
+            border-color: var(--admin-border) !important;
+            box-shadow: 0 14px 50px rgba(0, 0, 0, 0.18) !important;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-topbar {
+            background: rgba(255, 255, 255, 0.96) !important;
+            box-shadow: 0 14px 45px rgba(15, 23, 42, 0.08) !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-topbar-title {
+            color: var(--admin-text) !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-topbar-subtitle {
+            color: var(--admin-muted) !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-topbar-link {
+            color: var(--admin-muted) !important;
+            transition: color 0.18s !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-topbar-link:hover {
+            color: var(--admin-accent) !important;
+        }
+
+        /* ── Admin Action Buttons ───────────────────────────────────── */
+        .admin-action-disabled {
+            background: var(--admin-surface-raised) !important;
+            border: 1px solid var(--admin-border) !important;
+            color: var(--admin-subtle) !important;
+        }
+
+        .admin-action-primary {
+            background: var(--admin-accent-soft) !important;
+            border: 1px solid var(--admin-accent-border) !important;
+            color: var(--admin-accent) !important;
+            transition: background 0.15s, color 0.15s !important;
+        }
+
+        .admin-action-primary:hover {
+            background: var(--admin-accent) !important;
+            color: var(--admin-accent-text) !important;
+        }
+
+        .admin-action-success {
+            background: rgba(16, 185, 129, 0.10) !important;
+            border: 1px solid rgba(16, 185, 129, 0.28) !important;
+            color: #059669 !important;
+            transition: background 0.15s, color 0.15s !important;
+        }
+
+        html[data-theme-resolved="dark"] .admin-action-success {
+            color: #6EE7B7 !important;
+        }
+
+        .admin-action-success:hover {
+            background: #10B981 !important;
+            color: #ffffff !important;
+        }
+
+        .admin-action-danger {
+            background: rgba(244, 63, 94, 0.10) !important;
+            border: 1px solid rgba(244, 63, 94, 0.28) !important;
+            color: #E11D48 !important;
+            transition: background 0.15s, color 0.15s !important;
+        }
+
+        html[data-theme-resolved="dark"] .admin-action-danger {
+            color: #FDA4AF !important;
+        }
+
+        .admin-action-danger:hover {
+            background: #E11D48 !important;
+            color: #ffffff !important;
+        }
     </style>
 </head>
 <body class="manake-shell" data-admin-panel="true" data-manake-shell="admin">
@@ -397,31 +480,31 @@
         />
 
         <div class="transition-all duration-300" :class="sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-72'">
-            <header class="manake-topbar-shell sticky top-0 z-30 border-b admin-border bg-[color:var(--admin-surface)]/95 text-[color:var(--admin-text)] shadow-[0_14px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl" data-manake-topbar="admin">
+            <header class="admin-topbar manake-topbar-shell sticky top-0 z-50 border-b" data-manake-topbar="admin">
                 <div class="mx-auto flex h-16 w-full max-w-[1320px] items-center justify-between gap-3 px-4 sm:px-6">
                     <div class="flex min-w-0 items-center gap-3">
-                        <button type="button" data-ui-icon-button class="inline-flex h-9 w-9 items-center justify-center rounded-xl lg:hidden" @click="sidebarOpen = true" aria-label="{{ __('Buka sidebar') }}">
+                        <button type="button" class="admin-secondary-button inline-flex h-9 w-9 items-center justify-center rounded-xl lg:hidden" @click="sidebarOpen = true" aria-label="{{ __('ui.actions.close') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <line x1="4" y1="7" x2="20" y2="7"></line>
                                 <line x1="4" y1="12" x2="20" y2="12"></line>
                                 <line x1="4" y1="17" x2="20" y2="17"></line>
                             </svg>
                         </button>
-                        
-                        <!-- Desktop Collapse Toggle -->
-                        <button type="button" class="hidden h-9 w-9 items-center justify-center rounded-xl transition hover:bg-white/5 lg:flex" @click="sidebarCollapsed = !sidebarCollapsed">
+
+                        {{-- Desktop Collapse Toggle --}}
+                        <button type="button" class="admin-secondary-button hidden h-9 w-9 items-center justify-center rounded-xl transition lg:flex" @click="sidebarCollapsed = !sidebarCollapsed" aria-label="{{ __('ui.admin.toggle_sidebar', [], null, app()->getLocale()) ?: 'Toggle sidebar' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300" :class="sidebarCollapsed ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="m15 18-6-6 6-6"/>
                             </svg>
                         </button>
                         <div class="min-w-0">
-                            <h1 class="truncate text-lg font-semibold admin-title">@yield('page_title', __('ui.admin.dashboard'))</h1>
-                            <p class="text-xs admin-muted">{{ __('ui.admin.panel_title') }}</p>
+                            <h1 class="admin-topbar-title truncate text-lg font-semibold">@yield('page_title', __('ui.admin.dashboard'))</h1>
+                            <p class="admin-topbar-subtitle text-xs">{{ __('ui.admin.panel_title') }}</p>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2 sm:gap-3">
-                        <a href="/" data-ui-text-button class="hidden text-sm font-semibold transition sm:inline">{{ __('ui.admin.view_website') }}</a>
+                    <div class="flex shrink-0 items-center gap-2">
+                        <a href="/" class="admin-topbar-link hidden text-sm font-semibold sm:inline">{{ __('ui.admin.view_website') }}</a>
                         <div class="relative" @click.outside="adminSettingsOpen = false">
                             <button
                                 type="button"
@@ -450,12 +533,9 @@
                                 />
                             </div>
                         </div>
-                        <div class="inline-flex h-9 w-9 items-center justify-center rounded-full admin-accent-bg text-sm font-semibold">
-                            {{ strtoupper(substr($adminName, 0, 1)) }}
-                        </div>
                         <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf
-                            <button class="admin-secondary-button rounded-xl px-3 py-1.5 text-xs font-semibold transition">
+                            <button class="admin-secondary-button rounded-xl px-3 py-2 text-xs font-semibold transition">
                                 {{ __('ui.nav.logout') }}
                             </button>
                         </form>

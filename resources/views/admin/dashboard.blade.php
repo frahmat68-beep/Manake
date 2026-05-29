@@ -224,26 +224,27 @@
                                 $isClosed = in_array($order->status_pesanan, ['barang_kembali', 'barang_rusak', 'selesai'], true);
                             @endphp
                             <article class="px-5 py-4 transition hover:bg-[color:var(--admin-surface-raised)]">
-                                <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+                                <div class="grid gap-4 2xl:grid-cols-[minmax(0,1fr)_460px] 2xl:items-start">
                                     <div class="min-w-0">
-                                        <div class="flex flex-wrap items-center gap-2">
-                                            <p class="truncate text-base font-bold admin-title">
+                                        <div class="flex min-w-0 flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                            <p class="min-w-0 truncate text-base font-bold admin-title">
                                                 {{ $order->order_number ?? ('ORD-' . $order->id) }}
                                             </p>
-                                            <span class="status-chip {{ $badge['class'] }}">{{ $badge['label'] }}</span>
+                                            <span class="status-chip shrink-0 {{ $badge['class'] }}">{{ $badge['label'] }}</span>
                                         </div>
-                                        <p class="mt-1 text-sm admin-muted">
-                                            {{ $order->user?->name ?? '-' }} • 
-                                            {{ optional($order->rental_start_date)->format('d M Y') }} - {{ optional($order->rental_end_date)->format('d M Y') }}
+                                        <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm leading-5 admin-muted">
+                                            <span>{{ $order->user?->name ?? '-' }}</span>
+                                            <span class="admin-subtle">•</span>
+                                            <span class="whitespace-nowrap">{{ optional($order->rental_start_date)->format('d M Y') }} – {{ optional($order->rental_end_date)->format('d M Y') }}</span>
                                         </p>
                                         @if ($itemsLabel !== '')
-                                            <p class="mt-1 text-xs admin-subtle">
+                                            <p class="mt-1 text-xs leading-5 admin-subtle">
                                                 {{ $adminDashboardCopy['equipment_prefix'] }} {{ $itemsLabel }}@if($order->items->count() > 2) +{{ $order->items->count() - 2 }} {{ $adminDashboardCopy['more_items'] }} @endif
                                             </p>
                                         @endif
                                     </div>
 
-                                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                                    <div class="grid w-full grid-cols-1 gap-2 sm:grid-cols-3">
                                         @if ($isReadyPickup && $canConfirmPickupNow)
                                             <form
                                                 method="POST"
@@ -253,12 +254,12 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <input type="hidden" name="status_pesanan" value="barang_diambil">
-                                                <button class="w-full rounded-xl border border-[color:var(--admin-accent)]/20 bg-[color:var(--admin-accent-soft)] px-3 py-2 text-xs font-semibold text-[color:var(--admin-accent)] transition hover:bg-[color:var(--admin-accent)] hover:text-[color:var(--admin-accent-text)]">
+                                                <button class="admin-action-primary flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
                                                     {{ $adminDashboardCopy['confirm_pickup'] }}
                                                 </button>
                                             </form>
                                         @else
-                                            <div class="rounded-xl border admin-border bg-[color:var(--admin-surface-raised)]/40 px-3 py-2 text-center text-xs font-semibold admin-subtle">
+                                            <div class="admin-action-disabled flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
                                                 @if ($isOnRent || $isClosed)
                                                     {{ $adminDashboardCopy['already_picked_up'] }}
                                                 @else
@@ -276,12 +277,12 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <input type="hidden" name="status_pesanan" value="barang_kembali">
-                                                <button class="w-full rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-500 dark:text-emerald-400 transition hover:bg-emerald-500 hover:text-white dark:hover:text-black">
+                                                <button class="admin-action-success flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
                                                     {{ $adminDashboardCopy['confirm_return'] }}
                                                 </button>
                                             </form>
                                         @else
-                                            <div class="rounded-xl border admin-border bg-[color:var(--admin-surface-raised)]/40 px-3 py-2 text-center text-xs font-semibold admin-subtle">
+                                            <div class="admin-action-disabled flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
                                                 @if ($order->status_pesanan === 'barang_kembali' || $order->status_pesanan === 'selesai')
                                                     {{ $adminDashboardCopy['already_returned'] }}
                                                 @elseif ($order->status_pesanan === 'barang_rusak')
@@ -301,12 +302,12 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <input type="hidden" name="status_pesanan" value="barang_rusak">
-                                                <button class="w-full rounded-xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-500 dark:text-rose-400 transition hover:bg-rose-500 hover:text-white dark:hover:text-black">
+                                                <button class="admin-action-danger flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
                                                     {{ $adminDashboardCopy['mark_damaged'] }}
                                                 </button>
                                             </form>
                                         @else
-                                            <div class="rounded-xl border admin-border bg-[color:var(--admin-surface-raised)]/40 px-3 py-2 text-center text-xs font-semibold admin-subtle">
+                                            <div class="admin-action-disabled flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
                                                 @if ($order->status_pesanan === 'barang_rusak')
                                                     {{ $adminDashboardCopy['already_marked'] }}
                                                 @else

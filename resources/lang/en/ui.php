@@ -57,6 +57,7 @@ return [
         'status_admin' => 'Admin Status',
         'panel' => 'Panel',
         'panel_title' => 'Admin Panel',
+        'toggle_sidebar' => 'Toggle sidebar',
         'session_active' => 'Admin session active.',
         'brand' => 'Manake Admin',
         'login_heading' => 'Admin panel',
