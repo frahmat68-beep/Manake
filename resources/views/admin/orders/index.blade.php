@@ -127,18 +127,58 @@
 
     .admin-orders-table tbody tr {
         border-color: var(--admin-border);
+        background: transparent !important;
+        color: var(--admin-text) !important;
+        transition: background-color 160ms ease, color 160ms ease;
     }
 
     .admin-orders-table tbody tr:hover {
-        background: var(--admin-surface-raised);
+        background: var(--admin-surface-raised) !important;
     }
 
-    html[data-theme-resolved="light"] .admin-orders-table tbody tr:hover {
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-orders-table tbody tr:hover {
         background: #F8FAFC !important;
+        color: #111827 !important;
     }
 
-    html[data-theme-resolved="dark"] .admin-orders-table tbody tr:hover {
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-orders-table tbody tr:hover {
         background: #151519 !important;
+        color: #E8E8EC !important;
+    }
+
+    /* Force background and text states directly on cell elements to override global layout rules */
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-orders-table tbody tr:hover td {
+        background-color: #F8FAFC !important;
+        color: #111827 !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-orders-table tbody tr:hover td {
+        background-color: #151519 !important;
+        color: #E8E8EC !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-orders-table tbody tr:hover .admin-orders-title {
+        color: #111827 !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-orders-table tbody tr:hover .admin-orders-muted {
+        color: #4B5563 !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-orders-table tbody tr:hover .admin-orders-subtle {
+        color: #6B7280 !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-orders-table tbody tr:hover .admin-orders-title {
+        color: #E8E8EC !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-orders-table tbody tr:hover .admin-orders-muted {
+        color: #A0A0A8 !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-orders-table tbody tr:hover .admin-orders-subtle {
+        color: #66666C !important;
     }
 </style>
 @endpush
