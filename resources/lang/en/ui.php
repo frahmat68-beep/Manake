@@ -1005,6 +1005,12 @@ return [
             'returned' => 'Returned',
             'damaged_case' => 'Damaged Case',
         ],
+        'stats_desc' => [
+            'ready_pickup' => 'Paid and ready for pickup.',
+            'currently_rented' => 'Equipment currently out.',
+            'returned' => 'Returned completed orders.',
+            'damaged_case' => 'Returned damaged cases.',
+        ],
         'priority_title' => "Today's Priorities",
         'priority_desc' => 'Orders that require pickup or return confirmation.',
         'open_all_orders' => 'Open All Orders',

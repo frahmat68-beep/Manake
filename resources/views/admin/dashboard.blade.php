@@ -9,6 +9,7 @@
         color: var(--admin-text);
     }
 
+    /* Cards */
     .admin-dashboard-card {
         background: var(--admin-surface);
         border: 1px solid var(--admin-border);
@@ -18,9 +19,18 @@
     }
 
     html[data-theme-resolved="light"] .admin-dashboard-card {
-        box-shadow: 0 22px 55px -38px rgba(15,23,42,0.18);
+        background: #FFFFFF !important;
+        border-color: #E5E7EB !important;
+        box-shadow: 0 22px 55px -38px rgba(15,23,42,0.22);
     }
 
+    html[data-theme-resolved="dark"] .admin-dashboard-card {
+        background: #111113 !important;
+        border-color: #1A1A1E !important;
+        box-shadow: 0 18px 50px -36px rgba(0,0,0,0.65);
+    }
+
+    /* Kicker label */
     .admin-dashboard-kicker {
         color: var(--admin-muted);
         font-size: 0.68rem;
@@ -29,12 +39,133 @@
         text-transform: uppercase;
     }
 
+    /* Semantic kicker colours */
+    .admin-kicker-sky   { color: #0284C7 !important; }
+    .admin-kicker-amber { color: #B45309 !important; }
+    .admin-kicker-emerald { color: #047857 !important; }
+    .admin-kicker-rose  { color: #BE123C !important; }
+
+    html[data-theme-resolved="dark"] .admin-kicker-sky   { color: #7DD3FC !important; }
+    html[data-theme-resolved="dark"] .admin-kicker-amber { color: #FDE68A !important; }
+    html[data-theme-resolved="dark"] .admin-kicker-emerald { color: #6EE7B7 !important; }
+    html[data-theme-resolved="dark"] .admin-kicker-rose  { color: #FDA4AF !important; }
+
+    /* Metric value */
     .admin-dashboard-value {
         color: var(--admin-text);
         font-weight: 900;
         letter-spacing: -0.04em;
     }
 
+    /* Compact metric card */
+    .admin-metric-card {
+        min-height: 128px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .admin-metric-value {
+        margin-top: 1.1rem;
+        color: var(--admin-text);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.05em;
+        line-height: 1;
+    }
+
+    .admin-metric-desc {
+        margin-top: 0.4rem;
+        font-size: 0.72rem;
+        line-height: 1.45;
+        color: var(--admin-muted);
+    }
+
+    html[data-theme-resolved="light"] .admin-metric-desc {
+        color: #4B5563;
+    }
+
+    html[data-theme-resolved="dark"] .admin-metric-desc {
+        color: #A0A0A8;
+    }
+
+    /* Priority card */
+    .admin-priority-card {
+        min-height: 128px;
+        display: flex;
+        flex-direction: column;
+        border-left: 4px solid var(--admin-accent);
+    }
+
+    .admin-priority-actions {
+        margin-top: 1rem;
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    /* Finance */
+    .admin-finance-card {
+        min-height: 120px;
+    }
+
+    .admin-finance-value {
+        margin-top: 1rem;
+        color: var(--admin-text);
+        font-size: clamp(1.25rem, 2vw, 1.6rem);
+        line-height: 1.1;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+    }
+
+    html[data-theme-resolved="light"] .admin-finance-value {
+        color: #111827;
+    }
+
+    html[data-theme-resolved="dark"] .admin-finance-value {
+        color: #E8E8EC;
+    }
+
+    .admin-finance-desc {
+        margin-top: 0.45rem;
+        color: var(--admin-muted);
+        font-size: 0.78rem;
+        line-height: 1.55;
+    }
+
+    /* Card section header */
+    .admin-dashboard-card-header {
+        border-color: var(--admin-border);
+        background: var(--admin-surface-raised);
+    }
+
+    html[data-theme-resolved="light"] .admin-dashboard-card-header {
+        background: #F8FAFC;
+        border-color: #E5E7EB;
+    }
+
+    html[data-theme-resolved="dark"] .admin-dashboard-card-header {
+        background: #151519;
+        border-color: #1A1A1E;
+    }
+
+    /* Order rows */
+    .admin-order-row {
+        border-color: var(--admin-border);
+    }
+
+    .admin-order-row:hover {
+        background: var(--admin-surface-raised);
+    }
+
+    html[data-theme-resolved="light"] .admin-order-row:hover {
+        background: #F8FAFC;
+    }
+
+    html[data-theme-resolved="dark"] .admin-order-row:hover {
+        background: #151519;
+    }
+
+    /* Links */
     .admin-dashboard-link {
         color: var(--admin-accent);
         font-weight: 700;
@@ -45,12 +176,44 @@
         color: var(--admin-accent-hover);
     }
 
-    .admin-action-disabled {
-        background: var(--admin-surface-raised);
-        border: 1px solid var(--admin-border);
-        color: var(--admin-subtle);
+    /* Secondary button */
+    body[data-manake-shell="admin"] .admin-secondary-button {
+        background: var(--admin-surface) !important;
+        border: 1px solid var(--admin-border) !important;
+        color: var(--admin-text) !important;
+        transition: border-color 0.15s, color 0.15s !important;
     }
 
+    body[data-manake-shell="admin"] .admin-secondary-button:hover {
+        border-color: var(--admin-accent-border) !important;
+        color: var(--admin-accent) !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-secondary-button {
+        background: #FFFFFF !important;
+        border-color: #E5E7EB !important;
+        color: #111827 !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-secondary-button:hover {
+        border-color: rgba(37, 99, 235, 0.35) !important;
+        color: #2563EB !important;
+    }
+
+    /* Shell background */
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-shell-bg {
+        background:
+            radial-gradient(circle at top right, rgba(37, 99, 235, 0.055), transparent 28rem),
+            #F8FAFC !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-shell-bg {
+        background:
+            radial-gradient(circle at top right, rgba(212, 168, 67, 0.055), transparent 30rem),
+            #05070C !important;
+    }
+
+    /* Calendar */
     .admin-calendar-day {
         background: var(--admin-surface-raised);
         border: 1px solid var(--admin-border);
@@ -66,6 +229,12 @@
     .admin-calendar-rental {
         color: var(--admin-accent);
         font-weight: 800;
+    }
+
+    .admin-action-disabled {
+        background: var(--admin-surface-raised);
+        border: 1px solid var(--admin-border);
+        color: var(--admin-subtle);
     }
 </style>
 @endpush
@@ -92,7 +261,7 @@
         $resolvedActionableCount = $actionableCount ?? $ordersCollection->filter(fn ($order) => in_array((string) ($order->status_pesanan ?? ''), ['lunas', 'barang_diambil'], true))->count();
     @endphp
 
-    <div class="space-y-6 admin-dashboard-page">
+    <div class="admin-dashboard-page space-y-5 sm:space-y-6">
         {{-- Flash Alerts --}}
         @if (session('success'))
             <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
@@ -113,49 +282,39 @@
         @endif
 
         {{-- Section 1: Stats & Priority --}}
-        <section class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <section class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
             <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <article class="admin-dashboard-card p-5 flex flex-col justify-between min-h-[140px]">
-                    <p class="admin-dashboard-kicker text-sky-500 dark:text-sky-300">{{ $adminDashboardCopy['stats']['ready_pickup'] }}</p>
-                    <div class="mt-2">
-                        <p class="admin-dashboard-value text-3xl">{{ (int) ($summary['ready_pickup'] ?? 0) }}</p>
-                        <p class="text-[10px] admin-muted mt-1">Paid and ready for pickup</p>
-                    </div>
+                <article class="admin-metric-card admin-dashboard-card p-5">
+                    <p class="admin-dashboard-kicker admin-kicker-sky">{{ $adminDashboardCopy['stats']['ready_pickup'] }}</p>
+                    <p class="admin-metric-value">{{ (int) ($summary['ready_pickup'] ?? 0) }}</p>
+                    <p class="admin-metric-desc">{{ $adminDashboardCopy['stats_desc']['ready_pickup'] }}</p>
                 </article>
-                <article class="admin-dashboard-card p-5 flex flex-col justify-between min-h-[140px]">
-                    <p class="admin-dashboard-kicker text-amber-500 dark:text-amber-300">{{ $adminDashboardCopy['stats']['currently_rented'] }}</p>
-                    <div class="mt-2">
-                        <p class="admin-dashboard-value text-3xl">{{ (int) ($summary['on_rent'] ?? 0) }}</p>
-                        <p class="text-[10px] admin-muted mt-1">Equipment currently out</p>
-                    </div>
+                <article class="admin-metric-card admin-dashboard-card p-5">
+                    <p class="admin-dashboard-kicker admin-kicker-amber">{{ $adminDashboardCopy['stats']['currently_rented'] }}</p>
+                    <p class="admin-metric-value">{{ (int) ($summary['on_rent'] ?? 0) }}</p>
+                    <p class="admin-metric-desc">{{ $adminDashboardCopy['stats_desc']['currently_rented'] }}</p>
                 </article>
-                <article class="admin-dashboard-card p-5 flex flex-col justify-between min-h-[140px]">
-                    <p class="admin-dashboard-kicker text-emerald-500 dark:text-emerald-300">{{ $adminDashboardCopy['stats']['returned'] }}</p>
-                    <div class="mt-2">
-                        <p class="admin-dashboard-value text-3xl">{{ (int) ($summary['returned'] ?? 0) }}</p>
-                        <p class="text-[10px] admin-muted mt-1">Returned completed orders</p>
-                    </div>
+                <article class="admin-metric-card admin-dashboard-card p-5">
+                    <p class="admin-dashboard-kicker admin-kicker-emerald">{{ $adminDashboardCopy['stats']['returned'] }}</p>
+                    <p class="admin-metric-value">{{ (int) ($summary['returned'] ?? 0) }}</p>
+                    <p class="admin-metric-desc">{{ $adminDashboardCopy['stats_desc']['returned'] }}</p>
                 </article>
-                <article class="admin-dashboard-card p-5 flex flex-col justify-between min-h-[140px]">
-                    <p class="admin-dashboard-kicker text-rose-500 dark:text-rose-300">{{ $adminDashboardCopy['stats']['damaged_case'] }}</p>
-                    <div class="mt-2">
-                        <p class="admin-dashboard-value text-3xl">{{ (int) ($summary['damaged'] ?? 0) }}</p>
-                        <p class="text-[10px] admin-muted mt-1">Returned damaged cases</p>
-                    </div>
+                <article class="admin-metric-card admin-dashboard-card p-5">
+                    <p class="admin-dashboard-kicker admin-kicker-rose">{{ $adminDashboardCopy['stats']['damaged_case'] }}</p>
+                    <p class="admin-metric-value">{{ (int) ($summary['damaged'] ?? 0) }}</p>
+                    <p class="admin-metric-desc">{{ $adminDashboardCopy['stats_desc']['damaged_case'] }}</p>
                 </article>
             </div>
 
-            <article class="admin-dashboard-card p-5 flex flex-col justify-between min-h-[140px] border-l-4 border-l-[color:var(--admin-accent)]">
-                <div>
-                    <p class="admin-accent-text text-xs font-black uppercase tracking-[0.22em]">
-                        {{ $adminDashboardCopy['priority_title'] }}
-                    </p>
-                    <p class="mt-2 admin-dashboard-value text-4xl">{{ $resolvedActionableCount }}</p>
-                    <p class="mt-2 text-xs leading-5 admin-muted">
-                        {{ $adminDashboardCopy['priority_desc'] }}
-                    </p>
-                </div>
-                <div class="mt-4 grid gap-2">
+            <article class="admin-priority-card admin-dashboard-card p-5">
+                <p class="admin-accent-text text-xs font-black uppercase tracking-[0.22em]">
+                    {{ $adminDashboardCopy['priority_title'] }}
+                </p>
+                <p class="mt-3 admin-dashboard-value text-4xl">{{ $resolvedActionableCount }}</p>
+                <p class="mt-2 text-xs leading-5 admin-muted">
+                    {{ $adminDashboardCopy['priority_desc'] }}
+                </p>
+                <div class="admin-priority-actions">
                     <a href="{{ route('admin.orders.index') }}" class="admin-accent-bg inline-flex items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
                         {{ $adminDashboardCopy['open_all_orders'] }}
                     </a>
@@ -171,32 +330,32 @@
 
         {{-- Section 2: Finances --}}
         <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <article class="admin-dashboard-card p-5">
-                <p class="admin-dashboard-kicker">{{ $adminDashboardCopy['finance']['cash_in'] }}</p>
-                <p class="mt-3 text-2xl font-black text-[color:var(--admin-text)]">{{ $formatIdr($financialSummary['cash_in'] ?? 0) }}</p>
-                <p class="mt-1 text-xs leading-5 admin-muted">{{ $adminDashboardCopy['finance']['cash_in_desc'] }}</p>
+            <article class="admin-finance-card admin-dashboard-card p-5">
+                <p class="admin-dashboard-kicker admin-kicker-emerald">{{ $adminDashboardCopy['finance']['cash_in'] }}</p>
+                <p class="admin-finance-value">{{ $formatIdr($financialSummary['cash_in'] ?? 0) }}</p>
+                <p class="admin-finance-desc">{{ $adminDashboardCopy['finance']['cash_in_desc'] }}</p>
             </article>
-            <article class="admin-dashboard-card p-5">
-                <p class="admin-dashboard-kicker text-sky-500 dark:text-sky-300">{{ $adminDashboardCopy['finance']['rental_revenue'] }}</p>
-                <p class="mt-3 text-2xl font-black text-[color:var(--admin-text)]">{{ $formatIdr($financialSummary['revenue'] ?? 0) }}</p>
-                <p class="mt-1 text-xs leading-5 admin-muted">{{ $adminDashboardCopy['finance']['rental_revenue_desc'] }}</p>
+            <article class="admin-finance-card admin-dashboard-card p-5">
+                <p class="admin-dashboard-kicker admin-kicker-sky">{{ $adminDashboardCopy['finance']['rental_revenue'] }}</p>
+                <p class="admin-finance-value">{{ $formatIdr($financialSummary['revenue'] ?? 0) }}</p>
+                <p class="admin-finance-desc">{{ $adminDashboardCopy['finance']['rental_revenue_desc'] }}</p>
             </article>
-            <article class="admin-dashboard-card p-5">
-                <p class="admin-dashboard-kicker text-amber-500 dark:text-amber-300">{{ $adminDashboardCopy['finance']['collected_tax'] }}</p>
-                <p class="mt-3 text-2xl font-black text-[color:var(--admin-text)]">{{ $formatIdr($financialSummary['tax'] ?? 0) }}</p>
-                <p class="mt-1 text-xs leading-5 admin-muted">{{ $adminDashboardCopy['finance']['collected_tax_desc'] }}</p>
+            <article class="admin-finance-card admin-dashboard-card p-5">
+                <p class="admin-dashboard-kicker admin-kicker-amber">{{ $adminDashboardCopy['finance']['collected_tax'] }}</p>
+                <p class="admin-finance-value">{{ $formatIdr($financialSummary['tax'] ?? 0) }}</p>
+                <p class="admin-finance-desc">{{ $adminDashboardCopy['finance']['collected_tax_desc'] }}</p>
             </article>
-            <article class="admin-dashboard-card p-5">
-                <p class="admin-dashboard-kicker text-rose-500 dark:text-rose-300">{{ $adminDashboardCopy['finance']['damage_fee'] }}</p>
-                <p class="mt-3 text-2xl font-black text-[color:var(--admin-text)]">{{ $formatIdr($financialSummary['damage_fee'] ?? 0) }}</p>
-                <p class="mt-1 text-xs leading-5 admin-muted">{{ $adminDashboardCopy['finance']['damage_fee_desc'] }}</p>
+            <article class="admin-finance-card admin-dashboard-card p-5">
+                <p class="admin-dashboard-kicker admin-kicker-rose">{{ $adminDashboardCopy['finance']['damage_fee'] }}</p>
+                <p class="admin-finance-value">{{ $formatIdr($financialSummary['damage_fee'] ?? 0) }}</p>
+                <p class="admin-finance-desc">{{ $adminDashboardCopy['finance']['damage_fee_desc'] }}</p>
             </article>
         </section>
 
         {{-- Section 3: Orders action & sidebar information --}}
         <section class="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_380px]">
             <section class="admin-dashboard-card overflow-hidden">
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b admin-border px-5 py-4 bg-[color:var(--admin-surface-raised)]/30">
+                <div class="admin-dashboard-card-header flex flex-wrap items-center justify-between gap-3 border-b px-5 py-4">
                     <div>
                         <h2 class="text-lg font-bold admin-title">{{ $adminDashboardCopy['orders_action_title'] }}</h2>
                         <p class="text-xs admin-muted">{{ $adminDashboardCopy['orders_action_subtitle'] }}</p>

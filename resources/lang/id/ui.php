@@ -1005,6 +1005,12 @@ return [
             'returned' => 'Sudah Kembali',
             'damaged_case' => 'Kasus Rusak',
         ],
+        'stats_desc' => [
+            'ready_pickup' => 'Sudah lunas dan siap diambil.',
+            'currently_rented' => 'Unit sedang berada di penyewa.',
+            'returned' => 'Pesanan yang sudah dikembalikan.',
+            'damaged_case' => 'Kasus pengembalian dengan kerusakan.',
+        ],
         'priority_title' => 'Prioritas Hari Ini',
         'priority_desc' => 'Pesanan yang membutuhkan konfirmasi ambil atau kembali.',
         'open_all_orders' => 'Buka Semua Pesanan',
