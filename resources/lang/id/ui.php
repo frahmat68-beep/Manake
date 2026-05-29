@@ -118,6 +118,15 @@ return [
         'back_to_login' => 'Kembali ke Login',
         'session_expired' => 'Sesi kamu sudah berakhir. Silakan refresh halaman dan coba lagi.',
         'session_expired_logout' => 'Sesi login sudah berakhir. Kamu sudah dianggap logout.',
+
+        'aside_default_text' => 'Sewa kamera sinema, lighting, audio, drone, dan stabilizer profesional dengan proses yang rapi dari pilih alat sampai pembayaran.',
+        'login_aside_heading' => 'Sewa alat produksi lebih rapi.',
+        'login_aside_text' => 'Masuk untuk melanjutkan booking, melihat keranjang, dan mengelola pesanan.',
+        'divider_or' => 'Atau',
+        'continue_google' => 'Lanjut dengan Google',
+        'google_title' => 'Masuk dengan Google',
+        'google_disabled_title' => 'Login Google belum aktif',
+        'confirm_password_label' => 'Konfirmasi Password',
     ],
     'notifications_page' => [
         'total' => 'total',

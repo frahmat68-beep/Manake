@@ -118,6 +118,15 @@ return [
         'back_to_login' => 'Back to Login',
         'session_expired' => 'Your session has expired. Refresh the page and try again.',
         'session_expired_logout' => 'Your session already expired. You are considered logged out.',
+
+        'aside_default_text' => 'Rent cinema cameras, lighting, audio, drones, and professional stabilizers through a clean flow from equipment selection to payment.',
+        'login_aside_heading' => 'Production gear rental, made simpler.',
+        'login_aside_text' => 'Sign in to continue booking, view your cart, and manage your orders.',
+        'divider_or' => 'Or',
+        'continue_google' => 'Continue with Google',
+        'google_title' => 'Continue with Google',
+        'google_disabled_title' => 'Google login is not active yet',
+        'confirm_password_label' => 'Confirm Password',
     ],
     'notifications_page' => [
         'total' => 'total',

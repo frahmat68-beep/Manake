@@ -39,6 +39,147 @@
         <style>
             [x-cloak] { display: none !important; }
             body { font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif; }
+
+            /* ===== AUTH THEME VARIABLES ===== */
+            .auth-page {
+                --auth-accent: #D4A843;
+                --auth-accent-hover: #E0BA5D;
+                --auth-accent-text: #0A0A0B;
+                --auth-accent-soft: rgba(212, 168, 67, 0.12);
+                --auth-accent-border: rgba(212, 168, 67, 0.28);
+                --auth-accent-glow: rgba(212, 168, 67, 0.10);
+                --auth-page-bg: #0A0A0B;
+                --auth-panel-bg: #0A0A0B;
+                --auth-panel-text: #E8E8EC;
+                --auth-text: #E8E8EC;
+                --auth-muted: #A0A0A8;
+                --auth-input-bg: rgba(10, 10, 11, 0.50);
+                --auth-input-border: #1A1A1E;
+                --auth-input-text: #E8E8EC;
+                --auth-input-placeholder: #66666C;
+                --auth-google-bg: transparent;
+                --auth-google-border: #1A1A1E;
+            }
+
+            html[data-theme-resolved="light"] .auth-page {
+                --auth-accent: #2563EB;
+                --auth-accent-hover: #1D4ED8;
+                --auth-accent-text: #FFFFFF;
+                --auth-accent-soft: rgba(37, 99, 235, 0.10);
+                --auth-accent-border: rgba(37, 99, 235, 0.24);
+                --auth-accent-glow: rgba(37, 99, 235, 0.10);
+                --auth-page-bg: #F8FAFC;
+                --auth-panel-bg: #FFFFFF;
+                --auth-panel-text: #111827;
+                --auth-text: #111827;
+                --auth-muted: #4B5563;
+                --auth-input-bg: #FFFFFF;
+                --auth-input-border: #DADDE3;
+                --auth-input-text: #111827;
+                --auth-input-placeholder: #6B7280;
+                --auth-google-bg: #FFFFFF;
+                --auth-google-border: #E5E7EB;
+            }
+
+            .auth-page-bg {
+                background-color: var(--auth-page-bg) !important;
+                color: var(--auth-text) !important;
+            }
+
+            .auth-form-panel {
+                background-color: var(--auth-panel-bg) !important;
+                color: var(--auth-panel-text) !important;
+            }
+
+            .auth-title {
+                color: var(--auth-text) !important;
+            }
+
+            .auth-muted {
+                color: var(--auth-muted) !important;
+            }
+
+            .auth-accent-text {
+                color: var(--auth-accent) !important;
+            }
+
+            .auth-accent-bg {
+                background-color: var(--auth-accent) !important;
+                color: var(--auth-accent-text) !important;
+                border-color: var(--auth-accent) !important;
+            }
+
+            .auth-accent-bg:hover {
+                background-color: var(--auth-accent-hover) !important;
+            }
+
+            .auth-link {
+                color: var(--auth-accent) !important;
+            }
+
+            .auth-link:hover {
+                color: var(--auth-accent-hover) !important;
+                text-decoration: underline;
+            }
+
+            .auth-input {
+                border: 1px solid var(--auth-input-border) !important;
+                background-color: var(--auth-input-bg) !important;
+                color: var(--auth-input-text) !important;
+                outline: none !important;
+            }
+
+            .auth-input::placeholder {
+                color: var(--auth-input-placeholder) !important;
+            }
+
+            .auth-input:focus {
+                border-color: var(--auth-accent) !important;
+                box-shadow: 0 0 0 2px var(--auth-accent-soft) !important;
+            }
+
+            .auth-divider-line {
+                border-color: var(--auth-input-border) !important;
+            }
+
+            .auth-divider-label {
+                background-color: var(--auth-panel-bg) !important;
+                color: var(--auth-muted) !important;
+            }
+
+            .auth-google-button {
+                background-color: var(--auth-google-bg) !important;
+                border-color: var(--auth-google-border) !important;
+                color: var(--auth-text) !important;
+            }
+
+            .auth-google-button:hover {
+                border-color: var(--auth-accent-border) !important;
+                color: var(--auth-accent) !important;
+            }
+
+            .auth-left-accent-overlay {
+                background-color: var(--auth-accent-glow) !important;
+            }
+
+            .auth-mobile-glow {
+                background:
+                    radial-gradient(circle at top, var(--auth-accent-glow), transparent 28%),
+                    radial-gradient(circle at bottom, var(--auth-accent-soft), transparent 22%) !important;
+            }
+
+            .auth-back-home:hover {
+                color: var(--auth-accent) !important;
+            }
+
+            .auth-aside-check-icon {
+                color: var(--auth-accent) !important;
+            }
+
+            /* Light mode shadow on form panel */
+            html[data-theme-resolved="light"] .auth-form-panel {
+                box-shadow: -20px 0 60px -20px rgba(15, 23, 42, 0.08);
+            }
         </style>
         {{ $head ?? '' }}
     </head>
@@ -50,7 +191,7 @@
             $compactAuthShowcaseText = $asideText ?: null;
         @endphp
 
-        <div class="flex min-h-screen w-full bg-[#0A0A0B] text-[#E8E8EC]">
+        <div class="auth-page auth-page-bg flex min-h-screen w-full">
             <!-- Left Side: Image / Showcase (hidden on mobile) -->
             <div class="relative hidden w-1/2 lg:block">
                 <a href="{{ route('home') }}" class="absolute top-10 left-12 z-10 transition-transform hover:scale-105 w-fit" data-skip-loader="true">
@@ -65,7 +206,7 @@
                 <img src="{{ site_asset('images/camera-arri.jpg') }}" alt="Cinematic Camera" class="absolute inset-0 h-full w-full object-cover">
                 <!-- Gradient Overlay -->
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/60 to-[#0A0A0B]/20"></div>
-                <div class="absolute inset-0 bg-[#D4A843]/10 mix-blend-overlay"></div>
+                <div class="auth-left-accent-overlay absolute inset-0 mix-blend-overlay"></div>
                 
                 <!-- Showcase Content -->
                 <div class="absolute bottom-16 left-16 right-16 z-10">
@@ -80,7 +221,7 @@
                         </p>
                     @else
                         <p class="text-lg text-[#A0A0A8] max-w-xl">
-                            Sewa kamera sinema, lighting, audio, drone, dan stabilizer profesional dengan proses yang rapi dari pilih alat sampai pembayaran.
+                            {{ __('ui.auth.aside_default_text') }}
                         </p>
                     @endif
                     
@@ -88,7 +229,7 @@
                         <ul class="mt-8 space-y-3">
                             @foreach($asidePoints as $point)
                             <li class="flex items-center gap-3 text-white font-medium">
-                                <svg class="h-5 w-5 text-[#D4A843]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg class="auth-aside-check-icon h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                                 {{ $point }}
@@ -100,9 +241,9 @@
             </div>
 
             <!-- Right Side: Form -->
-            <div class="relative flex w-full flex-col justify-center px-6 py-12 lg:w-1/2 sm:px-16 md:px-24">
-                <!-- Add a subtle background glow for mobile where there's no left side image -->
-                <div class="pointer-events-none absolute inset-0 lg:hidden bg-[radial-gradient(circle_at_top,_rgba(212,168,67,0.12),transparent_28%),radial-gradient(circle_at_bottom,_rgba(212,168,67,0.06),transparent_22%)]"></div>
+            <div class="auth-form-panel relative flex w-full flex-col justify-center px-6 py-12 lg:w-1/2 sm:px-16 md:px-24">
+                <!-- Subtle background glow for mobile where there's no left side image -->
+                <div class="auth-mobile-glow pointer-events-none absolute inset-0 lg:hidden"></div>
 
                 <div class="mx-auto w-full max-w-md relative z-10">
                     <a href="{{ route('home') }}" class="mb-12 flex items-center transition-transform hover:scale-105 w-fit lg:hidden" data-skip-loader="true">
@@ -116,7 +257,7 @@
                     </a>
 
                     @if ($heading ?? null)
-                        <h2 class="text-3xl font-bold tracking-tight text-white mb-8 font-serif">
+                        <h2 class="auth-title mb-8 font-serif text-3xl font-bold tracking-tight">
                             {{ $heading }}
                         </h2>
                     @endif
@@ -126,7 +267,7 @@
                     </div>
                     
                     @if ($showBackHome ?? true)
-                        <a href="{{ $backUrl }}" class="mt-10 inline-flex w-fit items-center text-sm font-semibold text-[#A0A0A8] transition hover:text-[#D4A843]" data-skip-loader="true">
+                        <a href="{{ $backUrl }}" class="auth-back-home auth-muted mt-10 inline-flex w-fit items-center text-sm font-semibold transition" data-skip-loader="true">
                             &larr; {{ $backLabel }}
                         </a>
                     @endif

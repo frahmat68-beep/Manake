@@ -1,9 +1,11 @@
 @props([
-    'label' => 'Lanjut dengan Google',
+    'label' => null,
     'class' => '',
 ])
 
 @php
+    $label = $label ?: __('ui.auth.continue_google');
+
     $googleOauthConfigured = trim((string) config('services.google.client_id', '')) !== ''
         && trim((string) config('services.google.client_secret', '')) !== '';
 
@@ -20,9 +22,9 @@ HTML;
 @if ($googleOauthConfigured)
     <a
         href="{{ route('social.redirect', 'google') }}"
-        class="inline-flex w-full items-center justify-center gap-3 rounded-xl border border-[#1A1A1E] bg-[#111113] hover:bg-[#1A1A1E] px-4 py-3.5 text-sm font-semibold text-[#E8E8EC] transition-all hover:border-[#D4A843]/30 hover:shadow-sm {{ $class }}"
-        title="Masuk dengan Google"
-        aria-label="Masuk dengan Google"
+        class="auth-google-button inline-flex w-full items-center justify-center gap-3 rounded-xl border px-4 py-3.5 text-sm font-semibold transition-all hover:shadow-sm {{ $class }}"
+        title="{{ __('ui.auth.google_title') }}"
+        aria-label="{{ __('ui.auth.google_title') }}"
     >
         {!! $buttonBody !!}
         <span>{{ $label }}</span>
@@ -32,8 +34,8 @@ HTML;
         type="button"
         disabled
         aria-disabled="true"
-        class="inline-flex w-full cursor-not-allowed items-center justify-center gap-3 rounded-xl border border-[#1A1A1E] bg-[#111113]/40 px-4 py-3.5 text-sm font-semibold text-[#66666C] opacity-50 {{ $class }}"
-        title="Login Google belum aktif"
+        class="auth-google-button inline-flex w-full cursor-not-allowed items-center justify-center gap-3 rounded-xl border px-4 py-3.5 text-sm font-semibold opacity-50 {{ $class }}"
+        title="{{ __('ui.auth.google_disabled_title') }}"
     >
         {!! $buttonBody !!}
         <span>{{ $label }}</span>
