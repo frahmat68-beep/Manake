@@ -1255,4 +1255,62 @@ return [
             'save_edit' => 'Save Changes',
         ],
     ],
+
+    'admin_categories' => [
+        'title' => 'Categories',
+        'page_title' => 'Categories',
+        'kicker' => 'Categories',
+        'heading' => 'Catalog Categories',
+        'subtitle' => 'Manage tool grouping and optimize slugs for the catalog structure.',
+        'add_category' => '+ Add Category',
+
+        'filters' => [
+            'search_placeholder' => 'Search categories...',
+            'search' => 'Search',
+            'reset' => 'Reset',
+        ],
+
+        'table' => [
+            'title' => 'Category List',
+            'subtitle' => 'Manage category names, slugs, and related equipment counts.',
+            'category' => 'Category',
+            'slug' => 'Slug',
+            'equipment' => 'Equipment',
+            'action' => 'Action',
+            'tool_count' => ':count tools',
+            'edit' => 'Edit',
+            'delete' => 'Delete',
+            'locked' => 'Locked',
+            'locked_title' => 'This category still has tools.',
+            'empty' => 'No categories found.',
+        ],
+
+        'form' => [
+            'create_title' => 'Add Category',
+            'create_page_title' => 'Add Category',
+            'create_kicker' => 'New Category',
+            'create_heading' => 'Add Category Form',
+            'create_subtitle' => 'Create a catalog category and slug for equipment grouping.',
+
+            'edit_title' => 'Edit Category',
+            'edit_page_title' => 'Edit Category',
+            'edit_kicker' => 'Edit Category',
+            'edit_heading' => 'Edit Category Form',
+            'edit_subtitle' => 'Update category name, slug, and description.',
+
+            'back_to_list' => '← Back to List',
+            'name' => 'Category Name',
+            'name_placeholder' => 'Example: Camera',
+            'slug' => 'Slug',
+            'slug_placeholder' => 'camera',
+            'slug_help' => 'Leave empty to generate automatically.',
+            'description' => 'Description',
+            'description_placeholder' => 'Short category description...',
+            'create_note' => 'The new category will appear in the catalog.',
+            'edit_note' => 'Changes will be saved and returned to the list.',
+            'cancel' => 'Cancel',
+            'save_create' => 'Save Category',
+            'save_edit' => 'Save Changes',
+        ],
+    ],
 ];

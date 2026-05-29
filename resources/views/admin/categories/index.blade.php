@@ -6,6 +6,36 @@
 @section('content')
     @php
         $categoriesCopy = __('ui.admin_categories');
+
+        if (! is_array($categoriesCopy)) {
+            $categoriesCopy = [
+                'title' => 'Categories',
+                'page_title' => 'Categories',
+                'kicker' => 'Categories',
+                'heading' => 'Catalog Categories',
+                'subtitle' => 'Manage tool grouping and optimize slugs for the catalog structure.',
+                'add_category' => '+ Add Category',
+                'filters' => [
+                    'search_placeholder' => 'Search categories...',
+                    'search' => 'Search',
+                    'reset' => 'Reset',
+                ],
+                'table' => [
+                    'title' => 'Category List',
+                    'subtitle' => 'Manage category names, slugs, and related equipment counts.',
+                    'category' => 'Category',
+                    'slug' => 'Slug',
+                    'equipment' => 'Equipment',
+                    'action' => 'Action',
+                    'tool_count' => ':count tools',
+                    'edit' => 'Edit',
+                    'delete' => 'Delete',
+                    'locked' => 'Locked',
+                    'locked_title' => 'This category still has tools.',
+                    'empty' => 'No categories found.',
+                ],
+            ];
+        }
     @endphp
 
     <div class="admin-categories-page mx-auto max-w-7xl space-y-5 sm:space-y-6">

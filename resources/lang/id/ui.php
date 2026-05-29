@@ -1255,4 +1255,62 @@ return [
             'save_edit' => 'Simpan Perubahan',
         ],
     ],
+
+    'admin_categories' => [
+        'title' => 'Kategori',
+        'page_title' => 'Kategori',
+        'kicker' => 'Kategori',
+        'heading' => 'Daftar Kategori Katalog',
+        'subtitle' => 'Kelola pengelompokan alat dan optimasi slug untuk struktur katalog.',
+        'add_category' => '+ Tambah Kategori',
+
+        'filters' => [
+            'search_placeholder' => 'Cari kategori...',
+            'search' => 'Cari',
+            'reset' => 'Reset',
+        ],
+
+        'table' => [
+            'title' => 'Daftar Kategori',
+            'subtitle' => 'Kelola nama kategori, slug, dan jumlah alat terkait.',
+            'category' => 'Kategori',
+            'slug' => 'Slug',
+            'equipment' => 'Peralatan',
+            'action' => 'Aksi',
+            'tool_count' => ':count alat',
+            'edit' => 'Ubah',
+            'delete' => 'Hapus',
+            'locked' => 'Terkunci',
+            'locked_title' => 'Kategori masih punya alat.',
+            'empty' => 'Belum ada kategori.',
+        ],
+
+        'form' => [
+            'create_title' => 'Tambah Kategori',
+            'create_page_title' => 'Tambah Kategori',
+            'create_kicker' => 'Kategori Baru',
+            'create_heading' => 'Form Tambah Kategori',
+            'create_subtitle' => 'Buat kategori katalog dan slug untuk pengelompokan alat.',
+
+            'edit_title' => 'Ubah Kategori',
+            'edit_page_title' => 'Ubah Kategori',
+            'edit_kicker' => 'Ubah Kategori',
+            'edit_heading' => 'Form Ubah Kategori',
+            'edit_subtitle' => 'Perbarui nama kategori, slug, dan deskripsi.',
+
+            'back_to_list' => '← Kembali ke Daftar',
+            'name' => 'Nama Kategori',
+            'name_placeholder' => 'Contoh: Kamera',
+            'slug' => 'Slug',
+            'slug_placeholder' => 'kamera',
+            'slug_help' => 'Kosongkan untuk generate otomatis.',
+            'description' => 'Deskripsi',
+            'description_placeholder' => 'Deskripsi singkat kategori...',
+            'create_note' => 'Kategori baru akan tampil di katalog.',
+            'edit_note' => 'Perubahan akan tersimpan dan kembali ke daftar.',
+            'cancel' => 'Batal',
+            'save_create' => 'Simpan Kategori',
+            'save_edit' => 'Simpan Perubahan',
+        ],
+    ],
 ];
