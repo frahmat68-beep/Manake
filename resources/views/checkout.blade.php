@@ -295,10 +295,15 @@
                                         $startDate = ! empty($item['rental_start_date']) ? \Carbon\Carbon::parse($item['rental_start_date']) : null;
                                         $endDate = ! empty($item['rental_end_date']) ? \Carbon\Carbon::parse($item['rental_end_date']) : null;
                                         $lineEstimate = (int) ($item['estimated_total'] ?? ((int) ($item['price'] ?? 0) * (int) ($item['qty'] ?? 1)));
+                                        $imageCandidate = $item['image_url'] ?? $item['image_path'] ?? $item['image'] ?? null;
+                                        $imageUrl = is_string($imageCandidate)
+                                            && (str_starts_with($imageCandidate, 'http://') || str_starts_with($imageCandidate, 'https://') || str_starts_with($imageCandidate, '/'))
+                                                ? $imageCandidate
+                                                : (site_media_url($imageCandidate) ?: config('placeholders.equipment'));
                                     @endphp
                                     <div class="checkout-inner grid gap-4 rounded-2xl border p-4 sm:grid-cols-[auto_1fr_auto] sm:items-center sm:p-5">
                                         <div class="checkout-card-solid h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border p-2">
-                                            <img src="{{ site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment') }}" alt="{{ $item['name'] }}" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
+                                            <img src="{{ $imageUrl }}" alt="{{ $item['name'] }}" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
                                         </div>
 
                                         <div class="min-w-0">
@@ -433,10 +438,15 @@
                                         @php
                                             $sidebarQty = (int) ($item['qty'] ?? 0);
                                             $sidebarUnitLabel = $sidebarQty === 1 ? $checkoutUnitSingular : $checkoutUnitPlural;
+                                            $sidebarImageCandidate = $item['image_url'] ?? $item['image_path'] ?? $item['image'] ?? null;
+                                            $sidebarImageUrl = is_string($sidebarImageCandidate)
+                                                && (str_starts_with($sidebarImageCandidate, 'http://') || str_starts_with($sidebarImageCandidate, 'https://') || str_starts_with($sidebarImageCandidate, '/'))
+                                                    ? $sidebarImageCandidate
+                                                    : (site_media_url($sidebarImageCandidate) ?: config('placeholders.equipment'));
                                         @endphp
                                         <div class="checkout-inner flex items-center gap-3 rounded-2xl border p-3">
                                             <div class="checkout-card-solid h-11 w-11 flex-shrink-0 rounded-xl border p-1.5">
-                                                <img src="{{ site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment') }}" alt="" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
+                                                <img src="{{ $sidebarImageUrl }}" alt="{{ $item['name'] }}" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
                                             </div>
                                             <div class="min-w-0 flex-1">
                                                 <p class="checkout-title truncate text-[11px] font-black uppercase tracking-wider">{{ $item['name'] }}</p>

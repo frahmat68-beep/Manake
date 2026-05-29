@@ -373,9 +373,26 @@ class CheckoutController extends Controller
 
     private function hydrateCartItems(array $cartItems): array
     {
+        $equipmentIds = collect($cartItems)
+            ->map(fn ($item) => (int) ($item['equipment_id'] ?? $item['product_id'] ?? 0))
+            ->filter(fn (int $equipmentId) => $equipmentId > 0)
+            ->unique()
+            ->values();
+
+        $equipments = collect();
+
+        if ($equipmentIds->isNotEmpty() && Schema::hasTable('equipments')) {
+            $equipments = Equipment::query()
+                ->whereIn('id', $equipmentIds)
+                ->get()
+                ->keyBy('id');
+        }
+
         return collect($cartItems)
-            ->map(function ($item) {
+            ->map(function ($item) use ($equipments) {
                 $equipmentId = (int) ($item['equipment_id'] ?? $item['product_id'] ?? 0);
+                $equipment = $equipmentId > 0 ? $equipments->get($equipmentId) : null;
+
                 $qty = max((int) ($item['qty'] ?? 1), 1);
                 $price = max((int) ($item['price'] ?? 0), 0);
                 $startDate = null;
@@ -386,6 +403,7 @@ class CheckoutController extends Controller
                     if (! empty($item['rental_start_date']) && ! empty($item['rental_end_date'])) {
                         $start = Carbon::parse($item['rental_start_date'])->startOfDay();
                         $end = Carbon::parse($item['rental_end_date'])->startOfDay();
+
                         if (
                             $end->gte($start)
                             && $this->isDateWithinBookingWindow($start->toDateString())
@@ -402,10 +420,24 @@ class CheckoutController extends Controller
                     $days = null;
                 }
 
+                $imagePath = (string) ($item['image_path'] ?? '');
+                $imageUrl = (string) ($item['image_url'] ?? '');
+
+                if ($equipment) {
+                    $imagePath = (string) ($equipment->image_path ?? $equipment->image ?? $imagePath);
+                    $imageUrl = $this->resolveEquipmentImageForCheckout($equipment);
+                }
+
+                if ($imageUrl === '' && ! empty($item['image'])) {
+                    $imageUrl = (string) $item['image'];
+                }
+
                 return array_merge($item, [
                     'equipment_id' => $equipmentId,
                     'qty' => $qty,
                     'price' => $price,
+                    'image_path' => $imagePath,
+                    'image_url' => $imageUrl,
                     'rental_start_date' => $startDate,
                     'rental_end_date' => $endDate,
                     'rental_days' => $days,
@@ -414,6 +446,25 @@ class CheckoutController extends Controller
             })
             ->values()
             ->all();
+    }
+
+    private function resolveEquipmentImageForCheckout(Equipment $equipment): string
+    {
+        $candidate = (string) ($equipment->image_path ?? $equipment->image ?? '');
+
+        if ($candidate === '') {
+            return '';
+        }
+
+        if (str_starts_with($candidate, 'http://') || str_starts_with($candidate, 'https://') || str_starts_with($candidate, '/')) {
+            return $candidate;
+        }
+
+        if (function_exists('site_media_url')) {
+            return site_media_url($candidate) ?: '';
+        }
+
+        return asset($candidate);
     }
 
     private function requestedDailyDemandByEquipment(array $cartItems): array
