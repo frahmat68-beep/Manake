@@ -117,8 +117,8 @@
     <div class="bg-[#0A0A0B] text-[#E8E8EC] transition-colors duration-200">
         @php
             $heroCategories = app()->getLocale() === 'en' 
-                ? ['Camera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'Radio'] 
-                : ['Kamera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'HT'];
+                ? ['Camera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'Handy-Talky'] 
+                : ['Kamera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'Handy-Talky'];
         @endphp
         <style>
             /* Scoped Theme-Aware Hero Styles */
