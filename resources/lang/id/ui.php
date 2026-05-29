@@ -743,6 +743,13 @@ return [
                 'point_5' => 'Invoice final tersedia setelah pembayaran utama dan tagihan tambahan selesai.',
             ],
             'user_flow' => [
+                'step_1_title' => 'Pilih Alat',
+                'step_2_title' => 'Atur Tanggal',
+                'step_3_title' => 'Pembayaran',
+                'step_4_title' => 'Invoice & Resi',
+                'step_5_title' => 'Ambil di Studio',
+                'step_6_title' => 'Titip GoJek',
+                'step_7_title' => 'Shoot & Return',
                 'point_1' => 'Daftar/login, lalu pilih alat di katalog sesuai kebutuhan.',
                 'point_2' => 'Pilih tanggal sewa, jumlah alat, lalu lanjut checkout.',
                 'point_3' => 'Selesaikan pembayaran hingga status menjadi lunas.',

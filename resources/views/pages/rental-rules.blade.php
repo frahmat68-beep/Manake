@@ -3,6 +3,78 @@
 @section('title', __('ui.rental_rules.page_title'))
 @section('meta_description', __('ui.rental_rules.meta_description'))
 
+@push('head')
+<style>
+    .rental-rules-page {
+        --rules-accent: #D4A843;
+        --rules-accent-hover: #E0BA5D;
+        --rules-accent-text: #0A0A0B;
+        --rules-accent-soft: rgba(212, 168, 67, 0.12);
+        --rules-accent-border: rgba(212, 168, 67, 0.28);
+        --rules-text: #E8E8EC;
+        --rules-muted: #A0A0A8;
+        --rules-surface: rgba(17, 17, 19, 0.70);
+        --rules-surface-soft: rgba(17, 17, 19, 0.50);
+        --rules-border: #1A1A1E;
+    }
+
+    html[data-theme-resolved="light"] .rental-rules-page {
+        --rules-accent: #2563EB;
+        --rules-accent-hover: #1D4ED8;
+        --rules-accent-text: #FFFFFF;
+        --rules-accent-soft: rgba(37, 99, 235, 0.08);
+        --rules-accent-border: rgba(37, 99, 235, 0.24);
+        --rules-text: #111827;
+        --rules-muted: #4B5563;
+        --rules-surface: rgba(255, 255, 255, 0.90);
+        --rules-surface-soft: rgba(255, 255, 255, 0.78);
+        --rules-border: #E5E7EB;
+    }
+
+    .rules-accent-text {
+        color: var(--rules-accent) !important;
+    }
+
+    .rules-accent-bg {
+        background-color: var(--rules-accent) !important;
+        color: var(--rules-accent-text) !important;
+        border-color: var(--rules-accent) !important;
+    }
+
+    .rules-accent-soft {
+        background-color: var(--rules-accent-soft) !important;
+        color: var(--rules-accent) !important;
+        border-color: var(--rules-accent-border) !important;
+    }
+
+    .rules-accent-dot {
+        background-color: var(--rules-accent) !important;
+    }
+
+    .rules-card {
+        background: var(--rules-surface-soft) !important;
+        border-color: var(--rules-border) !important;
+    }
+
+    .rules-title {
+        color: var(--rules-text) !important;
+    }
+
+    .rules-muted {
+        color: var(--rules-muted) !important;
+    }
+
+    .rules-accent-border-hover:hover {
+        border-color: var(--rules-accent-border) !important;
+        color: var(--rules-accent) !important;
+    }
+
+    html[data-theme-resolved="light"] .rental-rules-page {
+        background-color: #F8FAFC !important;
+    }
+</style>
+@endpush
+
 @php
     $rulesTitle = setting('copy.rules_page.title', __('ui.rental_rules.title'));
     $rulesSubtitle = setting('copy.rules_page.subtitle', __('ui.rental_rules.subtitle'));
@@ -48,7 +120,7 @@
 @endphp
 
 @section('content')
-    <section x-data="{ contactModalOpen: false }" class="min-h-screen bg-[#0A0A0B] py-12 md:py-16 text-[#E8E8EC] selection:bg-amber-500/10 selection:text-amber-500">
+    <section x-data="{ contactModalOpen: false }" class="rental-rules-page min-h-screen bg-[#0A0A0B] py-12 md:py-16 text-[#E8E8EC] selection:bg-amber-500/10 selection:text-amber-500">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
             
             <!-- 1. Elegant Header Hero -->
@@ -67,24 +139,24 @@
             <!-- 2. Step-by-Step Interactive Guide: Alur Penggunaan Web -->
             <div class="space-y-6">
                 <div class="text-center md:text-left">
-                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4A843]">{{ __('ui.rental_rules.user_flow_title') }}</span>
+                    <span class="rules-accent-text text-[10px] font-bold uppercase tracking-[0.2em]">{{ __('ui.rental_rules.user_flow_title') }}</span>
                     <h2 class="text-2xl font-bold text-[#E8E8EC] mt-1">{{ __('ui.rental_rules.user_flow_intro') }}</h2>
                 </div>
-
+ 
                 <div class="grid gap-4 sm:grid-cols-4 lg:grid-cols-7">
                     @foreach ([
-                        ['num' => '01', 'title' => 'Pilih Alat', 'desc' => __('ui.rental_rules.sections.user_flow.point_1')],
-                        ['num' => '02', 'title' => 'Atur Tanggal', 'desc' => __('ui.rental_rules.sections.user_flow.point_2')],
-                        ['num' => '03', 'title' => 'Pembayaran', 'desc' => __('ui.rental_rules.sections.user_flow.point_3')],
-                        ['num' => '04', 'title' => 'Invoice & Resi', 'desc' => __('ui.rental_rules.sections.user_flow.point_4')],
-                        ['num' => '05', 'title' => 'Ambil di Studio', 'desc' => __('ui.rental_rules.sections.user_flow.point_5')],
-                        ['num' => '06', 'title' => 'Titip GoJek', 'desc' => __('ui.rental_rules.sections.user_flow.point_6')],
-                        ['num' => '07', 'title' => 'Shoot & Return', 'desc' => __('ui.rental_rules.sections.user_flow.point_7')],
+                        ['num' => '01', 'title' => __('ui.rental_rules.sections.user_flow.step_1_title'), 'desc' => __('ui.rental_rules.sections.user_flow.point_1')],
+                        ['num' => '02', 'title' => __('ui.rental_rules.sections.user_flow.step_2_title'), 'desc' => __('ui.rental_rules.sections.user_flow.point_2')],
+                        ['num' => '03', 'title' => __('ui.rental_rules.sections.user_flow.step_3_title'), 'desc' => __('ui.rental_rules.sections.user_flow.point_3')],
+                        ['num' => '04', 'title' => __('ui.rental_rules.sections.user_flow.step_4_title'), 'desc' => __('ui.rental_rules.sections.user_flow.point_4')],
+                        ['num' => '05', 'title' => __('ui.rental_rules.sections.user_flow.step_5_title'), 'desc' => __('ui.rental_rules.sections.user_flow.point_5')],
+                        ['num' => '06', 'title' => __('ui.rental_rules.sections.user_flow.step_6_title'), 'desc' => __('ui.rental_rules.sections.user_flow.point_6')],
+                        ['num' => '07', 'title' => __('ui.rental_rules.sections.user_flow.step_7_title'), 'desc' => __('ui.rental_rules.sections.user_flow.point_7')],
                     ] as $step)
-                        <div class="relative rounded-2xl border border-white/5 bg-[#111113]/50 p-5 space-y-3 transition duration-300 hover:border-[#D4A843]/20">
-                            <div class="text-lg font-black text-[#D4A843]">{{ $step['num'] }}</div>
-                            <h3 class="text-xs font-bold text-[#E8E8EC] uppercase tracking-wider">{{ $step['title'] }}</h3>
-                            <p class="text-[11px] leading-relaxed text-[#A0A0A8]">{{ $step['desc'] }}</p>
+                        <div class="rules-card relative rounded-2xl border p-5 space-y-3 transition duration-300 rules-accent-border-hover">
+                            <div class="rules-accent-text text-lg font-black">{{ $step['num'] }}</div>
+                            <h3 class="rules-title text-xs font-bold uppercase tracking-wider">{{ $step['title'] }}</h3>
+                            <p class="rules-muted text-[11px] leading-relaxed">{{ $step['desc'] }}</p>
                         </div>
                     @endforeach
                 </div>

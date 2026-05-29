@@ -743,6 +743,13 @@ return [
                 'point_5' => 'Final invoice is available after primary and additional charges are settled.',
             ],
             'user_flow' => [
+                'step_1_title' => 'Choose Gear',
+                'step_2_title' => 'Set Dates',
+                'step_3_title' => 'Payment',
+                'step_4_title' => 'Invoice & Receipt',
+                'step_5_title' => 'Studio Pickup',
+                'step_6_title' => 'Courier Pickup',
+                'step_7_title' => 'Shoot & Return',
                 'point_1' => 'Register/login, then pick equipment from the catalog.',
                 'point_2' => 'Select rental dates and quantity, then continue to checkout.',
                 'point_3' => 'Complete payment until status is paid.',
