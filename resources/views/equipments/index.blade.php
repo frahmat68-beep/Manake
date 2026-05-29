@@ -77,6 +77,15 @@
             --catalog-accent-soft: rgba(212, 168, 67, 0.14);
             --catalog-accent-border: rgba(212, 168, 67, 0.34);
             --catalog-accent-shadow: rgba(212, 168, 67, 0.45);
+
+            --catalog-bg: #0A0A0B;
+            --catalog-surface: #111113;
+            --catalog-surface-soft: rgba(17, 17, 19, 0.70);
+            --catalog-surface-muted: #0A0A0B;
+            --catalog-border: #1A1A1E;
+            --catalog-text: #E8E8EC;
+            --catalog-muted: #A0A0A8;
+            --catalog-placeholder: #66666C;
         }
 
         html[data-theme-resolved="light"] .catalog-page {
@@ -86,20 +95,98 @@
             --catalog-accent-soft: rgba(37, 99, 235, 0.10);
             --catalog-accent-border: rgba(37, 99, 235, 0.24);
             --catalog-accent-shadow: rgba(37, 99, 235, 0.25);
+
+            --catalog-bg: #F8FAFC;
+            --catalog-surface: #FFFFFF;
+            --catalog-surface-soft: rgba(255, 255, 255, 0.92);
+            --catalog-surface-muted: #F8FAFC;
+            --catalog-border: #E5E7EB;
+            --catalog-text: #111827;
+            --catalog-muted: #4B5563;
+            --catalog-placeholder: #6B7280;
         }
 
-        .catalog-accent-text {
+        .catalog-page-bg {
+            background-color: var(--catalog-bg) !important;
+            color: var(--catalog-text) !important;
+        }
+
+        .catalog-surface {
+            background: var(--catalog-surface) !important;
+            border-color: var(--catalog-border) !important;
+            color: var(--catalog-text) !important;
+        }
+
+        .catalog-surface-soft {
+            background: var(--catalog-surface-soft) !important;
+            border-color: var(--catalog-border) !important;
+            color: var(--catalog-text) !important;
+        }
+
+        .catalog-surface-muted {
+            background: var(--catalog-surface-muted) !important;
+            border-color: var(--catalog-border) !important;
+            color: var(--catalog-text) !important;
+        }
+
+        .catalog-title {
+            color: var(--catalog-text) !important;
+        }
+
+        .catalog-muted {
+            color: var(--catalog-muted) !important;
+        }
+
+        .catalog-border {
+            border-color: var(--catalog-border) !important;
+        }
+
+        .catalog-input {
+            background: var(--catalog-surface) !important;
+            border: 1px solid var(--catalog-border) !important;
+            color: var(--catalog-text) !important;
+        }
+
+        .catalog-input::placeholder {
+            color: var(--catalog-placeholder) !important;
+        }
+
+        .catalog-input:focus {
+            border-color: var(--catalog-accent) !important;
+            box-shadow: 0 0 0 2px var(--catalog-accent-soft) !important;
+            outline: none !important;
+        }
+
+        .catalog-secondary-button {
+            background: var(--catalog-surface) !important;
+            border: 1px solid var(--catalog-border) !important;
+            color: var(--catalog-text) !important;
+        }
+
+        .catalog-secondary-button:hover {
+            border-color: var(--catalog-accent-border) !important;
             color: var(--catalog-accent) !important;
         }
 
         .catalog-accent-bg {
+            background: var(--catalog-accent) !important;
             background-color: var(--catalog-accent) !important;
             color: var(--catalog-accent-text) !important;
             border-color: var(--catalog-accent) !important;
         }
 
         .catalog-accent-bg:hover {
+            background: var(--catalog-accent-hover) !important;
             background-color: var(--catalog-accent-hover) !important;
+        }
+
+        html[data-theme-resolved="light"] .catalog-page .catalog-surface,
+        html[data-theme-resolved="light"] .catalog-page .catalog-surface-soft {
+            box-shadow: 0 20px 50px -35px rgba(15, 23, 42, 0.22);
+        }
+
+        .catalog-accent-text {
+            color: var(--catalog-accent) !important;
         }
 
         .catalog-accent-border-hover:hover {
@@ -151,65 +238,36 @@
         }
 
         .catalog-quick-modal-panel {
-            background: #111113;
-            border-color: #1A1A1E;
-            color: #E8E8EC;
-            box-shadow: 0 30px 90px -45px rgba(0, 0, 0, 0.75);
-        }
-
-        html[data-theme-resolved="light"] .catalog-quick-modal-panel {
-            background: #FFFFFF;
-            border-color: #E5E7EB;
-            color: #111827;
-            box-shadow: 0 30px 90px -50px rgba(15, 23, 42, 0.35);
+            background: var(--catalog-surface);
+            border-color: var(--catalog-border);
+            color: var(--catalog-text);
+            box-shadow: 0 30px 90px -45px rgba(0, 0, 0, 0.55);
         }
 
         .catalog-quick-title {
-            color: #E8E8EC;
-        }
-
-        html[data-theme-resolved="light"] .catalog-quick-title {
-            color: #111827;
+            color: var(--catalog-text);
         }
 
         .catalog-quick-muted {
-            color: #A0A0A8;
-        }
-
-        html[data-theme-resolved="light"] .catalog-quick-muted {
-            color: #4B5563;
-        }
-
-        .catalog-quick-surface {
-            background: #0A0A0B;
-            border-color: #1A1A1E;
-            color: #E8E8EC;
-        }
-
-        html[data-theme-resolved="light"] .catalog-quick-surface {
-            background: #FFFFFF;
-            border-color: #E5E7EB;
-            color: #111827;
+            color: var(--catalog-muted);
         }
 
         .catalog-quick-soft {
-            background: #111113;
-            border-color: #1A1A1E;
-            color: #E8E8EC;
+            background: var(--catalog-surface-muted);
+            border-color: var(--catalog-border);
+            color: var(--catalog-text);
         }
 
         html[data-theme-resolved="light"] .catalog-quick-soft {
             background: #F8FAFC;
-            border-color: #E5E7EB;
-            color: #111827;
         }
 
         .catalog-quick-input {
             width: 100%;
             border-radius: 0.875rem;
-            border: 1px solid #1A1A1E;
-            background: #0A0A0B;
-            color: #E8E8EC;
+            border: 1px solid var(--catalog-border);
+            background: var(--catalog-surface);
+            color: var(--catalog-text);
             min-height: 3.5rem;
             outline: none;
             transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease;
@@ -221,9 +279,6 @@
         }
 
         html[data-theme-resolved="light"] .catalog-quick-input {
-            background: #FFFFFF;
-            color: #111827;
-            border-color: #DADDE3;
             color-scheme: light;
         }
 
@@ -232,9 +287,9 @@
         }
 
         .catalog-quick-control {
-            background: #111113;
-            border-color: #1A1A1E;
-            color: #E8E8EC;
+            background: var(--catalog-surface-muted);
+            border-color: var(--catalog-border);
+            color: var(--catalog-text);
         }
 
         html[data-theme-resolved="light"] .catalog-quick-control {
@@ -422,19 +477,19 @@
         @mousemove.passive="markPointerMove"
         @mouseleave="markPointerLeave"
         @touchstart.passive="stopGuide"
-        class="catalog-page min-h-screen bg-[#0A0A0B] text-[#E8E8EC]"
+        class="catalog-page catalog-page-bg min-h-screen"
     >
         <section class="relative overflow-hidden pt-6 pb-4">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
                 <!-- Clean Header Card -->
-                <div class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8 lg:p-10 shadow-2xl catalog-enter">
+                <div class="catalog-surface-soft rounded-3xl border p-6 sm:p-8 lg:p-10 shadow-2xl catalog-enter">
                     <div class="space-y-4 max-w-3xl">
                         <div>
                             <p class="section-kicker font-bold tracking-widest uppercase catalog-accent-text">{{ __('ui.nav.catalog') }}</p>
-                            <h1 class="text-2xl font-extrabold tracking-tight text-[#E8E8EC] sm:text-4xl leading-tight mt-1">
+                            <h1 class="catalog-title text-2xl font-extrabold tracking-tight sm:text-4xl leading-tight mt-1">
                                 {{ $catalogTitle }}
                             </h1>
-                            <p class="text-sm text-[#A0A0A8] leading-relaxed mt-2">
+                            <p class="catalog-muted text-sm leading-relaxed mt-2">
                                 {{ $catalogSubtitle }}
                             </p>
                         </div>
@@ -444,20 +499,20 @@
                     <div class="max-w-3xl mt-6">
                         <form action="{{ route('catalog') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
                             <div class="relative flex-1">
-                                <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#66666C]">
+                                <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 catalog-muted">
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                                 </span>
                                 <input type="text" name="q" id="catalog-search-input" value="{{ $search }}" placeholder="{{ __('ui.catalog.search_placeholder') }}" 
                                        aria-label="{{ __('ui.catalog.search_aria_label') }}"
                                        autocomplete="off"
-                                       class="w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] pl-12 pr-12 py-3.5 text-sm text-[#E8E8EC] placeholder:text-[#66666C] catalog-accent-focus focus:outline-none focus:ring-2">
+                                       class="catalog-input w-full rounded-xl pl-12 pr-12 py-3.5 text-sm">
                                 <div id="search-loading-spinner" class="absolute right-4 top-1/2 -translate-y-1/2 hidden">
                                     <svg class="animate-spin h-5 w-5 catalog-accent-text" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
                                 </div>
-                                <div id="search-suggestions-dropdown" class="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[60] hidden rounded-2xl border border-white/10 bg-[#111113]/95 backdrop-blur-xl p-2 shadow-2xl space-y-1 max-h-80 overflow-y-auto"></div>
+                                <div id="search-suggestions-dropdown" class="catalog-surface absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[60] hidden rounded-2xl border backdrop-blur-xl p-2 shadow-2xl space-y-1 max-h-80 overflow-y-auto"></div>
                             </div>
                             <button type="submit" class="rounded-xl catalog-accent-bg px-6 py-3.5 text-sm font-bold transition shrink-0 sm:w-auto w-full">
                                 <span>{{ __('ui.catalog.search_button') }}</span>
@@ -466,11 +521,11 @@
                     </div>
 
                     <!-- Clean Category Filter Layout -->
-                    <div class="mt-5 border-t border-[#1A1A1E] pt-4">
+                    <div class="mt-5 border-t catalog-border pt-4">
                         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                            <p class="text-[10px] font-bold uppercase tracking-widest text-[#A0A0A8]">{{ $categoryLabel }}</p>
+                            <p class="catalog-muted text-[10px] font-bold uppercase tracking-widest">{{ $categoryLabel }}</p>
                             @if ($search !== '')
-                                <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="inline-flex rounded-xl border border-[#1A1A1E] bg-[#111113] px-4 py-2 text-xs font-bold text-[#E8E8EC] transition catalog-accent-border-hover">
+                                <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="catalog-secondary-button inline-flex rounded-xl px-4 py-2 text-xs font-bold transition">
                                     {{ $catalogResetSearchLabel }}
                                 </a>
                             @endif
@@ -478,7 +533,7 @@
                         <div class="mt-3 flex flex-wrap gap-2.5 pb-1">
                             <a
                                 href="{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}"
-                                class="rounded-full border px-4 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === '' ? 'catalog-accent-bg' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] catalog-accent-border-hover' }}"
+                                class="rounded-full border px-4 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === '' ? 'catalog-accent-bg' : 'catalog-secondary-button catalog-accent-border-hover' }}"
                             >
                                 {{ $catalogAllCategoriesLabel }}
                             </a>
@@ -491,7 +546,7 @@
                                 @endphp
                                 <a
                                     href="{{ route('catalog', $categoryParams) }}"
-                                    class="relative rounded-full border px-4 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === $category->slug ? 'catalog-accent-bg' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] catalog-accent-border-hover' }}"
+                                    class="relative rounded-full border px-4 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === $category->slug ? 'catalog-accent-bg' : 'catalog-secondary-button catalog-accent-border-hover' }}"
                                 >
                                     {{ $resolveCategoryDisplayName($category) }}
                                 </a>
@@ -501,10 +556,10 @@
                 </div>
 
                 @if ($search !== '')
-                    <div class="mt-6 inline-flex items-center gap-3 rounded-2xl border border-[#1A1A1E] bg-[#111113] px-4 py-3 catalog-enter">
+                    <div class="catalog-surface mt-6 inline-flex items-center gap-3 rounded-2xl border px-4 py-3 catalog-enter">
                         <div class="h-2 w-2 rounded-full catalog-accent-dot animate-pulse"></div>
-                        <p class="text-sm font-medium text-[#A0A0A8]">
-                            {{ $catalogSearchResultPrefix }} <span class="font-bold text-[#E8E8EC]">&quot;{{ $search }}&quot;</span>
+                        <p class="catalog-muted text-sm font-medium">
+                            {{ $catalogSearchResultPrefix }} <span class="catalog-title font-bold">&quot;{{ $search }}&quot;</span>
                         </p>
                     </div>
                 @endif
@@ -521,14 +576,14 @@
                     @endphp
 
                     <div class="mb-12 catalog-enter">
-                        <div class="mb-6 flex flex-col gap-2 border-b border-[#1A1A1E] pb-4 sm:flex-row sm:items-end sm:justify-between">
+                        <div class="mb-6 flex flex-col gap-2 border-b catalog-border pb-4 sm:flex-row sm:items-end sm:justify-between">
                             <div>
-                                <h2 class="text-2xl font-bold tracking-tight text-[#E8E8EC]">{{ $resolveCategoryDisplayName($category) }}</h2>
+                                <h2 class="catalog-title text-2xl font-bold tracking-tight">{{ $resolveCategoryDisplayName($category) }}</h2>
                                 @if (!empty($category->description))
-                                    <p class="mt-1 max-w-2xl text-xs font-medium text-[#A0A0A8]">{{ $category->description }}</p>
+                                    <p class="catalog-muted mt-1 max-w-2xl text-xs font-medium">{{ $category->description }}</p>
                                 @endif
                             </div>
-                            <span class="inline-flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#111113]/80 px-4 py-1 text-xs font-bold text-[#A0A0A8] shadow-sm self-start sm:self-auto">
+                            <span class="catalog-surface inline-flex items-center gap-2 rounded-full border px-4 py-1 text-xs font-bold shadow-sm self-start sm:self-auto">
                                 <span class="h-1.5 w-1.5 rounded-full catalog-accent-dot"></span>
                                 {{ $items->count() }} {{ $catalogItemSuffix }}
                             </span>
@@ -672,10 +727,10 @@
                                     }
                                 }"
                                 @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')"
-                                class="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-[#1A1A1E] bg-[#111113] transition-all duration-300 hover:-translate-y-1 catalog-card-hover catalog-stagger"
+                                class="catalog-surface group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1 catalog-card-hover catalog-stagger"
                                 style="animation-delay: {{ min($loop->index * 45, 240) }}ms"
                             >
-                                <div class="relative aspect-[4/3] overflow-hidden bg-[#0A0A0B] p-5 flex items-center justify-center border-b border-[#1A1A1E]">
+                                <div class="catalog-surface-muted relative aspect-[4/3] overflow-hidden p-5 flex items-center justify-center border-b">
                                     <img
                                         src="{{ $image }}"
                                         alt="{{ $item->name }}"
@@ -693,34 +748,34 @@
                                 </div>
 
                                 <div class="flex flex-1 flex-col p-6">
-                                    <h3 class="min-h-[2.5rem] text-lg font-bold leading-snug text-[#E8E8EC] transition-colors duration-300 catalog-card-title-hover">{{ $item->name }}</h3>
+                                    <h3 class="catalog-title min-h-[2.5rem] text-lg font-bold leading-snug transition-colors duration-300 catalog-card-title-hover">{{ $item->name }}</h3>
                                     
-                                    <div class="mt-3 border-t border-[#1A1A1E] pt-3">
+                                    <div class="mt-3 border-t catalog-border pt-3">
                                         <div class="flex items-baseline gap-1">
-                                            <p class="text-xl font-extrabold tracking-tight text-[#E8E8EC]">
+                                            <p class="catalog-title text-xl font-extrabold tracking-tight">
                                                 {{ $currencyPrefix }} {{ number_format($item->price_per_day, 0, ',', '.') }}
                                             </p>
-                                            <span class="text-[9px] font-bold uppercase tracking-widest text-[#A0A0A8]">{{ __('app.product.per_day') }}</span>
+                                            <span class="catalog-muted text-[9px] font-bold uppercase tracking-widest">{{ __('app.product.per_day') }}</span>
                                         </div>
                                     </div>
-
+ 
                                     <div class="mt-6 flex flex-col gap-2">
                                         @auth
                                             @if ($canRent)
                                                 <button
                                                     type="button"
-                                                    class="mk-button-primary w-full py-3"
+                                                    class="catalog-accent-bg w-full rounded-md py-3 text-center font-bold transition"
                                                     @click="quickOpen = true; quickQty = '1'; quickStart = minDate; quickEnd = minDate; quickError = ''"
                                                 >
                                                     {{ $catalogQuickOrderButton }}
                                                 </button>
                                             @else
-                                                <button type="button" disabled class="w-full rounded-md border border-[#1A1A1E] bg-[#0A0A0B] py-3 font-bold text-[#66666C] cursor-not-allowed">
+                                                <button type="button" disabled class="catalog-surface-muted catalog-muted w-full rounded-md border py-3 font-bold cursor-not-allowed opacity-70">
                                                     {{ $catalogOutOfStockButton }}
                                                 </button>
                                             @endif
                                         @endauth
-
+ 
                                         @guest
                                             @if ($canRent)
                                                 <a
@@ -730,15 +785,15 @@
                                                     {{ $catalogLoginToOrderButton }}
                                                 </a>
                                             @else
-                                                <button type="button" disabled class="w-full rounded-md border border-[#1A1A1E] bg-[#0A0A0B] py-3 font-bold text-[#66666C] cursor-not-allowed">
+                                                <button type="button" disabled class="catalog-surface-muted catalog-muted w-full rounded-md border py-3 font-bold cursor-not-allowed opacity-70">
                                                     {{ $catalogOutOfStockButton }}
                                                 </button>
                                             @endif
                                         @endguest
-
+ 
                                         <a
                                             href="{{ route('product.show', $item->slug) }}"
-                                            class="w-full rounded-md border border-[#1A1A1E] bg-[#111113] py-2.5 text-center font-bold text-[#E8E8EC] transition catalog-accent-border-hover"
+                                            class="catalog-secondary-button catalog-accent-border-hover w-full rounded-md py-2.5 text-center font-bold transition"
                                         >
                                             {{ __('app.actions.view_detail') }}
                                         </a>
@@ -826,7 +881,7 @@
                                                         <!-- Date Inputs -->
                                                         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                                             <div class="space-y-1.5">
-                                                                <label for="quick-start-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">{{ $catalogQuickStartDateLabel }}</label>
+                                                                <label for="quick-start-{{ $item->id }}" class="catalog-quick-muted text-xs font-bold uppercase tracking-widest">{{ $catalogQuickStartDateLabel }}</label>
                                                                 <input
                                                                     id="quick-start-{{ $item->id }}"
                                                                     type="date"
@@ -843,7 +898,7 @@
                                                                 >
                                                             </div>
                                                             <div class="space-y-1.5">
-                                                                <label for="quick-end-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">{{ $catalogQuickEndDateLabel }}</label>
+                                                                <label for="quick-end-{{ $item->id }}" class="catalog-quick-muted text-xs font-bold uppercase tracking-widest">{{ $catalogQuickEndDateLabel }}</label>
                                                                 <input
                                                                     id="quick-end-{{ $item->id }}"
                                                                     type="date"
@@ -863,7 +918,7 @@
 
                                                         <!-- Qty -->
                                                         <div class="space-y-1.5">
-                                                            <label for="quick-qty-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">{{ $catalogQuickQtyLabel }}</label>
+                                                            <label for="quick-qty-{{ $item->id }}" class="catalog-quick-muted text-xs font-bold uppercase tracking-widest">{{ $catalogQuickQtyLabel }}</label>
                                                             <div class="relative flex items-center">
                                                                 <button
                                                                     type="button"
