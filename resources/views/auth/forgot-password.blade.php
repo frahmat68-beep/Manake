@@ -20,7 +20,7 @@
         </div>
     @endif
 
-    <div class="w-full text-center mb-4">
+    <div class="auth-forgot-intro w-full text-center">
         <p class="auth-muted text-sm">{{ __('ui.auth.forgot_help') }}</p>
     </div>
 

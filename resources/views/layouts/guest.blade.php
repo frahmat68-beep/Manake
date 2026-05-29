@@ -216,6 +216,8 @@
 
             /* ===== AUTH FORM CARD ===== */
             .auth-form-card {
+                width: 100%;
+                max-width: 28rem;
                 min-height: 0;
             }
 
@@ -232,20 +234,21 @@
 
             /* Auth logo — consistent sizing, color handled by asset swap */
             .auth-logo {
-                width: auto !important;
+                display: block !important;
                 height: 2.5rem !important;
+                width: auto !important;
                 max-width: 11rem !important;
                 object-fit: contain !important;
+                filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.45));
             }
 
             /* ===== LEFT SHOWCASE IMAGE + OVERLAYS ===== */
             .auth-showcase-image {
-                /* slight brightness reduction so gradients have something to work with */
-                filter: saturate(0.95) contrast(1.02) brightness(0.82);
+                filter: saturate(0.96) contrast(1.04) brightness(0.78);
             }
 
             html[data-theme-resolved="dark"] .auth-showcase-image {
-                filter: saturate(0.95) contrast(1.04) brightness(0.72);
+                filter: saturate(0.96) contrast(1.04) brightness(0.72);
             }
 
             /* Main cinematic overlay — same structure in light/dark */
@@ -253,14 +256,8 @@
                 position: absolute;
                 inset: 0;
                 background:
-                    linear-gradient(180deg, rgba(10,10,11,0.18) 0%, rgba(10,10,11,0.28) 42%, rgba(10,10,11,0.58) 100%),
-                    linear-gradient(90deg, rgba(10,10,11,0.18) 0%, rgba(10,10,11,0.06) 48%, rgba(10,10,11,0.20) 100%);
-            }
-
-            html[data-theme-resolved="dark"] .auth-showcase-overlay {
-                background:
-                    linear-gradient(180deg, rgba(10,10,11,0.22) 0%, rgba(10,10,11,0.32) 42%, rgba(10,10,11,0.62) 100%),
-                    linear-gradient(90deg, rgba(10,10,11,0.20) 0%, rgba(10,10,11,0.08) 48%, rgba(10,10,11,0.24) 100%);
+                    linear-gradient(180deg, rgba(10, 10, 11, 0.18) 0%, rgba(10, 10, 11, 0.30) 45%, rgba(10, 10, 11, 0.62) 100%),
+                    linear-gradient(90deg, rgba(10, 10, 11, 0.22) 0%, rgba(10, 10, 11, 0.08) 52%, rgba(10, 10, 11, 0.20) 100%);
             }
 
             /* Accent tint overlay */
@@ -274,8 +271,8 @@
                 bottom: 0;
                 left: 0;
                 right: 0;
-                height: 58%;
-                background: linear-gradient(0deg, rgba(10,10,11,0.88) 0%, rgba(10,10,11,0.58) 48%, transparent 100%);
+                height: 60%;
+                background: linear-gradient(0deg, rgba(10, 10, 11, 0.90) 0%, rgba(10, 10, 11, 0.64) 46%, rgba(10, 10, 11, 0.10) 100%);
             }
 
             /* ===== LEFT SHOWCASE TEXT — always white regardless of theme ===== */
@@ -291,12 +288,12 @@
             .auth-showcase-title {
                 color: #FFFFFF !important;
                 font-family: Georgia, "Times New Roman", serif;
-                font-size: clamp(2.4rem, 3.8vw, 3.2rem);
+                font-size: clamp(2.65rem, 4vw, 3.45rem);
                 font-weight: 700;
-                line-height: 1.0;
+                line-height: 0.98;
                 letter-spacing: -0.02em;
-                margin-bottom: 1.25rem;
-                text-shadow: 0 4px 22px rgba(0, 0, 0, 0.85);
+                margin-bottom: 1.5rem;
+                text-shadow: 0 4px 24px rgba(0, 0, 0, 0.88);
             }
 
             .auth-showcase-subtitle {
@@ -304,12 +301,20 @@
                 font-size: 1.0625rem;
                 line-height: 1.65;
                 max-width: 34rem;
-                text-shadow: 0 3px 18px rgba(0, 0, 0, 0.75);
+                text-shadow: 0 3px 18px rgba(0, 0, 0, 0.78);
             }
 
             .auth-showcase-list-item {
                 color: #FFFFFF !important;
                 text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+            }
+
+            .auth-slot form {
+                width: 100%;
+            }
+
+            .auth-forgot-intro {
+                margin-bottom: 1rem;
             }
         </style>
         {{ $head ?? '' }}
@@ -322,16 +327,16 @@
             $compactAuthShowcaseText = $asideText ?: null;
         @endphp
 
-        <div class="auth-page auth-page-bg flex min-h-screen w-full">
+        <div class="auth-page auth-page-bg flex min-h-screen w-full overflow-hidden">
             <!-- Left Side: Image / Showcase (hidden on mobile) -->
-            <div class="auth-showcase hidden w-1/2 lg:block">
+            <div class="auth-showcase relative hidden min-h-screen w-1/2 overflow-hidden lg:block">
                 <a href="{{ route('home') }}" class="absolute top-10 left-12 z-20 transition-transform hover:scale-105 w-fit" data-skip-loader="true">
                     <x-brand.image
-                        light="manake-logo-blue.png"
+                        light="manake-logo-white.png"
                         dark="manake-logo-white.png"
                         alt="{{ $brandName }}"
-                        img-class="auth-logo object-contain"
-                        :swap-in-dark="true"
+                        img-class="auth-logo h-10 w-auto object-contain"
+                        :swap-in-dark="false"
                     />
                 </a>
 
@@ -343,28 +348,28 @@
                 >
 
                 <!-- Cinematic overlay -->
-                <div class="auth-showcase-overlay"></div>
+                <div class="auth-showcase-overlay absolute inset-0"></div>
 
                 <!-- Accent tint -->
-                <div class="auth-left-accent-overlay absolute inset-0 mix-blend-overlay opacity-45"></div>
+                <div class="auth-left-accent-overlay absolute inset-0 mix-blend-overlay opacity-40"></div>
 
                 <!-- Bottom scrim for text readability -->
-                <div class="auth-showcase-text-scrim"></div>
+                <div class="auth-showcase-text-scrim absolute bottom-0 left-0 right-0 h-[60%]"></div>
 
                 <!-- Showcase Copy -->
-                <div class="auth-showcase-copy">
+                <div class="auth-showcase-copy absolute bottom-16 left-16 right-16 z-10 max-w-[36rem]">
                     @if ($compactAuthShowcaseTitle)
-                        <h1 class="auth-showcase-title">
+                        <h1 class="auth-showcase-title mb-6 font-serif text-[clamp(2.65rem,4vw,3.45rem)] font-bold leading-[0.98] tracking-tight">
                             {{ $compactAuthShowcaseTitle }}
                         </h1>
                     @endif
 
                     @if ($compactAuthShowcaseText)
-                        <p class="auth-showcase-subtitle">
+                        <p class="auth-showcase-subtitle max-w-xl text-base leading-relaxed sm:text-lg">
                             {{ $compactAuthShowcaseText }}
                         </p>
                     @else
-                        <p class="auth-showcase-subtitle">
+                        <p class="auth-showcase-subtitle max-w-xl text-base leading-relaxed sm:text-lg">
                             {{ __('ui.auth.aside_default_text') }}
                         </p>
                     @endif
@@ -385,7 +390,7 @@
             </div>
 
             <!-- Right Side: Form -->
-            <div class="auth-form-panel relative flex w-full flex-col justify-center px-6 py-12 sm:px-16 md:px-24 lg:w-1/2">
+            <div class="auth-form-panel relative flex min-h-screen w-full flex-col justify-center px-6 py-12 sm:px-16 md:px-24 lg:w-1/2">
                 <!-- Mobile glow (no left image on small screens) -->
                 <div class="auth-mobile-glow pointer-events-none absolute inset-0 lg:hidden"></div>
 
@@ -393,11 +398,11 @@
                     <!-- Mobile logo (only shows when left panel is hidden) -->
                     <a href="{{ route('home') }}" class="mb-12 flex items-center transition-transform hover:scale-105 w-fit lg:hidden" data-skip-loader="true">
                         <x-brand.image
-                            light="manake-logo-blue.png"
+                            light="manake-logo-white.png"
                             dark="manake-logo-white.png"
                             alt="{{ $brandName }}"
-                            img-class="auth-logo object-contain"
-                            :swap-in-dark="true"
+                            img-class="auth-logo h-10 w-auto object-contain"
+                            :swap-in-dark="false"
                         />
                     </a>
 
@@ -407,7 +412,7 @@
                         </h2>
                     @endif
 
-                    <div class="flex w-full flex-col gap-5">
+                    <div class="auth-slot flex w-full flex-col gap-5">
                         {{ $slot }}
                     </div>
 
