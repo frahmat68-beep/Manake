@@ -58,7 +58,7 @@
             </x-password-input>
         </div>
         
-        <button type="submit" class="auth-accent-bg btn-primary mt-2 w-full rounded-xl px-5 py-3.5 text-sm font-bold transition-all active:scale-95 shadow-[0_16px_30px_-18px_rgba(0,0,0,0.35)]">
+        <button type="submit" class="auth-accent-bg mt-2 w-full rounded-xl px-5 py-3.5 text-sm font-bold transition-all active:scale-95 shadow-[0_16px_30px_-18px_rgba(0,0,0,0.35)]">
             {{ __('ui.auth.login_button') }}
         </button>
         

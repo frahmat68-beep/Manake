@@ -81,16 +81,32 @@
                 --auth-google-border: #E5E7EB;
             }
 
+            /* ===== AUTH LAYOUT ===== */
             .auth-page-bg {
                 background-color: var(--auth-page-bg) !important;
                 color: var(--auth-text) !important;
             }
 
+            /* Left showcase — stable 50/50 split, full viewport height */
+            .auth-showcase {
+                position: relative;
+                overflow: hidden;
+                min-height: 100vh;
+            }
+
+            /* Right form panel — same stable height */
             .auth-form-panel {
                 background-color: var(--auth-panel-bg) !important;
                 color: var(--auth-panel-text) !important;
+                min-height: 100vh;
             }
 
+            /* Light mode panel shadow */
+            html[data-theme-resolved="light"] .auth-form-panel {
+                box-shadow: -20px 0 60px -20px rgba(15, 23, 42, 0.10);
+            }
+
+            /* ===== AUTH UTILITY CLASSES ===== */
             .auth-title {
                 color: var(--auth-text) !important;
             }
@@ -103,14 +119,23 @@
                 color: var(--auth-accent) !important;
             }
 
+            /* CRITICAL: use `background` shorthand to defeat any gradient from btn-primary */
             .auth-accent-bg {
+                background: var(--auth-accent) !important;
                 background-color: var(--auth-accent) !important;
                 color: var(--auth-accent-text) !important;
-                border-color: var(--auth-accent) !important;
+                border: 1px solid var(--auth-accent) !important;
             }
 
             .auth-accent-bg:hover {
+                background: var(--auth-accent-hover) !important;
                 background-color: var(--auth-accent-hover) !important;
+                border-color: var(--auth-accent-hover) !important;
+            }
+
+            .auth-accent-bg:focus-visible {
+                outline: none !important;
+                box-shadow: 0 0 0 3px var(--auth-accent-soft) !important;
             }
 
             .auth-link {
@@ -138,6 +163,23 @@
                 box-shadow: 0 0 0 2px var(--auth-accent-soft) !important;
             }
 
+            /* Autofill suppression — prevents blue tint on light mode */
+            .auth-page input.auth-input:-webkit-autofill,
+            .auth-page input.auth-input:-webkit-autofill:hover,
+            .auth-page input.auth-input:-webkit-autofill:focus {
+                -webkit-text-fill-color: var(--auth-input-text) !important;
+                box-shadow: 0 0 0 1000px var(--auth-input-bg) inset !important;
+                caret-color: var(--auth-input-text) !important;
+                transition: background-color 9999s ease-in-out 0s !important;
+            }
+
+            html[data-theme-resolved="light"] .auth-page input.auth-input:-webkit-autofill,
+            html[data-theme-resolved="light"] .auth-page input.auth-input:-webkit-autofill:hover,
+            html[data-theme-resolved="light"] .auth-page input.auth-input:-webkit-autofill:focus {
+                -webkit-text-fill-color: #111827 !important;
+                box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+            }
+
             .auth-divider-line {
                 border-color: var(--auth-input-border) !important;
             }
@@ -158,10 +200,6 @@
                 color: var(--auth-accent) !important;
             }
 
-            .auth-left-accent-overlay {
-                background-color: var(--auth-accent-glow) !important;
-            }
-
             .auth-mobile-glow {
                 background:
                     radial-gradient(circle at top, var(--auth-accent-glow), transparent 28%),
@@ -176,9 +214,102 @@
                 color: var(--auth-accent) !important;
             }
 
-            /* Light mode shadow on form panel */
-            html[data-theme-resolved="light"] .auth-form-panel {
-                box-shadow: -20px 0 60px -20px rgba(15, 23, 42, 0.08);
+            /* ===== AUTH FORM CARD ===== */
+            .auth-form-card {
+                min-height: 0;
+            }
+
+            /* Form heading — same size across all auth pages */
+            .auth-form-heading {
+                color: var(--auth-text) !important;
+                font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+                font-size: clamp(1.75rem, 3vw, 2rem);
+                font-weight: 800;
+                line-height: 1.15;
+                letter-spacing: -0.02em;
+                margin-bottom: 2rem;
+            }
+
+            /* Auth logo — consistent sizing, color handled by asset swap */
+            .auth-logo {
+                width: auto !important;
+                height: 2.5rem !important;
+                max-width: 11rem !important;
+                object-fit: contain !important;
+            }
+
+            /* ===== LEFT SHOWCASE IMAGE + OVERLAYS ===== */
+            .auth-showcase-image {
+                /* slight brightness reduction so gradients have something to work with */
+                filter: saturate(0.95) contrast(1.02) brightness(0.82);
+            }
+
+            html[data-theme-resolved="dark"] .auth-showcase-image {
+                filter: saturate(0.95) contrast(1.04) brightness(0.72);
+            }
+
+            /* Main cinematic overlay — same structure in light/dark */
+            .auth-showcase-overlay {
+                position: absolute;
+                inset: 0;
+                background:
+                    linear-gradient(180deg, rgba(10,10,11,0.18) 0%, rgba(10,10,11,0.28) 42%, rgba(10,10,11,0.58) 100%),
+                    linear-gradient(90deg, rgba(10,10,11,0.18) 0%, rgba(10,10,11,0.06) 48%, rgba(10,10,11,0.20) 100%);
+            }
+
+            html[data-theme-resolved="dark"] .auth-showcase-overlay {
+                background:
+                    linear-gradient(180deg, rgba(10,10,11,0.22) 0%, rgba(10,10,11,0.32) 42%, rgba(10,10,11,0.62) 100%),
+                    linear-gradient(90deg, rgba(10,10,11,0.20) 0%, rgba(10,10,11,0.08) 48%, rgba(10,10,11,0.24) 100%);
+            }
+
+            /* Accent tint overlay */
+            .auth-left-accent-overlay {
+                background-color: var(--auth-accent-glow) !important;
+            }
+
+            /* Scrim behind text — strong bottom-up gradient for readability */
+            .auth-showcase-text-scrim {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 58%;
+                background: linear-gradient(0deg, rgba(10,10,11,0.88) 0%, rgba(10,10,11,0.58) 48%, transparent 100%);
+            }
+
+            /* ===== LEFT SHOWCASE TEXT — always white regardless of theme ===== */
+            .auth-showcase-copy {
+                position: absolute;
+                bottom: 4rem;
+                left: 4rem;
+                right: 4rem;
+                z-index: 10;
+                max-width: 36rem;
+            }
+
+            .auth-showcase-title {
+                color: #FFFFFF !important;
+                font-family: Georgia, "Times New Roman", serif;
+                font-size: clamp(2.4rem, 3.8vw, 3.2rem);
+                font-weight: 700;
+                line-height: 1.0;
+                letter-spacing: -0.02em;
+                margin-bottom: 1.25rem;
+                text-shadow: 0 4px 22px rgba(0, 0, 0, 0.85);
+            }
+
+            .auth-showcase-subtitle {
+                color: #E5E7EB !important;
+                font-size: 1.0625rem;
+                line-height: 1.65;
+                max-width: 34rem;
+                text-shadow: 0 3px 18px rgba(0, 0, 0, 0.75);
+            }
+
+            .auth-showcase-list-item {
+                color: #FFFFFF !important;
+                text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
             }
         </style>
         {{ $head ?? '' }}
@@ -193,45 +324,56 @@
 
         <div class="auth-page auth-page-bg flex min-h-screen w-full">
             <!-- Left Side: Image / Showcase (hidden on mobile) -->
-            <div class="relative hidden w-1/2 lg:block">
+            <div class="auth-showcase hidden w-1/2 lg:block">
                 <a href="{{ route('home') }}" class="absolute top-10 left-12 z-20 transition-transform hover:scale-105 w-fit" data-skip-loader="true">
                     <x-brand.image
                         light="manake-logo-blue.png"
                         dark="manake-logo-white.png"
                         alt="{{ $brandName }}"
-                        img-class="h-10 w-auto object-contain"
+                        img-class="auth-logo object-contain"
                         :swap-in-dark="true"
                     />
                 </a>
-                <img src="{{ site_asset('images/hero-bg-light.jpg') }}" alt="Cinematic Camera" class="absolute inset-0 h-full w-full object-cover">
-                <!-- Gradient Overlay: balanced so text is readable without being too dark -->
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0B]/85 via-[#0A0A0B]/30 to-[#0A0A0B]/10"></div>
-                <div class="auth-left-accent-overlay absolute inset-0 mix-blend-overlay opacity-60"></div>
-                <!-- Extra readability gradient behind showcase text -->
-                <div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#0A0A0B]/70 via-[#0A0A0B]/20 to-transparent"></div>
-                
-                <!-- Showcase Content -->
-                <div class="absolute bottom-16 left-16 right-16 z-10">
+
+                <!-- Background image -->
+                <img
+                    src="{{ site_asset('images/hero-bg-light.jpg') }}"
+                    alt="Cinematic Camera"
+                    class="auth-showcase-image absolute inset-0 h-full w-full object-cover"
+                >
+
+                <!-- Cinematic overlay -->
+                <div class="auth-showcase-overlay"></div>
+
+                <!-- Accent tint -->
+                <div class="auth-left-accent-overlay absolute inset-0 mix-blend-overlay opacity-45"></div>
+
+                <!-- Bottom scrim for text readability -->
+                <div class="auth-showcase-text-scrim"></div>
+
+                <!-- Showcase Copy -->
+                <div class="auth-showcase-copy">
                     @if ($compactAuthShowcaseTitle)
-                        <h1 class="font-serif text-5xl font-bold tracking-tight text-white mb-6 drop-shadow-[0_4px_20px_rgba(0,0,0,0.65)]">
+                        <h1 class="auth-showcase-title">
                             {{ $compactAuthShowcaseTitle }}
                         </h1>
                     @endif
+
                     @if ($compactAuthShowcaseText)
-                        <p class="max-w-xl text-lg text-[#D6D6DC] drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)]">
+                        <p class="auth-showcase-subtitle">
                             {{ $compactAuthShowcaseText }}
                         </p>
                     @else
-                        <p class="max-w-xl text-lg text-[#D6D6DC] drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)]">
+                        <p class="auth-showcase-subtitle">
                             {{ __('ui.auth.aside_default_text') }}
                         </p>
                     @endif
-                    
+
                     @if(count($asidePoints) > 0)
                         <ul class="mt-8 space-y-3">
                             @foreach($asidePoints as $point)
-                            <li class="flex items-center gap-3 text-white font-medium">
-                                <svg class="auth-aside-check-icon h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <li class="auth-showcase-list-item flex items-center gap-3 font-medium">
+                                <svg class="auth-aside-check-icon h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                                 {{ $point }}
@@ -243,23 +385,24 @@
             </div>
 
             <!-- Right Side: Form -->
-            <div class="auth-form-panel relative flex w-full flex-col justify-center px-6 py-12 lg:w-1/2 sm:px-16 md:px-24">
-                <!-- Subtle background glow for mobile where there's no left side image -->
+            <div class="auth-form-panel relative flex w-full flex-col justify-center px-6 py-12 sm:px-16 md:px-24 lg:w-1/2">
+                <!-- Mobile glow (no left image on small screens) -->
                 <div class="auth-mobile-glow pointer-events-none absolute inset-0 lg:hidden"></div>
 
-                <div class="mx-auto w-full max-w-md relative z-10">
+                <div class="auth-form-card relative z-10 mx-auto w-full max-w-md">
+                    <!-- Mobile logo (only shows when left panel is hidden) -->
                     <a href="{{ route('home') }}" class="mb-12 flex items-center transition-transform hover:scale-105 w-fit lg:hidden" data-skip-loader="true">
                         <x-brand.image
                             light="manake-logo-blue.png"
                             dark="manake-logo-white.png"
                             alt="{{ $brandName }}"
-                            img-class="h-10 w-auto object-contain"
+                            img-class="auth-logo object-contain"
                             :swap-in-dark="true"
                         />
                     </a>
 
                     @if ($heading ?? null)
-                        <h2 class="auth-title mb-8 font-serif text-3xl font-bold tracking-tight">
+                        <h2 class="auth-form-heading">
                             {{ $heading }}
                         </h2>
                     @endif
@@ -267,7 +410,7 @@
                     <div class="flex w-full flex-col gap-5">
                         {{ $slot }}
                     </div>
-                    
+
                     @if ($showBackHome ?? true)
                         <a href="{{ $backUrl }}" class="auth-back-home auth-muted mt-10 inline-flex w-fit items-center text-sm font-semibold transition" data-skip-loader="true">
                             &larr; {{ $backLabel }}
