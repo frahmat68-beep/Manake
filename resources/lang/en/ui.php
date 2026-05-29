@@ -341,6 +341,11 @@ return [
         'profile_address_label' => 'Address',
         'profile_update_link_label' => 'Update profile',
         'sidebar_qty_template' => 'Qty :qty',
+        'kicker' => 'Checkout',
+        'security_verified' => 'Security Verified by Midtrans Snap',
+        'unit_singular' => 'unit',
+        'unit_plural' => 'units',
+        'empty_catalog_cta' => 'Back to Catalog',
         'messages' => [
             'sync_failed' => 'Failed to sync payment status.',
             'checkout_failed' => 'Checkout failed. Please review your data.',

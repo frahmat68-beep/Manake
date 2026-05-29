@@ -341,6 +341,11 @@ return [
         'profile_address_label' => 'Alamat',
         'profile_update_link_label' => 'Perbarui profil',
         'sidebar_qty_template' => 'Qty :qty',
+        'kicker' => 'Checkout',
+        'security_verified' => 'Keamanan diverifikasi oleh Midtrans Snap',
+        'unit_singular' => 'unit',
+        'unit_plural' => 'unit',
+        'empty_catalog_cta' => 'Kembali ke Katalog',
         'messages' => [
             'sync_failed' => 'Gagal sinkron status pembayaran.',
             'checkout_failed' => 'Konfirmasi sewa gagal. Silakan cek kembali.',

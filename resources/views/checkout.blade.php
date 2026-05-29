@@ -2,6 +2,201 @@
 
 @section('title', setting('copy.checkout.title', __('ui.checkout.title')))
 
+@push('head')
+    <style>
+        .checkout-page {
+            --checkout-accent: #D4A843;
+            --checkout-accent-hover: #E0BA5D;
+            --checkout-accent-text: #0A0A0B;
+            --checkout-accent-soft: rgba(212, 168, 67, 0.12);
+            --checkout-accent-border: rgba(212, 168, 67, 0.28);
+            --checkout-accent-glow: rgba(212, 168, 67, 0.18);
+
+            --checkout-bg: #0A0A0B;
+            --checkout-surface: #111113;
+            --checkout-surface-soft: rgba(17, 17, 19, 0.72);
+            --checkout-surface-muted: #0A0A0B;
+            --checkout-border: #1A1A1E;
+            --checkout-text: #E8E8EC;
+            --checkout-muted: #A0A0A8;
+            --checkout-placeholder: #66666C;
+        }
+
+        html[data-theme-resolved="light"] .checkout-page {
+            --checkout-accent: #2563EB;
+            --checkout-accent-hover: #1D4ED8;
+            --checkout-accent-text: #FFFFFF;
+            --checkout-accent-soft: rgba(37, 99, 235, 0.10);
+            --checkout-accent-border: rgba(37, 99, 235, 0.24);
+            --checkout-accent-glow: rgba(37, 99, 235, 0.12);
+
+            --checkout-bg: #F8FAFC;
+            --checkout-surface: #FFFFFF;
+            --checkout-surface-soft: rgba(255, 255, 255, 0.92);
+            --checkout-surface-muted: #F8FAFC;
+            --checkout-border: #E5E7EB;
+            --checkout-text: #111827;
+            --checkout-muted: #4B5563;
+            --checkout-placeholder: #6B7280;
+        }
+
+        .checkout-page-bg {
+            background-color: var(--checkout-bg) !important;
+            color: var(--checkout-text) !important;
+        }
+
+        .checkout-card {
+            background: var(--checkout-surface-soft) !important;
+            border-color: var(--checkout-border) !important;
+            color: var(--checkout-text) !important;
+        }
+
+        .checkout-card-solid {
+            background: var(--checkout-surface) !important;
+            border-color: var(--checkout-border) !important;
+            color: var(--checkout-text) !important;
+        }
+
+        .checkout-inner {
+            background: var(--checkout-surface-muted) !important;
+            border-color: var(--checkout-border) !important;
+            color: var(--checkout-text) !important;
+        }
+
+        .checkout-title {
+            color: var(--checkout-text) !important;
+        }
+
+        .checkout-muted {
+            color: var(--checkout-muted) !important;
+        }
+
+        .checkout-border {
+            border-color: var(--checkout-border) !important;
+        }
+
+        .checkout-accent-text {
+            color: var(--checkout-accent) !important;
+        }
+
+        .checkout-accent-bg {
+            background: var(--checkout-accent) !important;
+            background-color: var(--checkout-accent) !important;
+            color: var(--checkout-accent-text) !important;
+            border-color: var(--checkout-accent) !important;
+        }
+
+        .checkout-accent-bg:hover {
+            background: var(--checkout-accent-hover) !important;
+            background-color: var(--checkout-accent-hover) !important;
+        }
+
+        .checkout-accent-soft {
+            background: var(--checkout-accent-soft) !important;
+            border-color: var(--checkout-accent-border) !important;
+            color: var(--checkout-accent) !important;
+        }
+
+        .checkout-accent-glow {
+            background-color: var(--checkout-accent-glow) !important;
+        }
+
+        .checkout-accent-dot {
+            background-color: var(--checkout-accent) !important;
+        }
+
+        .checkout-secondary-button {
+            background: var(--checkout-surface) !important;
+            border: 1px solid var(--checkout-border) !important;
+            color: var(--checkout-text) !important;
+        }
+
+        .checkout-secondary-button:hover {
+            border-color: var(--checkout-accent-border) !important;
+            color: var(--checkout-accent) !important;
+        }
+
+        .checkout-input {
+            background: var(--checkout-surface-muted) !important;
+            border: 1px solid var(--checkout-border) !important;
+            color: var(--checkout-text) !important;
+            border-radius: 0.75rem !important;
+            outline: none !important;
+        }
+
+        .checkout-input:disabled {
+            opacity: 1 !important;
+            -webkit-text-fill-color: var(--checkout-text) !important;
+        }
+
+        .checkout-textarea {
+            background: var(--checkout-surface-muted) !important;
+            border: 1px solid var(--checkout-border) !important;
+            color: var(--checkout-text) !important;
+            border-radius: 0.75rem !important;
+            outline: none !important;
+            resize: none;
+        }
+
+        .checkout-textarea:disabled {
+            opacity: 1 !important;
+            -webkit-text-fill-color: var(--checkout-text) !important;
+        }
+
+        .checkout-checkbox {
+            border-color: var(--checkout-border) !important;
+            color: var(--checkout-accent) !important;
+        }
+
+        .checkout-checkbox:focus {
+            box-shadow: 0 0 0 3px var(--checkout-accent-soft) !important;
+        }
+
+        .checkout-accent-link:hover {
+            color: var(--checkout-accent-hover) !important;
+        }
+
+        html[data-theme-resolved="light"] .checkout-page .checkout-card,
+        html[data-theme-resolved="light"] .checkout-page .checkout-card-solid {
+            box-shadow: 0 20px 50px -35px rgba(15, 23, 42, 0.22);
+        }
+
+        .checkout-alert-info {
+            border-color: #CBD5E1 !important;
+            background: #F8FAFC !important;
+            color: #334155 !important;
+        }
+
+        .checkout-alert-success {
+            border-color: rgba(16, 185, 129, 0.28) !important;
+            background: #ECFDF5 !important;
+            color: #047857 !important;
+        }
+
+        .checkout-alert-error {
+            border-color: rgba(244, 63, 94, 0.28) !important;
+            background: #FFF1F2 !important;
+            color: #BE123C !important;
+        }
+
+        html[data-theme-resolved="dark"] .checkout-alert-info {
+            border-color: rgba(148, 163, 184, 0.28) !important;
+            background: rgba(15, 23, 42, 0.40) !important;
+            color: #CBD5E1 !important;
+        }
+
+        html[data-theme-resolved="dark"] .checkout-alert-success {
+            background: rgba(6, 78, 59, 0.38) !important;
+            color: #A7F3D0 !important;
+        }
+
+        html[data-theme-resolved="dark"] .checkout-alert-error {
+            background: rgba(136, 19, 55, 0.38) !important;
+            color: #FDA4AF !important;
+        }
+    </style>
+@endpush
+
 @section('content')
     @php
         $formatIdr = fn ($value) => 'Rp ' . number_format($value, 0, ',', '.');
@@ -41,22 +236,28 @@
         $checkoutMsgPayFailed = __('ui.checkout.messages.pay_failed');
         $checkoutMsgPopupClosed = __('ui.checkout.messages.popup_closed');
         $checkoutMsgGenericError = __('ui.checkout.messages.generic_error');
+
+        $checkoutKicker = __('ui.checkout.kicker');
+        $checkoutSecurityVerified = __('ui.checkout.security_verified');
+        $checkoutUnitSingular = __('ui.checkout.unit_singular');
+        $checkoutUnitPlural = __('ui.checkout.unit_plural');
+        $checkoutEmptyCatalogCta = __('ui.checkout.empty_catalog_cta');
     @endphp
 
-    <div class="manake-page bg-[#0A0A0B] text-[#E8E8EC]">
+    <div class="checkout-page checkout-page-bg manake-page">
         <div class="manake-page-frame space-y-8">
-            <header class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl animate-fade-up sm:p-8">
+            <header class="checkout-card rounded-3xl border p-6 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.30)] animate-fade-up sm:p-8">
                 <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                     <div class="max-w-3xl">
-                        <p class="text-xs font-black uppercase tracking-[0.2em] text-[#D4A843]">{{ __('Checkout') }}</p>
-                        <h1 class="mt-3 font-serif text-4xl font-black text-[#E8E8EC] sm:text-5xl">
+                        <p class="checkout-accent-text text-xs font-black uppercase tracking-[0.2em]">{{ $checkoutKicker }}</p>
+                        <h1 class="checkout-title mt-3 font-serif text-4xl font-black sm:text-5xl">
                             {{ $checkoutTitle }}
                         </h1>
-                        <p class="mt-3 max-w-2xl text-sm leading-7 text-[#A0A0A8] sm:text-base">
+                        <p class="checkout-muted mt-3 max-w-2xl text-sm leading-7 sm:text-base">
                             {{ $checkoutSubtitle }}
                         </p>
                     </div>
-                    <a href="{{ route('cart') }}" class="inline-flex w-full items-center justify-center rounded-md border border-[#1A1A1E] bg-[#0A0A0B] px-5 py-3 font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843] lg:w-auto">
+                    <a href="{{ route('cart') }}" class="checkout-secondary-button inline-flex w-full items-center justify-center rounded-xl px-5 py-3 font-bold transition lg:w-auto">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
@@ -69,17 +270,17 @@
                 <div class="lg:col-span-8 space-y-8">
                     <div id="checkout-alert" class="hidden rounded-md border px-5 py-4 text-sm font-semibold"></div>
 
-                    <article class="rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl animate-fade-up sm:p-8">
-                        <h2 class="flex items-center gap-3 text-2xl font-black text-[#E8E8EC]">
-                            <span class="h-8 w-1.5 rounded-full bg-[#D4A843]"></span>
+                    <article class="checkout-card rounded-3xl border p-6 shadow-2xl animate-fade-up sm:p-8">
+                        <h2 class="checkout-title flex items-center gap-3 text-2xl font-black">
+                            <span class="checkout-accent-dot h-8 w-1.5 rounded-full"></span>
                             {{ $checkoutDetailTitle }}
                         </h2>
 
                         @if ($isCartEmpty)
-                            <div class="mt-8 rounded-md border border-dashed border-[#1A1A1E] px-6 py-12 text-center">
-                                <p class="text-lg font-semibold text-[#A0A0A8]">{{ $checkoutEmptyCart }}</p>
-                                <a href="{{ route('catalog') }}" class="mt-6 inline-flex rounded-md bg-[#D4A843] px-5 py-3 font-bold text-[#0A0A0B]">
-                                    {{ __('app.actions.back_to_catalog') }}
+                            <div class="checkout-border mt-8 rounded-md border border-dashed px-6 py-12 text-center">
+                                <p class="checkout-muted text-lg font-semibold">{{ $checkoutEmptyCart }}</p>
+                                <a href="{{ route('catalog') }}" class="checkout-accent-bg mt-6 inline-flex rounded-xl px-5 py-3 font-bold">
+                                    {{ $checkoutEmptyCatalogCta }}
                                 </a>
                             </div>
                         @else
@@ -90,21 +291,21 @@
                                         $endDate = ! empty($item['rental_end_date']) ? \Carbon\Carbon::parse($item['rental_end_date']) : null;
                                         $lineEstimate = (int) ($item['estimated_total'] ?? ((int) ($item['price'] ?? 0) * (int) ($item['qty'] ?? 1)));
                                     @endphp
-                                    <div class="flex flex-col gap-4 rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-5 sm:flex-row sm:items-center sm:justify-between">
+                                    <div class="checkout-inner flex flex-col gap-4 rounded-2xl border p-5 sm:flex-row sm:items-center sm:justify-between">
                                         <div class="flex items-center gap-4">
-                                            <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-[#1A1A1E] bg-[#111113] p-2 shadow-sm">
+                                            <div class="checkout-card-solid h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border p-2 shadow-sm">
                                                 <img src="{{ site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment') }}" alt="{{ $item['name'] }}" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
                                             </div>
                                             <div>
-                                                <p class="text-lg font-black text-[#E8E8EC]">{{ $item['name'] }}</p>
-                                                <p class="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#A0A0A8]">
+                                                <p class="checkout-title text-lg font-black">{{ $item['name'] }}</p>
+                                                <p class="checkout-muted mt-1 text-xs font-semibold uppercase tracking-[0.18em]">
                                                     {{ strtr($checkoutQtyTemplate, [
                                                         ':qty' => (string) ($item['qty'] ?? 0),
                                                         ':price' => $formatIdr((int) ($item['price'] ?? 0)),
                                                     ]) }}
                                                 </p>
                                                 @if ($startDate && $endDate)
-                                                    <span class="mt-3 inline-flex rounded-full border border-[#1A1A1E] bg-[#111113] px-3 py-1 text-[10px] font-black uppercase tracking-widest text-[#D4A843]">
+                                                    <span class="checkout-accent-soft mt-3 inline-flex rounded-full border px-3 py-1 text-[10px] font-black uppercase tracking-widest">
                                                         {{ $startDate->translatedFormat('d M') }} - {{ $endDate->translatedFormat('d M Y') }}
                                                     </span>
                                                 @else
@@ -112,47 +313,47 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <p class="text-xl font-black tracking-tight text-[#E8E8EC]">{{ $formatIdr($lineEstimate) }}</p>
+                                        <p class="checkout-title text-xl font-black tracking-tight">{{ $formatIdr($lineEstimate) }}</p>
                                     </div>
                                 @endforeach
                             </div>
 
                             <form id="checkout-form" class="mt-10 space-y-8">
                                 @csrf
-                                <div class="rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-6">
-                                    <h3 class="mb-5 flex items-center gap-3 text-xl font-black text-[#E8E8EC]">
-                                        <svg class="h-6 w-6 text-[#D4A843]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                <div class="checkout-inner rounded-2xl border p-6">
+                                    <h3 class="checkout-title mb-5 flex items-center gap-3 text-xl font-black">
+                                        <svg class="checkout-accent-text h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                         {{ $checkoutProfileTitle }}
                                     </h3>
                                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div>
-                                            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-[#A0A0A8]">{{ $checkoutProfileNameLabel }}</label>
-                                            <input type="text" value="{{ $profile?->full_name ?? '-' }}" class="manake-input" disabled>
+                                            <label class="checkout-muted mb-2 block text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutProfileNameLabel }}</label>
+                                            <input type="text" value="{{ $profile?->full_name ?? '-' }}" class="checkout-input w-full px-4 py-3 text-sm" disabled>
                                         </div>
                                         <div>
-                                            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-[#A0A0A8]">{{ $checkoutProfilePhoneLabel }}</label>
-                                            <input type="text" value="{{ $profile?->phone ?? '-' }}" class="manake-input" disabled>
+                                            <label class="checkout-muted mb-2 block text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutProfilePhoneLabel }}</label>
+                                            <input type="text" value="{{ $profile?->phone ?? '-' }}" class="checkout-input w-full px-4 py-3 text-sm" disabled>
                                         </div>
                                         <div class="md:col-span-2">
-                                            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-[#A0A0A8]">{{ $checkoutProfileAddressLabel }}</label>
-                                            <textarea rows="3" class="manake-textarea" disabled>{{ $profile?->address_text ?? $profile?->address ?? '-' }}</textarea>
+                                            <label class="checkout-muted mb-2 block text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutProfileAddressLabel }}</label>
+                                            <textarea rows="3" class="checkout-textarea w-full px-4 py-3 text-sm" disabled>{{ $profile?->address_text ?? $profile?->address ?? '-' }}</textarea>
                                         </div>
                                     </div>
-                                    <div class="mt-5 flex flex-col gap-3 rounded-md border border-[#1A1A1E] bg-[#111113] p-4 sm:flex-row sm:items-center sm:justify-between">
-                                        <p class="text-xs font-semibold text-[#A0A0A8]">{{ $checkoutProfileHint }}</p>
-                                        <a href="{{ route('profile') }}" class="text-xs font-black uppercase tracking-[0.18em] text-[#D4A843] hover:text-[#e0ba5d]">
+                                    <div class="checkout-card-solid mt-5 flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between">
+                                        <p class="checkout-muted text-xs font-semibold">{{ $checkoutProfileHint }}</p>
+                                        <a href="{{ route('profile') }}" class="checkout-accent-text checkout-accent-link text-xs font-black uppercase tracking-[0.18em] transition">
                                             {{ $checkoutProfileUpdateLinkLabel }}
                                         </a>
                                     </div>
                                 </div>
 
                                 <div class="space-y-4">
-                                    <label class="flex cursor-pointer items-start gap-4 rounded-md border border-[#1A1A1E] bg-[#111113] p-5">
-                                        <input type="checkbox" name="confirm_profile" class="mt-1 h-5 w-5 rounded border-[#1A1A1E] text-[#D4A843] focus:ring-[#D4A843]" required>
-                                        <span class="text-sm font-semibold leading-7 text-[#A0A0A8]">{{ $checkoutConfirmProfile }}</span>
+                                    <label class="checkout-card-solid flex cursor-pointer items-start gap-4 rounded-2xl border p-5">
+                                        <input type="checkbox" name="confirm_profile" class="checkout-checkbox mt-1 h-5 w-5 rounded" required>
+                                        <span class="checkout-muted text-sm font-semibold leading-7">{{ $checkoutConfirmProfile }}</span>
                                     </label>
 
-                                    <button type="submit" id="checkout-submit" class="w-full rounded-md bg-[#D4A843] py-4 text-base font-black text-[#0A0A0B] transition hover:bg-[#e0ba5d]">
+                                    <button type="submit" id="checkout-submit" class="checkout-accent-bg flex w-full items-center justify-center gap-2 rounded-xl py-4 text-base font-black transition disabled:cursor-not-allowed disabled:opacity-60">
                                         {{ $checkoutSubmitButton }}
                                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -163,55 +364,59 @@
                         @endif
                     </article>
 
-                    <article class="flex items-center gap-5 rounded-md border border-[#1A1A1E] bg-[#111113] p-5">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-md bg-[#D4A843] text-[#0A0A0B]">
+                    <article class="checkout-card-solid flex items-center gap-5 rounded-2xl border p-5">
+                        <div class="checkout-accent-bg flex h-14 w-14 items-center justify-center rounded-2xl">
                             <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.041 11.955 11.955 0 013 12c0 5.391 3.991 9.928 9 10.822 5.009-.894 9-5.43 9-10.822 0-2.08-.528-4.047-1.455-5.764z"></path></svg>
                         </div>
                         <div>
-                            <h3 class="text-xl font-black text-[#E8E8EC]">{{ $checkoutPaymentTitle }}</h3>
-                            <p class="mt-1 text-sm leading-7 text-[#A0A0A8]">{{ $checkoutPaymentNote }}</p>
+                            <h3 class="checkout-title text-xl font-black">{{ $checkoutPaymentTitle }}</h3>
+                            <p class="checkout-muted mt-1 text-sm leading-7">{{ $checkoutPaymentNote }}</p>
                         </div>
                     </article>
                 </div>
 
                 <aside class="lg:col-span-4">
                     <div class="sticky top-6 space-y-6 animate-fade-up" style="animation-delay: 200ms">
-                        <article class="relative overflow-hidden rounded-lg border border-[#1A1A1E] bg-[#111113] p-6 text-[#E8E8EC] shadow-2xl">
-                            <div class="absolute right-0 top-0 h-40 w-40 translate-x-1/3 -translate-y-1/3 rounded-full bg-[#D4A843]/20 blur-3xl"></div>
+                        <article class="checkout-card-solid relative overflow-hidden rounded-3xl border p-6 shadow-2xl">
+                            <div class="checkout-accent-glow absolute right-0 top-0 h-40 w-40 translate-x-1/3 -translate-y-1/3 rounded-full blur-3xl"></div>
                             <div class="relative z-10">
-                                <h2 class="manake-heading flex items-center gap-3 text-2xl font-black">
-                                    <svg class="h-6 w-6 text-[#D4A843]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                <h2 class="checkout-title flex items-center gap-3 text-2xl font-black">
+                                    <svg class="checkout-accent-text h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                                     {{ $checkoutSummaryTitle }}
                                 </h2>
 
-                                <div class="mt-6 space-y-3 border-t border-white/10 pt-6">
-                                    <div class="flex items-center justify-between text-sm text-[#A0A0A8]">
+                                <div class="checkout-border mt-6 space-y-3 border-t pt-6">
+                                    <div class="flex items-center justify-between text-sm checkout-muted">
                                         <span>{{ $checkoutSummarySubtotal }}</span>
-                                        <span class="font-bold text-white">{{ $formatIdr($subtotalPerDay ?? 0) }}</span>
+                                        <span class="font-bold checkout-title">{{ $formatIdr($subtotalPerDay ?? 0) }}</span>
                                     </div>
-                                    <div class="flex items-center justify-between text-sm text-[#A0A0A8]">
+                                    <div class="flex items-center justify-between text-sm checkout-muted">
                                         <span>{{ $checkoutSummaryEstimate }}</span>
-                                        <span class="font-bold text-white">{{ $formatIdr($estimatedSubtotal) }}</span>
+                                        <span class="font-bold checkout-title">{{ $formatIdr($estimatedSubtotal) }}</span>
                                     </div>
-                                    <div class="flex items-center justify-between text-sm text-[#A0A0A8]">
+                                    <div class="flex items-center justify-between text-sm checkout-muted">
                                         <span>{{ $checkoutSummaryTax }}</span>
-                                        <span class="font-bold text-white">{{ $formatIdr($taxAmount) }}</span>
+                                        <span class="font-bold checkout-title">{{ $formatIdr($taxAmount) }}</span>
                                     </div>
-                                    <div class="mt-4 border-t border-white/10 pt-4">
-                                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#D4A843]">{{ $checkoutSummaryTotal }}</p>
-                                        <p class="mt-2 text-4xl font-black tracking-tight text-[#E8E8EC]" id="summary-total-side">{{ $formatIdr($estimatedTotal) }}</p>
+                                    <div class="checkout-border mt-4 border-t pt-4">
+                                        <p class="checkout-accent-text text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutSummaryTotal }}</p>
+                                        <p class="checkout-title mt-2 text-4xl font-black tracking-tight" id="summary-total-side">{{ $formatIdr($estimatedTotal) }}</p>
                                     </div>
                                 </div>
 
                                 <div class="mt-6 space-y-3">
                                     @foreach ($cartItems as $item)
-                                        <div class="flex items-center gap-3 rounded-md border border-[#1A1A1E] bg-[#0A0A0B] p-3">
-                                            <div class="h-10 w-10 flex-shrink-0 rounded-md bg-[#111113] p-1.5">
+                                        <div class="checkout-inner flex items-center gap-3 rounded-2xl border p-3">
+                                            <div class="checkout-card-solid h-10 w-10 flex-shrink-0 rounded-md p-1.5">
                                                 <img src="{{ site_media_url($item['image_path'] ?? $item['image'] ?? null) ?: config('placeholders.equipment') }}" alt="" class="h-full w-full object-contain" onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';">
                                             </div>
                                             <div class="min-w-0 flex-1">
                                                 <p class="truncate text-[11px] font-black uppercase tracking-wider">{{ $item['name'] }}</p>
-                                                <p class="text-[10px] font-semibold text-[#A0A0A8]">{{ (int) ($item['qty'] ?? 0) }} Unit</p>
+                                                @php
+                                                    $sidebarQty = (int) ($item['qty'] ?? 0);
+                                                    $sidebarUnitLabel = $sidebarQty === 1 ? $checkoutUnitSingular : $checkoutUnitPlural;
+                                                @endphp
+                                                <p class="checkout-muted text-[10px] font-semibold">{{ $sidebarQty }} {{ $sidebarUnitLabel }}</p>
                                             </div>
                                         </div>
                                     @endforeach
@@ -219,8 +424,8 @@
                             </div>
                         </article>
 
-                        <div class="manake-card text-center">
-                            <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#A0A0A8]">{{ __('Security Verified by Midtrans Snap') }}</p>
+                        <div class="checkout-card-solid rounded-2xl border p-5 text-center">
+                            <p class="checkout-muted text-xs font-bold uppercase tracking-[0.2em]">{{ $checkoutSecurityVerified }}</p>
                         </div>
                     </div>
                 </aside>
@@ -250,11 +455,11 @@
                     alertBox.classList.add('hidden');
                     return;
                 }
-                const baseClass = 'rounded-xl border px-4 py-3 text-sm';
+                const baseClass = 'rounded-xl border px-4 py-3 text-sm font-semibold';
                 const styles = {
-                    info: 'border-slate-200 bg-slate-50 text-slate-700',
-                    success: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-                    error: 'border-rose-200 bg-rose-50 text-rose-700',
+                    info: 'checkout-alert-info',
+                    success: 'checkout-alert-success',
+                    error: 'checkout-alert-error',
                 };
                 alertBox.className = `${baseClass} ${styles[type] || styles.info}`;
                 alertBox.textContent = message;
