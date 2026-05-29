@@ -70,7 +70,7 @@
 
 <aside
     data-manake-sidebar="admin"
-    class="fixed inset-y-0 left-0 z-50 flex -translate-x-full flex-col border-r admin-border bg-[color:var(--admin-bg)] text-[color:var(--admin-text)] transition-all duration-300 lg:translate-x-0"
+    class="admin-sidebar fixed inset-y-0 left-0 z-50 flex -translate-x-full flex-col border-r transition-all duration-300 lg:translate-x-0"
     :class="{
         'translate-x-0': sidebarOpen,
         '-translate-x-full lg:translate-x-0': !sidebarOpen,
@@ -78,7 +78,7 @@
         'w-20': sidebarCollapsed
     }"
 >
-    <div class="flex h-20 items-center justify-between border-b admin-border px-4">
+    <div class="admin-sidebar-header flex h-20 items-center justify-between border-b px-4">
         <a href="{{ route('admin.dashboard') }}" class="manake-sidebar-brand-link inline-flex items-center overflow-hidden transition-all duration-300" :class="sidebarCollapsed ? 'w-10' : 'w-full'">
             <x-brand.image
                 light="manake-logo-blue.png"
@@ -87,7 +87,7 @@
                 img-class="h-8 w-auto min-w-[32px]"
             />
         </a>
-        <button type="button" data-ui-icon-button class="rounded-lg p-1.5 lg:hidden" @click="sidebarOpen = false" aria-label="{{ __('ui.actions.close') }}">
+        <button type="button" class="admin-secondary-button rounded-lg p-1.5 lg:hidden" @click="sidebarOpen = false" aria-label="{{ __('ui.actions.close') }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -96,14 +96,14 @@
     </div>
 
     <div class="flex-1 overflow-y-auto px-3 py-4 no-scrollbar">
-        <p class="px-2 text-[10px] font-bold uppercase tracking-widest admin-subtle transition-opacity" :class="sidebarCollapsed ? 'opacity-0' : 'opacity-100'">{{ __('ui.admin.sidebar_operational') }}</p>
+        <p class="admin-sidebar-section-label px-2 text-[10px] font-bold uppercase tracking-widest transition-opacity" :class="sidebarCollapsed ? 'opacity-0' : 'opacity-100'">{{ __('ui.admin.sidebar_operational') }}</p>
         <nav class="mt-2 space-y-1">
             @foreach ($primaryItems as $item)
                 <a
                     href="{{ $item['url'] }}"
                     data-nav-item
                     data-nav-active="{{ $activePage === $item['key'] ? 'true' : 'false' }}"
-                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'admin-accent-bg shadow-md' : 'admin-muted hover:bg-[color:var(--admin-surface)] hover:text-[color:var(--admin-text)]' }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'admin-sidebar-nav-active' : 'admin-sidebar-nav-inactive' }}"
                     :title="sidebarCollapsed ? '{{ $item['label'] }}' : ''"
                 >
                     <span class="flex-shrink-0">{!! $item['icon'] !!}</span>
@@ -112,14 +112,14 @@
             @endforeach
         </nav>
 
-        <p class="mt-6 px-2 text-[10px] font-bold uppercase tracking-widest admin-subtle transition-opacity" :class="sidebarCollapsed ? 'opacity-0' : 'opacity-100'">{{ __('ui.admin.sidebar_settings') }}</p>
+        <p class="admin-sidebar-section-label mt-6 px-2 text-[10px] font-bold uppercase tracking-widest transition-opacity" :class="sidebarCollapsed ? 'opacity-0' : 'opacity-100'">{{ __('ui.admin.sidebar_settings') }}</p>
         <nav class="mt-2 space-y-1">
             @foreach ($settingsItems as $item)
                 <a
                     href="{{ $item['url'] }}"
                     data-nav-item
                     data-nav-active="{{ $activePage === $item['key'] ? 'true' : 'false' }}"
-                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'admin-accent-bg shadow-md' : 'admin-muted hover:bg-[color:var(--admin-surface)] hover:text-[color:var(--admin-text)]' }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $activePage === $item['key'] ? 'admin-sidebar-nav-active' : 'admin-sidebar-nav-inactive' }}"
                     :title="sidebarCollapsed ? '{{ $item['label'] }}' : ''"
                 >
                     <span class="flex-shrink-0">{!! $item['icon'] !!}</span>
@@ -129,12 +129,12 @@
         </nav>
     </div>
 
-    <div class="border-t admin-border px-4 py-4">
-        <div class="flex items-center gap-3 rounded-xl admin-card-raised p-2 transition-all" :class="sidebarCollapsed ? 'justify-center' : ''">
-            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full admin-accent-bg text-xs font-semibold">{{ $adminInitial }}</span>
+    <div class="admin-sidebar-footer border-t px-4 py-4">
+        <div class="admin-sidebar-profile-card flex items-center gap-3 rounded-xl p-2 transition-all" :class="sidebarCollapsed ? 'justify-center' : ''">
+            <span class="admin-accent-bg inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-xs font-semibold">{{ $adminInitial }}</span>
             <div class="min-w-0" x-show="!sidebarCollapsed" x-transition.opacity.duration.300ms>
                 <p class="truncate text-sm font-semibold">{{ $adminName }}</p>
-                <p class="truncate text-[10px] uppercase tracking-wide admin-subtle">{{ $adminRole }}</p>
+                <p class="admin-sidebar-section-label truncate text-[10px] uppercase tracking-wide">{{ $adminRole }}</p>
             </div>
         </div>
     </div>

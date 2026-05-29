@@ -449,6 +449,122 @@
             background: #E11D48 !important;
             color: #ffffff !important;
         }
+
+        /* ── Admin Sidebar ──────────────────────────────────────────── */
+        body[data-manake-shell="admin"] .admin-sidebar {
+            background: var(--admin-bg) !important;
+            border-color: var(--admin-border) !important;
+            color: var(--admin-text) !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar {
+            background: #FFFFFF !important;
+            border-color: #E5E7EB !important;
+            color: #111827 !important;
+            box-shadow: 10px 0 35px -30px rgba(15, 23, 42, 0.22);
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-sidebar {
+            background: #05070C !important;
+            border-color: #1A1A1E !important;
+            color: #E8E8EC !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-sidebar-header {
+            border-color: var(--admin-border) !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-header {
+            background: #FFFFFF !important;
+            border-color: #E5E7EB !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-sidebar-footer {
+            border-color: var(--admin-border) !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-footer {
+            background: #FFFFFF !important;
+            border-color: #E5E7EB !important;
+        }
+
+        /* Nav items */
+        body[data-manake-shell="admin"] .admin-sidebar-nav-active {
+            background: var(--admin-accent) !important;
+            color: var(--admin-accent-text) !important;
+            box-shadow: 0 12px 30px -22px var(--admin-accent) !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-sidebar-nav-inactive {
+            color: var(--admin-muted) !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-sidebar-nav-inactive:hover {
+            background: var(--admin-surface) !important;
+            color: var(--admin-text) !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-nav-active {
+            background: #2563EB !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 12px 26px -20px rgba(37, 99, 235, 0.55) !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-nav-inactive {
+            color: #4B5563 !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-nav-inactive:hover {
+            background: #F1F5F9 !important;
+            color: #111827 !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-sidebar-nav-active {
+            background: #D4A843 !important;
+            color: #0A0A0B !important;
+            box-shadow: 0 12px 30px -22px rgba(212, 168, 67, 0.50) !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-sidebar-nav-inactive {
+            color: #A0A0A8 !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-sidebar-nav-inactive:hover {
+            background: #111113 !important;
+            color: #E8E8EC !important;
+        }
+
+        /* Section labels */
+        body[data-manake-shell="admin"] .admin-sidebar-section-label {
+            color: var(--admin-subtle) !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-section-label {
+            color: #6B7280 !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-sidebar-section-label {
+            color: #66666C !important;
+        }
+
+        /* Profile card at the bottom */
+        body[data-manake-shell="admin"] .admin-sidebar-profile-card {
+            background: var(--admin-surface-raised) !important;
+            border: 1px solid var(--admin-border) !important;
+            color: var(--admin-text) !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-profile-card {
+            background: #F1F5F9 !important;
+            border-color: #E5E7EB !important;
+            color: #111827 !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-sidebar-profile-card {
+            background: #151519 !important;
+            border-color: #1A1A1E !important;
+            color: #E8E8EC !important;
+        }
     </style>
 </head>
 <body class="manake-shell" data-admin-panel="true" data-manake-shell="admin">
