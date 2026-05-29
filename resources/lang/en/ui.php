@@ -744,6 +744,7 @@ return [
         'cancel_order_button' => 'Cancel Order',
         'cancel_order_confirm' => 'Are you sure you want to cancel this order?',
         'date_max_window_error' => 'Rental date can only be up to 3 months from today.',
+        'invoice_modal_title_template' => 'Invoice :order',
     ],
     'invoice' => [
         'title' => 'Invoice',

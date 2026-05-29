@@ -2,6 +2,243 @@
 
 @section('title', __('ui.orders.detail_title'))
 
+@push('head')
+    <style>
+        .order-detail-page {
+            --order-accent: #D4A843;
+            --order-accent-hover: #E0BA5D;
+            --order-accent-text: #0A0A0B;
+            --order-accent-soft: rgba(212, 168, 67, 0.12);
+            --order-accent-border: rgba(212, 168, 67, 0.32);
+            --order-accent-glow: rgba(212, 168, 67, 0.16);
+
+            --order-bg: #0A0A0B;
+            --order-surface: #111113;
+            --order-surface-soft: rgba(17, 17, 19, 0.72);
+            --order-surface-muted: #0A0A0B;
+            --order-border: #1A1A1E;
+            --order-text: #E8E8EC;
+            --order-muted: #A0A0A8;
+            --order-subtle: #7C7C84;
+        }
+
+        html[data-theme-resolved="light"] .order-detail-page {
+            --order-accent: #2563EB;
+            --order-accent-hover: #1D4ED8;
+            --order-accent-text: #FFFFFF;
+            --order-accent-soft: rgba(37, 99, 235, 0.10);
+            --order-accent-border: rgba(37, 99, 235, 0.30);
+            --order-accent-glow: rgba(37, 99, 235, 0.12);
+
+            --order-bg: #F8FAFC;
+            --order-surface: #FFFFFF;
+            --order-surface-soft: rgba(255, 255, 255, 0.94);
+            --order-surface-muted: #F8FAFC;
+            --order-border: #E5E7EB;
+            --order-text: #111827;
+            --order-muted: #4B5563;
+            --order-subtle: #6B7280;
+        }
+
+        .order-page-bg {
+            background-color: var(--order-bg) !important;
+            color: var(--order-text) !important;
+        }
+
+        .order-card {
+            background: var(--order-surface-soft) !important;
+            border-color: var(--order-border) !important;
+            color: var(--order-text) !important;
+        }
+
+        .order-card-solid {
+            background: var(--order-surface) !important;
+            border-color: var(--order-border) !important;
+            color: var(--order-text) !important;
+        }
+
+        .order-inner {
+            background: var(--order-surface-muted) !important;
+            border-color: var(--order-border) !important;
+            color: var(--order-text) !important;
+        }
+
+        .order-title {
+            color: var(--order-text) !important;
+        }
+
+        .order-muted {
+            color: var(--order-muted) !important;
+        }
+
+        .order-subtle {
+            color: var(--order-subtle) !important;
+        }
+
+        .order-border {
+            border-color: var(--order-border) !important;
+        }
+
+        .order-accent-text {
+            color: var(--order-accent) !important;
+        }
+
+        .order-accent-bg {
+            background: var(--order-accent) !important;
+            background-color: var(--order-accent) !important;
+            color: var(--order-accent-text) !important;
+            border-color: var(--order-accent) !important;
+        }
+
+        .order-accent-bg:hover {
+            background: var(--order-accent-hover) !important;
+            background-color: var(--order-accent-hover) !important;
+        }
+
+        .order-accent-soft {
+            background: var(--order-accent-soft) !important;
+            border-color: var(--order-accent-border) !important;
+            color: var(--order-accent) !important;
+        }
+
+        .order-accent-dot {
+            background-color: var(--order-accent) !important;
+        }
+
+        .order-accent-glow {
+            background-color: var(--order-accent-glow) !important;
+        }
+
+        .order-accent-border-left {
+            border-left: 5px solid var(--order-accent) !important;
+        }
+
+        .order-accent-ring {
+            box-shadow: 0 0 0 3px var(--order-accent-soft) !important;
+        }
+
+        .order-secondary-button {
+            background: var(--order-surface) !important;
+            border: 1px solid var(--order-border) !important;
+            color: var(--order-text) !important;
+        }
+
+        .order-secondary-button:hover {
+            border-color: var(--order-accent-border) !important;
+            color: var(--order-accent) !important;
+        }
+
+        .order-primary-outline {
+            background: var(--order-accent-soft) !important;
+            border: 1px solid var(--order-accent-border) !important;
+            color: var(--order-accent) !important;
+        }
+
+        .order-primary-outline:hover {
+            background: var(--order-accent) !important;
+            color: var(--order-accent-text) !important;
+        }
+
+        .order-input {
+            background: var(--order-surface) !important;
+            border: 1px solid var(--order-border) !important;
+            color: var(--order-text) !important;
+            border-radius: 0.75rem !important;
+            outline: none !important;
+        }
+
+        .order-input:focus {
+            border-color: var(--order-accent) !important;
+            box-shadow: 0 0 0 3px var(--order-accent-soft) !important;
+        }
+
+        html[data-theme-resolved="light"] .order-input {
+            color-scheme: light !important;
+        }
+
+        html[data-theme-resolved="dark"] .order-input {
+            color-scheme: dark !important;
+        }
+
+        html[data-theme-resolved="light"] .order-detail-page .order-card,
+        html[data-theme-resolved="light"] .order-detail-page .order-card-solid {
+            box-shadow: 0 20px 50px -35px rgba(15, 23, 42, 0.22);
+        }
+
+        .order-status-paid {
+            border-color: rgba(16, 185, 129, 0.28) !important;
+            background: #ECFDF5 !important;
+            color: #047857 !important;
+        }
+
+        .order-status-warning {
+            border-color: rgba(245, 158, 11, 0.28) !important;
+            background: #FFFBEB !important;
+            color: #B45309 !important;
+        }
+
+        .order-status-danger {
+            border-color: rgba(244, 63, 94, 0.28) !important;
+            background: #FFF1F2 !important;
+            color: #BE123C !important;
+        }
+
+        .order-status-neutral {
+            border-color: var(--order-border) !important;
+            background: var(--order-surface-muted) !important;
+            color: var(--order-muted) !important;
+        }
+
+        html[data-theme-resolved="dark"] .order-status-paid {
+            background: rgba(16, 185, 129, 0.12) !important;
+            color: #A7F3D0 !important;
+        }
+
+        html[data-theme-resolved="dark"] .order-status-warning {
+            background: rgba(245, 158, 11, 0.12) !important;
+            color: #FDE68A !important;
+        }
+
+        html[data-theme-resolved="dark"] .order-status-danger {
+            background: rgba(244, 63, 94, 0.12) !important;
+            color: #FDA4AF !important;
+        }
+
+        .order-alert-info {
+            border-color: #CBD5E1 !important;
+            background: #F8FAFC !important;
+            color: #334155 !important;
+        }
+
+        .order-alert-success {
+            border-color: rgba(16, 185, 129, 0.28) !important;
+            background: #ECFDF5 !important;
+            color: #047857 !important;
+        }
+
+        .order-alert-error {
+            border-color: rgba(244, 63, 94, 0.28) !important;
+            background: #FFF1F2 !important;
+            color: #BE123C !important;
+        }
+
+        html[data-theme-resolved="dark"] .order-alert-info {
+            background: rgba(15, 23, 42, 0.40) !important;
+            color: #CBD5E1 !important;
+        }
+
+        html[data-theme-resolved="dark"] .order-alert-success {
+            background: rgba(6, 78, 59, 0.38) !important;
+            color: #A7F3D0 !important;
+        }
+
+        html[data-theme-resolved="dark"] .order-alert-error {
+            background: rgba(136, 19, 55, 0.38) !important;
+            color: #FDA4AF !important;
+        }
+    </style>
+@endpush
+
 @php
     $formatIdr = fn ($value) => 'Rp ' . number_format((int) $value, 0, ',', '.');
     $paymentStatus = $order->status_pembayaran ?? 'pending';
@@ -99,13 +336,13 @@
     $rescheduleConflictPopupMessage = (session('error') && (old('rental_start_date') || old('rental_end_date')))
         ? session('error')
         : null;
-    $orderDetailTitle = setting('copy.order_detail.title', __('ui.orders.detail_title'));
-    $orderDetailSubtitle = setting('copy.order_detail.subtitle', __('ui.orders.page_subtitle'));
-    $orderDetailBackLabel = setting('copy.order_detail.back_label', __('ui.orders.back_to_history'));
-    $orderNumberLabel = setting('copy.order_detail.order_number_label', __('ui.orders.order_number'));
-    $orderProgressTitle = setting('copy.order_detail.progress_title', __('ui.orders.progress_title'));
-    $orderItemsTitle = setting('copy.order_detail.items_title', __('ui.orders.items_title'));
-    $orderPaymentTitle = setting('copy.order_detail.payment_title', __('ui.orders.payment_title'));
+    $orderDetailTitle = __('ui.orders.detail_title');
+    $orderDetailSubtitle = __('ui.orders.page_subtitle');
+    $orderDetailBackLabel = __('ui.orders.back_to_history');
+    $orderNumberLabel = __('ui.orders.order_number');
+    $orderProgressTitle = __('ui.orders.progress_title');
+    $orderItemsTitle = __('ui.orders.items_title');
+    $orderPaymentTitle = __('ui.orders.payment_title');
     $orderScheduleUnavailableTitle = __('ui.orders.schedule_unavailable_title');
     $orderScheduleUnavailableSubtitle = __('ui.orders.schedule_unavailable_subtitle');
     $orderPopupCloseAria = __('ui.actions.close');
@@ -173,12 +410,14 @@
     $orderCancelButton = __('ui.orders.cancel_order_button');
     $orderCancelConfirm = __('ui.orders.cancel_order_confirm');
     $orderDateMaxWindowError = __('ui.orders.date_max_window_error');
+    $orderInvoiceModalTitleTemplate = __('ui.orders.invoice_modal_title_template');
 @endphp
 
 @section('content')
     <div class="order-detail-page order-page-bg min-h-screen">
         <div class="mx-auto w-full max-w-[1280px] px-4 py-8 pb-24 sm:px-6 lg:px-8 lg:py-10 space-y-6">
-            <header class="order-card rounded-3xl border p-6 shadow-[0_24px_70px_-50px_rgba(0,0,0,0.35)] animate-fade-up sm:p-7">
+            <header class="order-card relative overflow-hidden rounded-3xl border p-6 shadow-[0_24px_70px_-50px_rgba(0,0,0,0.35)] animate-fade-up sm:p-7">
+                <span class="order-accent-bg absolute left-0 top-0 h-1 w-full"></span>
                 <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                     <div class="max-w-3xl">
                         <p class="order-accent-text text-xs font-black uppercase tracking-[0.2em]">
@@ -271,7 +510,7 @@
                                     <button
                                         type="button"
                                         id="copy-order-number"
-                                        class="order-secondary-button rounded-lg px-3 py-1.5 text-xs font-semibold transition"
+                                        class="order-primary-outline rounded-lg px-3 py-1.5 text-xs font-semibold transition"
                                     >
                                         {{ $orderCopyReceipt }}
                                     </button>
@@ -281,19 +520,19 @@
                                 {{ $statusMeta['label'] }}
                             </span>
                         </div>
-
+ 
                         <div class="mt-5 grid grid-cols-1 gap-3 text-sm sm:grid-cols-3">
-                            <div class="order-inner rounded-2xl border px-4 py-3">
+                            <div class="order-inner rounded-2xl border px-4 py-3 transition hover:border-[var(--order-accent-border)]">
                                 <p class="text-xs order-muted">{{ $orderOrderIdLabel }}</p>
                                 <p class="mt-1 font-semibold order-title">#{{ $order->id }}</p>
                             </div>
-                            <div class="order-inner rounded-2xl border px-4 py-3">
+                            <div class="order-inner rounded-2xl border px-4 py-3 transition hover:border-[var(--order-accent-border)]">
                                 <p class="text-xs order-muted">{{ $orderRentalPeriodLabel }}</p>
                                 <p class="mt-1 font-semibold order-title">
                                     {{ optional($order->rental_start_date)->format('d M Y') }} - {{ optional($order->rental_end_date)->format('d M Y') }}
                                 </p>
                             </div>
-                            <div class="order-inner rounded-2xl border px-4 py-3">
+                            <div class="order-inner rounded-2xl border px-4 py-3 transition hover:border-[var(--order-accent-border)]">
                                 <p class="text-xs order-muted">{{ $orderRentalStatusLabel }}</p>
                                 <p class="mt-1 font-semibold order-title">{{ $statusLabel($orderStatus) }}</p>
                             </div>
@@ -301,13 +540,16 @@
                     </article>
 
                     <article class="order-card rounded-3xl border p-6 shadow-2xl sm:p-7 animate-fade-up">
-                        <h2 class="order-title text-xl font-black">{{ $orderProgressTitle }}</h2>
+                        <h2 class="order-title flex items-center gap-3 text-xl font-black">
+                            <span class="order-accent-dot h-3 w-3 rounded-full"></span>
+                            {{ $orderProgressTitle }}
+                        </h2>
                         <div class="mt-4 space-y-3">
                             @foreach ($timeline as $step)
                                 @php
-                                    $stepClass = $step['done']
-                                        ? 'order-inner'
-                                        : ($step['active'] ? 'order-accent-soft' : 'order-card-solid');
+                                    $stepClass = $step['done'] || $step['active']
+                                        ? 'order-accent-soft'
+                                        : 'order-inner';
                                     $dotClass = ($step['done'] || $step['active'])
                                         ? 'order-accent-dot'
                                         : 'bg-slate-300 dark:bg-[#2A2A2E]';
@@ -337,7 +579,10 @@
                     </article>
 
                     <article class="order-card rounded-3xl border p-6 shadow-2xl sm:p-7 animate-fade-up">
-                        <h2 class="order-title text-xl font-black">{{ $orderItemsTitle }}</h2>
+                        <h2 class="order-title flex items-center gap-3 text-xl font-black">
+                            <span class="order-accent-dot h-3 w-3 rounded-full"></span>
+                            {{ $orderItemsTitle }}
+                        </h2>
                         <div class="mt-4 space-y-3">
                             @forelse ($order->items as $item)
                                 <div class="order-inner rounded-2xl border p-4">
@@ -392,7 +637,10 @@
                     <article class="order-card-solid relative overflow-hidden rounded-3xl border p-6 shadow-2xl">
                         <span class="order-accent-glow pointer-events-none absolute right-0 top-0 h-36 w-36 translate-x-1/3 -translate-y-1/3 rounded-full blur-3xl"></span>
                         <div class="relative z-10">
-                            <h2 class="order-title text-2xl font-black mb-5">{{ $orderPaymentTitle }}</h2>
+                            <h2 class="order-title mb-6 flex items-center gap-3 text-2xl font-black">
+                                <span class="order-accent-dot h-3 w-3 rounded-full"></span>
+                                {{ $orderPaymentTitle }}
+                            </h2>
                             <div class="space-y-3 text-sm">
                                 <div class="flex items-start justify-between gap-4 order-muted">
                                     <span class="shrink-0">{{ $orderMidtransOrderIdLabel }}</span>
@@ -410,9 +658,9 @@
                                     <span class="shrink-0">{{ $orderTaxLabel }}</span>
                                     <span class="min-w-0 max-w-[58%] break-words text-right font-semibold order-title">{{ $formatIdr($taxAmount) }}</span>
                                 </div>
-                                <div class="flex items-start justify-between gap-4 border-t order-border pt-3 order-muted">
-                                    <span class="shrink-0 font-semibold">{{ $orderTotalRentalLabel }}</span>
-                                    <span class="min-w-0 max-w-[58%] break-words text-right font-semibold order-title">{{ $formatIdr($rentalGrandTotal) }}</span>
+                                <div class="flex items-start justify-between gap-4 border-t order-border pt-3">
+                                    <span class="shrink-0 font-semibold order-title">{{ $orderTotalRentalLabel }}</span>
+                                    <span class="min-w-0 max-w-[58%] break-words text-right font-black order-title">{{ $formatIdr($rentalGrandTotal) }}</span>
                                 </div>
                                 @if ($additionalFee > 0)
                                     <div class="mt-2 rounded-2xl border border-amber-500/20 bg-amber-950/20 p-3.5">
@@ -494,7 +742,7 @@
                                     </form>
                                 </div>
                             @elseif ($hasPickedUp)
-                                <p class="order-inner order-muted rounded-2xl border px-3 py-2 text-xs mt-5">
+                                <p class="order-accent-soft rounded-2xl border px-3 py-2 text-xs font-medium mt-5">
                                     {{ $orderRescheduleLocked }}
                                 </p>
                             @endif
@@ -779,7 +1027,10 @@
                 frame.src = finalPreviewUrl;
                 activePdfBaseUrl = typeof downloadUrl === 'string' ? downloadUrl : '';
                 syncDownloadUrl();
-                title.textContent = orderNumber ? `Invoice ${orderNumber}` : defaultTitle;
+                const invoiceTitleTemplate = @json($orderInvoiceModalTitleTemplate);
+                title.textContent = orderNumber
+                    ? invoiceTitleTemplate.replace(':order', orderNumber)
+                    : defaultTitle;
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
                 document.body.classList.add('overflow-hidden');

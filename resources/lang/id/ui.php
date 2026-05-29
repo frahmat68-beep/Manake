@@ -744,6 +744,7 @@ return [
         'cancel_order_button' => 'Batalkan Pesanan',
         'cancel_order_confirm' => 'Apakah Anda yakin ingin membatalkan pesanan ini?',
         'date_max_window_error' => 'Tanggal sewa maksimal 3 bulan dari hari ini.',
+        'invoice_modal_title_template' => 'Invoice :order',
     ],
     'invoice' => [
         'title' => 'Invoice',
