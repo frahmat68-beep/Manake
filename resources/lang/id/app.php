@@ -332,7 +332,7 @@ return [
         'snapshot_available' => 'Item tersedia',
         'snapshot_upcoming' => 'Booking berikutnya',
         'schedule_kicker' => 'Jadwal Rental',
-        'schedule_subtitle' => 'Sinkron dari booking aktif di database',
+        'schedule_subtitle' => 'Live dari pesanan terkonfirmasi',
         'live_badge' => 'Live',
         'empty_bookings' => 'Belum ada booking aktif',
         'empty_bookings_desc' => 'Semua alat siap dicek dari katalog live.',

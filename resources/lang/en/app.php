@@ -332,7 +332,7 @@ return [
         'snapshot_available' => 'Items available',
         'snapshot_upcoming' => 'Next bookings',
         'schedule_kicker' => 'Rental Schedule',
-        'schedule_subtitle' => 'Synced from active bookings in the database',
+        'schedule_subtitle' => 'Live from confirmed bookings',
         'live_badge' => 'Live',
         'empty_bookings' => 'No active bookings yet',
         'empty_bookings_desc' => 'All equipment is ready to check from the live catalog.',

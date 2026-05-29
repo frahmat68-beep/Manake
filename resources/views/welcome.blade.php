@@ -117,7 +117,7 @@
     <div class="bg-[#0A0A0B] text-[#E8E8EC] transition-colors duration-200">
         @php
             $heroCategories = app()->getLocale() === 'en' 
-                ? ['Camera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'Walkie-Talkie'] 
+                ? ['Camera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'Radio'] 
                 : ['Kamera', 'Lighting', 'Audio', 'Drone', 'Stabilizer', 'HT'];
         @endphp
         <style>
@@ -126,11 +126,11 @@
                 transition: background-color 0.25s ease-in-out;
             }
             .hero-title-text {
-                line-height: 1.15 !important;
+                line-height: 0.98 !important;
             }
             .hero-rotating-word {
                 overflow: visible !important;
-                padding-bottom: 0.12em !important;
+                padding-bottom: 0.18em !important;
             }
             
             /* Dark Mode Defaults */
@@ -191,7 +191,7 @@
                 text-shadow: none !important;
             }
             html[data-theme-resolved="light"] .manake-hero-island .hero-title-text span:not(.hero-rotating-word):not(.hero-rotating-word *),
-            html[data-theme-resolved="light"] .manake-hero-island .hero-title-text .inline-block {
+            html[data-theme-resolved="light"] .manake-hero-island .hero-static-title {
                 color: #1F2937 !important;
                 text-shadow: none !important;
             }
@@ -203,7 +203,7 @@
             }
             html[data-theme-resolved="light"] .manake-hero-island .hero-rotating-word,
             html[data-theme-resolved="light"] .manake-hero-island .hero-rotating-word span {
-                color: #B2822A !important;
+                color: #2563EB !important;
                 text-shadow: none !important;
             }
             html[data-theme-resolved="light"] .manake-hero-island .hero-desc-text {
@@ -211,13 +211,13 @@
                 text-shadow: none !important;
             }
             html[data-theme-resolved="light"] .hero-card-glass {
-                border-color: rgba(212, 168, 67, 0.15) !important;
+                border-color: rgba(37, 99, 235, 0.10) !important;
                 background-color: rgba(255, 255, 255, 0.8) !important;
                 color: #1F2937 !important;
                 box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
             }
             html[data-theme-resolved="light"] .hero-card-solid {
-                border-color: rgba(212, 168, 67, 0.15) !important;
+                border-color: rgba(37, 99, 235, 0.10) !important;
                 background-color: rgba(255, 255, 255, 0.95) !important;
                 color: #1F2937 !important;
                 box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
@@ -226,28 +226,28 @@
                 color: #1F2937 !important;
             }
             html[data-theme-resolved="light"] .hero-card-kicker {
-                color: #B2822A !important;
+                color: #2563EB !important;
             }
             html[data-theme-resolved="light"] .hero-tile {
                 background-color: rgba(245, 245, 240, 0.6) !important;
-                border-color: rgba(212, 168, 67, 0.12) !important;
+                border-color: rgba(37, 99, 235, 0.08) !important;
             }
             html[data-theme-resolved="light"] .hero-tile-label {
                 color: #4B5563 !important;
             }
-            html[data-theme-resolved="light"] .hero-tile-val-1 { color: #B2822A !important; }
+            html[data-theme-resolved="light"] .hero-tile-val-1 { color: #2563EB !important; }
             html[data-theme-resolved="light"] .hero-tile-val-2 { color: #15803D !important; }
-            html[data-theme-resolved="light"] .hero-tile-val-3 { color: #0369A1 !important; }
+            html[data-theme-resolved="light"] .hero-tile-val-3 { color: #0284C7 !important; }
             html[data-theme-resolved="light"] .hero-schedule-item {
                 background-color: rgba(245, 245, 240, 0.6) !important;
-                border-color: rgba(212, 168, 67, 0.12) !important;
+                border-color: rgba(37, 99, 235, 0.08) !important;
                 color: #1F2937 !important;
             }
             html[data-theme-resolved="light"] .hero-schedule-item .rented-count {
                 color: #4B5563 !important;
             }
             html[data-theme-resolved="light"] .hero-schedule-item .period-text {
-                color: #B2822A !important;
+                color: #2563EB !important;
             }
 
             /* Scoped Theme-Aware Core Classes for Landing Page */
@@ -392,9 +392,8 @@
                 color: #2563EB !important; /* Blue */
             }
             html[data-theme-resolved="light"] .home-heading {
-                font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif !important;
-                font-weight: 800 !important;
-                color: #111827 !important;
+                font-family: 'DM Serif Display', Georgia, serif !important;
+                color: #1F2937 !important;
                 letter-spacing: -0.04em !important;
             }
             html[data-theme-resolved="light"] .home-copy {
@@ -484,7 +483,7 @@
 
             <div class="relative mx-auto grid min-h-[calc(100svh-8rem)] max-w-7xl items-center gap-12 px-6 pb-12 pt-24 md:px-10 lg:grid-cols-[1.08fr_0.92fr]">
                 <div class="max-w-3xl">
-                    <h1 class="hero-title-text text-[clamp(2.5rem,5.2vw,4.5rem)] font-semibold leading-[1.15] tracking-[-0.055em] text-[#E8E8EC]">
+                    <h1 class="hero-title-text text-[clamp(2.5rem,5.2vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.055em] text-[#E8E8EC]">
                         <span class="block">{{ __('app.home.hero_kicker') }}</span>
                         <span
                             x-data="{
@@ -514,7 +513,7 @@
                                     ></span>
                                 </template>
                             </span>
-                            <span class="inline-block">{{ __('app.home.hero_title') }}</span>
+                            <span class="inline-block hero-static-title">{{ __('app.home.hero_title') }}</span>
                         </span>
                     </h1>
 
