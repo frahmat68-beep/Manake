@@ -199,6 +199,124 @@
                 background: #FFF1F2 !important;
                 color: #BE123C !important;
             }
+
+            .cart-carousel-shell {
+                position: relative;
+            }
+
+            .cart-carousel-track {
+                display: grid;
+                grid-auto-flow: column;
+                grid-auto-columns: minmax(260px, 1fr);
+                gap: 1rem;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+                padding: 0.25rem 0.125rem 1rem;
+                scrollbar-width: none;
+            }
+
+            .cart-carousel-track::-webkit-scrollbar {
+                display: none;
+            }
+
+            @media (min-width: 640px) {
+                .cart-carousel-track {
+                    grid-auto-columns: minmax(280px, 0.5fr);
+                }
+            }
+
+            @media (min-width: 1024px) {
+                .cart-carousel-track {
+                    grid-auto-columns: minmax(290px, 0.25fr);
+                }
+            }
+
+            .cart-carousel-item {
+                scroll-snap-align: start;
+                min-width: 0;
+            }
+
+            .cart-carousel-control {
+                background: var(--cart-surface) !important;
+                border: 1px solid var(--cart-border) !important;
+                color: var(--cart-text) !important;
+                box-shadow: 0 18px 40px -28px rgba(0, 0, 0, 0.35);
+            }
+
+            .cart-carousel-control:hover {
+                border-color: var(--cart-accent-border) !important;
+                color: var(--cart-accent) !important;
+                transform: translateY(-1px);
+            }
+
+            .cart-carousel-control:disabled {
+                cursor: not-allowed;
+                opacity: 0.42;
+                transform: none;
+            }
+
+            .cart-carousel-fade-left,
+            .cart-carousel-fade-right {
+                pointer-events: none;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                z-index: 5;
+                width: 3rem;
+            }
+
+            .cart-carousel-fade-left {
+                left: 0;
+                background: linear-gradient(90deg, var(--cart-bg), transparent);
+            }
+
+            .cart-carousel-fade-right {
+                right: 0;
+                background: linear-gradient(270deg, var(--cart-bg), transparent);
+            }
+
+            @media (max-width: 639px) {
+                .cart-carousel-fade-left,
+                .cart-carousel-fade-right {
+                    display: none;
+                }
+            }
+
+            .cart-carousel-card {
+                height: 100%;
+                transition:
+                    transform 180ms ease,
+                    border-color 180ms ease,
+                    box-shadow 180ms ease,
+                    background-color 180ms ease;
+            }
+
+            .cart-carousel-card:hover {
+                transform: translateY(-3px);
+                border-color: var(--cart-accent-border) !important;
+            }
+
+            html[data-theme-resolved="light"] .cart-carousel-card:hover {
+                box-shadow: 0 24px 55px -38px rgba(37, 99, 235, 0.35);
+            }
+
+            html[data-theme-resolved="dark"] .cart-carousel-card:hover {
+                box-shadow: 0 24px 55px -38px rgba(212, 168, 67, 0.30);
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .cart-carousel-track {
+                    scroll-behavior: auto;
+                }
+
+                .cart-carousel-card,
+                .cart-carousel-control {
+                    transition: none !important;
+                }
+            }
         </style>
     @endpush
 
@@ -504,51 +622,121 @@
             @endif
 
             @if ($hasCartItems && $suggestedEquipments->isNotEmpty())
-                <aside class="mt-12">
-                    <div class="mb-5 space-y-1">
-                        <h2 class="cart-title text-2xl font-bold tracking-tight">
-                            {{ $cartCopy['suggestions_title'] }}
-                        </h2>
-                        <p class="cart-muted text-sm">
-                            {{ $cartCopy['suggestions_subtitle'] }}
-                        </p>
+                <aside
+                    class="mt-12"
+                    x-data="{
+                        canPrev: false,
+                        canNext: false,
+                        init() {
+                            this.$nextTick(() => this.update());
+                        },
+                        update() {
+                            const el = this.$refs.track;
+                            if (!el) return;
+                            this.canPrev = el.scrollLeft > 8;
+                            this.canNext = el.scrollLeft + el.clientWidth < el.scrollWidth - 8;
+                        },
+                        scroll(direction) {
+                            const el = this.$refs.track;
+                            if (!el) return;
+                            const amount = Math.max(el.clientWidth * 0.82, 280);
+                            el.scrollBy({
+                                left: direction === 'next' ? amount : -amount,
+                                behavior: 'smooth'
+                            });
+                            window.setTimeout(() => this.update(), 260);
+                        }
+                    }"
+                    x-init="init()"
+                >
+                    <div class="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                        <div class="space-y-1">
+                            <h2 class="cart-title text-2xl font-bold tracking-tight">
+                                {{ $cartCopy['suggestions_title'] }}
+                            </h2>
+                            <p class="cart-muted text-sm">
+                                {{ $cartCopy['suggestions_subtitle'] }}
+                            </p>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button
+                                type="button"
+                                class="cart-carousel-control flex h-10 w-10 items-center justify-center rounded-full transition"
+                                @click="scroll('prev')"
+                                :disabled="!canPrev"
+                                aria-label="{{ app()->isLocale('en') ? 'Previous recommendation' : 'Rekomendasi sebelumnya' }}"
+                            >
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+
+                            <button
+                                type="button"
+                                class="cart-carousel-control flex h-10 w-10 items-center justify-center rounded-full transition"
+                                @click="scroll('next')"
+                                :disabled="!canNext"
+                                aria-label="{{ app()->isLocale('en') ? 'Next recommendation' : 'Rekomendasi berikutnya' }}"
+                            >
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                        @foreach ($suggestedEquipments as $suggestion)
-                            <article class="cart-card rounded-3xl border p-4 transition hover:border-[var(--cart-accent-border)]">
-                                <div class="cart-inner aspect-[4/3] overflow-hidden rounded-2xl border">
-                                    <img
-                                        src="{{ site_media_url($suggestion->image_path ?? $suggestion->image ?? null) ?: config('placeholders.equipment') }}"
-                                        alt="{{ $suggestion->name }}"
-                                        class="h-full w-full object-contain p-3"
-                                        onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';"
-                                    >
-                                </div>
-                                <div class="mt-4 space-y-2">
-                                    <span class="cart-accent-soft inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold">
-                                        {{ $resolveCartCategoryName($suggestion->category->name ?? null) }}
-                                    </span>
-                                    <h3 class="line-clamp-2 text-base font-semibold leading-6 cart-title">
-                                        <a href="{{ route('product.show', $suggestion->slug) }}" class="cart-accent-link transition">
-                                            {{ $suggestion->name }}
-                                        </a>
-                                    </h3>
-                                    <div class="flex items-center justify-between gap-4">
-                                        <p class="cart-title text-base font-semibold">
-                                            Rp {{ number_format($suggestion->price_per_day, 0, ',', '.') }}
-                                            <span class="cart-muted text-xs font-medium">/ {{ $rentalDays === 1 ? $cartCopy['day_singular'] : $cartCopy['day_plural'] }}</span>
-                                        </p>
-                                        <a
-                                            href="{{ route('product.show', $suggestion->slug) }}"
-                                            class="cart-secondary-button inline-flex items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition"
-                                        >
-                                            {{ $cartCopy['view_item'] }}
-                                        </a>
+                    <div class="cart-carousel-shell">
+                        <div class="cart-carousel-fade-left" x-show="canPrev" x-transition.opacity></div>
+                        <div class="cart-carousel-fade-right" x-show="canNext" x-transition.opacity></div>
+
+                        <div
+                            x-ref="track"
+                            class="cart-carousel-track"
+                            @scroll.debounce.80ms="update()"
+                            @keydown.arrow-left.prevent="scroll('prev')"
+                            @keydown.arrow-right.prevent="scroll('next')"
+                            tabindex="0"
+                            role="region"
+                            aria-label="{{ app()->isLocale('en') ? 'Recommended equipment carousel' : 'Carousel rekomendasi alat' }}"
+                        >
+                            @foreach ($suggestedEquipments as $suggestion)
+                                <article class="cart-carousel-item">
+                                    <div class="cart-card cart-carousel-card rounded-3xl border p-4">
+                                        <div class="cart-inner aspect-[4/3] overflow-hidden rounded-2xl border">
+                                            <img
+                                                src="{{ site_media_url($suggestion->image_path ?? $suggestion->image ?? null) ?: config('placeholders.equipment') }}"
+                                                alt="{{ $suggestion->name }}"
+                                                class="h-full w-full object-contain p-3"
+                                                onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';"
+                                            >
+                                        </div>
+                                        <div class="mt-4 space-y-2">
+                                            <span class="cart-accent-soft inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold">
+                                                {{ $resolveCartCategoryName($suggestion->category->name ?? null) }}
+                                            </span>
+                                            <h3 class="line-clamp-2 text-base font-semibold leading-6 cart-title">
+                                                <a href="{{ route('product.show', $suggestion->slug) }}" class="cart-accent-link transition">
+                                                    {{ $suggestion->name }}
+                                                </a>
+                                            </h3>
+                                            <div class="flex items-center justify-between gap-4">
+                                                <p class="cart-title text-base font-semibold">
+                                                    Rp {{ number_format($suggestion->price_per_day, 0, ',', '.') }}
+                                                    <span class="cart-muted text-xs font-medium">/ {{ $rentalDays === 1 ? $cartCopy['day_singular'] : $cartCopy['day_plural'] }}</span>
+                                                </p>
+                                                <a
+                                                    href="{{ route('product.show', $suggestion->slug) }}"
+                                                    class="cart-secondary-button inline-flex items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition"
+                                                >
+                                                    {{ $cartCopy['view_item'] }}
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </article>
-                        @endforeach
+                                </article>
+                            @endforeach
+                        </div>
                     </div>
                 </aside>
             @endif
