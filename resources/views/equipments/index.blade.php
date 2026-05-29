@@ -278,8 +278,24 @@
             box-shadow: 0 0 0 2px var(--catalog-accent-soft);
         }
 
-        html[data-theme-resolved="light"] .catalog-quick-input {
-            color-scheme: light;
+        html[data-theme-resolved="light"] .catalog-quick-input,
+        html[data-theme-resolved="light"] .catalog-page .catalog-quick-input {
+            background: #FFFFFF !important;
+            background-color: #FFFFFF !important;
+            color: #111827 !important;
+            border-color: #DADDE3 !important;
+            color-scheme: light !important;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-input::placeholder,
+        html[data-theme-resolved="light"] .catalog-page .catalog-quick-input::placeholder {
+            color: #6B7280 !important;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-input:focus,
+        html[data-theme-resolved="light"] .catalog-page .catalog-quick-input:focus {
+            border-color: #2563EB !important;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.14) !important;
         }
 
         html[data-theme-resolved="dark"] .catalog-quick-input {
@@ -292,10 +308,34 @@
             color: var(--catalog-text);
         }
 
-        html[data-theme-resolved="light"] .catalog-quick-control {
-            background: #F3F4F6;
-            border-color: #DADDE3;
-            color: #111827;
+        html[data-theme-resolved="light"] .catalog-quick-control,
+        html[data-theme-resolved="light"] .catalog-page .catalog-quick-control {
+            background: #F3F4F6 !important;
+            background-color: #F3F4F6 !important;
+            border-color: #DADDE3 !important;
+            color: #111827 !important;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-control:hover,
+        html[data-theme-resolved="light"] .catalog-page .catalog-quick-control:hover {
+            border-color: rgba(37, 99, 235, 0.24) !important;
+            color: #2563EB !important;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-input:-webkit-autofill,
+        html[data-theme-resolved="light"] .catalog-quick-input:-webkit-autofill:hover,
+        html[data-theme-resolved="light"] .catalog-quick-input:-webkit-autofill:focus {
+            -webkit-text-fill-color: #111827 !important;
+            box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+            caret-color: #111827 !important;
+            transition: background-color 9999s ease-in-out 0s !important;
+        }
+
+        html[data-theme-resolved="light"] input[type="date"].catalog-quick-input,
+        html[data-theme-resolved="light"] input[type="number"].catalog-quick-input {
+            background-color: #FFFFFF !important;
+            color: #111827 !important;
+            color-scheme: light !important;
         }
 
         .catalog-quick-secondary {
