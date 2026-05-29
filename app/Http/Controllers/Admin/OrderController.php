@@ -302,10 +302,10 @@ class OrderController extends Controller
     private function auditSummary(string $action, array $payload): string
     {
         return match ($action) {
-            'order.auto_archive' => __('Masuk arsip bulanan otomatis.'),
-            'order.update_operational_status' => __('Status operasional diubah.'),
-            'order.update_status' => __('Status, biaya, atau catatan pesanan diperbarui.'),
-            default => __('Perubahan pesanan tercatat.'),
+            'order.auto_archive' => __('ui.admin_orders.audit.auto_archive'),
+            'order.update_operational_status' => __('ui.admin_orders.audit.operational_status_changed'),
+            'order.update_status' => __('ui.admin_orders.audit.status_updated'),
+            default => __('ui.admin_orders.audit.default'),
         };
     }
 }

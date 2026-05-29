@@ -1094,4 +1094,77 @@ return [
             'dibatalkan' => 'Dibatalkan',
         ],
     ],
+    'admin_orders' => [
+        'title' => 'Daftar Pesanan',
+        'page_title' => 'Daftar Pesanan',
+        'kicker' => 'Pesanan',
+        'heading' => 'Daftar Pesanan',
+        'subtitle' => 'Cari, tinjau, dan kelola pesanan rental dari satu halaman.',
+
+        'filters' => [
+            'search_placeholder' => 'Cari nomor pesanan, pengguna, atau email...',
+            'payment_status_all' => 'Semua Status Pembayaran',
+            'apply' => 'Terapkan',
+            'reset' => 'Reset',
+        ],
+
+        'payment_status' => [
+            'pending' => 'Menunggu',
+            'paid' => 'Lunas',
+            'failed' => 'Gagal',
+            'expired' => 'Kedaluwarsa',
+            'refunded' => 'Refund',
+        ],
+
+        'order_status' => [
+            'menunggu_pembayaran' => 'Menunggu Pembayaran',
+            'diproses' => 'Diproses',
+            'lunas' => 'Siap Diambil',
+            'barang_diambil' => 'Barang Diambil',
+            'barang_kembali' => 'Barang Kembali',
+            'barang_rusak' => 'Barang Rusak',
+            'barang_hilang' => 'Barang Hilang',
+            'overdue_denda' => 'Denda Overdue',
+            'expired' => 'Kedaluwarsa',
+            'selesai' => 'Selesai',
+            'dibatalkan' => 'Dibatalkan',
+            'refund' => 'Pengembalian Dana',
+        ],
+
+        'archive' => [
+            'kicker' => 'Arsip',
+            'title' => 'Arsip Bulanan',
+            'empty' => 'Belum ada arsip bulanan.',
+            'orders_count' => ':count pesanan',
+            'unit' => 'Unit',
+            'total' => 'Total',
+        ],
+
+        'logs' => [
+            'kicker' => 'Log',
+            'title' => 'Log Pesanan',
+            'empty' => 'Belum ada log pesanan.',
+            'system' => 'Sistem',
+        ],
+
+        'table' => [
+            'title' => 'Pesanan Terbaru',
+            'subtitle' => 'Daftar pesanan rental terbaru beserta status pembayaran dan pesanan.',
+            'order' => 'Pesanan',
+            'user' => 'Pengguna',
+            'total' => 'Total',
+            'payment_status' => 'Status Bayar',
+            'order_status' => 'Status Pesanan',
+            'action' => 'Aksi',
+            'detail' => 'Detail',
+            'empty' => 'Belum ada pesanan.',
+        ],
+
+        'audit' => [
+            'auto_archive' => 'Masuk arsip bulanan otomatis.',
+            'operational_status_changed' => 'Status operasional diubah.',
+            'status_updated' => 'Status, biaya, atau catatan pesanan diperbarui.',
+            'default' => 'Perubahan pesanan tercatat.',
+        ],
+    ],
 ];

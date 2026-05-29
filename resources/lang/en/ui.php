@@ -1094,4 +1094,77 @@ return [
             'dibatalkan' => 'Cancelled',
         ],
     ],
+    'admin_orders' => [
+        'title' => 'Order List',
+        'page_title' => 'Order List',
+        'kicker' => 'Orders',
+        'heading' => 'Order List',
+        'subtitle' => 'Search, review, and manage rental orders from one place.',
+
+        'filters' => [
+            'search_placeholder' => 'Search order number, user, or email...',
+            'payment_status_all' => 'All Payment Statuses',
+            'apply' => 'Apply',
+            'reset' => 'Reset',
+        ],
+
+        'payment_status' => [
+            'pending' => 'Pending',
+            'paid' => 'Paid',
+            'failed' => 'Failed',
+            'expired' => 'Expired',
+            'refunded' => 'Refunded',
+        ],
+
+        'order_status' => [
+            'menunggu_pembayaran' => 'Waiting Payment',
+            'diproses' => 'Processing',
+            'lunas' => 'Ready for Pickup',
+            'barang_diambil' => 'Picked Up',
+            'barang_kembali' => 'Returned',
+            'barang_rusak' => 'Damaged',
+            'barang_hilang' => 'Lost',
+            'overdue_denda' => 'Overdue Penalty',
+            'expired' => 'Expired',
+            'selesai' => 'Completed',
+            'dibatalkan' => 'Cancelled',
+            'refund' => 'Refunded',
+        ],
+
+        'archive' => [
+            'kicker' => 'Archive',
+            'title' => 'Monthly Archive',
+            'empty' => 'No monthly archive yet.',
+            'orders_count' => ':count orders',
+            'unit' => 'Unit',
+            'total' => 'Total',
+        ],
+
+        'logs' => [
+            'kicker' => 'Log',
+            'title' => 'Order Logs',
+            'empty' => 'No order logs yet.',
+            'system' => 'System',
+        ],
+
+        'table' => [
+            'title' => 'Recent Orders',
+            'subtitle' => 'Latest rental orders with payment and order status.',
+            'order' => 'Order',
+            'user' => 'User',
+            'total' => 'Total',
+            'payment_status' => 'Payment Status',
+            'order_status' => 'Order Status',
+            'action' => 'Action',
+            'detail' => 'Detail',
+            'empty' => 'No orders found.',
+        ],
+
+        'audit' => [
+            'auto_archive' => 'Moved to monthly archive automatically.',
+            'operational_status_changed' => 'Operational status changed.',
+            'status_updated' => 'Order status, fee, or note updated.',
+            'default' => 'Order change recorded.',
+        ],
+    ],
 ];
