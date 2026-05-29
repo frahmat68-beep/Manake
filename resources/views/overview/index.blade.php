@@ -8,55 +8,57 @@
     use Illuminate\Support\Facades\URL;
 
     $formatIdr = fn ($value) => 'Rp ' . number_format((int) $value, 0, ',', '.');
-    $bookingTitle = __('Riwayat Sewa');
-    $bookingSubtitle = __('Pantau pesanan, pembayaran, dan status sewa alat Anda.');
-    $catalogLabel = __('Jelajahi Katalog');
+    $historyCopy = __('ui.booking_history');
+
+    $bookingTitle = $historyCopy['title'];
+    $bookingSubtitle = $historyCopy['subtitle'];
+    $catalogLabel = $historyCopy['browse_catalog'];
 
     $statusTone = function (string $type, ?string $status): string {
         $normalized = strtolower((string) $status);
 
         if ($type === 'payment') {
             return match ($normalized) {
-                Order::PAYMENT_PAID, 'settlement', 'success' => 'border-emerald-400/20 bg-emerald-500/10 text-emerald-200',
-                Order::PAYMENT_FAILED, Order::PAYMENT_EXPIRED, Order::STATUS_CANCELLED => 'border-rose-400/20 bg-rose-500/10 text-rose-200',
-                Order::PAYMENT_REFUNDED, Order::STATUS_REFUNDED => 'border-white/10 bg-white/[0.04] text-[#C8C8CE]',
-                default => 'border-amber-400/20 bg-amber-500/10 text-amber-200',
+                Order::PAYMENT_PAID, 'settlement', 'success' => 'history-status-paid',
+                Order::PAYMENT_FAILED, Order::PAYMENT_EXPIRED, Order::STATUS_CANCELLED => 'history-status-danger',
+                Order::PAYMENT_REFUNDED, Order::STATUS_REFUNDED => 'history-status-neutral',
+                default => 'history-status-warning',
             };
         }
 
         return match ($normalized) {
-            Order::STATUS_COMPLETED, Order::STATUS_RETURNED_OK => 'border-emerald-400/20 bg-emerald-500/10 text-emerald-200',
-            Order::STATUS_CANCELLED, Order::STATUS_EXPIRED, Order::STATUS_RETURNED_DAMAGED, Order::STATUS_RETURNED_LOST, Order::STATUS_OVERDUE_DAMAGE_INVOICE => 'border-rose-400/20 bg-rose-500/10 text-rose-200',
-            Order::STATUS_READY_PICKUP, Order::STATUS_ON_RENT => 'border-amber-400/20 bg-amber-500/10 text-amber-200',
-            default => 'border-white/10 bg-white/[0.04] text-[#C8C8CE]',
+            Order::STATUS_COMPLETED, Order::STATUS_RETURNED_OK => 'history-status-paid',
+            Order::STATUS_CANCELLED, Order::STATUS_EXPIRED, Order::STATUS_RETURNED_DAMAGED, Order::STATUS_RETURNED_LOST, Order::STATUS_OVERDUE_DAMAGE_INVOICE => 'history-status-danger',
+            Order::STATUS_READY_PICKUP, Order::STATUS_ON_RENT => 'history-status-warning',
+            default => 'history-status-neutral',
         };
     };
 
-    $paymentLabel = function (?string $status): string {
+    $paymentLabel = function (?string $status) use ($historyCopy): string {
         return match (strtolower((string) $status)) {
-            Order::PAYMENT_PAID, 'settlement', 'success' => __('Lunas'),
-            Order::PAYMENT_FAILED => __('Gagal'),
-            Order::PAYMENT_EXPIRED => __('Kedaluwarsa'),
-            Order::PAYMENT_REFUNDED => __('Refund'),
-            default => __('Menunggu Pembayaran'),
+            Order::PAYMENT_PAID, 'settlement', 'success' => $historyCopy['payment_paid'],
+            Order::PAYMENT_FAILED => $historyCopy['payment_failed'],
+            Order::PAYMENT_EXPIRED => $historyCopy['payment_expired'],
+            Order::PAYMENT_REFUNDED => $historyCopy['payment_refunded'],
+            default => $historyCopy['payment_pending'],
         };
     };
 
-    $rentalLabel = function (?string $status): string {
+    $rentalLabel = function (?string $status) use ($historyCopy): string {
         return match (strtolower((string) $status)) {
-            Order::STATUS_PENDING_PAYMENT => __('Menunggu'),
-            Order::STATUS_PROCESSING => __('Terkonfirmasi'),
-            Order::STATUS_READY_PICKUP => __('Terkonfirmasi'),
-            Order::STATUS_ON_RENT => __('Sedang Disewa'),
-            Order::STATUS_RETURNED_OK => __('Dikembalikan'),
-            Order::STATUS_COMPLETED => __('Selesai'),
-            Order::STATUS_CANCELLED => __('Dibatalkan'),
-            Order::STATUS_EXPIRED => __('Dibatalkan'),
-            Order::STATUS_REFUNDED => __('Refund'),
-            Order::STATUS_RETURNED_DAMAGED => __('Dikembalikan'),
-            Order::STATUS_RETURNED_LOST => __('Dikembalikan'),
-            Order::STATUS_OVERDUE_DAMAGE_INVOICE => __('Dikembalikan'),
-            default => __('Menunggu'),
+            Order::STATUS_PENDING_PAYMENT => $historyCopy['rental_waiting'],
+            Order::STATUS_PROCESSING => $historyCopy['rental_confirmed'],
+            Order::STATUS_READY_PICKUP => $historyCopy['rental_confirmed'],
+            Order::STATUS_ON_RENT => $historyCopy['rental_on_rent'],
+            Order::STATUS_RETURNED_OK => $historyCopy['rental_returned'],
+            Order::STATUS_COMPLETED => $historyCopy['rental_completed'],
+            Order::STATUS_CANCELLED => $historyCopy['rental_cancelled'],
+            Order::STATUS_EXPIRED => $historyCopy['rental_cancelled'],
+            Order::STATUS_REFUNDED => $historyCopy['rental_refunded'],
+            Order::STATUS_RETURNED_DAMAGED => $historyCopy['rental_returned'],
+            Order::STATUS_RETURNED_LOST => $historyCopy['rental_returned'],
+            Order::STATUS_OVERDUE_DAMAGE_INVOICE => $historyCopy['rental_returned'],
+            default => $historyCopy['rental_waiting'],
         };
     };
 
@@ -109,281 +111,446 @@
                 animation: none !important;
             }
         }
+
+        .history-page {
+            --history-accent: #D4A843;
+            --history-accent-hover: #E0BA5D;
+            --history-accent-text: #0A0A0B;
+            --history-accent-soft: rgba(212, 168, 67, 0.12);
+            --history-accent-border: rgba(212, 168, 67, 0.28);
+
+            --history-bg: #0A0A0B;
+            --history-surface: #111113;
+            --history-surface-soft: rgba(17, 17, 19, 0.72);
+            --history-surface-muted: #0A0A0B;
+            --history-border: #1A1A1E;
+            --history-text: #E8E8EC;
+            --history-muted: #A0A0A8;
+            --history-subtle: #7C7C84;
+        }
+
+        html[data-theme-resolved="light"] .history-page {
+            --history-accent: #2563EB;
+            --history-accent-hover: #1D4ED8;
+            --history-accent-text: #FFFFFF;
+            --history-accent-soft: rgba(37, 99, 235, 0.10);
+            --history-accent-border: rgba(37, 99, 235, 0.24);
+
+            --history-bg: #F8FAFC;
+            --history-surface: #FFFFFF;
+            --history-surface-soft: rgba(255, 255, 255, 0.92);
+            --history-surface-muted: #F8FAFC;
+            --history-border: #E5E7EB;
+            --history-text: #111827;
+            --history-muted: #4B5563;
+            --history-subtle: #6B7280;
+        }
+
+        .history-page-bg {
+            background-color: var(--history-bg) !important;
+            color: var(--history-text) !important;
+        }
+
+        .history-card {
+            background: var(--history-surface-soft) !important;
+            border-color: var(--history-border) !important;
+            color: var(--history-text) !important;
+        }
+
+        .history-card-solid {
+            background: var(--history-surface) !important;
+            border-color: var(--history-border) !important;
+            color: var(--history-text) !important;
+        }
+
+        .history-inner {
+            background: var(--history-surface-muted) !important;
+            border-color: var(--history-border) !important;
+            color: var(--history-text) !important;
+        }
+
+        .history-title {
+            color: var(--history-text) !important;
+        }
+
+        .history-muted {
+            color: var(--history-muted) !important;
+        }
+
+        .history-subtle {
+            color: var(--history-subtle) !important;
+        }
+
+        .history-border {
+            border-color: var(--history-border) !important;
+        }
+
+        .history-accent-text {
+            color: var(--history-accent) !important;
+        }
+
+        .history-accent-bg {
+            background: var(--history-accent) !important;
+            background-color: var(--history-accent) !important;
+            color: var(--history-accent-text) !important;
+            border-color: var(--history-accent) !important;
+        }
+
+        .history-accent-bg:hover {
+            background: var(--history-accent-hover) !important;
+            background-color: var(--history-accent-hover) !important;
+        }
+
+        .history-accent-soft {
+            background: var(--history-accent-soft) !important;
+            border-color: var(--history-accent-border) !important;
+            color: var(--history-accent) !important;
+        }
+
+        .history-accent-dot {
+            background-color: var(--history-accent) !important;
+        }
+
+        .history-secondary-button {
+            background: var(--history-surface) !important;
+            border: 1px solid var(--history-border) !important;
+            color: var(--history-text) !important;
+        }
+
+        .history-secondary-button:hover {
+            border-color: var(--history-accent-border) !important;
+            color: var(--history-accent) !important;
+        }
+
+        .history-accent-link:hover {
+            color: var(--history-accent) !important;
+        }
+
+        html[data-theme-resolved="light"] .history-page .history-card,
+        html[data-theme-resolved="light"] .history-page .history-card-solid {
+            box-shadow: 0 20px 50px -35px rgba(15, 23, 42, 0.22);
+        }
+
+        .history-status-neutral {
+            border-color: var(--history-border) !important;
+            background: var(--history-surface-muted) !important;
+            color: var(--history-muted) !important;
+        }
+
+        .history-status-paid {
+            border-color: rgba(16, 185, 129, 0.28) !important;
+            background: #ECFDF5 !important;
+            color: #047857 !important;
+        }
+
+        .history-status-warning {
+            border-color: rgba(245, 158, 11, 0.28) !important;
+            background: #FFFBEB !important;
+            color: #B45309 !important;
+        }
+
+        .history-status-danger {
+            border-color: rgba(244, 63, 94, 0.28) !important;
+            background: #FFF1F2 !important;
+            color: #BE123C !important;
+        }
+
+        html[data-theme-resolved="dark"] .history-status-paid {
+            background: rgba(16, 185, 129, 0.12) !important;
+            color: #A7F3D0 !important;
+        }
+
+        html[data-theme-resolved="dark"] .history-status-warning {
+            background: rgba(245, 158, 11, 0.12) !important;
+            color: #FDE68A !important;
+        }
+
+        html[data-theme-resolved="dark"] .history-status-danger {
+            background: rgba(244, 63, 94, 0.12) !important;
+            color: #FDA4AF !important;
+        }
     </style>
 @endpush
 
 @section('content')
-    <header class="history-enter rounded-3xl border border-white/10 bg-[#111113]/70 p-6 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.9)] sm:p-8">
-        <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-            <div class="space-y-2">
-                <h2 class="text-2xl font-bold tracking-tight text-[#E8E8EC] sm:text-3xl">
-                    {{ $bookingTitle }}
-                </h2>
-                <p class="max-w-2xl text-sm leading-6 text-[#A0A0A8] sm:text-base">
-                    {{ $bookingSubtitle }}
-                </p>
-            </div>
-
-            <a
-                href="{{ route('catalog') }}"
-                class="inline-flex items-center justify-center rounded-xl bg-[#D4A843] px-5 py-3 text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/40"
-            >
-                {{ $catalogLabel }}
-            </a>
-        </div>
-    </header>
-
-    @if (session('error') || session('success'))
-        <div class="mt-6 space-y-3">
-            @if (session('error'))
-                <div class="history-card-in rounded-2xl border border-rose-400/20 bg-rose-500/8 px-4 py-3 text-sm font-medium text-rose-200">
-                    <div class="flex items-center gap-3">
-                        <span class="h-2 w-2 rounded-full bg-rose-300"></span>
-                        <span>{{ session('error') }}</span>
+    <div class="history-page history-page-bg min-h-screen">
+        <div class="mx-auto w-full max-w-7xl px-4 py-8 pb-24 sm:px-6 lg:px-8">
+            <header class="history-card history-enter rounded-3xl border p-6 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.30)] sm:p-8">
+                <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                    <div class="space-y-2">
+                        <h2 class="history-title text-2xl font-bold tracking-tight sm:text-3xl">
+                            {{ $bookingTitle }}
+                        </h2>
+                        <p class="history-muted max-w-2xl text-sm leading-6 sm:text-base">
+                            {{ $bookingSubtitle }}
+                        </p>
                     </div>
+
+                    <a
+                        href="{{ route('catalog') }}"
+                        class="history-accent-bg inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-[var(--history-accent-soft)]"
+                    >
+                        {{ $catalogLabel }}
+                    </a>
+                </div>
+            </header>
+
+            @if (session('error') || session('success'))
+                <div class="mt-6 space-y-3">
+                    @if (session('error'))
+                        <div class="history-card-in rounded-2xl border border-rose-400/20 bg-rose-500/8 px-4 py-3 text-sm font-medium text-rose-200">
+                            <div class="flex items-center gap-3">
+                                <span class="h-2 w-2 rounded-full bg-rose-300"></span>
+                                <span>{{ session('error') }}</span>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if (session('success'))
+                        <div class="history-card-in rounded-2xl border border-emerald-400/20 bg-emerald-500/8 px-4 py-3 text-sm font-medium text-emerald-200">
+                            <div class="flex items-center gap-3">
+                                <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
+                                <span>{{ session('success') }}</span>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             @endif
 
-            @if (session('success'))
-                <div class="history-card-in rounded-2xl border border-emerald-400/20 bg-emerald-500/8 px-4 py-3 text-sm font-medium text-emerald-200">
-                    <div class="flex items-center gap-3">
-                        <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
-                        <span>{{ session('success') }}</span>
-                    </div>
-                </div>
-            @endif
-        </div>
-    @endif
+            <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+                <article class="history-card history-card-in rounded-3xl border p-5" style="animation-delay: 40ms">
+                    <p class="text-sm font-medium history-muted">{{ $historyCopy['stats_total_label'] }}</p>
+                    <p class="mt-2 text-3xl font-bold tracking-tight history-title">{{ $stats['total_booking'] ?? 0 }}</p>
+                    <p class="mt-2 text-xs history-subtle">{{ $historyCopy['stats_total_desc'] }}</p>
+                </article>
 
-    <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <article class="history-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-5" style="animation-delay: 40ms">
-            <p class="text-sm font-medium text-[#A0A0A8]">{{ __('Total Riwayat') }}</p>
-            <p class="mt-2 text-3xl font-bold tracking-tight text-[#E8E8EC]">{{ $stats['total_booking'] ?? 0 }}</p>
-            <p class="mt-2 text-xs text-[#7C7C84]">{{ __('Jumlah seluruh pesanan yang pernah dibuat.') }}</p>
-        </article>
+                <article class="history-card history-card-in rounded-3xl border p-5" style="animation-delay: 80ms">
+                    <p class="text-sm font-medium history-muted">{{ $historyCopy['stats_active_label'] }}</p>
+                    <p class="mt-2 text-3xl font-bold tracking-tight history-accent-text">{{ $stats['active_rental'] ?? 0 }}</p>
+                    <p class="mt-2 text-xs history-subtle">{{ $historyCopy['stats_active_desc'] }}</p>
+                </article>
 
-        <article class="history-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-5" style="animation-delay: 80ms">
-            <p class="text-sm font-medium text-[#A0A0A8]">{{ __('Rental Aktif') }}</p>
-            <p class="mt-2 text-3xl font-bold tracking-tight text-[#D4A843]">{{ $stats['active_rental'] ?? 0 }}</p>
-            <p class="mt-2 text-xs text-[#7C7C84]">{{ __('Pesanan yang masih berjalan atau menunggu proses.') }}</p>
-        </article>
-
-        <article class="history-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-5" style="animation-delay: 120ms">
-            <p class="text-sm font-medium text-[#A0A0A8]">{{ __('Selesai') }}</p>
-            <p class="mt-2 text-3xl font-bold tracking-tight text-emerald-300">{{ $stats['completed'] ?? 0 }}</p>
-            <p class="mt-2 text-xs text-[#7C7C84]">{{ __('Pesanan yang sudah selesai dan ditutup.') }}</p>
-        </article>
-    </div>
-
-    <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.85fr)] lg:items-start">
-        <section class="history-card-in rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 160ms">
-            <div class="flex items-center justify-between gap-4">
-                <div>
-                    <h3 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('Rental Aktif') }}</h3>
-                    <p class="mt-1 text-sm text-[#A0A0A8]">{{ __('Pesanan yang sedang berjalan atau masih menunggu pembayaran.') }}</p>
-                </div>
+                <article class="history-card history-card-in rounded-3xl border p-5" style="animation-delay: 120ms">
+                    <p class="text-sm font-medium history-muted">{{ $historyCopy['stats_finished_label'] }}</p>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-emerald-500">{{ $stats['completed'] ?? 0 }}</p>
+                    <p class="mt-2 text-xs history-subtle">{{ $historyCopy['stats_finished_desc'] }}</p>
+                </article>
             </div>
 
-            <div class="mt-5 space-y-4">
-                @forelse ($activeRentals as $order)
-                    @php
-                        $orderNumber = $order->order_number ?? ('ORD-' . $order->id);
-                        $durationDays = 1;
-                        if ($order->rental_start_date && $order->rental_end_date && $order->rental_end_date->gte($order->rental_start_date)) {
-                            $durationDays = $order->rental_start_date->diffInDays($order->rental_end_date) + 1;
-                        }
-                        $itemSummary = $order->items?->pluck('equipment.name')->filter()->take(2)->implode(', ');
-                        $itemCount = (int) ($order->items?->sum('qty') ?? 0);
-                        $canOpenInvoice = $canViewInvoice($order);
-                        $orderRouteKey = (string) ($order->order_number ?: $order->midtrans_order_id ?: '');
-                        $signedInvoiceUrl = ($canOpenInvoice && $orderRouteKey !== '')
-                            ? URL::temporarySignedRoute('account.orders.receipt', now()->addMinutes(30), ['order' => $orderRouteKey])
-                            : null;
-                    @endphp
+            <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start">
+                <section class="history-card history-card-in rounded-3xl border p-6" style="animation-delay: 160ms">
+                    <div class="flex items-center justify-between gap-4">
+                        <div>
+                            <h3 class="text-xl font-bold tracking-tight history-title">{{ $historyCopy['active_title'] }}</h3>
+                            <p class="mt-1 text-sm history-muted">{{ $historyCopy['active_subtitle'] }}</p>
+                        </div>
+                    </div>
 
-                    <article class="history-card-in rounded-3xl border border-[#1A1A1E] bg-[#0A0A0B]/75 p-5" style="animation-delay: {{ min(($loop->index + 4) * 50, 320) }}ms">
-                        <div class="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-                            <div class="min-w-0 flex-1 space-y-3">
-                                <div class="space-y-1">
-                                    <p class="text-xs font-semibold tracking-[0.14em] text-[#D4A843]">{{ __('Order') }}</p>
-                                    <h4 class="break-all text-lg font-semibold text-[#E8E8EC]">{{ $orderNumber }}</h4>
-                                    <p class="text-sm leading-6 text-[#A0A0A8]">
-                                        {{ $itemSummary ?: __('Ringkasan alat belum tersedia') }}
-                                        @if ($itemCount > 0)
-                                            <span class="text-[#7C7C84]">• {{ $itemCount }} {{ __('unit') }}</span>
-                                        @endif
-                                    </p>
+                    <div class="mt-5 space-y-4">
+                        @forelse ($activeRentals as $order)
+                            @php
+                                $orderNumber = $order->order_number ?? ('ORD-' . $order->id);
+                                $durationDays = 1;
+                                if ($order->rental_start_date && $order->rental_end_date && $order->rental_end_date->gte($order->rental_start_date)) {
+                                    $durationDays = $order->rental_start_date->diffInDays($order->rental_end_date) + 1;
+                                }
+                                $itemSummary = $order->items?->pluck('equipment.name')->filter()->take(2)->implode(', ');
+                                $itemCount = (int) ($order->items?->sum('qty') ?? 0);
+                                $canOpenInvoice = $canViewInvoice($order);
+                                $orderRouteKey = (string) ($order->order_number ?: $order->midtrans_order_id ?: '');
+                                $signedInvoiceUrl = ($canOpenInvoice && $orderRouteKey !== '')
+                                    ? URL::temporarySignedRoute('account.orders.receipt', now()->addMinutes(30), ['order' => $orderRouteKey])
+                                    : null;
+
+                                $unitLabel = $itemCount === 1 ? $historyCopy['unit_singular'] : $historyCopy['unit_plural'];
+                                $dayLabel = $durationDays === 1 ? $historyCopy['day_singular'] : $historyCopy['day_plural'];
+                            @endphp
+
+                            <article class="history-inner history-card-in rounded-3xl border p-5" style="animation-delay: {{ min(($loop->index + 4) * 50, 320) }}ms">
+                                <div class="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+                                    <div class="min-w-0 flex-1 space-y-3">
+                                        <div class="space-y-1">
+                                            <p class="text-xs font-semibold tracking-[0.14em] history-accent-text">{{ $historyCopy['order_label'] }}</p>
+                                            <h4 class="break-all text-lg font-semibold history-title">{{ $orderNumber }}</h4>
+                                            <p class="text-sm leading-6 history-muted">
+                                                {{ $itemSummary ?: $historyCopy['equipment_summary_empty'] }}
+                                                @if ($itemCount > 0)
+                                                    <span class="history-subtle">• {{ $itemCount }} {{ $unitLabel }}</span>
+                                                @endif
+                                            </p>
+                                        </div>
+
+                                        <div class="flex flex-wrap items-center gap-2 text-sm">
+                                            <span class="inline-flex items-center rounded-full border history-card-solid px-3 py-1.5 history-title">
+                                                {{ optional($order->rental_start_date)->translatedFormat('d M Y') }} — {{ optional($order->rental_end_date)->translatedFormat('d M Y') }}
+                                            </span>
+                                            <span class="inline-flex items-center rounded-full border history-card-solid px-3 py-1.5 history-title">
+                                                {{ $durationDays }} {{ $dayLabel }}
+                                            </span>
+                                        </div>
+
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold {{ $statusTone('payment', $order->status_pembayaran ?? Order::PAYMENT_PENDING) }}">
+                                                {{ $paymentLabel($order->status_pembayaran ?? Order::PAYMENT_PENDING) }}
+                                            </span>
+                                            <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold {{ $statusTone('rental', $order->status_pesanan ?? Order::STATUS_PENDING_PAYMENT) }}">
+                                                {{ $rentalLabel($order->status_pesanan ?? Order::STATUS_PENDING_PAYMENT) }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="w-full xl:w-[300px] xl:shrink-0">
+                                        <div class="rounded-2xl border history-card-solid p-4">
+                                            <div class="flex items-baseline justify-between border-b history-border pb-3">
+                                                <p class="text-xs font-medium history-muted">{{ $historyCopy['total_label'] }}</p>
+                                                <p class="text-2xl font-bold tracking-tight history-title">
+                                                    {{ $formatIdr($order->grand_total ?? $order->total_amount) }}
+                                                </p>
+                                            </div>
+
+                                            @php
+                                                $hasRefresh = $canRefreshStatus($order);
+                                                $hasCancel = $canCancelOrder($order);
+                                                $bothExist = $hasRefresh && $hasCancel;
+                                            @endphp
+
+                                            <div class="mt-4 grid grid-cols-2 gap-2">
+                                                <a
+                                                    href="{{ route('account.orders.show', $order) }}"
+                                                    class="col-span-2 inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border history-secondary-button history-accent-link px-3.5 py-2 text-center text-sm font-semibold transition"
+                                                >
+                                                    {{ $historyCopy['details_reschedule'] }}
+                                                </a>
+
+                                                @if ($canPayOrder($order))
+                                                    <a
+                                                        href="{{ route('booking.pay', $order) }}"
+                                                        class="col-span-2 inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl history-accent-bg px-3.5 py-2 text-center text-sm font-semibold transition"
+                                                    >
+                                                        {{ $historyCopy['pay_now'] }}
+                                                    </a>
+                                                @endif
+
+                                                @if ($hasRefresh)
+                                                    <form method="POST" action="{{ route('payments.refresh-status', $order) }}" class="{{ $bothExist ? 'col-span-1' : 'col-span-2' }} w-full">
+                                                        @csrf
+                                                        <button
+                                                            type="submit"
+                                                            class="inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border history-secondary-button history-accent-link px-3.5 py-2 text-center text-sm font-semibold transition"
+                                                        >
+                                                            {{ $historyCopy['refresh_status'] }}
+                                                        </button>
+                                                    </form>
+                                                @endif
+
+                                                @if ($hasCancel)
+                                                    <form
+                                                        method="POST"
+                                                        action="{{ route('account.orders.cancel', $order) }}"
+                                                        onsubmit="return confirm('{{ $historyCopy['cancel_confirm'] }}');"
+                                                        class="{{ $bothExist ? 'col-span-1' : 'col-span-2' }} w-full"
+                                                    >
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button
+                                                            type="submit"
+                                                            class="inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border border-rose-400/25 bg-rose-500/5 px-3.5 py-2 text-center text-sm font-semibold text-rose-300 transition hover:border-rose-300/40 hover:bg-rose-500/10"
+                                                        >
+                                                            {{ $historyCopy['cancel'] }}
+                                                        </button>
+                                                    </form>
+                                                @endif
+
+                                                @if ($signedInvoiceUrl)
+                                                    <a
+                                                        href="{{ $signedInvoiceUrl }}"
+                                                        class="col-span-2 inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border history-secondary-button history-accent-link px-3.5 py-2 text-center text-sm font-semibold transition"
+                                                    >
+                                                        {{ $historyCopy['invoice'] }}
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="flex flex-wrap items-center gap-2 text-sm">
-                                    <span class="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[#E8E8EC]">
-                                        {{ optional($order->rental_start_date)->translatedFormat('d M Y') }} — {{ optional($order->rental_end_date)->translatedFormat('d M Y') }}
-                                    </span>
-                                    <span class="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[#E8E8EC]">
-                                        {{ $durationDays }} {{ __('hari') }}
-                                    </span>
+                            </article>
+                        @empty
+                            <div class="rounded-3xl border border-dashed history-inner px-6 py-10 text-center">
+                                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border history-card-solid">
+                                    <span class="h-2.5 w-2.5 rounded-full history-accent-dot"></span>
                                 </div>
+                                <h4 class="mt-4 text-lg font-semibold history-title">{{ $historyCopy['empty_active_title'] }}</h4>
+                                <p class="mt-2 text-sm leading-6 history-muted">{{ $historyCopy['empty_active_subtitle'] }}</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </section>
 
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold {{ $statusTone('payment', $order->status_pembayaran ?? Order::PAYMENT_PENDING) }}">
+                <section class="history-card history-card-in self-start rounded-3xl border p-6" style="animation-delay: 220ms">
+                    <div>
+                        <h3 class="text-xl font-bold tracking-tight history-title">{{ $historyCopy['recent_title'] }}</h3>
+                        <p class="mt-1 text-sm history-muted">{{ $historyCopy['recent_subtitle'] }}</p>
+                    </div>
+
+                    <div class="mt-5 space-y-3">
+                        @forelse ($recentBookings->take(2) as $order)
+                            @php
+                                $orderNumber = $order->order_number ?? ('ORD-' . $order->id);
+                            @endphp
+                            <article class="history-inner history-card-in rounded-2xl border p-4" style="animation-delay: {{ min(($loop->index + 8) * 40, 340) }}ms">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div class="min-w-0">
+                                        <p class="break-all text-sm font-semibold history-title">{{ $orderNumber }}</p>
+                                        <p class="mt-1 text-xs leading-5 history-muted">
+                                            {{ optional($order->created_at)->translatedFormat('d M Y, H:i') }}
+                                        </p>
+                                    </div>
+                                    <span class="inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-xs font-semibold {{ $statusTone('payment', $order->status_pembayaran ?? Order::PAYMENT_PENDING) }}">
                                         {{ $paymentLabel($order->status_pembayaran ?? Order::PAYMENT_PENDING) }}
                                     </span>
-                                    <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold {{ $statusTone('rental', $order->status_pesanan ?? Order::STATUS_PENDING_PAYMENT) }}">
-                                        {{ $rentalLabel($order->status_pesanan ?? Order::STATUS_PENDING_PAYMENT) }}
-                                    </span>
                                 </div>
-                            </div>
 
-                            <div class="w-full xl:w-[300px] xl:shrink-0">
-                                <div class="rounded-2xl border border-[#1A1A1E] bg-[#111113] p-4">
-                                    <div class="flex items-baseline justify-between border-b border-white/5 pb-3">
-                                        <p class="text-xs font-medium text-[#A0A0A8]">{{ __('Total') }}</p>
-                                        <p class="text-2xl font-bold tracking-tight text-[#E8E8EC]">
+                                <div class="mt-4 flex items-end justify-between gap-4">
+                                    <div>
+                                        <p class="text-xs font-medium history-muted">{{ $historyCopy['total_label'] }}</p>
+                                        <p class="mt-1 text-lg font-semibold history-title">
                                             {{ $formatIdr($order->grand_total ?? $order->total_amount) }}
+                                        </p>
+                                        <p class="mt-1 text-xs history-muted">
+                                            {{ $rentalLabel($order->status_pesanan ?? Order::STATUS_PENDING_PAYMENT) }}
                                         </p>
                                     </div>
 
-                                    @php
-                                        $hasRefresh = $canRefreshStatus($order);
-                                        $hasCancel = $canCancelOrder($order);
-                                        $bothExist = $hasRefresh && $hasCancel;
-                                    @endphp
-
-                                    <div class="mt-4 grid grid-cols-2 gap-2">
-                                        <a
-                                            href="{{ route('account.orders.show', $order) }}"
-                                            class="col-span-2 inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-center text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35 hover:text-[#D4A843]"
-                                        >
-                                            {!! 'Detail & Ubah Jadwal' !!}
-                                        </a>
-
-                                        @if ($canPayOrder($order))
-                                            <a
-                                                href="{{ route('booking.pay', $order) }}"
-                                                class="col-span-2 inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl bg-[#D4A843] px-3.5 py-2 text-center text-sm font-semibold text-[#0A0A0B] transition hover:bg-[#e0ba5d]"
-                                            >
-                                                {{ __('Bayar Sekarang') }}
-                                            </a>
-                                        @endif
-
-                                        @if ($hasRefresh)
-                                            <form method="POST" action="{{ route('payments.refresh-status', $order) }}" class="{{ $bothExist ? 'col-span-1' : 'col-span-2' }} w-full">
-                                                @csrf
-                                                <button
-                                                    type="submit"
-                                                    class="inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-center text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35 hover:text-[#D4A843]"
-                                                >
-                                                    {{ __('Refresh Status') }}
-                                                </button>
-                                            </form>
-                                        @endif
-
-                                        @if ($hasCancel)
-                                            <form
-                                                method="POST"
-                                                action="{{ route('account.orders.cancel', $order) }}"
-                                                onsubmit="return confirm('{{ __('Apakah Anda yakin ingin membatalkan pesanan ini?') }}');"
-                                                class="{{ $bothExist ? 'col-span-1' : 'col-span-2' }} w-full"
-                                            >
-                                                @csrf
-                                                @method('DELETE')
-                                                <button
-                                                    type="submit"
-                                                    class="inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border border-rose-400/25 bg-rose-500/5 px-3.5 py-2 text-center text-sm font-semibold text-rose-300 transition hover:border-rose-300/40 hover:bg-rose-500/10"
-                                                >
-                                                    {{ __('Batalkan') }}
-                                                </button>
-                                            </form>
-                                        @endif
-
-                                        @if ($signedInvoiceUrl)
-                                            <a
-                                                href="{{ $signedInvoiceUrl }}"
-                                                class="col-span-2 inline-flex w-full min-h-[2.5rem] items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-center text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35 hover:text-[#D4A843]"
-                                            >
-                                                {{ __('Invoice') }}
-                                            </a>
-                                        @endif
-                                    </div>
+                                    <a
+                                        href="{{ route('account.orders.show', $order) }}"
+                                        class="inline-flex items-center justify-center rounded-xl border history-secondary-button history-accent-link px-3.5 py-2 text-sm font-semibold transition"
+                                    >
+                                        {{ $historyCopy['details'] }}
+                                    </a>
                                 </div>
+                            </article>
+                        @empty
+                            <div class="rounded-3xl border border-dashed history-inner px-6 py-10 text-center">
+                                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border history-card-solid">
+                                    <span class="h-2.5 w-2.5 rounded-full history-accent-dot"></span>
+                                </div>
+                                <h4 class="mt-4 text-lg font-semibold history-title">{{ $historyCopy['empty_recent_title'] }}</h4>
+                                <p class="mt-2 text-sm leading-6 history-muted">{{ $historyCopy['empty_recent_subtitle'] }}</p>
                             </div>
-                        </div>
-                    </article>
-                @empty
-                    <div class="rounded-3xl border border-dashed border-white/10 bg-[#0A0A0B]/60 px-6 py-10 text-center">
-                        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[#1A1A1E] bg-[#111113]">
-                            <span class="h-2.5 w-2.5 rounded-full bg-[#D4A843]"></span>
-                        </div>
-                        <h4 class="mt-4 text-lg font-semibold text-[#E8E8EC]">{{ __('Belum ada sewa aktif') }}</h4>
-                        <p class="mt-2 text-sm leading-6 text-[#A0A0A8]">{{ __('Pesanan yang sedang berjalan akan muncul di sini.') }}</p>
+                        @endforelse
                     </div>
-                @endforelse
-            </div>
-        </section>
 
-        <section class="history-card-in self-start rounded-3xl border border-white/10 bg-[#111113]/70 p-6" style="animation-delay: 220ms">
-            <div>
-                <h3 class="text-xl font-bold tracking-tight text-[#E8E8EC]">{{ __('Riwayat Terbaru') }}</h3>
-                <p class="mt-1 text-sm text-[#A0A0A8]">{{ __('Pesanan terbaru, pembayaran, dan akses detail order Anda.') }}</p>
+                    <p class="pt-3 text-xs history-subtle">
+                        {{ $historyCopy['pagination_note'] }}
+                    </p>
+                </section>
             </div>
 
-            <div class="mt-5 space-y-3">
-                @forelse ($recentBookings->take(2) as $order)
-                    @php
-                        $orderNumber = $order->order_number ?? ('ORD-' . $order->id);
-                    @endphp
-                    <article class="history-card-in rounded-2xl border border-[#1A1A1E] bg-[#0A0A0B]/75 p-4" style="animation-delay: {{ min(($loop->index + 8) * 40, 340) }}ms">
-                        <div class="flex items-start justify-between gap-4">
-                            <div class="min-w-0">
-                                <p class="break-all text-sm font-semibold text-[#E8E8EC]">{{ $orderNumber }}</p>
-                                <p class="mt-1 text-xs leading-5 text-[#A0A0A8]">
-                                    {{ optional($order->created_at)->translatedFormat('d M Y, H:i') }}
-                                </p>
-                            </div>
-                            <span class="inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-xs font-semibold {{ $statusTone('payment', $order->status_pembayaran ?? Order::PAYMENT_PENDING) }}">
-                                {{ $paymentLabel($order->status_pembayaran ?? Order::PAYMENT_PENDING) }}
-                            </span>
-                        </div>
-
-                        <div class="mt-4 flex items-end justify-between gap-4">
-                            <div>
-                                <p class="text-xs font-medium text-[#A0A0A8]">{{ __('Total') }}</p>
-                                <p class="mt-1 text-lg font-semibold text-[#E8E8EC]">
-                                    {{ $formatIdr($order->grand_total ?? $order->total_amount) }}
-                                </p>
-                                <p class="mt-1 text-xs text-[#A0A0A8]">
-                                    {{ $rentalLabel($order->status_pesanan ?? Order::STATUS_PENDING_PAYMENT) }}
-                                </p>
-                            </div>
-
-                            <a
-                                href="{{ route('account.orders.show', $order) }}"
-                                class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-[#E8E8EC] transition hover:border-[#D4A843]/35 hover:text-[#D4A843]"
-                            >
-                                {{ __('Detail') }}
-                            </a>
-                        </div>
-                    </article>
-                @empty
-                    <div class="rounded-3xl border border-dashed border-white/10 bg-[#0A0A0B]/60 px-6 py-10 text-center">
-                        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[#1A1A1E] bg-[#111113]">
-                            <span class="h-2.5 w-2.5 rounded-full bg-[#D4A843]"></span>
-                        </div>
-                        <h4 class="mt-4 text-lg font-semibold text-[#E8E8EC]">{{ __('Belum ada riwayat') }}</h4>
-                        <p class="mt-2 text-sm leading-6 text-[#A0A0A8]">{{ __('Pesanan selesai atau transaksi terbaru akan tampil di sini.') }}</p>
-                    </div>
-                @endforelse
-            </div>
-
-            <p class="pt-3 text-xs text-[#7C7C84]">
-                {{ __('Gunakan pagination di bawah untuk melihat riwayat lainnya.') }}
-            </p>
-        </section>
-    </div>
-
-    @if (isset($orders) && method_exists($orders, 'links'))
-        <div class="mt-6 pr-20 sm:pr-0">
-            {{ $orders->links() }}
+            @if (isset($orders) && method_exists($orders, 'links'))
+                <div class="mt-6 pr-20 sm:pr-0">
+                    {{ $orders->links() }}
+                </div>
+            @endif
         </div>
-    @endif
+    </div>
 @endsection
