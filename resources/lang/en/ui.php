@@ -89,7 +89,7 @@ return [
         'login_heading' => 'Sign in to continue rental and payment.',
         'login_subheading' => 'Use your account email and password.',
         'login_note' => 'Continue rental and check orders.',
-        'login_title' => 'Manake Login',
+        'login_title' => 'Login',
         'login_button' => 'Login',
         'forgot_password' => 'Forgot password?',
         'no_account' => 'Don\'t have an account?',

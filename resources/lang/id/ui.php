@@ -89,7 +89,7 @@ return [
         'login_heading' => 'Masuk untuk lanjut sewa dan pembayaran.',
         'login_subheading' => 'Gunakan email dan kata sandi akun kamu.',
         'login_note' => 'Lanjutkan sewa dan cek pesanan.',
-        'login_title' => 'Masuk Manake',
+        'login_title' => 'Login',
         'login_button' => 'Masuk',
         'forgot_password' => 'Lupa password?',
         'no_account' => 'Belum punya akun?',

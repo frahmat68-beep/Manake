@@ -194,33 +194,35 @@
         <div class="auth-page auth-page-bg flex min-h-screen w-full">
             <!-- Left Side: Image / Showcase (hidden on mobile) -->
             <div class="relative hidden w-1/2 lg:block">
-                <a href="{{ route('home') }}" class="absolute top-10 left-12 z-10 transition-transform hover:scale-105 w-fit" data-skip-loader="true">
+                <a href="{{ route('home') }}" class="absolute top-10 left-12 z-20 transition-transform hover:scale-105 w-fit" data-skip-loader="true">
                     <x-brand.image
-                        light="manake-logo-white.png"
+                        light="manake-logo-blue.png"
                         dark="manake-logo-white.png"
                         alt="{{ $brandName }}"
                         img-class="h-10 w-auto object-contain"
-                        :swap-in-dark="false"
+                        :swap-in-dark="true"
                     />
                 </a>
-                <img src="{{ site_asset('images/camera-arri.jpg') }}" alt="Cinematic Camera" class="absolute inset-0 h-full w-full object-cover">
-                <!-- Gradient Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/60 to-[#0A0A0B]/20"></div>
-                <div class="auth-left-accent-overlay absolute inset-0 mix-blend-overlay"></div>
+                <img src="{{ site_asset('images/hero-bg-light.jpg') }}" alt="Cinematic Camera" class="absolute inset-0 h-full w-full object-cover">
+                <!-- Gradient Overlay: balanced so text is readable without being too dark -->
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0B]/85 via-[#0A0A0B]/30 to-[#0A0A0B]/10"></div>
+                <div class="auth-left-accent-overlay absolute inset-0 mix-blend-overlay opacity-60"></div>
+                <!-- Extra readability gradient behind showcase text -->
+                <div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#0A0A0B]/70 via-[#0A0A0B]/20 to-transparent"></div>
                 
                 <!-- Showcase Content -->
                 <div class="absolute bottom-16 left-16 right-16 z-10">
                     @if ($compactAuthShowcaseTitle)
-                        <h1 class="font-serif text-5xl font-bold tracking-tight text-white mb-6">
+                        <h1 class="font-serif text-5xl font-bold tracking-tight text-white mb-6 drop-shadow-[0_4px_20px_rgba(0,0,0,0.65)]">
                             {{ $compactAuthShowcaseTitle }}
                         </h1>
                     @endif
                     @if ($compactAuthShowcaseText)
-                        <p class="text-lg text-[#A0A0A8] max-w-xl">
+                        <p class="max-w-xl text-lg text-[#D6D6DC] drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)]">
                             {{ $compactAuthShowcaseText }}
                         </p>
                     @else
-                        <p class="text-lg text-[#A0A0A8] max-w-xl">
+                        <p class="max-w-xl text-lg text-[#D6D6DC] drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)]">
                             {{ __('ui.auth.aside_default_text') }}
                         </p>
                     @endif
@@ -248,11 +250,11 @@
                 <div class="mx-auto w-full max-w-md relative z-10">
                     <a href="{{ route('home') }}" class="mb-12 flex items-center transition-transform hover:scale-105 w-fit lg:hidden" data-skip-loader="true">
                         <x-brand.image
-                            light="manake-logo-white.png"
+                            light="manake-logo-blue.png"
                             dark="manake-logo-white.png"
                             alt="{{ $brandName }}"
                             img-class="h-10 w-auto object-contain"
-                            :swap-in-dark="false"
+                            :swap-in-dark="true"
                         />
                     </a>
 
