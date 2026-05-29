@@ -194,7 +194,7 @@
         </section>
 
         {{-- Section 3: Orders action & sidebar information --}}
-        <section class="grid gap-5 xl:grid-cols-[minmax(0,1.45fr)_minmax(360px,0.85fr)]">
+        <section class="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_380px]">
             <section class="admin-dashboard-card overflow-hidden">
                 <div class="flex flex-wrap items-center justify-between gap-3 border-b admin-border px-5 py-4 bg-[color:var(--admin-surface-raised)]/30">
                     <div>
@@ -224,7 +224,7 @@
                                 $isClosed = in_array($order->status_pesanan, ['barang_kembali', 'barang_rusak', 'selesai'], true);
                             @endphp
                             <article class="px-5 py-4 transition hover:bg-[color:var(--admin-surface-raised)]">
-                                <div class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_560px] xl:items-start">
+                                <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
                                     <div class="min-w-0">
                                         <div class="flex flex-wrap items-center gap-2">
                                             <p class="truncate text-base font-bold admin-title">
