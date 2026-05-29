@@ -323,8 +323,8 @@
         @include('partials.page-loader')
 
         @php
-            $compactAuthShowcaseTitle = $asideHeading ?: null;
-            $compactAuthShowcaseText = $asideText ?: null;
+            $compactAuthShowcaseTitle = $asideHeading ?: __('ui.auth.login_aside_heading');
+            $compactAuthShowcaseText = $asideText ?: __('ui.auth.login_aside_text');
         @endphp
 
         <div class="auth-page auth-page-bg flex min-h-screen w-full overflow-hidden">

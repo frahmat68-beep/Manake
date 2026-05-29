@@ -4,8 +4,8 @@
     :heading="__('ui.auth.register_title')"
     :subheading="null"
     :aside-eyebrow="null"
-    :aside-heading="null"
-    :aside-text="null"
+    :aside-heading="__('ui.auth.login_aside_heading')"
+    :aside-text="__('ui.auth.login_aside_text')"
     :aside-points="[]"
 >
     <!-- Global Errors/Status -->
