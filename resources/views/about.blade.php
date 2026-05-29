@@ -3,13 +3,96 @@
 @section('title', __('app.footer.quick_about'))
 
 @php
-    $aboutText = setting('footer.about', setting('footer_description', site_content('footer.about', __('app.footer.about_body'))));
+    $aboutPage = __('ui.about_page');
+    $aboutText = setting('footer.about', setting('footer_description', site_content('footer.about', __('ui.about_page.description_fallback'))));
     $contactWhatsapp = setting('footer.whatsapp', setting('social_whatsapp', site_content('footer.whatsapp', setting('footer_phone', '+62 812-3456-7890'))));
     $contactEmail = setting('contact.email', setting('footer_email', site_content('contact.email', 'hello@manakerental.id')));
 @endphp
 
 @push('head')
     <style>
+        .about-page {
+            --about-accent: #D4A843;
+            --about-accent-hover: #E0BA5D;
+            --about-accent-text: #0A0A0B;
+            --about-accent-soft: rgba(212, 168, 67, 0.12);
+            --about-accent-border: rgba(212, 168, 67, 0.30);
+            --about-text: #E8E8EC;
+            --about-muted: #A0A0A8;
+            --about-surface: rgba(17, 17, 19, 0.70);
+            --about-surface-soft: rgba(17, 17, 19, 0.40);
+            --about-border: rgba(255, 255, 255, 0.10);
+        }
+
+        html[data-theme-resolved="light"] .about-page {
+            --about-accent: #2563EB;
+            --about-accent-hover: #1D4ED8;
+            --about-accent-text: #FFFFFF;
+            --about-accent-soft: rgba(37, 99, 235, 0.08);
+            --about-accent-border: rgba(37, 99, 235, 0.22);
+            --about-text: #111827;
+            --about-muted: #4B5563;
+            --about-surface: rgba(255, 255, 255, 0.90);
+            --about-surface-soft: rgba(255, 255, 255, 0.78);
+            --about-border: #E5E7EB;
+        }
+
+        .about-card {
+            border-color: var(--about-border) !important;
+            background: var(--about-surface) !important;
+            color: var(--about-text) !important;
+        }
+
+        .about-card-soft {
+            border-color: var(--about-border) !important;
+            background: var(--about-surface-soft) !important;
+            color: var(--about-text) !important;
+        }
+
+        .about-title {
+            color: var(--about-text) !important;
+        }
+
+        .about-muted {
+            color: var(--about-muted) !important;
+        }
+
+        .about-accent-text {
+            color: var(--about-accent) !important;
+        }
+
+        .about-accent-bg {
+            background-color: var(--about-accent) !important;
+            color: var(--about-accent-text) !important;
+            border-color: var(--about-accent) !important;
+        }
+
+        .about-accent-bg:hover {
+            background-color: var(--about-accent-hover) !important;
+        }
+
+        .about-accent-soft {
+            background-color: var(--about-accent-soft) !important;
+            color: var(--about-accent) !important;
+        }
+
+        .about-accent-dot {
+            background-color: var(--about-accent) !important;
+        }
+
+        .about-accent-border-hover {
+            border-color: var(--about-border) !important;
+        }
+
+        .about-accent-border-hover:hover {
+            border-color: var(--about-accent) !important;
+            color: var(--about-accent) !important;
+        }
+
+        html[data-theme-resolved="light"] .about-page {
+            background-color: #F8FAFC !important;
+        }
+
         /* Custom entrance transitions */
         .about-enter {
             animation: about-enter 520ms ease-out both;
@@ -51,50 +134,50 @@
 @endpush
 
 @section('content')
-    <div class="min-h-screen bg-[#0A0A0B] text-[#E8E8EC] py-6 sm:py-10">
+    <div class="about-page min-h-screen bg-[#0A0A0B] text-[#E8E8EC] py-6 sm:py-10">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 space-y-12">
             
             <!-- 1. Hero Section -->
             <section class="grid grid-cols-1 gap-6 lg:grid-cols-[1.3fr,0.7fr] items-stretch about-enter">
                 <!-- Left Content Card -->
-                <div class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8 lg:p-10 shadow-2xl flex flex-col justify-between">
+                <div class="about-card rounded-3xl border p-6 sm:p-8 lg:p-10 shadow-2xl flex flex-col justify-between">
                     <div>
-                        <p class="text-xs font-bold tracking-widest uppercase text-[#D4A843] mb-3">TENTANG MANAKE</p>
-                        <h1 class="text-3xl font-extrabold tracking-tight text-[#E8E8EC] sm:text-4xl leading-tight">
-                            Rental alat produksi yang dibuat lebih rapi.
+                        <p class="about-accent-text text-xs font-bold tracking-widest uppercase mb-3">{{ $aboutPage['kicker'] }}</p>
+                        <h1 class="about-title text-3xl font-extrabold tracking-tight sm:text-4xl leading-tight">
+                            {{ $aboutPage['title'] }}
                         </h1>
-                        <p class="mt-4 text-sm text-[#A0A0A8] leading-relaxed max-w-2xl">
+                        <p class="about-muted mt-4 text-sm leading-relaxed max-w-2xl">
                             {{ $aboutText }}
                         </p>
                     </div>
                     <div class="mt-8 flex flex-wrap gap-3">
-                        <a href="{{ route('catalog') }}" class="mk-button-primary px-6 py-3 text-sm font-bold flex items-center gap-2">
-                            Lihat Katalog
+                        <a href="{{ route('catalog') }}" class="about-accent-bg rounded-xl px-6 py-3 text-sm font-bold flex items-center gap-2 transition">
+                            {{ $aboutPage['catalog_button'] }}
                         </a>
-                        <a href="{{ route('availability.board') }}" class="mk-button-secondary px-6 py-3 text-sm font-bold">
-                            Cek Ketersediaan
+                        <a href="{{ route('availability.board') }}" class="rounded-xl border px-6 py-3 text-sm font-bold transition about-accent-border-hover about-title">
+                            {{ $aboutPage['availability_button'] }}
                         </a>
                     </div>
                 </div>
 
                 <!-- Right Visual Summary Card -->
-                <div class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 sm:p-8 shadow-xl flex flex-col justify-between">
+                <div class="about-card-soft rounded-3xl border p-6 sm:p-8 shadow-xl flex flex-col justify-between">
                     <div>
-                        <h2 class="text-lg font-bold text-[#E8E8EC]">Untuk produksi, event, dan kreator.</h2>
-                        <p class="mt-2 text-xs text-[#A0A0A8] leading-relaxed">Penyediaan kamera, audio, pencahayaan, dan support gear cinematic terkurasi.</p>
+                        <h2 class="about-title text-lg font-bold">{{ $aboutPage['summary_title'] }}</h2>
+                        <p class="about-muted mt-2 text-xs leading-relaxed">{{ $aboutPage['summary_desc'] }}</p>
                     </div>
                     <div class="space-y-3 mt-6">
                         <div class="flex items-center gap-3 p-3 bg-[#0A0A0B]/40 rounded-2xl border border-white/5 shadow-sm">
-                            <span class="h-2 w-2 rounded-full bg-[#D4A843]"></span>
-                            <span class="text-xs font-semibold text-[#E8E8EC]">Kamera & lensa</span>
+                            <span class="about-accent-dot h-2 w-2 rounded-full"></span>
+                            <span class="about-title text-xs font-semibold">{{ $aboutPage['summary_item_1'] }}</span>
                         </div>
                         <div class="flex items-center gap-3 p-3 bg-[#0A0A0B]/40 rounded-2xl border border-white/5 shadow-sm">
-                            <span class="h-2 w-2 rounded-full bg-[#D4A843]"></span>
-                            <span class="text-xs font-semibold text-[#E8E8EC]">Lighting & audio</span>
+                            <span class="about-accent-dot h-2 w-2 rounded-full"></span>
+                            <span class="about-title text-xs font-semibold">{{ $aboutPage['summary_item_2'] }}</span>
                         </div>
                         <div class="flex items-center gap-3 p-3 bg-[#0A0A0B]/40 rounded-2xl border border-white/5 shadow-sm">
-                            <span class="h-2 w-2 rounded-full bg-[#D4A843]"></span>
-                            <span class="text-xs font-semibold text-[#E8E8EC]">HT, drone, dan support gear</span>
+                            <span class="about-accent-dot h-2 w-2 rounded-full"></span>
+                            <span class="about-title text-xs font-semibold">{{ $aboutPage['summary_item_3'] }}</span>
                         </div>
                     </div>
                 </div>
@@ -103,44 +186,44 @@
             <!-- 2. What Manake Does Section -->
             <section class="space-y-6">
                 <div class="border-b border-[#1A1A1E] pb-3">
-                    <h2 class="text-xl font-bold tracking-tight text-[#E8E8EC]">Apa yang Manake bantu?</h2>
+                    <h2 class="about-title text-xl font-bold tracking-tight">{{ $aboutPage['what_title'] }}</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <article class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 sm:p-8 shadow-xl flex flex-col justify-between about-card-in">
+                    <article class="about-card-soft rounded-3xl border p-6 sm:p-8 shadow-xl flex flex-col justify-between about-card-in">
                         <div class="space-y-4">
-                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4A843]/10 text-[#D4A843]">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl about-accent-soft">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-.547.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                             </div>
                             <div>
-                                <h3 class="text-base font-bold text-[#E8E8EC]">Sewa alat produksi</h3>
-                                <p class="mt-2 text-xs text-[#A0A0A8] leading-relaxed">
-                                    Pilih kamera, lensa, lighting, audio, dan support gear sesuai kebutuhan produksi.
+                                <h3 class="about-title text-base font-bold">{{ $aboutPage['what_card_1_title'] }}</h3>
+                                <p class="about-muted mt-2 text-xs leading-relaxed">
+                                    {{ $aboutPage['what_card_1_desc'] }}
                                 </p>
                             </div>
                         </div>
                     </article>
-                    <article class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 sm:p-8 shadow-xl flex flex-col justify-between about-card-in">
+                    <article class="about-card-soft rounded-3xl border p-6 sm:p-8 shadow-xl flex flex-col justify-between about-card-in">
                         <div class="space-y-4">
-                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4A843]/10 text-[#D4A843]">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl about-accent-soft">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             </div>
                             <div>
-                                <h3 class="text-base font-bold text-[#E8E8EC]">Cek jadwal alat</h3>
-                                <p class="mt-2 text-xs text-[#A0A0A8] leading-relaxed">
-                                    Lihat ketersediaan alat berdasarkan tanggal secara real-time sebelum mulai booking.
+                                <h3 class="about-title text-base font-bold">{{ $aboutPage['what_card_2_title'] }}</h3>
+                                <p class="about-muted mt-2 text-xs leading-relaxed">
+                                    {{ $aboutPage['what_card_2_desc'] }}
                                 </p>
                             </div>
                         </div>
                     </article>
-                    <article class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 sm:p-8 shadow-xl flex flex-col justify-between about-card-in">
+                    <article class="about-card-soft rounded-3xl border p-6 sm:p-8 shadow-xl flex flex-col justify-between about-card-in">
                         <div class="space-y-4">
-                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4A843]/10 text-[#D4A843]">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl about-accent-soft">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                             </div>
                             <div>
-                                <h3 class="text-base font-bold text-[#E8E8EC]">Booking lebih terstruktur</h3>
-                                <p class="mt-2 text-xs text-[#A0A0A8] leading-relaxed">
-                                    Keranjang, checkout, pembayaran otomatis, dan pencatatan invoice dalam satu alur rapi.
+                                <h3 class="about-title text-base font-bold">{{ $aboutPage['what_card_3_title'] }}</h3>
+                                <p class="about-muted mt-2 text-xs leading-relaxed">
+                                    {{ $aboutPage['what_card_3_desc'] }}
                                 </p>
                             </div>
                         </div>
@@ -151,28 +234,28 @@
             <!-- 3. Why Choose Us Section -->
             <section class="space-y-6">
                 <div class="border-b border-[#1A1A1E] pb-3">
-                    <h2 class="text-xl font-bold tracking-tight text-[#E8E8EC]">Kenapa Manake?</h2>
+                    <h2 class="about-title text-xl font-bold tracking-tight">{{ $aboutPage['why_title'] }}</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl about-card-in">
-                        <h3 class="text-sm font-bold text-[#E8E8EC]">Alat terawat</h3>
-                        <p class="mt-2 text-xs text-[#A0A0A8] leading-relaxed">Seluruh kamera, lensa, dan lighting dirawat secara profesional agar performa terbaik saat shooting.</p>
+                    <div class="about-card-soft rounded-3xl border p-6 shadow-xl about-card-in">
+                        <h3 class="about-title text-sm font-bold">{{ $aboutPage['why_card_1_title'] }}</h3>
+                        <p class="about-muted mt-2 text-xs leading-relaxed">{{ $aboutPage['why_card_1_desc'] }}</p>
                     </div>
-                    <div class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl about-card-in">
-                        <h3 class="text-sm font-bold text-[#E8E8EC]">Stok dan jadwal jelas</h3>
-                        <p class="mt-2 text-xs text-[#A0A0A8] leading-relaxed">Papan ketersediaan live memberikan kepastian unit tanpa harus menunggu konfirmasi manual.</p>
+                    <div class="about-card-soft rounded-3xl border p-6 shadow-xl about-card-in">
+                        <h3 class="about-title text-sm font-bold">{{ $aboutPage['why_card_2_title'] }}</h3>
+                        <p class="about-muted mt-2 text-xs leading-relaxed">{{ $aboutPage['why_card_2_desc'] }}</p>
                     </div>
-                    <div class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl about-card-in">
-                        <h3 class="text-sm font-bold text-[#E8E8EC]">Cocok untuk event & shooting</h3>
-                        <p class="mt-2 text-xs text-[#A0A0A8] leading-relaxed">Pilihan perlengkapan terstruktur, praktis untuk kru film pendek, mahasiswa, hingga event besar.</p>
+                    <div class="about-card-soft rounded-3xl border p-6 shadow-xl about-card-in">
+                        <h3 class="about-title text-sm font-bold">{{ $aboutPage['why_card_3_title'] }}</h3>
+                        <p class="about-muted mt-2 text-xs leading-relaxed">{{ $aboutPage['why_card_3_desc'] }}</p>
                     </div>
-                    <div class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl about-card-in">
-                        <h3 class="text-sm font-bold text-[#E8E8EC]">Pembayaran online</h3>
-                        <p class="mt-2 text-xs text-[#A0A0A8] leading-relaxed">Proses checkout terintegrasi gerbang pembayaran otomatis yang aman dan cepat.</p>
+                    <div class="about-card-soft rounded-3xl border p-6 shadow-xl about-card-in">
+                        <h3 class="about-title text-sm font-bold">{{ $aboutPage['why_card_4_title'] }}</h3>
+                        <p class="about-muted mt-2 text-xs leading-relaxed">{{ $aboutPage['why_card_4_desc'] }}</p>
                     </div>
-                    <div class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl about-card-in md:col-span-2 lg:col-span-1">
-                        <h3 class="text-sm font-bold text-[#E8E8EC]">Dukungan admin</h3>
-                        <p class="mt-2 text-xs text-[#A0A0A8] leading-relaxed">Tim bantuan siap melayani serah terima alat dan koordinasi jadwal operasional.</p>
+                    <div class="about-card-soft rounded-3xl border p-6 shadow-xl about-card-in md:col-span-2 lg:col-span-1">
+                        <h3 class="about-title text-sm font-bold">{{ $aboutPage['why_card_5_title'] }}</h3>
+                        <p class="about-muted mt-2 text-xs leading-relaxed">{{ $aboutPage['why_card_5_desc'] }}</p>
                     </div>
                 </div>
             </section>
@@ -180,45 +263,45 @@
             <!-- 4. Rental Flow Preview Section -->
             <section class="space-y-6">
                 <div class="border-b border-[#1A1A1E] pb-3 flex flex-col md:flex-row md:items-baseline md:justify-between gap-2">
-                    <h2 class="text-xl font-bold tracking-tight text-[#E8E8EC]">Alur sewa singkat</h2>
-                    <p class="text-[10px] font-bold text-[#A0A0A8] uppercase tracking-wider">
-                        Katalog bisa dilihat tanpa login. Login hanya dibutuhkan saat menambahkan alat ke keranjang dan checkout.
+                    <h2 class="about-title text-xl font-bold tracking-tight">{{ $aboutPage['flow_title'] }}</h2>
+                    <p class="about-muted text-[10px] font-bold uppercase tracking-wider">
+                        {{ $aboutPage['flow_note'] }}
                     </p>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    <div class="rounded-2xl border border-white/5 bg-[#111113]/40 p-5 shadow-sm flex flex-col items-start gap-4">
-                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-xl bg-[#D4A843]/10 text-xs font-black text-[#D4A843]">1</span>
+                    <div class="about-card-soft rounded-2xl border p-5 shadow-sm flex flex-col items-start gap-4">
+                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-xl about-accent-soft text-xs font-black">1</span>
                         <div>
-                            <h4 class="text-xs font-bold text-[#E8E8EC]">Cek katalog</h4>
-                            <p class="mt-1 text-[10px] text-[#A0A0A8] leading-normal">Cari kamera, lighting, drone, atau audio gear.</p>
+                            <h4 class="about-title text-xs font-bold">{{ $aboutPage['flow_step_1_title'] }}</h4>
+                            <p class="about-muted mt-1 text-[10px] leading-normal">{{ $aboutPage['flow_step_1_desc'] }}</p>
                         </div>
                     </div>
-                    <div class="rounded-2xl border border-white/5 bg-[#111113]/40 p-5 shadow-sm flex flex-col items-start gap-4">
-                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-xl bg-[#D4A843]/10 text-xs font-black text-[#D4A843]">2</span>
+                    <div class="about-card-soft rounded-2xl border p-5 shadow-sm flex flex-col items-start gap-4">
+                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-xl about-accent-soft text-xs font-black">2</span>
                         <div>
-                            <h4 class="text-xs font-bold text-[#E8E8EC]">Pilih tanggal</h4>
-                            <p class="mt-1 text-[10px] text-[#A0A0A8] leading-normal">Tentukan durasi sewa di form ketersediaan.</p>
+                            <h4 class="about-title text-xs font-bold">{{ $aboutPage['flow_step_2_title'] }}</h4>
+                            <p class="about-muted mt-1 text-[10px] leading-normal">{{ $aboutPage['flow_step_2_desc'] }}</p>
                         </div>
                     </div>
-                    <div class="rounded-2xl border border-white/5 bg-[#111113]/40 p-5 shadow-sm flex flex-col items-start gap-4">
-                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-xl bg-[#D4A843]/10 text-xs font-black text-[#D4A843]">3</span>
+                    <div class="about-card-soft rounded-2xl border p-5 shadow-sm flex flex-col items-start gap-4">
+                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-xl about-accent-soft text-xs font-black">3</span>
                         <div>
-                            <h4 class="text-xs font-bold text-[#E8E8EC]">Login saat booking</h4>
-                            <p class="mt-1 text-[10px] text-[#A0A0A8] leading-normal">Masuk ke akun untuk verifikasi sewa.</p>
+                            <h4 class="about-title text-xs font-bold">{{ $aboutPage['flow_step_3_title'] }}</h4>
+                            <p class="about-muted mt-1 text-[10px] leading-normal">{{ $aboutPage['flow_step_3_desc'] }}</p>
                         </div>
                     </div>
-                    <div class="rounded-2xl border border-white/5 bg-[#111113]/40 p-5 shadow-sm flex flex-col items-start gap-4">
-                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-xl bg-[#D4A843]/10 text-xs font-black text-[#D4A843]">4</span>
+                    <div class="about-card-soft rounded-2xl border p-5 shadow-sm flex flex-col items-start gap-4">
+                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-xl about-accent-soft text-xs font-black">4</span>
                         <div>
-                            <h4 class="text-xs font-bold text-[#E8E8EC]">Checkout</h4>
-                            <p class="mt-1 text-[10px] text-[#A0A0A8] leading-normal">Selesaikan pembayaran aman secara online.</p>
+                            <h4 class="about-title text-xs font-bold">{{ $aboutPage['flow_step_4_title'] }}</h4>
+                            <p class="about-muted mt-1 text-[10px] leading-normal">{{ $aboutPage['flow_step_4_desc'] }}</p>
                         </div>
                     </div>
-                    <div class="rounded-2xl border border-white/5 bg-[#111113]/40 p-5 shadow-sm flex flex-col items-start gap-4 col-span-2 md:col-span-1">
-                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-xl bg-[#D4A843]/10 text-xs font-black text-[#D4A843]">5</span>
+                    <div class="about-card-soft rounded-2xl border p-5 shadow-sm flex flex-col items-start gap-4 col-span-2 md:col-span-1">
+                        <span class="inline-flex h-7 w-7 items-center justify-center rounded-xl about-accent-soft text-xs font-black">5</span>
                         <div>
-                            <h4 class="text-xs font-bold text-[#E8E8EC]">Ambil alat</h4>
-                            <p class="mt-1 text-[10px] text-[#A0A0A8] leading-normal">Kunjungi studio kami untuk serah terima unit.</p>
+                            <h4 class="about-title text-xs font-bold">{{ $aboutPage['flow_step_5_title'] }}</h4>
+                            <p class="about-muted mt-1 text-[10px] leading-normal">{{ $aboutPage['flow_step_5_desc'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -227,32 +310,32 @@
             <!-- 5. Who It's For Section -->
             <section class="space-y-6">
                 <div class="border-b border-[#1A1A1E] pb-3">
-                    <h2 class="text-xl font-bold tracking-tight text-[#E8E8EC]">Cocok untuk siapa?</h2>
+                    <h2 class="about-title text-xl font-bold tracking-tight">{{ $aboutPage['audience_title'] }}</h2>
                 </div>
                 <div class="flex flex-wrap gap-2.5">
-                    <span class="rounded-full border border-white/5 bg-[#111113]/40 px-4 py-2 text-xs font-bold text-[#A0A0A8]">Kru film pendek</span>
-                    <span class="rounded-full border border-white/5 bg-[#111113]/40 px-4 py-2 text-xs font-bold text-[#A0A0A8]">Event kampus</span>
-                    <span class="rounded-full border border-white/5 bg-[#111113]/40 px-4 py-2 text-xs font-bold text-[#A0A0A8]">Content creator</span>
-                    <span class="rounded-full border border-white/5 bg-[#111113]/40 px-4 py-2 text-xs font-bold text-[#A0A0A8]">Production house</span>
-                    <span class="rounded-full border border-white/5 bg-[#111113]/40 px-4 py-2 text-xs font-bold text-[#A0A0A8]">Dokumenter & interview</span>
-                    <span class="rounded-full border border-white/5 bg-[#111113]/40 px-4 py-2 text-xs font-bold text-[#A0A0A8]">Event organizer</span>
+                    <span class="rounded-full border px-4 py-2 text-xs font-bold about-card-soft about-muted">{{ $aboutPage['audience_1'] }}</span>
+                    <span class="rounded-full border px-4 py-2 text-xs font-bold about-card-soft about-muted">{{ $aboutPage['audience_2'] }}</span>
+                    <span class="rounded-full border px-4 py-2 text-xs font-bold about-card-soft about-muted">{{ $aboutPage['audience_3'] }}</span>
+                    <span class="rounded-full border px-4 py-2 text-xs font-bold about-card-soft about-muted">{{ $aboutPage['audience_4'] }}</span>
+                    <span class="rounded-full border px-4 py-2 text-xs font-bold about-card-soft about-muted">{{ $aboutPage['audience_5'] }}</span>
+                    <span class="rounded-full border px-4 py-2 text-xs font-bold about-card-soft about-muted">{{ $aboutPage['audience_6'] }}</span>
                 </div>
             </section>
 
             <!-- 6. Brand Final CTA Card -->
-            <section class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden text-center max-w-4xl mx-auto">
-                <div class="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#D4A843]/10 blur-[60px]"></div>
+            <section class="about-card rounded-3xl border p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden text-center max-w-4xl mx-auto">
+                <div class="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-current opacity-10 blur-[60px] about-accent-text"></div>
                 <div class="relative space-y-6">
-                    <h2 class="text-2xl font-extrabold text-[#E8E8EC]">Punya kebutuhan produksi khusus?</h2>
-                    <p class="text-sm text-[#A0A0A8] leading-relaxed max-w-2xl mx-auto">
-                        Kirim tanggal sewa, jenis alat, dan jumlah unit. Tim Manake bisa bantu arahkan pilihan alat yang sesuai.
+                    <h2 class="about-title text-2xl font-extrabold">{{ $aboutPage['cta_title'] }}</h2>
+                    <p class="about-muted text-sm leading-relaxed max-w-2xl mx-auto">
+                        {{ $aboutPage['cta_desc'] }}
                     </p>
                     <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-                        <a href="{{ route('contact') }}" class="mk-button-primary px-6 py-3.5 text-sm font-bold">
-                            Hubungi Tim
+                        <a href="{{ route('contact') }}" class="about-accent-bg rounded-xl px-6 py-3.5 text-sm font-bold flex items-center justify-center gap-2 transition">
+                            {{ $aboutPage['cta_contact'] }}
                         </a>
-                        <a href="{{ Route::has('rental.rules') ? route('rental.rules') : url('/rental-rules') }}" class="mk-button-secondary px-6 py-3.5 text-sm font-bold">
-                            Lihat Cara Sewa
+                        <a href="{{ Route::has('rental.rules') ? route('rental.rules') : url('/rental-rules') }}" class="about-accent-border-hover about-title border rounded-xl px-6 py-3.5 text-sm font-bold flex items-center justify-center gap-2 transition">
+                            {{ $aboutPage['cta_rules'] }}
                         </a>
                     </div>
                 </div>
