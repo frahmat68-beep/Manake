@@ -66,8 +66,36 @@
     $availabilityDayLabel = __('app.product.day_label');
     $currencyPrefix = app()->getLocale() === 'en' ? 'IDR' : 'Rp';
 
+    $availabilityKicker = setting('copy.availability.kicker', __('ui.availability_board.kicker'));
+    $availabilityMonthFilterAria = __('ui.availability_board.month_filter_aria');
+    $availabilityDateFilterAria = __('ui.availability_board.date_filter_aria');
+    $availabilityPreviousMonthAria = __('ui.availability_board.previous_month_aria');
+    $availabilityNextMonthAria = __('ui.availability_board.next_month_aria');
+    $availabilityDisplayRangeLabel = __('ui.availability_board.display_range_label');
+    $availabilityMobileScrollHint = __('ui.availability_board.mobile_scroll_hint');
+    $availabilitySearchButton = __('ui.availability_board.search_button');
+    $availabilityUnitSuffix = __('ui.availability_board.unit_suffix');
+    $availabilityUnitsSuffix = __('ui.availability_board.units_suffix');
+
+    $resolveAvailabilityCategoryName = static function (string $name): string {
+        $rawName = trim($name);
+        if (! app()->isLocale('en')) {
+            return $rawName;
+        }
+
+        $normalized = strtolower($rawName);
+
+        return match ($normalized) {
+            'aksesoris', 'aksesori' => 'Accessories',
+            'kamera' => 'Camera',
+            'lensa' => 'Lens',
+            'lampu', 'lighting' => 'Lighting',
+            default => $rawName,
+        };
+    };
+
     $equipmentClientRows = $equipmentRows
-        ->map(function (array $row) {
+        ->map(function (array $row) use ($resolveAvailabilityCategoryName) {
             $dayCells = collect($row['day_cells'] ?? [])->map(function ($cell) {
                 return [
                     'reserved' => (int) data_get($cell, 'reserved', 0),
@@ -76,11 +104,13 @@
                 ];
             })->all();
 
+            $rawCategory = (string) data_get($row, 'category', app()->isLocale('en') ? 'Other' : 'Lainnya');
+
             return [
                 'id' => (int) data_get($row, 'id', 0),
                 'name' => (string) data_get($row, 'name', __('app.product.generic')),
                 'slug' => (string) data_get($row, 'slug', ''),
-                'category' => (string) data_get($row, 'category', app()->isLocale('en') ? 'Other' : 'Lainnya'),
+                'category' => $resolveAvailabilityCategoryName($rawCategory),
                 'category_id' => (int) data_get($row, 'category_id', 0),
                 'price_per_day' => (int) data_get($row, 'price_per_day', 0),
                 'image_url' => (string) data_get($row, 'image_url', site_asset('MANAKE-FAV-M.png')),
@@ -90,6 +120,80 @@
             ];
         })
         ->values();
+
+    $resolveOrderStatusName = static function (string $status): string {
+        $normalized = strtolower(trim($status));
+        if (! app()->isLocale('en')) {
+            return match ($normalized) {
+                'menunggu_pembayaran' => 'Menunggu Pembayaran',
+                'diproses' => 'Diproses',
+                'lunas' => 'Lunas',
+                'barang_dipinjam', 'barang_diambil' => 'Sedang Disewa',
+                'dikembalikan' => 'Dikembalikan',
+                'selesai' => 'Selesai',
+                'dibatalkan' => 'Dibatalkan',
+                'barang_rusak' => 'Klaim Kerusakan',
+                default => $status,
+            };
+        }
+        return match ($normalized) {
+            'menunggu_pembayaran' => 'Waiting for Payment',
+            'diproses' => 'Processed',
+            'lunas' => 'Paid',
+            'barang_dipinjam', 'barang_diambil' => 'Rented',
+            'dikembalikan' => 'Returned',
+            'selesai' => 'Completed',
+            'dibatalkan' => 'Canceled',
+            'barang_rusak' => 'Damaged',
+            default => $status,
+        };
+    };
+
+    $resolveSourceLabelName = static function (string $label): string {
+        $normalized = strtolower(trim($label));
+        if (! app()->isLocale('en')) {
+            return match ($normalized) {
+                'dipakai' => 'Dipakai',
+                'buffer sebelum' => 'Buffer Sebelum',
+                'buffer sesudah' => 'Buffer Sesudah',
+                'maintenance' => 'Maintenance',
+                default => $label,
+            };
+        }
+        return match ($normalized) {
+            'dipakai' => 'In Use',
+            'buffer sebelum' => 'Buffer Before',
+            'buffer sesudah' => 'Buffer After',
+            'maintenance' => 'Maintenance',
+            default => $label,
+        };
+    };
+
+    $localizedDailySchedulesByDate = [];
+    foreach (($dailySchedulesByDate ?? []) as $date => $schedules) {
+        $localizedDailySchedulesByDate[$date] = array_map(function ($schedule) use ($resolveOrderStatusName) {
+            $status = $schedule['status_pesanan'] ?? '';
+            $schedule['status_label'] = $resolveOrderStatusName($status);
+            return $schedule;
+        }, $schedules);
+    }
+
+    $localizedSelectedBusyRows = $selectedBusyRows->map(function ($row) use ($resolveSourceLabelName, $resolveAvailabilityCategoryName) {
+        if (isset($row['source_labels'])) {
+            $row['source_labels'] = collect($row['source_labels'])->map($resolveSourceLabelName);
+        }
+        if (isset($row['category'])) {
+            $row['category'] = $resolveAvailabilityCategoryName($row['category']);
+        }
+        return $row;
+    });
+
+    $localizedSelectedFreeRows = $selectedFreeRows->map(function ($row) use ($resolveAvailabilityCategoryName) {
+        if (isset($row['category'])) {
+            $row['category'] = $resolveAvailabilityCategoryName($row['category']);
+        }
+        return $row;
+    });
 @endphp
 
 @push('head')
@@ -132,6 +236,72 @@
             }
         }
 
+        /* Scoped CSS variables for availability board theme */
+        .availability-page {
+            --availability-accent: #D4A843;
+            --availability-accent-hover: #E0BA5D;
+            --availability-accent-text: #0A0A0B;
+            --availability-accent-soft: rgba(212, 168, 67, 0.14);
+            --availability-accent-border: rgba(212, 168, 67, 0.34);
+            --availability-accent-shadow: rgba(212, 168, 67, 0.45);
+            --availability-surface: #111113;
+            --availability-surface-strong: #0A0A0B;
+            --availability-text: #E8E8EC;
+            --availability-muted: #A0A0A8;
+        }
+
+        html[data-theme-resolved="light"] .availability-page {
+            --availability-accent: #2563EB;
+            --availability-accent-hover: #1D4ED8;
+            --availability-accent-text: #FFFFFF;
+            --availability-accent-soft: rgba(37, 99, 235, 0.10);
+            --availability-accent-border: rgba(37, 99, 235, 0.24);
+            --availability-accent-shadow: rgba(37, 99, 235, 0.25);
+            --availability-surface: #FFFFFF;
+            --availability-surface-strong: #F8FAFC;
+            --availability-text: #111827;
+            --availability-muted: #4B5563;
+        }
+
+        .availability-accent-text {
+            color: var(--availability-accent) !important;
+        }
+
+        .availability-accent-bg {
+            background-color: var(--availability-accent) !important;
+            color: var(--availability-accent-text) !important;
+            border-color: var(--availability-accent) !important;
+        }
+
+        .availability-accent-bg:hover {
+            background-color: var(--availability-accent-hover) !important;
+        }
+
+        .availability-accent-border {
+            border-color: var(--availability-accent-border) !important;
+        }
+
+        .availability-accent-dot {
+            background-color: var(--availability-accent) !important;
+        }
+
+        .availability-strong-text {
+            color: var(--availability-text) !important;
+        }
+
+        .availability-muted-text {
+            color: var(--availability-muted) !important;
+        }
+
+        .availability-accent-focus:focus {
+            border-color: var(--availability-accent) !important;
+            box-shadow: 0 0 0 2px var(--availability-accent-soft) !important;
+        }
+
+        .availability-selected-ring {
+            box-shadow: 0 0 0 2px var(--availability-accent), 0 8px 20px -12px var(--availability-accent) !important;
+        }
+
         .board-input-group {
             position: relative;
             display: flex;
@@ -158,21 +328,21 @@
 
         @keyframes boardRangePulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(212, 168, 67, 0.22);
+                box-shadow: 0 0 0 0 var(--availability-accent-border);
             }
             70% {
-                box-shadow: 0 0 0 9px rgba(212, 168, 67, 0);
+                box-shadow: 0 0 0 9px transparent;
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(212, 168, 67, 0);
+                box-shadow: 0 0 0 0 transparent;
             }
         }
 
         .board-cell--range {
-            border-color: #D4A843 !important;
-            background: linear-gradient(160deg, rgba(212, 168, 67, 0.16) 0%, rgba(212, 168, 67, 0.26) 100%) !important;
-            color: #E8E8EC !important;
-            box-shadow: 0 0 0 1px rgba(212, 168, 67, 0.2), 0 14px 28px -24px rgba(212, 168, 67, 0.55) !important;
+            border-color: var(--availability-accent) !important;
+            background: linear-gradient(160deg, var(--availability-accent-soft) 0%, color-mix(in oklab, var(--availability-accent) 24%, transparent) 100%) !important;
+            color: var(--availability-text) !important;
+            box-shadow: 0 0 0 1px var(--availability-accent-border), 0 14px 28px -24px var(--availability-accent) !important;
         }
 
         .board-cell--range-dragging {
@@ -213,11 +383,11 @@
 @endpush
 
 @section('content')
-    <section class="mk-section">
+    <section class="mk-section availability-page">
         <div
             class="mk-container space-y-6"
         x-data="{
-            schedulesByDate: @js($dailySchedulesByDate ?? []),
+            schedulesByDate: @js($localizedDailySchedulesByDate ?? []),
             equipmentRows: @js($equipmentClientRows),
             productUrlTemplate: @js(route('product.show', ['slug' => '__slug__'])),
             catalogUrl: @js(route('catalog')),
@@ -496,14 +666,11 @@
                 }
             },
         }"
-        x-init="initBoard()"
-        x-on:keydown.escape.window="handleEscape()"
-        x-on:pointerup.window="cancelDanglingSelection()"
     >
         <section class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8 lg:p-10 shadow-2xl availability-enter">
             <div class="relative flex flex-col gap-6">
                 <div>
-                    <p class="section-kicker font-bold tracking-widest uppercase text-[#D4A843]/80">CEK ALAT</p>
+                    <p class="section-kicker availability-accent-text font-bold tracking-widest uppercase">{{ $availabilityKicker }}</p>
                     <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-[#E8E8EC] sm:text-3xl leading-tight">
                         {{ $availabilityTitle }}
                     </h1>
@@ -534,7 +701,7 @@
                                 value="{{ $monthValue }}"
                                 min="{{ $windowStartMonthValue }}"
                                 max="{{ $windowEndMonthValue }}"
-                                aria-label="Filter bulan"
+                                aria-label="{{ $availabilityMonthFilterAria }}"
                                 class="mk-input pl-11 py-3.5 text-sm"
                             >
                         </div>
@@ -546,14 +713,14 @@
                                 value="{{ $selectedDateValue }}"
                                 min="{{ $windowStartValue }}"
                                 max="{{ $windowEndValue }}"
-                                aria-label="Filter tanggal"
+                                aria-label="{{ $availabilityDateFilterAria }}"
                                 class="mk-input pl-11 py-3.5 text-sm"
                             >
                         </div>
                         <div class="flex gap-2">
-                            <button type="submit" class="mk-button-primary py-3.5 px-6 text-sm flex items-center justify-center gap-2 w-full sm:w-auto">
+                            <button type="submit" class="availability-accent-bg py-3.5 px-6 text-sm flex items-center justify-center gap-2 w-full rounded-xl font-bold transition sm:w-auto">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                                <span>Cari</span>
+                                <span>{{ $availabilitySearchButton }}</span>
                             </button>
                             @if ($search !== '')
                                 <a href="{{ route('availability.board', ['month' => $monthValue, 'date' => $selectedDateValue]) }}" class="mk-button-secondary py-3.5 px-5 text-sm flex items-center justify-center">
@@ -564,7 +731,7 @@
                     </div>
                     <div class="flex items-center justify-end">
                         <p class="text-[10px] font-bold text-[#A0A0A8] uppercase tracking-wider">
-                            {{ __('Rentang Tampil:') }} <span class="text-[#E8E8EC]">{{ \Carbon\Carbon::parse($windowStartValue)->translatedFormat('d M') }} — {{ \Carbon\Carbon::parse($windowEndValue)->translatedFormat('d M Y') }}</span>
+                            {{ $availabilityDisplayRangeLabel }} <span class="availability-strong-text">{{ \Carbon\Carbon::parse($windowStartValue)->translatedFormat('d M') }} — {{ \Carbon\Carbon::parse($windowEndValue)->translatedFormat('d M Y') }}</span>
                         </p>
                     </div>
                 </form>
@@ -585,7 +752,7 @@
                                 href="{{ route('availability.board', ['month' => $prevMonth, 'date' => $monthDate->copy()->subMonth()->startOfMonth()->toDateString(), 'q' => $search ?: null]) }}"
                                 data-ui-icon-button
                                 class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#0A0A0B] hover:bg-[#1A1A1E] text-[#E8E8EC] font-bold transition-all"
-                                aria-label="Bulan sebelumnya"
+                                aria-label="{{ $availabilityPreviousMonthAria }}"
                             >
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                             </a>
@@ -600,7 +767,7 @@
                                 href="{{ route('availability.board', ['month' => $nextMonth, 'date' => $monthDate->copy()->addMonth()->startOfMonth()->toDateString(), 'q' => $search ?: null]) }}"
                                 data-ui-icon-button
                                 class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#0A0A0B] hover:bg-[#1A1A1E] text-[#E8E8EC] font-bold transition-all"
-                                aria-label="Bulan berikutnya"
+                                aria-label="{{ $availabilityNextMonthAria }}"
                             >
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                             </a>
@@ -615,10 +782,10 @@
                 <div class="px-3 py-3 sm:px-5 sm:py-4">
                     <!-- Elegant horizontal scroll indicator for mobile -->
                     <div class="flex items-center gap-1.5 mb-3 px-1 text-[10px] font-semibold text-[#A0A0A8] sm:hidden">
-                        <svg class="h-3.5 w-3.5 animate-pulse text-[#D4A843]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <svg class="h-3.5 w-3.5 animate-pulse availability-accent-text" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
                         </svg>
-                        <span>Geser mendatar untuk melihat kalender penuh</span>
+                        <span>{{ $availabilityMobileScrollHint }}</span>
                     </div>
 
                     <div class="-mx-1 overflow-x-auto pb-2 px-1 sm:mx-0 sm:overflow-visible sm:px-0 scrollbar-thin">
@@ -632,8 +799,8 @@
                                 @foreach ($calendarDays as $day)
                                     @php
                                         $toneClass = $toneClasses[$day['tone']] ?? $toneClasses['calm'];
-                                        $selectedClass = $day['is_selected'] ? 'ring-2 ring-[#D4A843] shadow-md shadow-[#D4A843]/20' : '';
-                                        $todayClass = $day['is_today'] ? 'text-[#D4A843] font-bold' : '';
+                                        $selectedClass = $day['is_selected'] ? 'availability-selected-ring' : '';
+                                        $todayClass = $day['is_today'] ? 'availability-accent-text font-bold' : '';
                                         $isSelectable = (bool) ($day['is_selectable'] ?? false);
                                         $lockedClass = $isSelectable ? '' : 'board-cell--locked';
                                         $hasUsage = (int) $day['busy_equipments'] > 0 || (int) $day['reserved_units'] > 0;
@@ -661,7 +828,7 @@
                                         <div class="flex items-center justify-between gap-2">
                                             <p class="text-[11px] font-semibold sm:text-xs {{ $todayClass }}">{{ $day['day'] }}</p>
                                             @if ($day['is_selected'])
-                                                <span class="inline-flex h-2.5 w-2.5 rounded-full bg-[#D4A843]"></span>
+                                                <span class="inline-flex h-2.5 w-2.5 rounded-full availability-accent-dot"></span>
                                             @endif
                                         </div>
 
@@ -699,8 +866,11 @@
                         <div class="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-3.5">
                             <p class="text-[11px] font-semibold uppercase tracking-wide text-rose-500">{{ $availabilityMetricBusy }}</p>
                             <p class="mt-1 text-2xl font-bold text-rose-400">{{ $summary['busy_equipments'] ?? 0 }}</p>
+                            @php
+                                $reservedUnitCount = (int) ($summary['reserved_units'] ?? 0);
+                            @endphp
                             <p class="mt-1.5 text-[9px] font-bold text-rose-400/80 uppercase tracking-tight">
-                                {{ $summary['reserved_units'] ?? 0 }} Unit
+                                {{ $reservedUnitCount }} {{ $reservedUnitCount === 1 ? $availabilityUnitSuffix : $availabilityUnitsSuffix }}
                             </p>
                         </div>
                         <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-3 py-3.5">
@@ -714,11 +884,11 @@
                     <div class="flex items-center justify-between gap-2 mb-4">
                         <h3 class="text-base font-semibold text-[#E8E8EC]">{{ $availabilityReadyTitle }}</h3>
                         <span class="mk-badge mk-badge-success shrink-0">
-                            {{ $selectedFreeRows->count() }} {{ $availabilityCountEmptySuffix }}
+                            {{ $localizedSelectedFreeRows->count() }} {{ $availabilityCountEmptySuffix }}
                         </span>
                     </div>
                     <div class="space-y-2">
-                        @forelse ($selectedFreeRows->take(6) as $row)
+                        @forelse ($localizedSelectedFreeRows->take(6) as $row)
                             <article class="board-item rounded-xl border border-white/5 bg-[#0A0A0B]/40 px-3.5 py-2.5">
                                 <div class="flex items-center justify-between gap-3">
                                     <p class="text-sm font-semibold text-[#E8E8EC]">{{ $row['name'] }}</p>
@@ -741,11 +911,11 @@
         <section class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
             <article class="rounded-3xl border border-white/5 bg-[#111113]/40 p-6 shadow-xl availability-card-in">
                 <div class="flex items-center justify-between gap-3 mb-4">
-                    <h2 class="text-base font-semibold text-[#E8E8EC]">{{ $availabilityBusyTitle }} di {{ $selectedDateLabel }}</h2>
-                    <span class="mk-badge mk-badge-danger shrink-0">{{ $selectedBusyRows->count() }} {{ $availabilityCountToolsSuffix }}</span>
+                    <h2 class="text-base font-semibold text-[#E8E8EC]">{{ $availabilityBusyTitle }} {{ app()->isLocale('en') ? 'on' : 'di' }} {{ $selectedDateLabel }}</h2>
+                    <span class="mk-badge mk-badge-danger shrink-0">{{ $localizedSelectedBusyRows->count() }} {{ $availabilityCountToolsSuffix }}</span>
                 </div>
                 <div class="space-y-2">
-                    @forelse ($selectedBusyRows->take(10) as $row)
+                    @forelse ($localizedSelectedBusyRows->take(10) as $row)
                         <article class="board-item rounded-xl border border-white/5 bg-[#0A0A0B]/40 px-3.5 py-2.5">
                             <div class="flex items-center justify-between gap-2">
                                 <p class="text-sm font-semibold text-[#E8E8EC]">{{ $row['name'] }}</p>
@@ -779,7 +949,7 @@
                                 • Qty {{ $schedule['qty'] }}
                             </p>
                             <p class="mt-1 text-[10px] font-bold text-[#A0A0A8] uppercase tracking-wider">
-                                {{ $schedule['status_pesanan'] }}
+                                {{ $resolveOrderStatusName($schedule['status_pesanan']) }}
                             </p>
                         </article>
                     @empty
@@ -810,7 +980,7 @@
                     </div>
                     <button
                         type="button"
-                        class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#1A1A1E] bg-[#111113] hover:bg-[#1A1A1E] text-[#A0A0A8] hover:text-[#D4A843] transition-all font-semibold"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#1A1A1E] bg-[#111113] hover:bg-[#1A1A1E] text-[#A0A0A8] hover:text-[var(--availability-accent)] transition-all font-semibold"
                         @click="closeScheduleModal()"
                         aria-label="{{ $availabilityModalClose }}"
                     >
@@ -848,7 +1018,7 @@
                                         <p class="text-sm font-semibold text-[#E8E8EC]" x-text="item.equipment_name"></p>
                                         <p class="mt-0.5 text-xs text-[#A0A0A8]" x-text="item.status_label"></p>
                                     </div>
-                                    <span class="rounded-full bg-[#111113] border border-[#1A1A1E] px-2 py-0.5 text-[10px] font-bold text-[#D4A843]" x-text="`x${item.qty}`"></span>
+                                    <span class="rounded-full bg-[#111113] border border-[#1A1A1E] px-2 py-0.5 text-[10px] font-bold availability-accent-text" x-text="`x${item.qty}`"></span>
                                 </div>
                                 <p class="mt-2 text-xs text-[#A0A0A8]">
                                     {{ $availabilityPeriodLabel }}: <span class="font-semibold text-[#E8E8EC]" x-text="`${formatDateLabel(item.start_date)} - ${formatDateLabel(item.end_date)}`"></span>
@@ -881,12 +1051,12 @@
                             -
                             <span class="font-semibold text-[#E8E8EC]" x-text="formatDateLabel(getRangeEndDate())"></span>
                             •
-                            <span class="font-semibold text-[#D4A843]" x-text="getRangeDurationLabel()"></span>
+                            <span class="font-semibold availability-accent-text" x-text="getRangeDurationLabel()"></span>
                         </p>
                     </div>
                     <button
                         type="button"
-                        class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#1A1A1E] bg-[#111113] hover:bg-[#1A1A1E] text-[#A0A0A8] hover:text-[#D4A843] transition-all font-semibold"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#1A1A1E] bg-[#111113] hover:bg-[#1A1A1E] text-[#A0A0A8] hover:text-[var(--availability-accent)] transition-all font-semibold"
                         @click="closeRangeSelectionModal()"
                         aria-label="{{ $availabilityModalClose }}"
                     >
@@ -914,7 +1084,7 @@
                         </div>
                         <a
                             :href="catalogUrl"
-                            class="mk-button-primary py-2.5 px-5 text-sm"
+                            class="availability-accent-bg rounded-xl font-bold transition py-2.5 px-5 text-sm"
                         >
                             {{ $availabilityRangeContinue }}
                         </a>
@@ -939,7 +1109,7 @@
                                     <div class="min-w-0 flex-1">
                                         <p class="text-sm font-semibold text-[#E8E8EC]" x-text="item.name"></p>
                                         <p class="mt-0.5 text-xs italic text-[#A0A0A8]" x-text="item.category"></p>
-                                        <p class="mt-1 text-[11px] font-bold text-[#D4A843]">
+                                        <p class="mt-1 text-[11px] font-bold availability-accent-text">
                                             {{ $availabilityFromPriceLabel }} <span x-text="`{{ $currencyPrefix }} ${Number(item.price_per_day || 0).toLocaleString(@js($intlLocale))}`"></span> {{ __('app.product.per_day') }}
                                         </p>
                                     </div>
@@ -948,7 +1118,7 @@
                                 <div class="mt-3 flex flex-wrap items-center gap-3 border-t border-[#1A1A1E]/50 dark:border-slate-800/50 pt-2.5">
                                     <a
                                         :href="buildProductUrl(item.slug)"
-                                        class="mk-button-primary py-1.5 px-3 text-[11px]"
+                                        class="availability-accent-bg rounded-lg font-bold transition py-1.5 px-3 text-[11px]"
                                     >
                                         {{ $availabilityRangePick }}
                                     </a>
