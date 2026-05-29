@@ -154,8 +154,20 @@
     .admin-equipments-table tbody tr {
         background: transparent !important;
         color: var(--admin-text) !important;
-        border-color: var(--admin-border);
+        border-bottom: 1px solid var(--admin-border);
         transition: background-color 160ms ease, color 160ms ease;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr {
+        border-bottom-color: #E5E7EB !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr {
+        border-bottom-color: #1A1A1E !important;
+    }
+
+    .admin-equipments-table tbody tr:last-child {
+        border-bottom: 0 !important;
     }
 
     html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr:hover {
@@ -207,6 +219,21 @@
 
     html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipment-image {
         background: #0A0A0B !important;
+        border-color: #1A1A1E !important;
+    }
+
+    .admin-equipments-table-header {
+        background: var(--admin-surface);
+        border-color: var(--admin-border);
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipments-table-header {
+        background: #FFFFFF !important;
+        border-color: #E5E7EB !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipments-table-header {
+        background: #111113 !important;
         border-color: #1A1A1E !important;
     }
 </style>
@@ -332,22 +359,44 @@
 
         {{-- Table Card --}}
         <section class="admin-equipments-card overflow-hidden p-0">
+            <div class="admin-equipments-table-header flex flex-col gap-1 border-b px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h3 class="admin-equipments-title text-lg font-black">
+                        {{ $equipmentsCopy['table']['title'] ?? $equipmentsCopy['heading'] }}
+                    </h3>
+                    <p class="admin-equipments-muted text-sm">
+                        {{ $equipmentsCopy['table']['subtitle'] ?? $equipmentsCopy['subtitle'] }}
+                    </p>
+                </div>
+            </div>
+
             <div class="overflow-x-auto">
-                <table class="admin-equipments-table w-full min-w-[1080px] text-sm">
+                <table class="admin-equipments-table w-full min-w-[1280px] table-fixed text-sm">
+                    <colgroup>
+                        <col class="w-[300px]">
+                        <col class="w-[160px]">
+                        <col class="w-[140px]">
+                        <col class="w-[96px]">
+                        <col class="w-[96px]">
+                        <col class="w-[96px]">
+                        <col class="w-[120px]">
+                        <col class="w-[135px]">
+                        <col class="w-[230px]">
+                    </colgroup>
                     <thead>
                         <tr>
-                            <th class="px-5 py-3 text-left font-semibold">{{ $equipmentsCopy['table']['tool'] }}</th>
-                            <th class="px-5 py-3 text-left font-semibold">{{ $equipmentsCopy['table']['slug'] }}</th>
-                            <th class="px-5 py-3 text-right font-semibold">{{ $equipmentsCopy['table']['price_per_day'] }}</th>
-                            <th class="px-5 py-3 text-center font-semibold">{{ $equipmentsCopy['table']['total_stock'] }}</th>
-                            <th class="px-5 py-3 text-center font-semibold">{{ $equipmentsCopy['table']['reserved'] }}</th>
-                            <th class="px-5 py-3 text-center font-semibold">{{ $equipmentsCopy['table']['available'] }}</th>
-                            <th class="px-5 py-3 text-center font-semibold">{{ $equipmentsCopy['table']['status'] }}</th>
-                            <th class="px-5 py-3 text-center font-semibold">{{ $equipmentsCopy['table']['updated'] }}</th>
-                            <th class="px-5 py-3 text-right">{{ $equipmentsCopy['table']['action'] }}</th>
+                            <th class="px-5 py-4 text-left text-[11px] font-black uppercase tracking-[0.16em]">{{ $equipmentsCopy['table']['tool'] }}</th>
+                            <th class="px-5 py-4 text-left text-[11px] font-black uppercase tracking-[0.16em]">{{ $equipmentsCopy['table']['slug'] }}</th>
+                            <th class="px-5 py-4 text-right text-[11px] font-black uppercase tracking-[0.16em]">{{ $equipmentsCopy['table']['price_per_day'] }}</th>
+                            <th class="px-5 py-4 text-center text-[11px] font-black uppercase tracking-[0.16em]">{{ $equipmentsCopy['table']['total_stock'] }}</th>
+                            <th class="px-5 py-4 text-center text-[11px] font-black uppercase tracking-[0.16em]">{{ $equipmentsCopy['table']['reserved'] }}</th>
+                            <th class="px-5 py-4 text-center text-[11px] font-black uppercase tracking-[0.16em]">{{ $equipmentsCopy['table']['available'] }}</th>
+                            <th class="px-5 py-4 text-center text-[11px] font-black uppercase tracking-[0.16em]">{{ $equipmentsCopy['table']['status'] }}</th>
+                            <th class="px-5 py-4 text-center text-[11px] font-black uppercase tracking-[0.16em]">{{ $equipmentsCopy['table']['updated'] }}</th>
+                            <th class="px-5 py-4 text-right text-[11px] font-black uppercase tracking-[0.16em]">{{ $equipmentsCopy['table']['action'] }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y admin-border">
+                    <tbody>
                         @forelse ($equipments as $item)
                             @php
                                 $statusValue = $item->status ?? 'ready';
@@ -360,58 +409,64 @@
                                 $imageUrl = site_media_url($item->image_path ?? $item->image ?? null) ?: config('placeholders.equipment');
                             @endphp
                             <tr>
-                                <td class="px-5 py-4 align-top">
-                                    <div class="flex items-center gap-3">
+                                <td class="px-5 py-3 align-middle">
+                                    <div class="flex min-w-0 items-center gap-3">
                                         <img
                                             src="{{ $imageUrl }}"
                                             alt="{{ $item->name }}"
-                                            class="admin-equipment-image h-12 w-12 rounded-lg object-contain p-1"
+                                            class="admin-equipment-image h-12 w-12 shrink-0 rounded-xl object-contain p-1"
                                             loading="lazy"
                                             onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';"
                                         >
-                                        <div>
-                                            <p class="max-w-[20rem] font-semibold leading-snug admin-equipments-title">{{ $item->name }}</p>
-                                            <p class="text-xs admin-equipments-muted">{{ $item->category?->name ?? '-' }}</p>
+                                        <div class="min-w-0">
+                                            <p class="truncate text-sm font-bold leading-5 admin-equipments-title" title="{{ $item->name }}">
+                                                {{ $item->name }}
+                                            </p>
+                                            <p class="mt-0.5 truncate text-xs admin-equipments-muted" title="{{ $item->category?->name ?? '-' }}">
+                                                {{ $item->category?->name ?? '-' }}
+                                            </p>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-5 py-4 align-top admin-equipments-muted">
-                                    <p class="max-w-[14rem] break-words">{{ $item->slug }}</p>
+                                <td class="px-5 py-3 align-middle admin-equipments-muted">
+                                    <p class="truncate text-sm" title="{{ $item->slug }}">
+                                        {{ $item->slug }}
+                                    </p>
                                 </td>
-                                <td class="px-5 py-4 text-right align-top font-semibold whitespace-nowrap admin-equipments-title">Rp {{ number_format($item->price_per_day, 0, ',', '.') }}</td>
-                                <td class="px-5 py-4 text-center align-top font-semibold admin-equipments-title">{{ $item->stock }}</td>
-                                <td class="px-5 py-4 text-center align-top font-semibold text-amber-600">{{ $reservedUnits }}</td>
-                                <td class="px-5 py-4 text-center align-top">
-                                    <span class="font-semibold {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}">
+                                <td class="px-5 py-3 text-right align-middle font-bold whitespace-nowrap admin-equipments-title">Rp {{ number_format($item->price_per_day, 0, ',', '.') }}</td>
+                                <td class="px-5 py-3 text-center align-middle font-bold admin-equipments-title">{{ $item->stock }}</td>
+                                <td class="px-5 py-3 text-center align-middle font-bold text-amber-600">{{ $reservedUnits }}</td>
+                                <td class="px-5 py-3 text-center align-middle">
+                                    <span class="font-bold {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}">
                                         {{ $availableUnits }}
                                     </span>
                                 </td>
-                                <td class="px-5 py-4 text-center align-top">
+                                <td class="px-5 py-3 text-center align-middle">
                                     <span class="status-chip {{ $statusClass }}">
                                         {{ $statusLabel }}
                                     </span>
                                 </td>
-                                <td class="px-5 py-4 text-center align-top admin-equipments-muted whitespace-nowrap">{{ $item->updated_at?->format('d M Y') }}</td>
-                                <td class="px-5 py-4 align-top">
-                                    <div class="flex justify-end gap-2">
+                                <td class="px-5 py-3 text-center align-middle admin-equipments-muted whitespace-nowrap">{{ $item->updated_at?->format('d M Y') }}</td>
+                                <td class="px-5 py-3 align-middle">
+                                    <div class="flex items-center justify-end gap-2 whitespace-nowrap">
                                         <a
                                             href="{{ route('product.show', $item->slug) }}"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            class="admin-secondary-button inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold transition"
+                                            class="admin-secondary-button inline-flex min-h-9 items-center justify-center rounded-lg px-3 text-xs font-bold transition"
                                         >
                                             {{ $equipmentsCopy['table']['view'] }}
                                         </a>
                                         <a
                                             href="{{ route('admin.equipments.edit', $item->slug) }}"
-                                            class="admin-secondary-button inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold transition"
+                                            class="admin-secondary-button inline-flex min-h-9 items-center justify-center rounded-lg px-3 text-xs font-bold transition"
                                         >
                                             {{ $equipmentsCopy['table']['edit'] }}
                                         </a>
                                         <form method="POST" action="{{ route('admin.equipments.destroy', $item->slug) }}" data-confirm="{{ __('ui.dialog.delete_admin_item') }}" data-confirm-title="{{ __('ui.dialog.title') }}" data-confirm-button="{{ __('ui.actions.remove') }}" data-cancel-button="{{ __('ui.dialog.cancel') }}" data-confirm-variant="danger">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="inline-flex rounded-xl border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-500 hover:text-white dark:text-rose-300">
+                                            <button class="inline-flex min-h-9 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 text-xs font-bold text-rose-600 transition hover:bg-rose-500 hover:text-white dark:text-rose-300">
                                                 {{ $equipmentsCopy['table']['delete'] }}
                                             </button>
                                         </form>

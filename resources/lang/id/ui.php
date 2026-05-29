@@ -1195,6 +1195,8 @@ return [
         ],
 
         'table' => [
+            'title' => 'Inventaris Alat',
+            'subtitle' => 'Kelola detail alat, stok, harga sewa, dan status ketersediaan.',
             'tool' => 'Alat',
             'slug' => 'Slug',
             'price_per_day' => 'Harga / Hari',

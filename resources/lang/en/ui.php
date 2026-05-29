@@ -1195,6 +1195,8 @@ return [
         ],
 
         'table' => [
+            'title' => 'Tool Inventory',
+            'subtitle' => 'Manage item details, stock, rental price, and availability status.',
             'tool' => 'Tool',
             'slug' => 'Slug',
             'price_per_day' => 'Price / Day',
