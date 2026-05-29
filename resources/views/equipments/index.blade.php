@@ -68,6 +68,77 @@
                 animation: none !important;
             }
         }
+
+        /* Scoped Dynamic Accent Styling */
+        .catalog-page {
+            --catalog-accent: #D4A843;
+            --catalog-accent-hover: #E0BA5D;
+            --catalog-accent-text: #0A0A0B;
+            --catalog-accent-soft: rgba(212, 168, 67, 0.14);
+            --catalog-accent-border: rgba(212, 168, 67, 0.34);
+            --catalog-accent-shadow: rgba(212, 168, 67, 0.45);
+        }
+
+        html[data-theme-resolved="light"] .catalog-page {
+            --catalog-accent: #2563EB;
+            --catalog-accent-hover: #1D4ED8;
+            --catalog-accent-text: #FFFFFF;
+            --catalog-accent-soft: rgba(37, 99, 235, 0.10);
+            --catalog-accent-border: rgba(37, 99, 235, 0.24);
+            --catalog-accent-shadow: rgba(37, 99, 235, 0.25);
+        }
+
+        .catalog-accent-text {
+            color: var(--catalog-accent) !important;
+        }
+
+        .catalog-accent-bg {
+            background-color: var(--catalog-accent) !important;
+            color: var(--catalog-accent-text) !important;
+            border-color: var(--catalog-accent) !important;
+        }
+
+        .catalog-accent-bg:hover {
+            background-color: var(--catalog-accent-hover) !important;
+        }
+
+        .catalog-accent-border-hover:hover {
+            border-color: var(--catalog-accent-border) !important;
+            color: var(--catalog-accent) !important;
+        }
+
+        .catalog-accent-dot {
+            background-color: var(--catalog-accent) !important;
+        }
+
+        .catalog-accent-focus:focus {
+            border-color: var(--catalog-accent) !important;
+            box-shadow: 0 0 0 2px var(--catalog-accent-soft) !important;
+        }
+
+        .catalog-card-hover:hover {
+            border-color: var(--catalog-accent-border) !important;
+            box-shadow: 0 24px 60px -36px var(--catalog-accent-shadow) !important;
+        }
+
+        .group:hover .catalog-card-title-hover {
+            color: var(--catalog-accent) !important;
+        }
+
+        .catalog-suggestion-link:hover,
+        .catalog-suggestion-link:focus {
+            border-color: var(--catalog-accent-border) !important;
+        }
+        .catalog-suggestion-link:hover .catalog-suggestion-name {
+            color: var(--catalog-accent) !important;
+        }
+        .catalog-suggestion-badge {
+            background-color: var(--catalog-accent-soft) !important;
+            color: var(--catalog-accent) !important;
+        }
+        .catalog-suggestion-category {
+            color: var(--catalog-accent) !important;
+        }
     </style>
 @endpush
 
@@ -106,20 +177,48 @@
         $catalogQuickAddButton = __('ui.catalog.quick_add_button');
         $catalogLoginToOrderButton = __('ui.catalog.login_to_order_button');
         $catalogOutOfStockButton = __('ui.catalog.out_of_stock_button');
+        $catalogQuickDateRequiredMessage = __('ui.catalog.quick_date_required_message');
         $bookingMinDate = now()->toDateString();
         $bookingMaxDate = now()->addMonthsNoOverflow(3)->toDateString();
         $idleHamburgerEnabledRaw = strtolower(trim((string) setting('catalog.idle_hamburger_enabled', '1')));
         $idleHamburgerEnabled = ! in_array($idleHamburgerEnabledRaw, ['0', 'false', 'off', 'no', 'tidak'], true);
         $idleHamburgerDelayMs = max(1000, min(12000, (int) setting('catalog.idle_hamburger_delay_ms', 2200)));
         $idleHamburgerStepMs = max(500, min(4000, (int) setting('catalog.idle_hamburger_step_ms', 900)));
+        
+        $resolveCategoryDisplayName = static function ($category): string {
+            $rawName = trim((string) ($category->name ?? ''));
+            $slug = strtolower(trim((string) ($category->slug ?? '')));
+            $locale = app()->getLocale();
+
+            if ($locale !== 'en') {
+                return $rawName;
+            }
+
+            return match ($slug) {
+                'aksesoris', 'accessories', 'aksesori' => 'Accessories',
+                'kamera', 'camera' => 'Camera',
+                'lensa', 'lens' => 'Lens',
+                'lampu', 'lighting' => 'Lighting',
+                'audio' => 'Audio',
+                'drone' => 'Drone',
+                'stabilizer', 'stabilizer-gimbal', 'gimbal' => 'Stabilizer',
+                'monitor-wireless-control', 'monitor-and-wireless-control', 'monitor-wireless' => 'Monitor & Wireless Control',
+                default => $rawName,
+            };
+        };
+
         $resolvePublicStatusLabel = static function (string $statusValue, int $availableUnits): string {
             $normalized = strtolower(trim($statusValue));
 
             return match ($normalized) {
-                'maintenance' => 'Maintenance',
-                'unavailable' => 'Tidak Tersedia',
-                'ready' => $availableUnits > 0 ? 'Tersedia' : 'Penuh / Sedang Disewa',
-                default => $availableUnits > 0 ? 'Tersedia' : 'Tidak Tersedia',
+                'maintenance' => __('ui.catalog.status_maintenance'),
+                'unavailable' => __('ui.catalog.status_unavailable'),
+                'ready' => $availableUnits > 0
+                    ? __('ui.catalog.status_available')
+                    : __('ui.catalog.status_fully_booked'),
+                default => $availableUnits > 0
+                    ? __('ui.catalog.status_available')
+                    : __('ui.catalog.status_unavailable'),
             };
         };
         $resolvePublicStatusClass = static function (string $statusValue, int $availableUnits): string {
@@ -150,7 +249,7 @@
         @mousemove.passive="markPointerMove"
         @mouseleave="markPointerLeave"
         @touchstart.passive="stopGuide"
-        class="min-h-screen bg-[#0A0A0B] text-[#E8E8EC]"
+        class="catalog-page min-h-screen bg-[#0A0A0B] text-[#E8E8EC]"
     >
         <section class="relative overflow-hidden pt-6 pb-4">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
@@ -158,7 +257,7 @@
                 <div class="rounded-3xl border border-white/10 bg-[#111113]/70 p-6 sm:p-8 lg:p-10 shadow-2xl catalog-enter">
                     <div class="space-y-4 max-w-3xl">
                         <div>
-                            <p class="section-kicker font-bold tracking-widest uppercase text-[#D4A843]/80">{{ __('ui.nav.catalog') }}</p>
+                            <p class="section-kicker font-bold tracking-widest uppercase catalog-accent-text">{{ __('ui.nav.catalog') }}</p>
                             <h1 class="text-2xl font-extrabold tracking-tight text-[#E8E8EC] sm:text-4xl leading-tight mt-1">
                                 {{ $catalogTitle }}
                             </h1>
@@ -175,20 +274,20 @@
                                 <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#66666C]">
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                                 </span>
-                                <input type="text" name="q" id="catalog-search-input" value="{{ $search }}" placeholder="Cari kamera, lighting, drone, audio..." 
-                                       aria-label="Cari kamera, lighting, drone, audio..."
+                                <input type="text" name="q" id="catalog-search-input" value="{{ $search }}" placeholder="{{ __('ui.catalog.search_placeholder') }}" 
+                                       aria-label="{{ __('ui.catalog.search_aria_label') }}"
                                        autocomplete="off"
-                                       class="w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] pl-12 pr-12 py-3.5 text-sm text-[#E8E8EC] placeholder:text-[#66666C] focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20">
+                                       class="w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] pl-12 pr-12 py-3.5 text-sm text-[#E8E8EC] placeholder:text-[#66666C] catalog-accent-focus focus:outline-none focus:ring-2">
                                 <div id="search-loading-spinner" class="absolute right-4 top-1/2 -translate-y-1/2 hidden">
-                                    <svg class="animate-spin h-5 w-5 text-[#D4A843]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <svg class="animate-spin h-5 w-5 catalog-accent-text" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
                                 </div>
                                 <div id="search-suggestions-dropdown" class="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[60] hidden rounded-2xl border border-white/10 bg-[#111113]/95 backdrop-blur-xl p-2 shadow-2xl space-y-1 max-h-80 overflow-y-auto"></div>
                             </div>
-                            <button type="submit" class="rounded-xl bg-[#D4A843] px-6 py-3.5 text-sm font-bold text-[#0A0A0B] transition hover:bg-[#e0ba5d] shrink-0 sm:w-auto w-full">
-                                <span>Cari Alat</span>
+                            <button type="submit" class="rounded-xl catalog-accent-bg px-6 py-3.5 text-sm font-bold transition shrink-0 sm:w-auto w-full">
+                                <span>{{ __('ui.catalog.search_button') }}</span>
                             </button>
                         </form>
                     </div>
@@ -198,7 +297,7 @@
                         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                             <p class="text-[10px] font-bold uppercase tracking-widest text-[#A0A0A8]">{{ $categoryLabel }}</p>
                             @if ($search !== '')
-                                <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="inline-flex rounded-xl border border-[#1A1A1E] bg-[#111113] px-4 py-2 text-xs font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/30 hover:text-[#D4A843]">
+                                <a href="{{ route('catalog', $activeCategorySlug !== '' ? ['category' => $activeCategorySlug] : []) }}" class="inline-flex rounded-xl border border-[#1A1A1E] bg-[#111113] px-4 py-2 text-xs font-bold text-[#E8E8EC] transition catalog-accent-border-hover">
                                     {{ $catalogResetSearchLabel }}
                                 </a>
                             @endif
@@ -206,7 +305,7 @@
                         <div class="mt-3 flex flex-wrap gap-2.5 pb-1">
                             <a
                                 href="{{ route('catalog', $search !== '' ? ['q' => $search] : []) }}"
-                                class="rounded-full border px-4 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === '' ? 'bg-[#D4A843] text-[#0A0A0B] border-[#D4A843]' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] hover:border-[#D4A843]/40 hover:text-[#E8E8EC]' }}"
+                                class="rounded-full border px-4 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === '' ? 'catalog-accent-bg' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] catalog-accent-border-hover' }}"
                             >
                                 {{ $catalogAllCategoriesLabel }}
                             </a>
@@ -219,9 +318,9 @@
                                 @endphp
                                 <a
                                     href="{{ route('catalog', $categoryParams) }}"
-                                    class="relative rounded-full border px-4 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === $category->slug ? 'bg-[#D4A843] text-[#0A0A0B] border-[#D4A843]' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] hover:border-[#D4A843]/40 hover:text-[#E8E8EC]' }}"
+                                    class="relative rounded-full border px-4 py-1.5 text-xs font-bold tracking-tight transition-all duration-300 shrink-0 {{ $activeCategorySlug === $category->slug ? 'catalog-accent-bg' : 'bg-[#111113] text-[#A0A0A8] border-[#1A1A1E] catalog-accent-border-hover' }}"
                                 >
-                                    {{ $category->name }}
+                                    {{ $resolveCategoryDisplayName($category) }}
                                 </a>
                             @endforeach
                         </div>
@@ -230,7 +329,7 @@
 
                 @if ($search !== '')
                     <div class="mt-6 inline-flex items-center gap-3 rounded-2xl border border-[#1A1A1E] bg-[#111113] px-4 py-3 catalog-enter">
-                        <div class="h-2 w-2 rounded-full bg-[#D4A843] animate-pulse"></div>
+                        <div class="h-2 w-2 rounded-full catalog-accent-dot animate-pulse"></div>
                         <p class="text-sm font-medium text-[#A0A0A8]">
                             {{ $catalogSearchResultPrefix }} <span class="font-bold text-[#E8E8EC]">&quot;{{ $search }}&quot;</span>
                         </p>
@@ -251,13 +350,13 @@
                     <div class="mb-12 catalog-enter">
                         <div class="mb-6 flex flex-col gap-2 border-b border-[#1A1A1E] pb-4 sm:flex-row sm:items-end sm:justify-between">
                             <div>
-                                <h2 class="text-2xl font-bold tracking-tight text-[#E8E8EC]">{{ $category->name }}</h2>
+                                <h2 class="text-2xl font-bold tracking-tight text-[#E8E8EC]">{{ $resolveCategoryDisplayName($category) }}</h2>
                                 @if (!empty($category->description))
                                     <p class="mt-1 max-w-2xl text-xs font-medium text-[#A0A0A8]">{{ $category->description }}</p>
                                 @endif
                             </div>
                             <span class="inline-flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#111113]/80 px-4 py-1 text-xs font-bold text-[#A0A0A8] shadow-sm self-start sm:self-auto">
-                                <span class="h-1.5 w-1.5 rounded-full bg-[#D4A843]"></span>
+                                <span class="h-1.5 w-1.5 rounded-full catalog-accent-dot"></span>
                                 {{ $items->count() }} {{ $catalogItemSuffix }}
                             </span>
                         </div>
@@ -283,6 +382,7 @@
                                     quickStart: '',
                                     quickEnd: '',
                                     quickError: '',
+                                    locale: '{{ app()->getLocale() }}',
                                     minDate: '{{ $bookingMinDate }}',
                                     maxDate: '{{ $bookingMaxDate }}',
                                     maxQty: {{ max((int) $item->stock, 1) }},
@@ -392,14 +492,14 @@
                                         this.normalizeQty();
                                         if (!this.canSubmit()) {
                                             event.preventDefault();
-                                            this.quickError = 'Pilih tanggal sewa dan tanggal kembali terlebih dahulu.';
+                                            this.quickError = @js($catalogQuickDateRequiredMessage);
                                             return false;
                                         }
                                         this.quickError = '';
                                     }
                                 }"
                                 @click="if (!$event.target.closest('button, a')) window.location.assign('{{ route('product.show', $item->slug) }}')"
-                                class="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-[#1A1A1E] bg-[#111113] transition-all duration-300 hover:-translate-y-1 hover:border-[#D4A843]/30 hover:shadow-[0_24px_60px_-36px_rgba(212,168,67,0.45)] catalog-stagger"
+                                class="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-[#1A1A1E] bg-[#111113] transition-all duration-300 hover:-translate-y-1 catalog-card-hover catalog-stagger"
                                 style="animation-delay: {{ min($loop->index * 45, 240) }}ms"
                             >
                                 <div class="relative aspect-[4/3] overflow-hidden bg-[#0A0A0B] p-5 flex items-center justify-center border-b border-[#1A1A1E]">
@@ -420,7 +520,7 @@
                                 </div>
 
                                 <div class="flex flex-1 flex-col p-6">
-                                    <h3 class="min-h-[2.5rem] text-lg font-bold leading-snug text-[#E8E8EC] transition-colors duration-300 group-hover:text-[#D4A843]">{{ $item->name }}</h3>
+                                    <h3 class="min-h-[2.5rem] text-lg font-bold leading-snug text-[#E8E8EC] transition-colors duration-300 catalog-card-title-hover">{{ $item->name }}</h3>
                                     
                                     <div class="mt-3 border-t border-[#1A1A1E] pt-3">
                                         <div class="flex items-baseline gap-1">
@@ -453,7 +553,7 @@
                                                 <a
                                                     href="{{ route('login', ['reason' => 'cart']) }}"
                                                     @click.prevent="window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: 'login' }))"
-                                                    class="w-full rounded-md bg-[#D4A843] py-3 text-center font-bold text-[#0A0A0B] transition hover:bg-[#e0ba5d]"
+                                                    class="w-full rounded-md catalog-accent-bg py-3 text-center font-bold transition"
                                                 >
                                                     {{ $catalogLoginToOrderButton }}
                                                 </a>
@@ -466,7 +566,7 @@
 
                                         <a
                                             href="{{ route('product.show', $item->slug) }}"
-                                            class="w-full rounded-md border border-[#1A1A1E] bg-[#111113] py-2.5 text-center font-bold text-[#E8E8EC] transition hover:border-[#D4A843]/40 hover:text-[#D4A843]"
+                                            class="w-full rounded-md border border-[#1A1A1E] bg-[#111113] py-2.5 text-center font-bold text-[#E8E8EC] transition catalog-accent-border-hover"
                                         >
                                             {{ __('app.actions.view_detail') }}
                                         </a>
@@ -487,28 +587,28 @@
                                                 @keydown.escape.window="quickOpen = false"
                                                 role="dialog"
                                                 aria-modal="true"
-                                                aria-label="Pesan Cepat {{ $item->name }}"
+                                                aria-label="{{ __('ui.catalog.quick_order_dialog_aria', ['name' => $item->name]) }}"
                                             >
                                                 <div
                                                     class="relative w-full max-w-lg rounded-2xl border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8 max-h-[92dvh] overflow-y-auto"
                                                     @click.stop
                                                 >
-                                                    <div class="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#D4A843]/10 blur-[60px] pointer-events-none"></div>
+                                                    <div class="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-current opacity-10 blur-[60px] pointer-events-none catalog-accent-text"></div>
                                                     
                                                     <!-- Header -->
                                                     <div class="relative flex items-start justify-between gap-4">
                                                         <div class="flex-1 min-w-0">
                                                             <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1">
-                                                                <span class="h-1.5 w-1.5 rounded-full bg-[#D4A843] animate-pulse" aria-hidden="true"></span>
-                                                                <span class="text-[10px] font-bold uppercase tracking-widest text-[#D4A843]">{{ $catalogQuickOrderTitle }}</span>
+                                                                <span class="h-1.5 w-1.5 rounded-full catalog-accent-dot animate-pulse" aria-hidden="true"></span>
+                                                                <span class="text-[10px] font-bold uppercase tracking-widest catalog-accent-text">{{ $catalogQuickOrderTitle }}</span>
                                                             </div>
                                                             <h4 class="text-xl font-bold tracking-tight text-[#E8E8EC] leading-snug truncate">{{ $item->name }}</h4>
                                                         </div>
                                                         <button
                                                             type="button"
-                                                            class="shrink-0 h-9 w-9 flex items-center justify-center rounded-full border border-[#1A1A1E] bg-[#0A0A0B] text-[#A0A0A8] transition-all duration-300 hover:border-[#D4A843]/40 hover:text-[#E8E8EC] active:scale-90"
+                                                            class="shrink-0 h-9 w-9 flex items-center justify-center rounded-full border border-[#1A1A1E] bg-[#0A0A0B] text-[#A0A0A8] transition-all duration-300 catalog-accent-border-hover active:scale-90"
                                                             @click.stop="quickOpen = false"
-                                                            aria-label="Tutup pesan cepat"
+                                                            aria-label="{{ __('ui.catalog.quick_close_aria') }}"
                                                         >
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                                         </button>
@@ -530,31 +630,31 @@
 
                                                         <!-- Preset Buttons -->
                                                         <div class="space-y-1.5">
-                                                            <p class="text-[10px] font-bold uppercase tracking-widest text-[#66666C]">Pilih Cepat</p>
+                                                            <p class="text-[10px] font-bold uppercase tracking-widest text-[#66666C]">{{ app()->getLocale() === 'en' ? 'Quick Pick' : 'Pilih Cepat' }}</p>
                                                             <div class="flex flex-wrap gap-2">
                                                                 <button type="button"
-                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
+                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition catalog-accent-border-hover active:scale-95"
                                                                     @click.stop="setPreset(1, 0)"
-                                                                >Hari ini</button>
+                                                                >{{ app()->getLocale() === 'en' ? 'Today' : 'Hari ini' }}</button>
                                                                 <button type="button"
-                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
+                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition catalog-accent-border-hover active:scale-95"
                                                                     @click.stop="setPreset(1, 1)"
-                                                                >Besok</button>
+                                                                >{{ app()->getLocale() === 'en' ? 'Tomorrow' : 'Besok' }}</button>
                                                                 <button type="button"
-                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
+                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition catalog-accent-border-hover active:scale-95"
                                                                     @click.stop="setPreset(3, 0)"
-                                                                >3 Hari</button>
+                                                                >{{ app()->getLocale() === 'en' ? '3 Days' : '3 Hari' }}</button>
                                                                 <button type="button"
-                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition hover:border-[#D4A843]/50 hover:text-[#D4A843] active:scale-95"
+                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition catalog-accent-border-hover active:scale-95"
                                                                     @click.stop="setPreset(7, 0)"
-                                                                >7 Hari</button>
+                                                                >{{ app()->getLocale() === 'en' ? '7 Days' : '7 Hari' }}</button>
                                                             </div>
                                                         </div>
 
                                                         <!-- Date Inputs -->
                                                         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                                             <div class="space-y-1.5">
-                                                                <label for="quick-start-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">Tanggal Sewa</label>
+                                                                <label for="quick-start-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">{{ $catalogQuickStartDateLabel }}</label>
                                                                 <input
                                                                     id="quick-start-{{ $item->id }}"
                                                                     type="date"
@@ -571,7 +671,7 @@
                                                                 >
                                                             </div>
                                                             <div class="space-y-1.5">
-                                                                <label for="quick-end-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">Tanggal Kembali</label>
+                                                                <label for="quick-end-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">{{ $catalogQuickEndDateLabel }}</label>
                                                                 <input
                                                                     id="quick-end-{{ $item->id }}"
                                                                     type="date"
@@ -591,7 +691,7 @@
 
                                                         <!-- Qty -->
                                                         <div class="space-y-1.5">
-                                                            <label for="quick-qty-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">Jumlah Unit</label>
+                                                            <label for="quick-qty-{{ $item->id }}" class="text-xs font-bold uppercase tracking-widest text-[#A0A0A8]">{{ $catalogQuickQtyLabel }}</label>
                                                             <div class="relative flex items-center">
                                                                 <button
                                                                     type="button"
@@ -599,7 +699,7 @@
                                                                     :disabled="quickQty <= 1"
                                                                     :class="quickQty <= 1
                                                                         ? 'opacity-40 cursor-not-allowed'
-                                                                        : 'hover:border-[#D4A843]/40 hover:text-[#D4A843] active:scale-90'"
+                                                                        : 'catalog-accent-border-hover active:scale-90'"
                                                                     class="absolute left-2 z-10 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] transition-all text-lg font-bold"
                                                                     aria-label="Kurangi jumlah"
                                                                 >−</button>
@@ -624,26 +724,26 @@
                                                                     :disabled="quickQty >= maxQty"
                                                                     :class="quickQty >= maxQty
                                                                         ? 'opacity-40 cursor-not-allowed'
-                                                                        : 'hover:border-[#D4A843]/40 hover:text-[#D4A843] active:scale-90'"
+                                                                        : 'catalog-accent-border-hover active:scale-90'"
                                                                     class="absolute right-2 z-10 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] transition-all text-lg font-bold"
                                                                     aria-label="Tambah jumlah"
                                                                 >+</button>
                                                             </div>
                                                             <!-- Stock helper text -->
                                                             <p class="text-[11px] text-[#66666C] ml-1"
-                                                               x-text="`Maks. ${maxQty} unit tersedia.`"
+                                                               x-text="locale === 'en' ? `Max ${maxQty} units available.` : `Maks. ${maxQty} unit tersedia.`"
                                                             ></p>
                                                         </div>
 
                                                         <!-- Summary Panel -->
-                                                        <div class="relative grid grid-cols-2 gap-4 overflow-hidden rounded-xl border border-[#1A1A1E] bg-[#D4A843] p-5 text-[#0A0A0B]">
+                                                        <div class="relative grid grid-cols-2 gap-4 overflow-hidden rounded-xl border border-[#1A1A1E] catalog-accent-bg p-5">
                                                             <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50 pointer-events-none"></div>
                                                             <div class="relative">
-                                                                <p class="text-[10px] font-bold uppercase tracking-widest text-[#0A0A0B]/60">Durasi</p>
+                                                                <p class="text-[10px] font-bold uppercase tracking-widest text-current opacity-60">{{ $catalogQuickDurationLabel }}</p>
                                                                 <p class="mt-1 text-lg font-extrabold" x-text="calcDays() > 0 ? `${calcDays()} {{ $dayLabel }}` : '-'"></p>
                                                             </div>
                                                             <div class="relative text-right border-l border-black/20 pl-4">
-                                                                <p class="text-[10px] font-bold uppercase tracking-widest text-[#0A0A0B]/60">Estimasi</p>
+                                                                <p class="text-[10px] font-bold uppercase tracking-widest text-current opacity-60">{{ $catalogQuickEstimateLabel }}</p>
                                                                 <p class="mt-1 text-base font-extrabold leading-tight" x-text="calcTotal() > 0 ? `{{ $currencyPrefix }} ${formatIdr(calcTotal())}` : '-'"></p>
                                                             </div>
                                                         </div>
@@ -660,7 +760,7 @@
                                                         <p
                                                             x-show="!canSubmit() && !quickError"
                                                             class="text-xs text-[#66666C] text-center"
-                                                        >Pilih tanggal untuk mengaktifkan tombol Tambah.</p>
+                                                        >{{ app()->getLocale() === 'en' ? 'Select dates to enable the Add button.' : 'Pilih tanggal untuk mengaktifkan tombol Tambah.' }}</p>
 
                                                         <!-- Action Buttons -->
                                                         <div class="flex gap-3 pt-1">
@@ -675,7 +775,7 @@
                                                                 type="submit"
                                                                 class="flex-1 rounded-xl px-5 py-3 text-sm font-bold transition-all duration-200"
                                                                 :class="canSubmit()
-                                                                    ? 'bg-[#D4A843] text-[#0A0A0B] hover:bg-[#e0ba5d] shadow-[0_8px_24px_-8px_rgba(212,168,67,0.5)] active:scale-95'
+                                                                    ? 'catalog-btn-primary active:scale-95'
                                                                     : 'bg-[#1A1A1E] text-[#66666C] cursor-not-allowed opacity-60'"
                                                                 :disabled="!canSubmit()"
                                                             >
@@ -683,7 +783,7 @@
                                                             </button>
                                                         </div>
 
-                                                        <p class="text-center text-[10px] text-[#66666C]">Estimasi dihitung otomatis berdasarkan durasi dan jumlah unit.</p>
+                                                        <p class="text-center text-[10px] text-[#66666C]">{{ app()->getLocale() === 'en' ? 'Estimate is automatically calculated based on duration and quantity.' : 'Estimasi dihitung otomatis berdasarkan durasi dan jumlah unit.' }}</p>
                                                     </form>
                                                 </div>
                                             </div>
@@ -701,8 +801,8 @@
                         </div>
                         <h3 class="text-2xl font-bold tracking-tight text-[#E8E8EC]">{{ $emptyTitle }}</h3>
                         <p class="mx-auto mt-4 max-w-sm text-base font-medium leading-relaxed text-[#A0A0A8]">{{ $emptySubtitle }}</p>
-                        <a href="{{ route('catalog') }}" class="mt-8 inline-flex rounded-md bg-[#D4A843] px-8 py-4 text-sm font-black text-[#0A0A0B]">
-                            Refresh Katalog
+                        <a href="{{ route('catalog') }}" class="mt-8 inline-flex rounded-md catalog-accent-bg px-8 py-4 text-sm font-black transition">
+                            {{ app()->getLocale() === 'en' ? 'Refresh Catalog' : 'Refresh Katalog' }}
                         </a>
                     </div>
                 @endforelse
@@ -805,10 +905,11 @@
 
             const renderSuggestions = (items) => {
                 suggestionsData = items;
+                const noSuggestionsLabel = @js(app()->getLocale() === 'en' ? 'No suggestions' : 'Tidak ada saran');
                 if (!items || items.length === 0) {
                     dropdown.innerHTML = `
                         <div class="p-3 text-center text-xs text-[#A0A0A8]">
-                            Tidak ada saran
+                            ${noSuggestionsLabel}
                         </div>
                     `;
                     showDropdown();
@@ -817,27 +918,31 @@
 
                 const locale = '{{ $intlLocale }}';
                 const currency = '{{ $currencyPrefix }}';
+                const recommendationLabel = @js(app()->getLocale() === 'en' ? 'Recommended' : 'Rekomendasi');
+                const perDayLabel = @js(app()->getLocale() === 'en' ? '/day' : '/hari');
+                const availableLabel = @js(app()->getLocale() === 'en' ? 'Available' : 'Tersedia');
+                const unitLabel = @js(app()->getLocale() === 'en' ? 'units' : 'unit');
                 
                 dropdown.innerHTML = items.map((item, index) => {
                     const priceFormatted = new Intl.NumberFormat(locale).format(item.price_per_day);
                     return `
                         <a href="${item.detail_url}" 
                            data-suggestion-index="${index}"
-                           class="flex items-center gap-3 rounded-xl p-2 transition hover:bg-white/5 group border border-transparent hover:border-[#D4A843]/20 active:scale-[0.99] focus:outline-none focus:bg-white/5 focus:border-[#D4A843]/20">
+                           class="flex items-center gap-3 rounded-xl p-2 transition hover:bg-white/5 group border border-transparent active:scale-[0.99] focus:outline-none focus:bg-white/5 catalog-suggestion-link">
                             <div class="h-10 w-14 shrink-0 overflow-hidden rounded-lg bg-[#0A0A0B] p-1 flex items-center justify-center border border-[#1A1A1E]">
                                 <img src="${item.image_url}" alt="${item.name}" class="h-full w-full object-contain">
                             </div>
                             <div class="min-w-0 flex-1">
                                 <div class="flex items-center gap-1.5 flex-wrap">
-                                    <span class="truncate text-xs font-bold text-[#E8E8EC] group-hover:text-[#D4A843] transition-colors">${item.name}</span>
-                                    ${item.is_recommended ? `<span class="rounded bg-[#D4A843]/10 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-[#D4A843]">Rekomendasi</span>` : ''}
+                                    <span class="truncate text-xs font-bold text-[#E8E8EC] catalog-suggestion-name transition-colors">${item.name}</span>
+                                    ${item.is_recommended ? `<span class="rounded px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider catalog-suggestion-badge">${recommendationLabel}</span>` : ''}
                                 </div>
                                 <div class="mt-1 flex items-center gap-2 text-[10px] text-[#A0A0A8] flex-wrap">
-                                    <span class="text-[#D4A843]/90 font-semibold">${item.category_name}</span>
+                                    <span class="catalog-suggestion-category font-semibold">${item.category_name}</span>
                                     <span class="h-1 w-1 rounded-full bg-white/10"></span>
-                                    <span>${currency} ${priceFormatted}/hari</span>
+                                    <span>${currency} ${priceFormatted}${perDayLabel}</span>
                                     <span class="h-1 w-1 rounded-full bg-white/10"></span>
-                                    <span>Tersedia: ${item.available_units} unit</span>
+                                    <span>${availableLabel}: ${item.available_units} ${unitLabel}</span>
                                 </div>
                             </div>
                         </a>
