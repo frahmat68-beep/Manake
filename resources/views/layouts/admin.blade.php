@@ -91,72 +91,123 @@
             --manake-body-color-resolved: var(--manake-body-color-dark);
         }
         body[data-manake-shell="admin"] {
-            --manake-heading-h1-resolved: #E8E8EC;
-            --manake-heading-h2-resolved: #E8E8EC;
-            --manake-heading-h3-resolved: #D4A843;
-            --manake-heading-h4-resolved: #E8E8EC;
-            --manake-body-color-resolved: #A0A0A8;
+            --admin-accent: #D4A843;
+            --admin-accent-hover: #E0BA5D;
+            --admin-accent-text: #0A0A0B;
+            --admin-accent-soft: rgba(212, 168, 67, 0.12);
+            --admin-accent-border: rgba(212, 168, 67, 0.30);
+
+            --admin-bg: #05070C;
+            --admin-bg-soft: #0A0A0B;
+            --admin-surface: #111113;
+            --admin-surface-raised: #151519;
+            --admin-border: #1A1A1E;
+            --admin-text: #E8E8EC;
+            --admin-muted: #A0A0A8;
+            --admin-subtle: #66666C;
+
+            --manake-heading-h1-resolved: var(--admin-text);
+            --manake-heading-h2-resolved: var(--admin-text);
+            --manake-heading-h3-resolved: var(--admin-accent);
+            --manake-heading-h4-resolved: var(--admin-text);
+            --manake-body-color-resolved: var(--admin-muted);
         }
-        header :is(h1, h2, h3) {
-            color: var(--manake-heading-h1-resolved) !important;
-            letter-spacing: -0.012em;
-            font-style: var(--manake-heading-style) !important;
-            font-weight: var(--manake-heading-weight) !important;
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] {
+            --admin-accent: #2563EB;
+            --admin-accent-hover: #1D4ED8;
+            --admin-accent-text: #FFFFFF;
+            --admin-accent-soft: rgba(37, 99, 235, 0.10);
+            --admin-accent-border: rgba(37, 99, 235, 0.28);
+
+            --admin-bg: #F8FAFC;
+            --admin-bg-soft: #EEF2F7;
+            --admin-surface: #FFFFFF;
+            --admin-surface-raised: #F1F5F9;
+            --admin-border: #E5E7EB;
+            --admin-text: #111827;
+            --admin-muted: #4B5563;
+            --admin-subtle: #6B7280;
+
+            --manake-heading-h1-resolved: var(--admin-text);
+            --manake-heading-h2-resolved: var(--admin-text);
+            --manake-heading-h3-resolved: var(--admin-accent);
+            --manake-heading-h4-resolved: var(--admin-text);
+            --manake-body-color-resolved: var(--admin-muted);
         }
-        main h1 {
-            color: var(--manake-heading-h1-resolved) !important;
-            letter-spacing: -0.015em;
-            font-style: var(--manake-heading-style) !important;
-            font-weight: var(--manake-heading-weight) !important;
-            font-size: calc(2rem * var(--manake-heading-scale)) !important;
+
+        .admin-shell-bg {
+            background: var(--admin-bg) !important;
+            color: var(--admin-text) !important;
         }
-        main h2 {
-            color: var(--manake-heading-h2-resolved) !important;
-            letter-spacing: -0.012em;
-            font-style: var(--manake-heading-style) !important;
-            font-weight: var(--manake-heading-weight) !important;
-            font-size: calc(1.5rem * var(--manake-heading-scale)) !important;
+
+        .admin-card {
+            background: var(--admin-surface) !important;
+            border-color: var(--admin-border) !important;
+            color: var(--admin-text) !important;
         }
-        main h3 {
-            color: var(--manake-heading-h3-resolved) !important;
-            font-style: var(--manake-heading-style) !important;
-            font-weight: var(--manake-heading-weight) !important;
-            font-size: calc(1.125rem * var(--manake-heading-scale)) !important;
+
+        .admin-card-raised {
+            background: var(--admin-surface-raised) !important;
+            border-color: var(--admin-border) !important;
+            color: var(--admin-text) !important;
         }
-        main :is(h4, h5, h6) {
-            color: var(--manake-heading-h4-resolved) !important;
-            font-style: var(--manake-heading-style) !important;
-            font-weight: var(--manake-heading-weight) !important;
+
+        .admin-title {
+            color: var(--admin-text) !important;
         }
+
+        .admin-muted {
+            color: var(--admin-muted) !important;
+        }
+
+        .admin-subtle {
+            color: var(--admin-subtle) !important;
+        }
+
+        .admin-border {
+            border-color: var(--admin-border) !important;
+        }
+
+        .admin-accent-text {
+            color: var(--admin-accent) !important;
+        }
+
+        .admin-accent-bg {
+            background: var(--admin-accent) !important;
+            color: var(--admin-accent-text) !important;
+            border-color: var(--admin-accent) !important;
+        }
+
+        .admin-accent-bg:hover {
+            background: var(--admin-accent-hover) !important;
+            border-color: var(--admin-accent-hover) !important;
+        }
+
+        .admin-accent-soft {
+            background: var(--admin-accent-soft) !important;
+            border-color: var(--admin-accent-border) !important;
+            color: var(--admin-accent) !important;
+        }
+
+        .admin-secondary-button {
+            background: var(--admin-surface) !important;
+            border: 1px solid var(--admin-border) !important;
+            color: var(--admin-text) !important;
+        }
+
+        .admin-secondary-button:hover {
+            border-color: var(--admin-accent-border) !important;
+            color: var(--admin-accent) !important;
+        }
+
         table tbody tr:hover td {
-            background-color: #0A0A0B;
-            color: #E8E8EC;
+            background-color: var(--admin-surface-raised) !important;
+            color: var(--admin-text) !important;
         }
         table tbody tr:focus-within td {
-            background-color: #0A0A0B;
-            color: #E8E8EC;
-        }
-        body[data-manake-shell="admin"] :is(.text-blue-300, .text-blue-400, .text-blue-500, .text-blue-600, .text-blue-700) {
-            color: #D4A843 !important;
-        }
-        body[data-manake-shell="admin"] :is(.bg-blue-50, .bg-blue-100, .bg-blue-600, .bg-blue-700) {
-            background-color: #D4A843 !important;
-            color: #0A0A0B !important;
-        }
-        body[data-manake-shell="admin"] :is(.border-blue-200, .border-blue-300, .border-blue-400, .border-blue-500) {
-            border-color: rgba(212, 168, 67, 0.42) !important;
-        }
-        body[data-manake-shell="admin"] :is(.hover\:text-blue-300:hover, .hover\:text-blue-600:hover, .hover\:text-blue-700:hover) {
-            color: #D4A843 !important;
-        }
-        body[data-manake-shell="admin"] :is(.hover\:border-blue-200:hover, .hover\:border-blue-500\/40:hover) {
-            border-color: rgba(212, 168, 67, 0.48) !important;
-        }
-        body[data-manake-shell="admin"] :is(.focus\:border-blue-400:focus) {
-            border-color: #D4A843 !important;
-        }
-        body[data-manake-shell="admin"] :is(.focus\:ring-blue-500\/30:focus) {
-            --tw-ring-color: rgba(212, 168, 67, 0.30) !important;
+            background-color: var(--admin-surface-raised) !important;
+            color: var(--admin-text) !important;
         }
     </style>
 </head>
@@ -176,7 +227,7 @@
         }
     @endphp
 
-    <div x-data="{ sidebarOpen: false, sidebarCollapsed: false, adminSettingsOpen: false }" class="min-h-screen">
+    <div x-data="{ sidebarOpen: false, sidebarCollapsed: false, adminSettingsOpen: false }" class="admin-shell-bg min-h-screen">
         <div x-cloak x-show="sidebarOpen" class="fixed inset-0 z-40 bg-slate-900/40 lg:hidden" @click="sidebarOpen = false"></div>
 
         <x-admin.sidebar
@@ -189,7 +240,7 @@
         />
 
         <div class="transition-all duration-300" :class="sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-72'">
-            <header class="manake-topbar-shell sticky top-0 z-30 border-b border-[#1A1A1E] bg-[#0A0A0B]/95 text-[#E8E8EC] shadow-[0_14px_50px_rgba(0,0,0,0.18)] backdrop-blur-xl" data-manake-topbar="admin">
+            <header class="manake-topbar-shell sticky top-0 z-30 border-b admin-border bg-[color:var(--admin-surface)]/95 text-[color:var(--admin-text)] shadow-[0_14px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl" data-manake-topbar="admin">
                 <div class="mx-auto flex h-16 w-full max-w-[1320px] items-center justify-between gap-3 px-4 sm:px-6">
                     <div class="flex min-w-0 items-center gap-3">
                         <button type="button" data-ui-icon-button class="inline-flex h-9 w-9 items-center justify-center rounded-xl lg:hidden" @click="sidebarOpen = true" aria-label="{{ __('Buka sidebar') }}">
@@ -207,8 +258,8 @@
                             </svg>
                         </button>
                         <div class="min-w-0">
-                            <h1 class="truncate text-lg font-semibold text-[#E8E8EC]">@yield('page_title', __('ui.admin.dashboard'))</h1>
-                            <p class="text-xs text-[#A0A0A8]">{{ __('ui.admin.panel_title') }}</p>
+                            <h1 class="truncate text-lg font-semibold admin-title">@yield('page_title', __('ui.admin.dashboard'))</h1>
+                            <p class="text-xs admin-muted">{{ __('ui.admin.panel_title') }}</p>
                         </div>
                     </div>
 
@@ -232,12 +283,12 @@
                                 <x-preferences.popover :locale="$locale" :current-theme="$currentTheme" :redirect="url()->full()" />
                             </div>
                         </div>
-                        <div class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#D4A843] text-sm font-semibold text-[#0A0A0B]">
+                        <div class="inline-flex h-9 w-9 items-center justify-center rounded-full admin-accent-bg text-sm font-semibold">
                             {{ strtoupper(substr($adminName, 0, 1)) }}
                         </div>
                         <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf
-                            <button class="btn-secondary rounded-xl px-3 py-1.5 text-xs font-semibold transition">
+                            <button class="admin-secondary-button rounded-xl px-3 py-1.5 text-xs font-semibold transition">
                                 {{ __('ui.nav.logout') }}
                             </button>
                         </form>
@@ -245,7 +296,7 @@
                 </div>
             </header>
 
-            <main class="manake-main-stage px-4 py-4 sm:px-6 sm:py-6">
+            <main class="admin-shell-bg px-4 py-4 sm:px-6 sm:py-6">
                 <div class="mx-auto w-full max-w-[1320px]">
                     @yield('content')
                 </div>

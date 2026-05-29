@@ -27,6 +27,7 @@ class DashboardController extends Controller
         if (! schema_table_exists_cached('orders')) {
             return view('admin.dashboard', [
                 'operationalOrders' => collect(),
+                'actionableCount' => 0,
                 'summary' => [
                     'ready_pickup' => 0,
                     'on_rent' => 0,
@@ -46,6 +47,8 @@ class DashboardController extends Controller
             'damaged' => (clone $basePaidOrders)->where('status_pesanan', 'barang_rusak')->count(),
         ];
 
+        $actionableCount = (clone $basePaidOrders)->whereIn('status_pesanan', ['lunas', 'barang_diambil'])->count();
+
         $operationalOrders = (clone $basePaidOrders)
             ->with(['user:id,name,email', 'items.equipment:id,name'])
             ->whereIn('status_pesanan', ['lunas', 'barang_diambil', 'barang_rusak', 'barang_kembali'])
@@ -64,6 +67,7 @@ class DashboardController extends Controller
         return view('admin.dashboard', [
             'summary' => $summary,
             'operationalOrders' => $operationalOrders,
+            'actionableCount' => $actionableCount,
             'financialSummary' => $this->buildFinancialSummary($basePaidOrders),
             'rentalCalendar' => $this->buildRentalCalendar($calendarMonth),
         ]);
@@ -79,14 +83,14 @@ class DashboardController extends Controller
         $prevStatus = (string) $order->status_pesanan;
 
         if (($order->status_pembayaran ?? 'pending') !== 'paid') {
-            return back()->with('error', __('Order belum lunas, status operasional belum bisa diubah.'));
+            return back()->with('error', __('ui.admin_dashboard.messages.not_paid'));
         }
 
         if ($nextStatus === 'barang_diambil') {
             $rentalStart = $order->rental_start_date ? $order->rental_start_date->copy()->startOfDay() : null;
             $pickupConfirmationOpenAt = $rentalStart?->copy()->subDay();
             if (! $rentalStart || ! $pickupConfirmationOpenAt || now()->lt($pickupConfirmationOpenAt)) {
-                return back()->with('error', __('Konfirmasi barang diambil hanya bisa dilakukan mulai H-1 sebelum tanggal sewa.'));
+                return back()->with('error', __('ui.admin_dashboard.messages.pickup_h1_only'));
             }
         }
 
@@ -97,11 +101,11 @@ class DashboardController extends Controller
         };
 
         if (! in_array($nextStatus, $allowedTransitions, true)) {
-            return back()->with('error', __('Perubahan status tidak valid untuk kondisi order saat ini.'));
+            return back()->with('error', __('ui.admin_dashboard.messages.invalid_transition'));
         }
 
         if ($prevStatus === $nextStatus) {
-            return back()->with('success', __('Status operasional sudah sesuai.'));
+            return back()->with('success', __('ui.admin_dashboard.messages.already_same_status'));
         }
 
         $order->status_pesanan = $nextStatus;
@@ -125,8 +129,8 @@ class DashboardController extends Controller
                 'user_id' => $order->user_id,
                 'order_id' => $order->id,
                 'type' => 'order_update',
-                'title' => __('Update operasional') . ' ' . ($order->order_number ?: ('ORD-' . $order->id)),
-                'message' => __('Status rental diperbarui: :before → :after.', [
+                'title' => __('ui.admin_dashboard.messages.notification_title_update') . ' ' . ($order->order_number ?: ('ORD-' . $order->id)),
+                'message' => __('ui.admin_dashboard.messages.notification_message_status_changed', [
                     'before' => $this->statusLabel($prevStatus),
                     'after' => $this->statusLabel($nextStatus),
                 ]),
@@ -138,26 +142,13 @@ class DashboardController extends Controller
             'after' => $nextStatus,
         ], auth('admin')->id());
 
-        return back()->with('success', __('Status operasional berhasil diperbarui dan notifikasi user terkirim.'));
+        return back()->with('success', __('ui.admin_dashboard.messages.updated'));
     }
 
     private function statusLabel(?string $status): string
     {
-        return match ($status) {
-            'menunggu_pembayaran' => __('Menunggu Pembayaran'),
-            'diproses' => __('Diproses Admin'),
-            'lunas' => __('Siap Diambil'),
-            'barang_diambil' => __('Barang Diambil'),
-            'barang_kembali' => __('Barang Dikembalikan'),
-            'barang_rusak' => __('Barang Rusak'),
-            'barang_hilang' => __('Barang Hilang'),
-            'overdue_denda' => __('Denda Overdue'),
-            'selesai' => __('Selesai'),
-            'expired' => __('Kedaluwarsa'),
-            'dibatalkan' => __('Dibatalkan'),
-            'refund' => __('Refund'),
-            default => strtoupper((string) $status),
-        };
+        $translated = __("ui.admin_dashboard.statuses.{$status}");
+        return $translated !== "ui.admin_dashboard.statuses.{$status}" ? $translated : strtoupper((string) $status);
     }
     private function buildRentalCalendar(string $monthValue = ''): array
     {
