@@ -1167,4 +1167,47 @@ return [
             'default' => 'Order change recorded.',
         ],
     ],
+    'admin_equipments' => [
+        'title' => 'Manage Tools',
+        'page_title' => 'Manage Tools',
+        'kicker' => 'Equipments',
+        'heading' => 'Tools & Inventory',
+        'subtitle' => 'Manage specifications, rental prices, and real-time unit availability.',
+        'add_tool' => '+ Add Tool',
+
+        'filters' => [
+            'search_placeholder' => 'Search tools...',
+            'search' => 'Search',
+            'reset' => 'Reset Filter',
+            'showing' => 'Displaying',
+            'tool' => 'tool',
+            'tools' => 'tools',
+            'status' => 'Status',
+            'categories' => 'Categories',
+            'all_status' => 'All Status',
+            'all_categories' => 'All',
+        ],
+
+        'status' => [
+            'ready' => 'Ready',
+            'maintenance' => 'Maintenance',
+            'unavailable' => 'Not Available',
+        ],
+
+        'table' => [
+            'tool' => 'Tool',
+            'slug' => 'Slug',
+            'price_per_day' => 'Price / Day',
+            'total_stock' => 'Total Stock',
+            'reserved' => 'Reserved',
+            'available' => 'Available',
+            'status' => 'Status',
+            'updated' => 'Updated',
+            'action' => 'Action',
+            'view' => 'View',
+            'edit' => 'Edit',
+            'delete' => 'Delete',
+            'empty' => 'No tools found.',
+        ],
+    ],
 ];

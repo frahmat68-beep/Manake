@@ -1167,4 +1167,47 @@ return [
             'default' => 'Perubahan pesanan tercatat.',
         ],
     ],
+    'admin_equipments' => [
+        'title' => 'Kelola Alat',
+        'page_title' => 'Kelola Alat',
+        'kicker' => 'Peralatan',
+        'heading' => 'Daftar Alat & Inventaris',
+        'subtitle' => 'Kelola spesifikasi, harga sewa, dan pantau ketersediaan unit secara real-time.',
+        'add_tool' => '+ Tambah Alat',
+
+        'filters' => [
+            'search_placeholder' => 'Cari alat...',
+            'search' => 'Cari',
+            'reset' => 'Atur Ulang Filter',
+            'showing' => 'Menampilkan',
+            'tool' => 'alat',
+            'tools' => 'alat',
+            'status' => 'Status',
+            'categories' => 'Kategori',
+            'all_status' => 'Semua Status',
+            'all_categories' => 'Semua',
+        ],
+
+        'status' => [
+            'ready' => 'Siap',
+            'maintenance' => 'Perawatan',
+            'unavailable' => 'Tidak Tersedia',
+        ],
+
+        'table' => [
+            'tool' => 'Alat',
+            'slug' => 'Slug',
+            'price_per_day' => 'Harga / Hari',
+            'total_stock' => 'Total Stok',
+            'reserved' => 'Dipakai',
+            'available' => 'Tersedia',
+            'status' => 'Status',
+            'updated' => 'Diperbarui',
+            'action' => 'Aksi',
+            'view' => 'Lihat',
+            'edit' => 'Ubah',
+            'delete' => 'Hapus',
+            'empty' => 'Belum ada alat.',
+        ],
+    ],
 ];

@@ -1,7 +1,216 @@
 @extends('layouts.admin', ['activePage' => 'equipments'])
 
-@section('title', __('Kelola Alat'))
-@section('page_title', __('Kelola Alat'))
+@section('title', __('ui.admin_equipments.title'))
+@section('page_title', __('ui.admin_equipments.page_title'))
+
+@push('head')
+<style>
+    .admin-equipments-page {
+        color: var(--admin-text);
+    }
+
+    .admin-equipments-card {
+        background: var(--admin-surface);
+        border: 1px solid var(--admin-border);
+        color: var(--admin-text);
+        border-radius: 1.35rem;
+        box-shadow: 0 18px 50px -36px rgba(0,0,0,0.45);
+    }
+
+    html[data-theme-resolved="light"] .admin-equipments-card {
+        background: #FFFFFF !important;
+        border-color: #E5E7EB !important;
+        box-shadow: 0 22px 55px -38px rgba(15,23,42,0.22);
+    }
+
+    html[data-theme-resolved="dark"] .admin-equipments-card {
+        background: #111113 !important;
+        border-color: #1A1A1E !important;
+        box-shadow: 0 18px 50px -36px rgba(0,0,0,0.65);
+    }
+
+    .admin-equipments-title {
+        color: var(--admin-text);
+    }
+
+    .admin-equipments-muted {
+        color: var(--admin-muted);
+    }
+
+    .admin-equipments-subtle {
+        color: var(--admin-subtle);
+    }
+
+    .admin-equipments-kicker {
+        color: var(--admin-accent);
+        font-size: 0.72rem;
+        font-weight: 900;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+    }
+
+    .admin-equipments-input {
+        width: 100%;
+        min-height: 3.05rem;
+        border: 1px solid var(--admin-border);
+        background: var(--admin-surface);
+        color: var(--admin-text);
+        border-radius: 0.95rem;
+        padding: 0 1rem;
+        outline: none;
+    }
+
+    .admin-equipments-input:focus {
+        border-color: var(--admin-accent);
+        box-shadow: 0 0 0 3px var(--admin-accent-soft);
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipments-input {
+        background: #FFFFFF !important;
+        border-color: #E5E7EB !important;
+        color: #111827 !important;
+        color-scheme: light;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipments-input {
+        background: #0A0A0B !important;
+        border-color: #1A1A1E !important;
+        color: #E8E8EC !important;
+        color-scheme: dark;
+    }
+
+    .admin-equipments-filter-panel {
+        background: var(--admin-surface-raised);
+        border: 1px solid var(--admin-border);
+        color: var(--admin-text);
+        border-radius: 1.15rem;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipments-filter-panel {
+        background: #F8FAFC !important;
+        border-color: #E5E7EB !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipments-filter-panel {
+        background: #0A0A0B !important;
+        border-color: #1A1A1E !important;
+    }
+
+    .admin-equipment-filter-chip {
+        border: 1px solid var(--admin-border);
+        background: var(--admin-surface);
+        color: var(--admin-muted);
+        border-radius: 999px;
+        padding: 0.45rem 0.8rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+    }
+
+    .admin-equipment-filter-chip:hover {
+        border-color: var(--admin-accent-border);
+        color: var(--admin-accent);
+    }
+
+    .admin-equipment-filter-chip.is-active {
+        background: var(--admin-accent) !important;
+        border-color: var(--admin-accent) !important;
+        color: var(--admin-accent-text) !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipment-filter-chip:not(.is-active) {
+        background: #FFFFFF !important;
+        border-color: #E5E7EB !important;
+        color: #4B5563 !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipment-filter-chip:not(.is-active):hover {
+        background: #EEF2FF !important;
+        color: #2563EB !important;
+        border-color: rgba(37, 99, 235, 0.28) !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipment-filter-chip:not(.is-active) {
+        background: #111113 !important;
+        border-color: #1A1A1E !important;
+        color: #A0A0A8 !important;
+    }
+
+    .admin-equipments-table thead {
+        background: var(--admin-surface-raised);
+        color: var(--admin-muted);
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipments-table thead {
+        background: #F8FAFC !important;
+        color: #4B5563 !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipments-table thead {
+        background: #0A0A0B !important;
+        color: #A0A0A8 !important;
+    }
+
+    .admin-equipments-table tbody tr {
+        background: transparent !important;
+        color: var(--admin-text) !important;
+        border-color: var(--admin-border);
+        transition: background-color 160ms ease, color 160ms ease;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr:hover {
+        background: #F8FAFC !important;
+        color: #111827 !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr:hover {
+        background: #151519 !important;
+        color: #E8E8EC !important;
+    }
+
+    /* Force cell elements hover state color overrides for absolute readability */
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr:hover td {
+        background-color: #F8FAFC !important;
+        color: #111827 !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr:hover td {
+        background-color: #151519 !important;
+        color: #E8E8EC !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr:hover .admin-equipments-title {
+        color: #111827 !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr:hover .admin-equipments-muted {
+        color: #4B5563 !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr:hover .admin-equipments-title {
+        color: #E8E8EC !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipments-table tbody tr:hover .admin-equipments-muted {
+        color: #A0A0A8 !important;
+    }
+
+    .admin-equipment-image {
+        background: var(--admin-surface-raised);
+        border: 1px solid var(--admin-border);
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-equipment-image {
+        background: #F8FAFC !important;
+        border-color: #E5E7EB !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-equipment-image {
+        background: #0A0A0B !important;
+        border-color: #1A1A1E !important;
+    }
+</style>
+@endpush
 
 @section('content')
     @php
@@ -9,33 +218,37 @@
         $status = $status ?? '';
         $activeCategorySlug = $activeCategory?->slug ?? '';
         $hasActiveFilter = $search !== '' || $status !== '' || $activeCategorySlug !== '';
+        $equipmentsCopy = __('ui.admin_equipments');
+
         $statusFilters = [
-            ['value' => '', 'label' => __('Semua Status')],
-            ['value' => 'ready', 'label' => __('Siap')],
-            ['value' => 'maintenance', 'label' => __('Perawatan')],
-            ['value' => 'unavailable', 'label' => __('Tidak Tersedia')],
+            ['value' => '', 'label' => $equipmentsCopy['filters']['all_status']],
+            ['value' => 'ready', 'label' => $equipmentsCopy['status']['ready']],
+            ['value' => 'maintenance', 'label' => $equipmentsCopy['status']['maintenance']],
+            ['value' => 'unavailable', 'label' => $equipmentsCopy['status']['unavailable']],
         ];
     @endphp
 
-    <div class="max-w-7xl mx-auto space-y-6">
+    <div class="admin-equipments-page mx-auto max-w-7xl space-y-5 sm:space-y-6">
         @if (session('success'))
-            <div class="mk-card border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-300">
+            <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
                 {{ session('success') }}
             </div>
         @endif
 
-        <section class="mk-card p-6">
+        {{-- Header & Filters Card --}}
+        <section class="admin-equipments-card p-5 sm:p-6">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                    <h2 class="text-xl font-bold text-blue-700 dark:text-blue-400">{{ __('Daftar Alat & Inventaris') }}</h2>
-                    <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('Kelola spesifikasi, harga sewa, dan pantau ketersediaan unit secara real-time.') }}</p>
+                    <p class="admin-equipments-kicker">{{ $equipmentsCopy['kicker'] }}</p>
+                    <h2 class="admin-equipments-title mt-2 text-2xl font-black">{{ $equipmentsCopy['heading'] }}</h2>
+                    <p class="admin-equipments-muted mt-1 text-sm">{{ $equipmentsCopy['subtitle'] }}</p>
                 </div>
                 <div class="flex w-full gap-2 sm:w-auto">
                     <a
                         href="{{ route('admin.equipments.create') }}"
-                        class="btn-primary inline-flex w-full items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition sm:w-auto"
+                        class="admin-accent-bg inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-bold transition sm:w-auto"
                     >
-                        {{ __('+ Tambah Alat') }}
+                        {{ $equipmentsCopy['add_tool'] }}
                     </a>
                 </div>
             </div>
@@ -48,27 +261,27 @@
                         type="text"
                         name="q"
                         value="{{ $search }}"
-                        placeholder="{{ __('Cari alat...') }}"
-                        class="input w-full rounded-xl px-3 py-2 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                        placeholder="{{ $equipmentsCopy['filters']['search_placeholder'] }}"
+                        class="admin-equipments-input text-sm"
                     >
-                    <button class="btn-primary rounded-xl px-4 py-2 text-sm font-semibold transition">{{ __('Cari') }}</button>
+                    <button class="admin-accent-bg inline-flex min-h-[3.05rem] items-center justify-center rounded-xl px-5 text-sm font-bold transition">{{ $equipmentsCopy['filters']['search'] }}</button>
                     @if ($hasActiveFilter)
                         <a
                             href="{{ route('admin.equipments.index') }}"
-                            class="btn-secondary inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition"
+                            class="admin-secondary-button inline-flex min-h-[3.05rem] items-center justify-center rounded-xl px-4 text-sm font-semibold transition"
                         >
-                            {{ __('Atur Ulang Filter') }}
+                            {{ $equipmentsCopy['filters']['reset'] }}
                         </a>
                     @endif
                 </div>
-                <div class="text-xs font-medium text-slate-500 dark:text-slate-400">
-                    {{ __('Menampilkan') }} <span class="font-semibold text-slate-700 dark:text-slate-200">{{ $equipments->total() }}</span> {{ __('alat') }}
+                <div class="text-xs font-medium admin-equipments-muted">
+                    {{ $equipmentsCopy['filters']['showing'] }} <span class="font-semibold admin-equipments-title">{{ $equipments->total() }}</span> {{ $equipments->total() === 1 ? $equipmentsCopy['filters']['tool'] : $equipmentsCopy['filters']['tools'] }}
                 </div>
             </form>
 
-            <div class="mt-5 space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+            <div class="admin-equipments-filter-panel mt-5 space-y-4 p-4">
                 <div class="flex flex-wrap items-center gap-4">
-                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">{{ __('Status') }}</p>
+                    <p class="admin-equipments-subtle text-[10px] font-bold uppercase tracking-[0.2em]">{{ $equipmentsCopy['filters']['status'] }}</p>
                     <div class="flex flex-wrap gap-2">
                         @foreach ($statusFilters as $filter)
                             @php
@@ -80,7 +293,7 @@
                                     'status' => $filter['value'],
                                     'category' => $activeCategorySlug,
                                 ], fn ($value) => $value !== '')) }}"
-                                class="rounded-xl border px-3 py-1.5 text-xs font-semibold transition {{ $isActiveStatus ? 'border-[#D4A843] bg-[#D4A843] text-[#0A0A0B] shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-[#D4A843]/50 hover:text-[#D4A843]' }}"
+                                class="admin-equipment-filter-chip {{ $isActiveStatus ? 'is-active' : '' }}"
                             >
                                 {{ $filter['label'] }}
                             </a>
@@ -88,17 +301,17 @@
                     </div>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-4 border-t border-slate-100 pt-2 dark:border-slate-800">
-                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">{{ __('Kategori') }}</p>
+                <div class="flex flex-wrap items-center gap-4 border-t admin-border pt-3">
+                    <p class="admin-equipments-subtle text-[10px] font-bold uppercase tracking-[0.2em]">{{ $equipmentsCopy['filters']['categories'] }}</p>
                     <div class="flex flex-wrap gap-2">
                         <a
                             href="{{ route('admin.equipments.index', array_filter([
                                 'q' => $search,
                                 'status' => $status,
-                            ], fn ($value) => $value !== '')) }}"
-                            class="rounded-xl border px-3 py-1.5 text-xs font-semibold transition {{ $activeCategorySlug === '' ? 'border-[#D4A843] bg-[#D4A843] text-[#0A0A0B] shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-[#D4A843]/50 hover:text-[#D4A843]' }}"
+                             ], fn ($value) => $value !== '')) }}"
+                            class="admin-equipment-filter-chip {{ $activeCategorySlug === '' ? 'is-active' : '' }}"
                         >
-                            {{ __('Semua') }}
+                            {{ $equipmentsCopy['filters']['all_categories'] }}
                         </a>
                         @foreach ($categories as $category)
                             <a
@@ -107,7 +320,7 @@
                                     'status' => $status,
                                     'category' => $category->slug,
                                 ], fn ($value) => $value !== '')) }}"
-                                class="rounded-xl border px-3 py-1.5 text-xs font-semibold transition {{ $activeCategorySlug === $category->slug ? 'border-[#D4A843] bg-[#D4A843] text-[#0A0A0B] shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-[#D4A843]/50 hover:text-[#D4A843]' }}"
+                                class="admin-equipment-filter-chip {{ $activeCategorySlug === $category->slug ? 'is-active' : '' }}"
                             >
                                 {{ $category->name }}
                             </a>
@@ -117,27 +330,28 @@
             </div>
         </section>
 
-        <section class="mk-card overflow-hidden">
+        {{-- Table Card --}}
+        <section class="admin-equipments-card overflow-hidden p-0">
             <div class="overflow-x-auto">
-                <table class="w-full min-w-[1080px] text-sm">
-                    <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900/60 dark:text-slate-400">
+                <table class="admin-equipments-table w-full min-w-[1080px] text-sm">
+                    <thead>
                         <tr>
-                            <th class="px-5 py-3 text-left font-semibold">{{ __('Alat') }}</th>
-                            <th class="px-5 py-3 text-left font-semibold">{{ __('Slug') }}</th>
-                            <th class="px-5 py-3 text-right font-semibold">{{ __('Harga / Hari') }}</th>
-                            <th class="px-5 py-3 text-center font-semibold">{{ __('Total Stok') }}</th>
-                            <th class="px-5 py-3 text-center font-semibold">{{ __('Dipakai') }}</th>
-                            <th class="px-5 py-3 text-center font-semibold">{{ __('Tersedia') }}</th>
-                            <th class="px-5 py-3 text-center font-semibold">{{ __('Status') }}</th>
-                            <th class="px-5 py-3 text-center font-semibold">{{ __('Diperbarui') }}</th>
-                            <th class="px-5 py-3 text-right">{{ __('Aksi') }}</th>
+                            <th class="px-5 py-3 text-left font-semibold">{{ $equipmentsCopy['table']['tool'] }}</th>
+                            <th class="px-5 py-3 text-left font-semibold">{{ $equipmentsCopy['table']['slug'] }}</th>
+                            <th class="px-5 py-3 text-right font-semibold">{{ $equipmentsCopy['table']['price_per_day'] }}</th>
+                            <th class="px-5 py-3 text-center font-semibold">{{ $equipmentsCopy['table']['total_stock'] }}</th>
+                            <th class="px-5 py-3 text-center font-semibold">{{ $equipmentsCopy['table']['reserved'] }}</th>
+                            <th class="px-5 py-3 text-center font-semibold">{{ $equipmentsCopy['table']['available'] }}</th>
+                            <th class="px-5 py-3 text-center font-semibold">{{ $equipmentsCopy['table']['status'] }}</th>
+                            <th class="px-5 py-3 text-center font-semibold">{{ $equipmentsCopy['table']['updated'] }}</th>
+                            <th class="px-5 py-3 text-right">{{ $equipmentsCopy['table']['action'] }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    <tbody class="divide-y admin-border">
                         @forelse ($equipments as $item)
                             @php
                                 $statusValue = $item->status ?? 'ready';
-                                $statusLabel = $statusValue === 'ready' ? __('Siap') : ($statusValue === 'maintenance' ? __('Perawatan') : __('Tidak Tersedia'));
+                                $statusLabel = $equipmentsCopy['status'][$statusValue] ?? $statusValue;
                                 $statusClass = $statusValue === 'ready'
                                     ? 'status-chip-success'
                                     : ($statusValue === 'maintenance' ? 'status-chip-warning' : 'status-chip-danger');
@@ -145,27 +359,27 @@
                                 $availableUnits = (int) $item->available_units;
                                 $imageUrl = site_media_url($item->image_path ?? $item->image ?? null) ?: config('placeholders.equipment');
                             @endphp
-                            <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-900/60">
+                            <tr>
                                 <td class="px-5 py-4 align-top">
                                     <div class="flex items-center gap-3">
                                         <img
                                             src="{{ $imageUrl }}"
                                             alt="{{ $item->name }}"
-                                            class="h-12 w-12 rounded-lg border border-[#1A1A1E] bg-[#0A0A0B] object-contain p-1"
+                                            class="admin-equipment-image h-12 w-12 rounded-lg object-contain p-1"
                                             loading="lazy"
                                             onerror="this.onerror=null;this.src='{{ config('placeholders.equipment') }}';"
                                         >
                                         <div>
-                                            <p class="max-w-[20rem] font-semibold leading-snug text-slate-900 dark:text-slate-50">{{ $item->name }}</p>
-                                            <p class="text-xs text-slate-500 dark:text-slate-400">{{ $item->category?->name ?? '-' }}</p>
+                                            <p class="max-w-[20rem] font-semibold leading-snug admin-equipments-title">{{ $item->name }}</p>
+                                            <p class="text-xs admin-equipments-muted">{{ $item->category?->name ?? '-' }}</p>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-5 py-4 align-top text-slate-600 dark:text-slate-400">
+                                <td class="px-5 py-4 align-top admin-equipments-muted">
                                     <p class="max-w-[14rem] break-words">{{ $item->slug }}</p>
                                 </td>
-                                <td class="px-5 py-4 text-right align-top font-semibold whitespace-nowrap text-slate-900 dark:text-slate-50">{{ __('Rp') }} {{ number_format($item->price_per_day, 0, ',', '.') }}</td>
-                                <td class="px-5 py-4 text-center align-top font-semibold text-slate-900 dark:text-slate-50">{{ $item->stock }}</td>
+                                <td class="px-5 py-4 text-right align-top font-semibold whitespace-nowrap admin-equipments-title">Rp {{ number_format($item->price_per_day, 0, ',', '.') }}</td>
+                                <td class="px-5 py-4 text-center align-top font-semibold admin-equipments-title">{{ $item->stock }}</td>
                                 <td class="px-5 py-4 text-center align-top font-semibold text-amber-600">{{ $reservedUnits }}</td>
                                 <td class="px-5 py-4 text-center align-top">
                                     <span class="font-semibold {{ $availableUnits > 0 ? 'text-emerald-600' : 'text-rose-600' }}">
@@ -177,28 +391,28 @@
                                         {{ $statusLabel }}
                                     </span>
                                 </td>
-                                <td class="px-5 py-4 text-center align-top text-slate-500 whitespace-nowrap dark:text-slate-400">{{ $item->updated_at?->format('d M Y') }}</td>
+                                <td class="px-5 py-4 text-center align-top admin-equipments-muted whitespace-nowrap">{{ $item->updated_at?->format('d M Y') }}</td>
                                 <td class="px-5 py-4 align-top">
                                     <div class="flex justify-end gap-2">
                                         <a
                                             href="{{ route('product.show', $item->slug) }}"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            class="btn-secondary rounded-xl px-3 py-1.5 text-xs font-semibold transition"
+                                            class="admin-secondary-button inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold transition"
                                         >
-                                            {{ __('Lihat') }}
+                                            {{ $equipmentsCopy['table']['view'] }}
                                         </a>
                                         <a
                                             href="{{ route('admin.equipments.edit', $item->slug) }}"
-                                            class="btn-secondary rounded-xl px-3 py-1.5 text-xs font-semibold transition"
+                                            class="admin-secondary-button inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold transition"
                                         >
-                                            {{ __('Ubah') }}
+                                            {{ $equipmentsCopy['table']['edit'] }}
                                         </a>
                                         <form method="POST" action="{{ route('admin.equipments.destroy', $item->slug) }}" data-confirm="{{ __('ui.dialog.delete_admin_item') }}" data-confirm-title="{{ __('ui.dialog.title') }}" data-confirm-button="{{ __('ui.actions.remove') }}" data-cancel-button="{{ __('ui.dialog.cancel') }}" data-confirm-variant="danger">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="rounded-xl bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:bg-rose-950/50">
-                                                {{ __('Hapus') }}
+                                            <button class="inline-flex rounded-xl border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-500 hover:text-white dark:text-rose-300">
+                                                {{ $equipmentsCopy['table']['delete'] }}
                                             </button>
                                         </form>
                                     </div>
@@ -206,8 +420,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="px-5 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
-                                    {{ __('Belum ada alat.') }}
+                                <td colspan="9" class="px-5 py-8 text-center text-sm admin-equipments-muted">
+                                    {{ $equipmentsCopy['table']['empty'] }}
                                 </td>
                             </tr>
                         @endforelse
