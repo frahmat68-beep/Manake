@@ -139,6 +139,168 @@
         .catalog-suggestion-category {
             color: var(--catalog-accent) !important;
         }
+
+        .catalog-quick-modal-root {
+            background: rgba(10, 10, 11, 0.72);
+            backdrop-filter: blur(10px);
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-modal-root {
+            background: rgba(15, 23, 42, 0.18);
+            backdrop-filter: blur(8px);
+        }
+
+        .catalog-quick-modal-panel {
+            background: #111113;
+            border-color: #1A1A1E;
+            color: #E8E8EC;
+            box-shadow: 0 30px 90px -45px rgba(0, 0, 0, 0.75);
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-modal-panel {
+            background: #FFFFFF;
+            border-color: #E5E7EB;
+            color: #111827;
+            box-shadow: 0 30px 90px -50px rgba(15, 23, 42, 0.35);
+        }
+
+        .catalog-quick-title {
+            color: #E8E8EC;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-title {
+            color: #111827;
+        }
+
+        .catalog-quick-muted {
+            color: #A0A0A8;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-muted {
+            color: #4B5563;
+        }
+
+        .catalog-quick-surface {
+            background: #0A0A0B;
+            border-color: #1A1A1E;
+            color: #E8E8EC;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-surface {
+            background: #FFFFFF;
+            border-color: #E5E7EB;
+            color: #111827;
+        }
+
+        .catalog-quick-soft {
+            background: #111113;
+            border-color: #1A1A1E;
+            color: #E8E8EC;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-soft {
+            background: #F8FAFC;
+            border-color: #E5E7EB;
+            color: #111827;
+        }
+
+        .catalog-quick-input {
+            width: 100%;
+            border-radius: 0.875rem;
+            border: 1px solid #1A1A1E;
+            background: #0A0A0B;
+            color: #E8E8EC;
+            min-height: 3.5rem;
+            outline: none;
+            transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease;
+        }
+
+        .catalog-quick-input:focus {
+            border-color: var(--catalog-accent);
+            box-shadow: 0 0 0 2px var(--catalog-accent-soft);
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-input {
+            background: #FFFFFF;
+            color: #111827;
+            border-color: #DADDE3;
+            color-scheme: light;
+        }
+
+        html[data-theme-resolved="dark"] .catalog-quick-input {
+            color-scheme: dark;
+        }
+
+        .catalog-quick-control {
+            background: #111113;
+            border-color: #1A1A1E;
+            color: #E8E8EC;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-control {
+            background: #F3F4F6;
+            border-color: #DADDE3;
+            color: #111827;
+        }
+
+        .catalog-quick-secondary {
+            background: transparent;
+            border: 1px solid #1A1A1E;
+            color: #E8E8EC;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-secondary {
+            border-color: #DADDE3;
+            color: #111827;
+            background: #FFFFFF;
+        }
+
+        .catalog-quick-secondary:hover {
+            border-color: var(--catalog-accent-border);
+            color: var(--catalog-accent);
+        }
+
+        .catalog-quick-primary {
+            background: var(--catalog-accent) !important;
+            color: var(--catalog-accent-text) !important;
+            border: 1px solid var(--catalog-accent) !important;
+        }
+
+        .catalog-quick-primary:hover {
+            background: var(--catalog-accent-hover) !important;
+        }
+
+        .catalog-quick-primary-disabled {
+            background: #1A1A1E;
+            color: #66666C;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-primary-disabled {
+            background: #E5E7EB;
+            color: #9CA3AF;
+        }
+
+        .catalog-quick-summary {
+            background: var(--catalog-accent) !important;
+            color: var(--catalog-accent-text) !important;
+            border-color: var(--catalog-accent) !important;
+        }
+
+        .catalog-quick-summary-divider {
+            border-color: rgba(0, 0, 0, 0.20);
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-summary-divider {
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        html[data-theme-resolved="light"] .catalog-quick-error {
+            background: #FFF1F2 !important;
+            color: #BE123C !important;
+            border-color: rgba(244, 63, 94, 0.30) !important;
+        }
     </style>
 @endpush
 
@@ -156,6 +318,8 @@
         $intlLocale = app()->getLocale() === 'en' ? 'en-US' : 'id-ID';
         $currencyPrefix = app()->getLocale() === 'en' ? 'IDR' : 'Rp';
         $dayLabel = __('app.product.day_label');
+        $dayLabelSingular = __('app.product.day_label_singular');
+        $dayLabelPlural = __('app.product.day_label_plural');
         $catalogResetSearchLabel = __('ui.catalog.reset_search_label');
         $catalogAllCategoriesLabel = __('ui.catalog.all_categories_label');
         $catalogSearchResultPrefix = __('ui.catalog.search_result_prefix');
@@ -178,6 +342,15 @@
         $catalogLoginToOrderButton = __('ui.catalog.login_to_order_button');
         $catalogOutOfStockButton = __('ui.catalog.out_of_stock_button');
         $catalogQuickDateRequiredMessage = __('ui.catalog.quick_date_required_message');
+        $catalogQuickPickLabel = __('ui.catalog.quick_pick_label');
+        $catalogQuickPresetToday = __('ui.catalog.quick_preset_today');
+        $catalogQuickPresetTomorrow = __('ui.catalog.quick_preset_tomorrow');
+        $catalogQuickPreset3Days = __('ui.catalog.quick_preset_3_days');
+        $catalogQuickPreset7Days = __('ui.catalog.quick_preset_7_days');
+        $catalogQuickSelectDatesHint = __('ui.catalog.quick_select_dates_hint');
+        $catalogQuickEstimateNote = __('ui.catalog.quick_estimate_note');
+        $catalogQuickDecreaseQtyAria = __('ui.catalog.quick_decrease_qty_aria');
+        $catalogQuickIncreaseQtyAria = __('ui.catalog.quick_increase_qty_aria');
         $bookingMinDate = now()->toDateString();
         $bookingMaxDate = now()->addMonthsNoOverflow(3)->toDateString();
         $idleHamburgerEnabledRaw = strtolower(trim((string) setting('catalog.idle_hamburger_enabled', '1')));
@@ -581,7 +754,7 @@
                                                 x-transition:enter="transition ease-out duration-300"
                                                 x-transition:enter-start="opacity-0 scale-95"
                                                 x-transition:enter-end="opacity-100 scale-100"
-                                                class="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-3 sm:p-4 bg-[#0A0A0B]/80 backdrop-blur-md"
+                                                class="catalog-page catalog-quick-modal-root fixed inset-0 z-[100] flex items-end justify-center p-3 sm:items-center sm:p-4"
                                                 @click.self="quickOpen = false"
                                                 @keydown.escape.window="quickOpen = false"
                                                 role="dialog"
@@ -589,7 +762,7 @@
                                                 aria-label="{{ __('ui.catalog.quick_order_dialog_aria', ['name' => $item->name]) }}"
                                             >
                                                 <div
-                                                    class="relative w-full max-w-lg rounded-2xl border border-[#1A1A1E] bg-[#111113] p-6 sm:p-8 max-h-[92dvh] overflow-y-auto"
+                                                    class="catalog-quick-modal-panel relative w-full max-w-lg rounded-2xl border p-6 sm:p-8 max-h-[92dvh] overflow-y-auto"
                                                     @click.stop
                                                 >
                                                     <div class="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-current opacity-10 blur-[60px] pointer-events-none catalog-accent-text"></div>
@@ -597,15 +770,15 @@
                                                     <!-- Header -->
                                                     <div class="relative flex items-start justify-between gap-4">
                                                         <div class="flex-1 min-w-0">
-                                                            <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1">
+                                                            <div class="catalog-quick-soft mb-2 inline-flex items-center gap-2 rounded-full border px-3 py-1">
                                                                 <span class="h-1.5 w-1.5 rounded-full catalog-accent-dot animate-pulse" aria-hidden="true"></span>
                                                                 <span class="text-[10px] font-bold uppercase tracking-widest catalog-accent-text">{{ $catalogQuickOrderTitle }}</span>
                                                             </div>
-                                                            <h4 class="text-xl font-bold tracking-tight text-[#E8E8EC] leading-snug truncate">{{ $item->name }}</h4>
+                                                            <h4 class="catalog-quick-title text-xl font-bold tracking-tight leading-snug truncate">{{ $item->name }}</h4>
                                                         </div>
                                                         <button
                                                             type="button"
-                                                            class="shrink-0 h-9 w-9 flex items-center justify-center rounded-full border border-[#1A1A1E] bg-[#0A0A0B] text-[#A0A0A8] transition-all duration-300 catalog-accent-border-hover active:scale-90"
+                                                            class="catalog-quick-soft catalog-accent-border-hover shrink-0 h-9 w-9 flex items-center justify-center rounded-full border transition-all duration-300 active:scale-90"
                                                             @click.stop="quickOpen = false"
                                                             aria-label="{{ __('ui.catalog.quick_close_aria') }}"
                                                         >
@@ -629,24 +802,24 @@
 
                                                         <!-- Preset Buttons -->
                                                         <div class="space-y-1.5">
-                                                            <p class="text-[10px] font-bold uppercase tracking-widest text-[#66666C]">{{ app()->getLocale() === 'en' ? 'Quick Pick' : 'Pilih Cepat' }}</p>
+                                                            <p class="catalog-quick-muted text-[10px] font-bold uppercase tracking-widest">{{ $catalogQuickPickLabel }}</p>
                                                             <div class="flex flex-wrap gap-2">
                                                                 <button type="button"
-                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition catalog-accent-border-hover active:scale-95"
+                                                                    class="catalog-quick-soft catalog-accent-border-hover rounded-full border px-3 py-1.5 text-xs font-bold transition active:scale-95"
                                                                     @click.stop="setPreset(1, 0)"
-                                                                >{{ app()->getLocale() === 'en' ? 'Today' : 'Hari ini' }}</button>
+                                                                >{{ $catalogQuickPresetToday }}</button>
                                                                 <button type="button"
-                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition catalog-accent-border-hover active:scale-95"
+                                                                    class="catalog-quick-soft catalog-accent-border-hover rounded-full border px-3 py-1.5 text-xs font-bold transition active:scale-95"
                                                                     @click.stop="setPreset(1, 1)"
-                                                                >{{ app()->getLocale() === 'en' ? 'Tomorrow' : 'Besok' }}</button>
+                                                                >{{ $catalogQuickPresetTomorrow }}</button>
                                                                 <button type="button"
-                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition catalog-accent-border-hover active:scale-95"
+                                                                    class="catalog-quick-soft catalog-accent-border-hover rounded-full border px-3 py-1.5 text-xs font-bold transition active:scale-95"
                                                                     @click.stop="setPreset(3, 0)"
-                                                                >{{ app()->getLocale() === 'en' ? '3 Days' : '3 Hari' }}</button>
+                                                                >{{ $catalogQuickPreset3Days }}</button>
                                                                 <button type="button"
-                                                                    class="rounded-full border border-[#1A1A1E] bg-[#0A0A0B] px-3 py-1.5 text-xs font-bold text-[#A0A0A8] transition catalog-accent-border-hover active:scale-95"
+                                                                    class="catalog-quick-soft catalog-accent-border-hover rounded-full border px-3 py-1.5 text-xs font-bold transition active:scale-95"
                                                                     @click.stop="setPreset(7, 0)"
-                                                                >{{ app()->getLocale() === 'en' ? '7 Days' : '7 Hari' }}</button>
+                                                                >{{ $catalogQuickPreset7Days }}</button>
                                                             </div>
                                                         </div>
 
@@ -661,7 +834,7 @@
                                                                     x-model="quickStart"
                                                                     :min="minDate"
                                                                     :max="maxDate"
-                                                                    class="mk-input cursor-pointer"
+                                                                    class="catalog-quick-input cursor-pointer px-4"
                                                                     @click.stop
                                                                     @focus="openDatePicker($event)"
                                                                     @change="onStartChanged()"
@@ -678,7 +851,7 @@
                                                                     x-model="quickEnd"
                                                                     :min="quickStart || minDate"
                                                                     :max="maxDate"
-                                                                    class="mk-input cursor-pointer"
+                                                                    class="catalog-quick-input cursor-pointer px-4"
                                                                     @click.stop
                                                                     @focus="openDatePicker($event)"
                                                                     @change="onEndChanged()"
@@ -699,8 +872,8 @@
                                                                     :class="quickQty <= 1
                                                                         ? 'opacity-40 cursor-not-allowed'
                                                                         : 'catalog-accent-border-hover active:scale-90'"
-                                                                    class="absolute left-2 z-10 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] transition-all text-lg font-bold"
-                                                                    aria-label="Kurangi jumlah"
+                                                                    class="catalog-quick-control absolute left-2 z-10 h-9 w-9 flex items-center justify-center rounded-xl border transition-all text-lg font-bold"
+                                                                    aria-label="{{ $catalogQuickDecreaseQtyAria }}"
                                                                 >−</button>
                                                                 <input
                                                                     id="quick-qty-{{ $item->id }}"
@@ -711,7 +884,7 @@
                                                                     x-model="quickQty"
                                                                     inputmode="numeric"
                                                                     pattern="[0-9]*"
-                                                                    class="mk-input no-spinner px-14 text-center"
+                                                                    class="catalog-quick-input no-spinner px-14 text-center font-sans"
                                                                     @click.stop
                                                                     @input="normalizeQty()"
                                                                     @change="normalizeQty()"
@@ -724,24 +897,24 @@
                                                                     :class="quickQty >= maxQty
                                                                         ? 'opacity-40 cursor-not-allowed'
                                                                         : 'catalog-accent-border-hover active:scale-90'"
-                                                                    class="absolute right-2 z-10 h-9 w-9 flex items-center justify-center rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] text-[#E8E8EC] transition-all text-lg font-bold"
-                                                                    aria-label="Tambah jumlah"
+                                                                    class="catalog-quick-control absolute right-2 z-10 h-9 w-9 flex items-center justify-center rounded-xl border transition-all text-lg font-bold"
+                                                                    aria-label="{{ $catalogQuickIncreaseQtyAria }}"
                                                                 >+</button>
                                                             </div>
                                                             <!-- Stock helper text -->
-                                                            <p class="text-[11px] text-[#66666C] ml-1"
+                                                            <p class="catalog-quick-muted text-[11px] ml-1"
                                                                x-text="locale === 'en' ? `Max ${maxQty} units available.` : `Maks. ${maxQty} unit tersedia.`"
                                                             ></p>
                                                         </div>
 
                                                         <!-- Summary Panel -->
-                                                        <div class="relative grid grid-cols-2 gap-4 overflow-hidden rounded-xl border border-[#1A1A1E] catalog-accent-bg p-5">
+                                                        <div class="catalog-quick-summary relative grid grid-cols-2 gap-4 overflow-hidden rounded-xl border p-5">
                                                             <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50 pointer-events-none"></div>
                                                             <div class="relative">
                                                                 <p class="text-[10px] font-bold uppercase tracking-widest text-current opacity-60">{{ $catalogQuickDurationLabel }}</p>
-                                                                <p class="mt-1 text-lg font-extrabold" x-text="calcDays() > 0 ? `${calcDays()} {{ $dayLabel }}` : '-'"></p>
+                                                                <p class="mt-1 text-lg font-extrabold" x-text="calcDays() > 0 ? `${calcDays()} ${calcDays() === 1 ? @js($dayLabelSingular) : @js($dayLabelPlural)}` : '-'"></p>
                                                             </div>
-                                                            <div class="relative text-right border-l border-black/20 pl-4">
+                                                            <div class="catalog-quick-summary-divider relative text-right border-l pl-4">
                                                                 <p class="text-[10px] font-bold uppercase tracking-widest text-current opacity-60">{{ $catalogQuickEstimateLabel }}</p>
                                                                 <p class="mt-1 text-base font-extrabold leading-tight" x-text="calcTotal() > 0 ? `{{ $currencyPrefix }} ${formatIdr(calcTotal())}` : '-'"></p>
                                                             </div>
@@ -751,21 +924,21 @@
                                                         <p
                                                             x-show="quickError"
                                                             x-text="quickError"
-                                                            class="rounded-lg border border-rose-400/30 bg-rose-950/60 px-4 py-2 text-xs font-medium text-rose-300"
+                                                            class="catalog-quick-error rounded-lg border border-rose-400/30 bg-rose-950/60 px-4 py-2 text-xs font-medium text-rose-300"
                                                             role="alert"
                                                         ></p>
 
                                                         <!-- Helper hint when not ready -->
                                                         <p
                                                             x-show="!canSubmit() && !quickError"
-                                                            class="text-xs text-[#66666C] text-center"
-                                                        >{{ app()->getLocale() === 'en' ? 'Select dates to enable the Add button.' : 'Pilih tanggal untuk mengaktifkan tombol Tambah.' }}</p>
+                                                            class="catalog-quick-muted text-xs text-center"
+                                                        >{{ $catalogQuickSelectDatesHint }}</p>
 
                                                         <!-- Action Buttons -->
                                                         <div class="flex gap-3 pt-1">
                                                             <button
                                                                 type="button"
-                                                                class="mk-button-secondary flex-1"
+                                                                class="catalog-quick-secondary flex-1 rounded-xl px-5 py-3 text-sm font-bold transition"
                                                                 @click.stop="quickOpen = false"
                                                             >
                                                                 {{ $catalogQuickCancelButton }}
@@ -774,15 +947,15 @@
                                                                 type="submit"
                                                                 class="flex-1 rounded-xl px-5 py-3 text-sm font-bold transition-all duration-200"
                                                                 :class="canSubmit()
-                                                                    ? 'catalog-btn-primary active:scale-95'
-                                                                    : 'bg-[#1A1A1E] text-[#66666C] cursor-not-allowed opacity-60'"
+                                                                    ? 'catalog-quick-primary active:scale-95'
+                                                                    : 'catalog-quick-primary-disabled'"
                                                                 :disabled="!canSubmit()"
                                                             >
                                                                 {{ $catalogQuickAddButton }}
                                                             </button>
                                                         </div>
 
-                                                        <p class="text-center text-[10px] text-[#66666C]">{{ app()->getLocale() === 'en' ? 'Estimate is automatically calculated based on duration and quantity.' : 'Estimasi dihitung otomatis berdasarkan durasi dan jumlah unit.' }}</p>
+                                                        <p class="catalog-quick-muted text-center text-[10px]">{{ $catalogQuickEstimateNote }}</p>
                                                     </form>
                                                 </div>
                                             </div>

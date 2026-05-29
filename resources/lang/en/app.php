@@ -208,6 +208,8 @@ return [
         'quantity' => 'Quantity',
         'date_window_error' => 'Rental dates can only be selected from today up to the next 3 months.',
         'availability_recheck_note' => 'Availability will be checked again when added to cart.',
+        'day_label_singular' => 'day',
+        'day_label_plural' => 'days',
     ],
     'landing' => [
         'hero_kicker' => 'Manake Rental',

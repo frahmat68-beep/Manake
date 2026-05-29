@@ -208,6 +208,8 @@ return [
         'quantity' => 'Kuantitas',
         'date_window_error' => 'Tanggal sewa hanya bisa dipilih dari hari ini sampai 3 bulan ke depan.',
         'availability_recheck_note' => 'Ketersediaan akan dicek ulang saat masuk keranjang.',
+        'day_label_singular' => 'hari',
+        'day_label_plural' => 'hari',
     ],
     'landing' => [
         'hero_kicker' => 'Manake Rental',
