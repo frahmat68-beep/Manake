@@ -126,11 +126,29 @@
                 transition: background-color 0.25s ease-in-out;
             }
             .hero-title-text {
-                line-height: 0.98 !important;
+                line-height: 1 !important;
             }
+
+            .hero-title-line {
+                line-height: inherit !important;
+            }
+
             .hero-rotating-word {
+                width: 5.4em !important;
+                min-width: 5.4em !important;
+                height: 1em !important;
+                line-height: 1 !important;
                 overflow: visible !important;
-                padding-bottom: 0.18em !important;
+                padding: 0 !important;
+                vertical-align: baseline !important;
+            }
+
+            .hero-rotating-word span {
+                line-height: 1 !important;
+                height: 1em !important;
+                overflow: visible !important;
+                padding: 0 !important;
+                transform-origin: center;
             }
             
             /* Dark Mode Defaults */
@@ -483,8 +501,8 @@
 
             <div class="relative mx-auto grid min-h-[calc(100svh-8rem)] max-w-7xl items-center gap-12 px-6 pb-12 pt-24 md:px-10 lg:grid-cols-[1.08fr_0.92fr]">
                 <div class="max-w-3xl">
-                    <h1 class="hero-title-text text-[clamp(2.5rem,5.2vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.055em] text-[#E8E8EC]">
-                        <span class="block">{{ __('app.home.hero_kicker') }}</span>
+                    <h1 class="hero-title-text text-[clamp(2.5rem,5.2vw,4.5rem)] font-semibold leading-none tracking-[-0.055em] text-[#E8E8EC]">
+                        <span class="block hero-title-line">{{ __('app.home.hero_kicker') }}</span>
                         <span
                             x-data="{
                                 words: @js($heroCategories),
@@ -496,9 +514,9 @@
                                     }, 2400);
                                 }
                             }"
-                            class="block"
+                            class="block hero-title-line"
                         >
-                            <span class="relative mr-3 inline-grid min-w-[5.4em] overflow-hidden align-baseline hero-rotating-word">
+                            <span class="relative mr-3 inline-grid w-[5.4em] min-w-[5.4em] overflow-visible align-baseline hero-rotating-word">
                                 <template x-for="(word, wordIndex) in words" :key="word">
                                     <span
                                         x-show="index === wordIndex"
@@ -508,12 +526,12 @@
                                         x-transition:leave="transition duration-500 ease-in absolute"
                                         x-transition:leave-start="translate-y-0 opacity-100 blur-0"
                                         x-transition:leave-end="-translate-y-full opacity-0 blur-sm"
-                                        class="col-start-1 row-start-1 inline-block will-change-transform"
+                                        class="col-start-1 row-start-1 inline-block h-[1em] leading-none will-change-transform"
                                         x-text="word"
                                     ></span>
                                 </template>
                             </span>
-                            <span class="inline-block hero-static-title">{{ __('app.home.hero_title') }}</span>
+                            <span class="inline-block leading-none hero-static-title">{{ __('app.home.hero_title') }}</span>
                         </span>
                     </h1>
 
