@@ -568,31 +568,53 @@
 
         /* ── Sidebar Logo Sizing & Placement ──────────────────────── */
         body[data-manake-shell="admin"] .admin-sidebar-logo-link {
-            height: 100%;
-            min-width: 0;
+            height: 44px !important;
+            min-width: 0 !important;
+            overflow: visible !important;
         }
 
         body[data-manake-shell="admin"] .admin-sidebar-logo-frame {
             display: flex !important;
             align-items: center !important;
             justify-content: flex-start !important;
-            width: 152px !important;
+            width: 164px !important;
             height: 44px !important;
             overflow: visible !important;
         }
 
         body[data-manake-shell="admin"] .admin-sidebar-logo-img {
-            display: block !important;
             width: auto !important;
-            height: 36px !important;
-            max-height: 36px !important;
-            max-width: 152px !important;
+            height: 38px !important;
+            max-height: 38px !important;
+            max-width: none !important;
             object-fit: contain !important;
             transform-origin: left center !important;
         }
 
+        /* Dual explicit images display logic */
+        body[data-manake-shell="admin"] .admin-sidebar-logo-img--light,
+        body[data-manake-shell="admin"] .admin-sidebar-logo-img--dark {
+            display: none !important;
+        }
+
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-logo-img--light {
+            display: block !important;
+            transform: scale(1.36) !important; /* Visual optical size balance */
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-sidebar-logo-img--dark {
+            display: block !important;
+            transform: scale(1.00) !important;
+        }
+
+        /* Collapsed Sidebar Logo constraints */
+        body[data-manake-shell="admin"] .admin-sidebar-logo-link.is-collapsed {
+            overflow: hidden !important;
+        }
+
         body[data-manake-shell="admin"] .admin-sidebar-logo-link.is-collapsed .admin-sidebar-logo-frame {
             width: 40px !important;
+            height: 44px !important;
             justify-content: center !important;
             overflow: hidden !important;
         }
@@ -600,15 +622,16 @@
         body[data-manake-shell="admin"] .admin-sidebar-logo-link.is-collapsed .admin-sidebar-logo-img {
             height: 32px !important;
             max-height: 32px !important;
-            max-width: none !important;
+            transform-origin: center center !important;
         }
 
-        /* Optical Sizing Scaling */
-        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-logo-img {
-            transform: scale(1.08) !important;
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-logo-link.is-collapsed .admin-sidebar-logo-img--light {
+            display: block !important;
+            transform: scale(1.20) !important;
         }
 
-        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-sidebar-logo-img {
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-sidebar-logo-link.is-collapsed .admin-sidebar-logo-img--dark {
+            display: block !important;
             transform: scale(1.00) !important;
         }
     </style>

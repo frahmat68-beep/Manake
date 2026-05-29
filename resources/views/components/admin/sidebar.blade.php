@@ -81,16 +81,20 @@
     <div class="admin-sidebar-header flex h-20 items-center justify-between border-b px-5">
         <a
             href="{{ route('admin.dashboard') }}"
-            class="admin-sidebar-logo-link inline-flex items-center overflow-hidden transition-all duration-300"
-            :class="sidebarCollapsed ? 'w-10 justify-center is-collapsed' : 'w-full justify-start'"
+            class="admin-sidebar-logo-link inline-flex items-center overflow-visible transition-all duration-300"
+            :class="sidebarCollapsed ? 'is-collapsed w-10 justify-center' : 'w-full justify-start'"
         >
             <span class="admin-sidebar-logo-frame">
-                <x-brand.image
-                    light="manake-logo-blue.png"
-                    dark="manake-logo-white.png"
-                    :alt="$brandName"
-                    img-class="admin-sidebar-logo-img"
-                />
+                <img
+                    src="{{ site_asset('manake-logo-blue.png') }}"
+                    alt="{{ $brandName }}"
+                    class="admin-sidebar-logo-img admin-sidebar-logo-img--light"
+                >
+                <img
+                    src="{{ site_asset('manake-logo-white.png') }}"
+                    alt="{{ $brandName }}"
+                    class="admin-sidebar-logo-img admin-sidebar-logo-img--dark"
+                >
             </span>
         </a>
         <button type="button" class="admin-secondary-button rounded-lg p-1.5 lg:hidden" @click="sidebarOpen = false" aria-label="{{ __('ui.actions.close') }}">
