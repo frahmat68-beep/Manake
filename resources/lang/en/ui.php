@@ -741,7 +741,9 @@ return [
         'total' => 'Total',
         'rental_date' => 'Rental Dates',
         'qty' => 'Qty',
-        'note' => 'This page will be expanded in Step 4 for paid status & booking code.',
+        'cancel_order_button' => 'Cancel Order',
+        'cancel_order_confirm' => 'Are you sure you want to cancel this order?',
+        'date_max_window_error' => 'Rental date can only be up to 3 months from today.',
     ],
     'invoice' => [
         'title' => 'Invoice',

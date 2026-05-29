@@ -741,7 +741,9 @@ return [
         'total' => 'Total',
         'rental_date' => 'Tanggal Sewa',
         'qty' => 'Qty',
-        'note' => 'Halaman ini akan diperluas di tahap 4 untuk status LUNAS dan kode pesanan.',
+        'cancel_order_button' => 'Batalkan Pesanan',
+        'cancel_order_confirm' => 'Apakah Anda yakin ingin membatalkan pesanan ini?',
+        'date_max_window_error' => 'Tanggal sewa maksimal 3 bulan dari hari ini.',
     ],
     'invoice' => [
         'title' => 'Invoice',
