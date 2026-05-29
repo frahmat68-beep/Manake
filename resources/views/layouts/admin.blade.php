@@ -569,30 +569,47 @@
         /* ── Sidebar Logo Sizing & Placement ──────────────────────── */
         body[data-manake-shell="admin"] .admin-sidebar-logo-link {
             height: 100%;
+            min-width: 0;
         }
 
         body[data-manake-shell="admin"] .admin-sidebar-logo-frame {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            width: 150px;
-            height: 44px;
-            overflow: hidden;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            width: 152px !important;
+            height: 44px !important;
+            overflow: visible !important;
         }
 
         body[data-manake-shell="admin"] .admin-sidebar-logo-img {
             display: block !important;
             width: auto !important;
-            max-width: 150px !important;
-            height: auto !important;
-            max-height: 38px !important;
+            height: 36px !important;
+            max-height: 36px !important;
+            max-width: 152px !important;
             object-fit: contain !important;
+            transform-origin: left center !important;
         }
 
-        body[data-manake-shell="admin"] [x-data] .admin-sidebar-logo-link.is-collapsed .admin-sidebar-logo-frame,
         body[data-manake-shell="admin"] .admin-sidebar-logo-link.is-collapsed .admin-sidebar-logo-frame {
-            width: 40px;
-            justify-content: center;
+            width: 40px !important;
+            justify-content: center !important;
+            overflow: hidden !important;
+        }
+
+        body[data-manake-shell="admin"] .admin-sidebar-logo-link.is-collapsed .admin-sidebar-logo-img {
+            height: 32px !important;
+            max-height: 32px !important;
+            max-width: none !important;
+        }
+
+        /* Optical Sizing Scaling */
+        html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-sidebar-logo-img {
+            transform: scale(1.08) !important;
+        }
+
+        html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-sidebar-logo-img {
+            transform: scale(1.00) !important;
         }
     </style>
 </head>

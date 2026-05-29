@@ -64,14 +64,14 @@
 
     @media (min-width: 1280px) {
         .admin-overview-grid {
-            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             align-items: stretch;
         }
     }
 
     /* Overview Cards */
     .admin-overview-card {
-        min-height: 154px;
+        min-height: 136px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -102,38 +102,6 @@
 
     html[data-theme-resolved="dark"] .admin-overview-desc {
         color: #A0A0A8;
-    }
-
-    /* Priority Card */
-    .admin-priority-card {
-        min-height: 154px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        border-left: 4px solid var(--admin-accent);
-    }
-
-    .admin-priority-copy {
-        color: var(--admin-muted);
-        font-size: 0.74rem;
-        line-height: 1.45;
-    }
-
-    .admin-priority-actions {
-        display: grid;
-        gap: 0.45rem;
-    }
-
-    .admin-priority-actions-secondary {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.45rem;
-    }
-
-    @media (min-width: 1280px) {
-        .admin-priority-actions-secondary {
-            grid-template-columns: 1fr;
-        }
     }
 
     /* Finance Cards */
@@ -271,7 +239,6 @@
         $formatIdr = fn ($value) => 'Rp ' . number_format((int) $value, 0, ',', '.');
         $isPaginator = $operationalOrders instanceof \Illuminate\Pagination\AbstractPaginator;
         $ordersCollection = $isPaginator ? $operationalOrders->getCollection() : collect($operationalOrders ?? []);
-        $resolvedActionableCount = $actionableCount ?? $ordersCollection->filter(fn ($order) => in_array((string) ($order->status_pesanan ?? ''), ['lunas', 'barang_diambil'], true))->count();
     @endphp
 
     <div class="admin-dashboard-page space-y-5 sm:space-y-6">
@@ -294,7 +261,7 @@
             </div>
         @endif
 
-        {{-- SECTION A: Operational Overview (5-card grid) --}}
+        {{-- SECTION A: Operational Overview (4-card grid) --}}
         <section class="admin-overview-grid">
             <article class="admin-dashboard-card admin-overview-card p-5">
                 <p class="admin-dashboard-kicker admin-kicker-sky">
@@ -349,35 +316,6 @@
                     <p class="admin-overview-desc">
                         {{ $adminDashboardCopy['stats_desc']['damaged_case'] }}
                     </p>
-                </div>
-            </article>
-
-            <article class="admin-dashboard-card admin-priority-card p-5">
-                <div>
-                    <p class="admin-accent-text text-xs font-black uppercase tracking-[0.22em]">
-                        {{ $adminDashboardCopy['priority_title'] }}
-                    </p>
-                    <div class="mt-3 flex items-end justify-between gap-3">
-                        <p class="admin-overview-value">
-                            {{ $resolvedActionableCount }}
-                        </p>
-                    </div>
-                    <p class="admin-priority-copy mt-2">
-                        {{ $adminDashboardCopy['priority_desc'] }}
-                    </p>
-                </div>
-                <div class="admin-priority-actions mt-3">
-                    <a href="{{ route('admin.orders.index') }}" class="admin-accent-bg inline-flex min-h-9 items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
-                        {{ $adminDashboardCopy['open_all_orders'] }}
-                    </a>
-                    <div class="admin-priority-actions-secondary">
-                        <a href="{{ route('admin.equipments.index') }}" class="admin-secondary-button inline-flex min-h-9 items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
-                            {{ $adminDashboardCopy['check_equipment_stock'] }}
-                        </a>
-                        <a href="{{ route('availability.board') }}" class="admin-secondary-button inline-flex min-h-9 items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
-                            {{ $adminDashboardCopy['availability_calendar'] }}
-                        </a>
-                    </div>
                 </div>
             </article>
         </section>
