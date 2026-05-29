@@ -9,7 +9,7 @@
         color: var(--admin-text);
     }
 
-    /* Cards */
+    /* Cards Visual Consistency */
     .admin-dashboard-card {
         background: var(--admin-surface);
         border: 1px solid var(--admin-border);
@@ -50,69 +50,102 @@
     html[data-theme-resolved="dark"] .admin-kicker-emerald { color: #6EE7B7 !important; }
     html[data-theme-resolved="dark"] .admin-kicker-rose  { color: #FDA4AF !important; }
 
-    /* Metric value */
-    .admin-dashboard-value {
-        color: var(--admin-text);
-        font-weight: 900;
-        letter-spacing: -0.04em;
+    /* Overview Grid */
+    .admin-overview-grid {
+        display: grid;
+        gap: 1rem;
     }
 
-    /* Compact metric card */
-    .admin-metric-card {
-        min-height: 128px;
+    @media (min-width: 640px) {
+        .admin-overview-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 1280px) {
+        .admin-overview-grid {
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            align-items: stretch;
+        }
+    }
+
+    /* Overview Cards */
+    .admin-overview-card {
+        min-height: 154px;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: space-between;
     }
 
-    .admin-metric-value {
-        margin-top: 1.1rem;
+    .admin-overview-card-main {
+        display: grid;
+        gap: 0.35rem;
+    }
+
+    .admin-overview-value {
         color: var(--admin-text);
-        font-size: 2rem;
-        font-weight: 900;
-        letter-spacing: -0.05em;
+        font-size: clamp(1.8rem, 2.2vw, 2.35rem);
         line-height: 1;
+        font-weight: 900;
+        letter-spacing: -0.045em;
     }
 
-    .admin-metric-desc {
-        margin-top: 0.4rem;
-        font-size: 0.72rem;
-        line-height: 1.45;
+    .admin-overview-desc {
         color: var(--admin-muted);
+        font-size: 0.74rem;
+        line-height: 1.45;
     }
 
-    html[data-theme-resolved="light"] .admin-metric-desc {
+    html[data-theme-resolved="light"] .admin-overview-desc {
         color: #4B5563;
     }
 
-    html[data-theme-resolved="dark"] .admin-metric-desc {
+    html[data-theme-resolved="dark"] .admin-overview-desc {
         color: #A0A0A8;
     }
 
-    /* Priority card */
+    /* Priority Card */
     .admin-priority-card {
-        min-height: 128px;
+        min-height: 154px;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         border-left: 4px solid var(--admin-accent);
     }
 
-    .admin-priority-actions {
-        margin-top: 1rem;
-        display: grid;
-        gap: 0.5rem;
+    .admin-priority-copy {
+        color: var(--admin-muted);
+        font-size: 0.74rem;
+        line-height: 1.45;
     }
 
-    /* Finance */
+    .admin-priority-actions {
+        display: grid;
+        gap: 0.45rem;
+    }
+
+    .admin-priority-actions-secondary {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.45rem;
+    }
+
+    @media (min-width: 1280px) {
+        .admin-priority-actions-secondary {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Finance Cards */
     .admin-finance-card {
-        min-height: 120px;
+        min-height: 138px;
     }
 
     .admin-finance-value {
         margin-top: 1rem;
         color: var(--admin-text);
-        font-size: clamp(1.25rem, 2vw, 1.6rem);
-        line-height: 1.1;
+        font-size: clamp(1.4rem, 2vw, 1.65rem);
+        line-height: 1.08;
         font-weight: 900;
         letter-spacing: -0.04em;
     }
@@ -126,20 +159,20 @@
     }
 
     .admin-finance-desc {
-        margin-top: 0.45rem;
+        margin-top: 0.55rem;
         color: var(--admin-muted);
         font-size: 0.78rem;
         line-height: 1.55;
     }
 
-    /* Card section header */
+    /* Card Section Header */
     .admin-dashboard-card-header {
         border-color: var(--admin-border);
         background: var(--admin-surface-raised);
     }
 
     html[data-theme-resolved="light"] .admin-dashboard-card-header {
-        background: #F8FAFC;
+        background: #FFFFFF;
         border-color: #E5E7EB;
     }
 
@@ -148,9 +181,13 @@
         border-color: #1A1A1E;
     }
 
-    /* Order rows */
+    /* Order Rows */
     .admin-order-row {
         border-color: var(--admin-border);
+    }
+
+    .admin-order-row + .admin-order-row {
+        border-top: 1px solid var(--admin-border);
     }
 
     .admin-order-row:hover {
@@ -176,31 +213,7 @@
         color: var(--admin-accent-hover);
     }
 
-    /* Secondary button */
-    body[data-manake-shell="admin"] .admin-secondary-button {
-        background: var(--admin-surface) !important;
-        border: 1px solid var(--admin-border) !important;
-        color: var(--admin-text) !important;
-        transition: border-color 0.15s, color 0.15s !important;
-    }
-
-    body[data-manake-shell="admin"] .admin-secondary-button:hover {
-        border-color: var(--admin-accent-border) !important;
-        color: var(--admin-accent) !important;
-    }
-
-    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-secondary-button {
-        background: #FFFFFF !important;
-        border-color: #E5E7EB !important;
-        color: #111827 !important;
-    }
-
-    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-secondary-button:hover {
-        border-color: rgba(37, 99, 235, 0.35) !important;
-        color: #2563EB !important;
-    }
-
-    /* Shell background */
+    /* Shell backgrounds */
     html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-shell-bg {
         background:
             radial-gradient(circle at top right, rgba(37, 99, 235, 0.055), transparent 28rem),
@@ -281,298 +294,348 @@
             </div>
         @endif
 
-        {{-- Section 1: Stats & Priority --}}
-        <section class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
-            <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <article class="admin-metric-card admin-dashboard-card p-5">
-                    <p class="admin-dashboard-kicker admin-kicker-sky">{{ $adminDashboardCopy['stats']['ready_pickup'] }}</p>
-                    <p class="admin-metric-value">{{ (int) ($summary['ready_pickup'] ?? 0) }}</p>
-                    <p class="admin-metric-desc">{{ $adminDashboardCopy['stats_desc']['ready_pickup'] }}</p>
-                </article>
-                <article class="admin-metric-card admin-dashboard-card p-5">
-                    <p class="admin-dashboard-kicker admin-kicker-amber">{{ $adminDashboardCopy['stats']['currently_rented'] }}</p>
-                    <p class="admin-metric-value">{{ (int) ($summary['on_rent'] ?? 0) }}</p>
-                    <p class="admin-metric-desc">{{ $adminDashboardCopy['stats_desc']['currently_rented'] }}</p>
-                </article>
-                <article class="admin-metric-card admin-dashboard-card p-5">
-                    <p class="admin-dashboard-kicker admin-kicker-emerald">{{ $adminDashboardCopy['stats']['returned'] }}</p>
-                    <p class="admin-metric-value">{{ (int) ($summary['returned'] ?? 0) }}</p>
-                    <p class="admin-metric-desc">{{ $adminDashboardCopy['stats_desc']['returned'] }}</p>
-                </article>
-                <article class="admin-metric-card admin-dashboard-card p-5">
-                    <p class="admin-dashboard-kicker admin-kicker-rose">{{ $adminDashboardCopy['stats']['damaged_case'] }}</p>
-                    <p class="admin-metric-value">{{ (int) ($summary['damaged'] ?? 0) }}</p>
-                    <p class="admin-metric-desc">{{ $adminDashboardCopy['stats_desc']['damaged_case'] }}</p>
-                </article>
-            </div>
+        {{-- SECTION A: Operational Overview (5-card grid) --}}
+        <section class="admin-overview-grid">
+            <article class="admin-dashboard-card admin-overview-card p-5">
+                <p class="admin-dashboard-kicker admin-kicker-sky">
+                    {{ $adminDashboardCopy['stats']['ready_pickup'] }}
+                </p>
+                <div class="admin-overview-card-main">
+                    <p class="admin-overview-value">
+                        {{ (int) ($summary['ready_pickup'] ?? 0) }}
+                    </p>
+                    <p class="admin-overview-desc">
+                        {{ $adminDashboardCopy['stats_desc']['ready_pickup'] }}
+                    </p>
+                </div>
+            </article>
 
-            <article class="admin-priority-card admin-dashboard-card p-5">
-                <p class="admin-accent-text text-xs font-black uppercase tracking-[0.22em]">
-                    {{ $adminDashboardCopy['priority_title'] }}
+            <article class="admin-dashboard-card admin-overview-card p-5">
+                <p class="admin-dashboard-kicker admin-kicker-amber">
+                    {{ $adminDashboardCopy['stats']['currently_rented'] }}
                 </p>
-                <p class="mt-3 admin-dashboard-value text-4xl">{{ $resolvedActionableCount }}</p>
-                <p class="mt-2 text-xs leading-5 admin-muted">
-                    {{ $adminDashboardCopy['priority_desc'] }}
+                <div class="admin-overview-card-main">
+                    <p class="admin-overview-value">
+                        {{ (int) ($summary['on_rent'] ?? 0) }}
+                    </p>
+                    <p class="admin-overview-desc">
+                        {{ $adminDashboardCopy['stats_desc']['currently_rented'] }}
+                    </p>
+                </div>
+            </article>
+
+            <article class="admin-dashboard-card admin-overview-card p-5">
+                <p class="admin-dashboard-kicker admin-kicker-emerald">
+                    {{ $adminDashboardCopy['stats']['returned'] }}
                 </p>
-                <div class="admin-priority-actions">
-                    <a href="{{ route('admin.orders.index') }}" class="admin-accent-bg inline-flex items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
+                <div class="admin-overview-card-main">
+                    <p class="admin-overview-value">
+                        {{ (int) ($summary['returned'] ?? 0) }}
+                    </p>
+                    <p class="admin-overview-desc">
+                        {{ $adminDashboardCopy['stats_desc']['returned'] }}
+                    </p>
+                </div>
+            </article>
+
+            <article class="admin-dashboard-card admin-overview-card p-5">
+                <p class="admin-dashboard-kicker admin-kicker-rose">
+                    {{ $adminDashboardCopy['stats']['damaged_case'] }}
+                </p>
+                <div class="admin-overview-card-main">
+                    <p class="admin-overview-value">
+                        {{ (int) ($summary['damaged'] ?? 0) }}
+                    </p>
+                    <p class="admin-overview-desc">
+                        {{ $adminDashboardCopy['stats_desc']['damaged_case'] }}
+                    </p>
+                </div>
+            </article>
+
+            <article class="admin-dashboard-card admin-priority-card p-5">
+                <div>
+                    <p class="admin-accent-text text-xs font-black uppercase tracking-[0.22em]">
+                        {{ $adminDashboardCopy['priority_title'] }}
+                    </p>
+                    <div class="mt-3 flex items-end justify-between gap-3">
+                        <p class="admin-overview-value">
+                            {{ $resolvedActionableCount }}
+                        </p>
+                    </div>
+                    <p class="admin-priority-copy mt-2">
+                        {{ $adminDashboardCopy['priority_desc'] }}
+                    </p>
+                </div>
+                <div class="admin-priority-actions mt-3">
+                    <a href="{{ route('admin.orders.index') }}" class="admin-accent-bg inline-flex min-h-9 items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
                         {{ $adminDashboardCopy['open_all_orders'] }}
                     </a>
-                    <a href="{{ route('admin.equipments.index') }}" class="admin-secondary-button inline-flex items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
-                        {{ $adminDashboardCopy['check_equipment_stock'] }}
-                    </a>
-                    <a href="{{ route('availability.board') }}" class="admin-secondary-button inline-flex items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
-                        {{ $adminDashboardCopy['availability_calendar'] }}
-                    </a>
+                    <div class="admin-priority-actions-secondary">
+                        <a href="{{ route('admin.equipments.index') }}" class="admin-secondary-button inline-flex min-h-9 items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
+                            {{ $adminDashboardCopy['check_equipment_stock'] }}
+                        </a>
+                        <a href="{{ route('availability.board') }}" class="admin-secondary-button inline-flex min-h-9 items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition">
+                            {{ $adminDashboardCopy['availability_calendar'] }}
+                        </a>
+                    </div>
                 </div>
             </article>
         </section>
 
-        {{-- Section 2: Finances --}}
+        {{-- SECTION B: Finance Overview --}}
         <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <article class="admin-finance-card admin-dashboard-card p-5">
+            <article class="admin-dashboard-card admin-finance-card p-5">
                 <p class="admin-dashboard-kicker admin-kicker-emerald">{{ $adminDashboardCopy['finance']['cash_in'] }}</p>
                 <p class="admin-finance-value">{{ $formatIdr($financialSummary['cash_in'] ?? 0) }}</p>
                 <p class="admin-finance-desc">{{ $adminDashboardCopy['finance']['cash_in_desc'] }}</p>
             </article>
-            <article class="admin-finance-card admin-dashboard-card p-5">
+            <article class="admin-dashboard-card admin-finance-card p-5">
                 <p class="admin-dashboard-kicker admin-kicker-sky">{{ $adminDashboardCopy['finance']['rental_revenue'] }}</p>
                 <p class="admin-finance-value">{{ $formatIdr($financialSummary['revenue'] ?? 0) }}</p>
                 <p class="admin-finance-desc">{{ $adminDashboardCopy['finance']['rental_revenue_desc'] }}</p>
             </article>
-            <article class="admin-finance-card admin-dashboard-card p-5">
+            <article class="admin-dashboard-card admin-finance-card p-5">
                 <p class="admin-dashboard-kicker admin-kicker-amber">{{ $adminDashboardCopy['finance']['collected_tax'] }}</p>
                 <p class="admin-finance-value">{{ $formatIdr($financialSummary['tax'] ?? 0) }}</p>
                 <p class="admin-finance-desc">{{ $adminDashboardCopy['finance']['collected_tax_desc'] }}</p>
             </article>
-            <article class="admin-finance-card admin-dashboard-card p-5">
+            <article class="admin-dashboard-card admin-finance-card p-5">
                 <p class="admin-dashboard-kicker admin-kicker-rose">{{ $adminDashboardCopy['finance']['damage_fee'] }}</p>
                 <p class="admin-finance-value">{{ $formatIdr($financialSummary['damage_fee'] ?? 0) }}</p>
                 <p class="admin-finance-desc">{{ $adminDashboardCopy['finance']['damage_fee_desc'] }}</p>
             </article>
         </section>
 
-        {{-- Section 3: Orders action & sidebar information --}}
-        <section class="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_380px]">
-            <section class="admin-dashboard-card overflow-hidden">
-                <div class="admin-dashboard-card-header flex flex-wrap items-center justify-between gap-3 border-b px-5 py-4">
-                    <div>
-                        <h2 class="text-lg font-bold admin-title">{{ $adminDashboardCopy['orders_action_title'] }}</h2>
-                        <p class="text-xs admin-muted">{{ $adminDashboardCopy['orders_action_subtitle'] }}</p>
-                    </div>
-                    <a href="{{ route('admin.orders.index') }}" class="admin-dashboard-link text-sm">
-                        {{ $adminDashboardCopy['manage_orders_link'] }}
-                    </a>
+        {{-- SECTION C: Orders Require Action --}}
+        <section class="admin-dashboard-card overflow-hidden">
+            <div class="admin-dashboard-card-header flex flex-wrap items-center justify-between gap-3 border-b px-5 py-4">
+                <div>
+                    <h2 class="text-lg font-bold admin-title">
+                        {{ $adminDashboardCopy['orders_action_title'] }}
+                    </h2>
+                    <p class="text-xs admin-muted">
+                        {{ $adminDashboardCopy['orders_action_subtitle'] }}
+                    </p>
                 </div>
+                <a href="{{ route('admin.orders.index') }}" class="admin-dashboard-link text-sm">
+                    {{ $adminDashboardCopy['manage_orders_link'] }}
+                </a>
+            </div>
 
-                @if ($ordersCollection->isEmpty())
-                    <div class="px-5 py-8 text-sm admin-muted">
-                        {{ $adminDashboardCopy['empty_operational_orders'] }}
-                    </div>
-                @else
-                    <div class="divide-y admin-border">
-                        @foreach ($ordersCollection as $order)
-                            @php
-                                $badge = $statusBadge($order->status_pesanan);
-                                $itemsLabel = $order->items->pluck('equipment.name')->filter()->take(2)->implode(', ');
-                                $rentalStart = $order->rental_start_date ? $order->rental_start_date->copy()->startOfDay() : null;
-                                $pickupOpenAt = $rentalStart?->copy()->subDay();
-                                $canConfirmPickupNow = $pickupOpenAt ? now()->greaterThanOrEqualTo($pickupOpenAt) : false;
-                                $isReadyPickup = $order->status_pesanan === 'lunas';
-                                $isOnRent = $order->status_pesanan === 'barang_diambil';
-                                $isClosed = in_array($order->status_pesanan, ['barang_kembali', 'barang_rusak', 'selesai'], true);
-                            @endphp
-                            <article class="px-5 py-4 transition hover:bg-[color:var(--admin-surface-raised)]">
-                                <div class="grid gap-4 2xl:grid-cols-[minmax(0,1fr)_460px] 2xl:items-start">
-                                    <div class="min-w-0">
-                                        <div class="flex min-w-0 flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
-                                            <p class="min-w-0 truncate text-base font-bold admin-title">
-                                                {{ $order->order_number ?? ('ORD-' . $order->id) }}
-                                            </p>
-                                            <span class="status-chip shrink-0 {{ $badge['class'] }}">{{ $badge['label'] }}</span>
-                                        </div>
-                                        <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm leading-5 admin-muted">
-                                            <span>{{ $order->user?->name ?? '-' }}</span>
-                                            <span class="admin-subtle">•</span>
-                                            <span class="whitespace-nowrap">{{ optional($order->rental_start_date)->format('d M Y') }} – {{ optional($order->rental_end_date)->format('d M Y') }}</span>
+            @if ($ordersCollection->isEmpty())
+                <div class="px-5 py-8 text-sm admin-muted">
+                    {{ $adminDashboardCopy['empty_operational_orders'] }}
+                </div>
+            @else
+                <div class="divide-y admin-border">
+                    @foreach ($ordersCollection as $order)
+                        @php
+                            $badge = $statusBadge($order->status_pesanan);
+                            $itemsLabel = $order->items->pluck('equipment.name')->filter()->take(2)->implode(', ');
+                            $rentalStart = $order->rental_start_date ? $order->rental_start_date->copy()->startOfDay() : null;
+                            $pickupOpenAt = $rentalStart?->copy()->subDay();
+                            $canConfirmPickupNow = $pickupOpenAt ? now()->greaterThanOrEqualTo($pickupOpenAt) : false;
+                            $isReadyPickup = $order->status_pesanan === 'lunas';
+                            $isOnRent = $order->status_pesanan === 'barang_diambil';
+                            $isClosed = in_array($order->status_pesanan, ['barang_kembali', 'barang_rusak', 'selesai'], true);
+                        @endphp
+                        <article class="admin-order-row px-5 py-4 transition">
+                            <div class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(420px,520px)] xl:items-start">
+                                <div class="min-w-0">
+                                    <div class="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                                        <p class="min-w-0 truncate text-base font-bold admin-title">
+                                            {{ $order->order_number ?? ('ORD-' . $order->id) }}
                                         </p>
-                                        @if ($itemsLabel !== '')
-                                            <p class="mt-1 text-xs leading-5 admin-subtle">
-                                                {{ $adminDashboardCopy['equipment_prefix'] }} {{ $itemsLabel }}@if($order->items->count() > 2) +{{ $order->items->count() - 2 }} {{ $adminDashboardCopy['more_items'] }} @endif
-                                            </p>
-                                        @endif
+                                        <span class="status-chip shrink-0 {{ $badge['class'] }}">
+                                            {{ $badge['label'] }}
+                                        </span>
                                     </div>
-
-                                    <div class="grid w-full grid-cols-1 gap-2 sm:grid-cols-3">
-                                        @if ($isReadyPickup && $canConfirmPickupNow)
-                                            <form
-                                                method="POST"
-                                                action="{{ route('admin.dashboard.orders.operational-status', $order) }}"
-                                                data-operational-confirm="{{ strtr($adminDashboardCopy['confirm_pickup_message'], [':order' => $order->order_number ?? ('ORD-' . $order->id)]) }}"
-                                            >
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="status_pesanan" value="barang_diambil">
-                                                <button class="admin-action-primary flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
-                                                    {{ $adminDashboardCopy['confirm_pickup'] }}
-                                                </button>
-                                            </form>
-                                        @else
-                                            <div class="admin-action-disabled flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
-                                                @if ($isOnRent || $isClosed)
-                                                    {{ $adminDashboardCopy['already_picked_up'] }}
-                                                @else
-                                                    {{ $adminDashboardCopy['waiting_schedule'] }}
-                                                @endif
-                                            </div>
-                                        @endif
-
-                                        @if ($isOnRent)
-                                            <form
-                                                method="POST"
-                                                action="{{ route('admin.dashboard.orders.operational-status', $order) }}"
-                                                data-operational-confirm="{{ strtr($adminDashboardCopy['confirm_return_message'], [':order' => $order->order_number ?? ('ORD-' . $order->id)]) }}"
-                                            >
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="status_pesanan" value="barang_kembali">
-                                                <button class="admin-action-success flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
-                                                    {{ $adminDashboardCopy['confirm_return'] }}
-                                                </button>
-                                            </form>
-                                        @else
-                                            <div class="admin-action-disabled flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
-                                                @if ($order->status_pesanan === 'barang_kembali' || $order->status_pesanan === 'selesai')
-                                                    {{ $adminDashboardCopy['already_returned'] }}
-                                                @elseif ($order->status_pesanan === 'barang_rusak')
-                                                    {{ $adminDashboardCopy['marked_damaged'] }}
-                                                @else
-                                                    {{ $adminDashboardCopy['waiting_pickup'] }}
-                                                @endif
-                                            </div>
-                                        @endif
-
-                                        @if ($isOnRent)
-                                            <form
-                                                method="POST"
-                                                action="{{ route('admin.dashboard.orders.operational-status', $order) }}"
-                                                data-operational-confirm="{{ strtr($adminDashboardCopy['confirm_damage_message'], [':order' => $order->order_number ?? ('ORD-' . $order->id)]) }}"
-                                            >
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="status_pesanan" value="barang_rusak">
-                                                <button class="admin-action-danger flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
-                                                    {{ $adminDashboardCopy['mark_damaged'] }}
-                                                </button>
-                                            </form>
-                                        @else
-                                            <div class="admin-action-disabled flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
-                                                @if ($order->status_pesanan === 'barang_rusak')
-                                                    {{ $adminDashboardCopy['already_marked'] }}
-                                                @else
-                                                    {{ $adminDashboardCopy['waiting_pickup'] }}
-                                                @endif
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="mt-3 flex flex-wrap items-center gap-2">
-                                    <a href="{{ route('admin.orders.show', $order) }}" class="admin-secondary-button inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold transition">
-                                        {{ $adminDashboardCopy['order_detail'] }}
-                                    </a>
-                                    @if ($isReadyPickup && ! $canConfirmPickupNow && $pickupOpenAt)
-                                        <p class="rounded-xl border border-amber-500/20 bg-amber-500/10 px-3 py-1.5 text-xs text-amber-700 dark:text-amber-300">
-                                            {{ __('ui.admin_dashboard.pickup_button_available_at', ['date' => $pickupOpenAt->format('d M Y')]) }}
+                                    <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm leading-5 admin-muted">
+                                        <span>{{ $order->user?->name ?? '-' }}</span>
+                                        <span class="admin-subtle">•</span>
+                                        <span class="whitespace-nowrap">
+                                            {{ optional($order->rental_start_date)->format('d M Y') }} – {{ optional($order->rental_end_date)->format('d M Y') }}
+                                        </span>
+                                    </p>
+                                    @if ($itemsLabel !== '')
+                                        <p class="mt-1 text-xs leading-5 admin-subtle">
+                                            {{ $adminDashboardCopy['equipment_prefix'] }} {{ $itemsLabel }}@if($order->items->count() > 2) +{{ $order->items->count() - 2 }} {{ $adminDashboardCopy['more_items'] }} @endif
                                         </p>
                                     @endif
                                 </div>
-                            </article>
-                        @endforeach
-                    </div>
-                @endif
+
+                                <div class="grid w-full grid-cols-1 gap-2 sm:grid-cols-3">
+                                    @if ($isReadyPickup && $canConfirmPickupNow)
+                                        <form
+                                            method="POST"
+                                            action="{{ route('admin.dashboard.orders.operational-status', $order) }}"
+                                            data-operational-confirm="{{ strtr($adminDashboardCopy['confirm_pickup_message'], [':order' => $order->order_number ?? ('ORD-' . $order->id)]) }}"
+                                        >
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status_pesanan" value="barang_diambil">
+                                            <button class="admin-action-primary flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
+                                                {{ $adminDashboardCopy['confirm_pickup'] }}
+                                            </button>
+                                        </form>
+                                    @else
+                                        <div class="admin-action-disabled flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
+                                            @if ($isOnRent || $isClosed)
+                                                {{ $adminDashboardCopy['already_picked_up'] }}
+                                            @else
+                                                {{ $adminDashboardCopy['waiting_schedule'] }}
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if ($isOnRent)
+                                        <form
+                                            method="POST"
+                                            action="{{ route('admin.dashboard.orders.operational-status', $order) }}"
+                                            data-operational-confirm="{{ strtr($adminDashboardCopy['confirm_return_message'], [':order' => $order->order_number ?? ('ORD-' . $order->id)]) }}"
+                                        >
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status_pesanan" value="barang_kembali">
+                                            <button class="admin-action-success flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
+                                                {{ $adminDashboardCopy['confirm_return'] }}
+                                            </button>
+                                        </form>
+                                    @else
+                                        <div class="admin-action-disabled flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
+                                            @if ($order->status_pesanan === 'barang_kembali' || $order->status_pesanan === 'selesai')
+                                                {{ $adminDashboardCopy['already_returned'] }}
+                                            @elseif ($order->status_pesanan === 'barang_rusak')
+                                                {{ $adminDashboardCopy['marked_damaged'] }}
+                                            @else
+                                                {{ $adminDashboardCopy['waiting_pickup'] }}
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if ($isOnRent)
+                                        <form
+                                            method="POST"
+                                            action="{{ route('admin.dashboard.orders.operational-status', $order) }}"
+                                            data-operational-confirm="{{ strtr($adminDashboardCopy['confirm_damage_message'], [':order' => $order->order_number ?? ('ORD-' . $order->id)]) }}"
+                                        >
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status_pesanan" value="barang_rusak">
+                                            <button class="admin-action-danger flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
+                                                {{ $adminDashboardCopy['mark_damaged'] }}
+                                            </button>
+                                        </form>
+                                    @else
+                                        <div class="admin-action-disabled flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
+                                            @if ($order->status_pesanan === 'barang_rusak')
+                                                {{ $adminDashboardCopy['already_marked'] }}
+                                            @else
+                                                {{ $adminDashboardCopy['waiting_pickup'] }}
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="mt-3 flex flex-wrap items-center gap-2">
+                                <a href="{{ route('admin.orders.show', $order) }}" class="admin-secondary-button inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold transition">
+                                    {{ $adminDashboardCopy['order_detail'] }}
+                                </a>
+                                @if ($isReadyPickup && ! $canConfirmPickupNow && $pickupOpenAt)
+                                    <p class="rounded-xl border border-amber-500/20 bg-amber-500/10 px-3 py-1.5 text-xs text-amber-700 dark:text-amber-300">
+                                        {{ __('ui.admin_dashboard.pickup_button_available_at', ['date' => $pickupOpenAt->format('d M Y')]) }}
+                                    </p>
+                                @endif
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            @endif
+        </section>
+
+        {{-- SECTION D: Operational Support --}}
+        <section class="grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] xl:grid-cols-3">
+            <section class="admin-dashboard-card p-5">
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-2 h-2 rounded-full admin-accent-bg"></span>
+                    <h3 class="text-base font-bold admin-title">{{ $adminDashboardCopy['flow_title'] }}</h3>
+                </div>
+                <ul class="mt-3 space-y-2.5 text-xs admin-muted leading-relaxed">
+                    <li>1. {{ $adminDashboardCopy['flow_1'] }}</li>
+                    <li>2. {{ $adminDashboardCopy['flow_2'] }}</li>
+                    <li>3. {{ $adminDashboardCopy['flow_3'] }}</li>
+                </ul>
             </section>
 
-            <div class="space-y-4">
-                <section class="admin-dashboard-card p-5">
-                    <div class="flex items-center gap-2">
-                        <span class="inline-block w-2 h-2 rounded-full admin-accent-bg"></span>
-                        <h3 class="text-base font-bold admin-title">{{ $adminDashboardCopy['flow_title'] }}</h3>
-                    </div>
-                    <ul class="mt-3 space-y-2.5 text-xs admin-muted leading-relaxed">
-                        <li>1. {{ $adminDashboardCopy['flow_1'] }}</li>
-                        <li>2. {{ $adminDashboardCopy['flow_2'] }}</li>
-                        <li>3. {{ $adminDashboardCopy['flow_3'] }}</li>
-                    </ul>
-                </section>
-
-                <section class="admin-dashboard-card p-5 flex items-center justify-between gap-3">
-                    <div>
-                        <h3 class="text-sm font-bold admin-title">{{ $adminDashboardCopy['logs_title'] }}</h3>
-                        <p class="text-[11px] admin-muted mt-1 leading-relaxed">{{ $adminDashboardCopy['logs_desc'] }}</p>
-                    </div>
+            <section class="admin-dashboard-card p-5 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-sm font-bold admin-title">{{ $adminDashboardCopy['logs_title'] }}</h3>
+                    <p class="text-[11px] admin-muted mt-1 leading-relaxed">{{ $adminDashboardCopy['logs_desc'] }}</p>
+                </div>
+                <div class="mt-4 flex justify-end">
                     <a href="{{ route('admin.orders.index') }}" class="admin-dashboard-link text-xs whitespace-nowrap">
                         {{ $adminDashboardCopy['open_orders'] }}
                     </a>
-                </section>
+                </div>
+            </section>
 
-                <details class="admin-dashboard-card p-5 group">
-                    <summary class="cursor-pointer admin-accent-text text-sm font-bold select-none flex items-center justify-between">
-                        <span>{{ $adminDashboardCopy['calendar_title'] }} ({{ $adminDashboardCopy['calendar_optional'] }})</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </summary>
-                    <div class="mt-4">
-                        <div class="flex flex-wrap items-center justify-between gap-3">
-                            <div class="inline-flex items-center gap-2 rounded-xl border admin-border px-2 py-1 bg-[color:var(--admin-surface-raised)]">
-                                <a
-                                    href="{{ route('admin.dashboard', array_merge($calendarBaseQuery, ['calendar_month' => $rentalCalendar['previous_month'] ?? now()->subMonth()->format('Y-m')])) }}"
-                                    class="admin-secondary-button inline-flex h-8 w-8 items-center justify-center rounded-lg transition"
-                                    aria-label="{{ $adminDashboardCopy['calendar_previous_month'] }}"
-                                >
-                                    ←
-                                </a>
-                                <span class="min-w-[7rem] text-center text-xs font-semibold admin-title">{{ $rentalCalendar['month_label'] ?? now()->translatedFormat('F Y') }}</span>
-                                <a
-                                    href="{{ route('admin.dashboard', array_merge($calendarBaseQuery, ['calendar_month' => $rentalCalendar['next_month'] ?? now()->addMonth()->format('Y-m')])) }}"
-                                    class="admin-secondary-button inline-flex h-8 w-8 items-center justify-center rounded-lg transition"
-                                    aria-label="{{ $adminDashboardCopy['calendar_next_month'] }}"
-                                >
-                                    →
-                                </a>
-                            </div>
-                            <div class="flex flex-wrap items-center gap-1.5 text-[10px]">
-                                <span class="rounded-full border admin-border bg-[color:var(--admin-surface-raised)] px-2 py-0.5 font-semibold admin-title">{{ $adminDashboardCopy['unit_days'] }} {{ (int) ($rentalCalendar['total_unit_days'] ?? 0) }}</span>
-                                <span class="rounded-full admin-accent-soft px-2 py-0.5 font-semibold">{{ $adminDashboardCopy['peak'] }} {{ (int) ($rentalCalendar['max_daily_units'] ?? 0) }}</span>
-                            </div>
+            <details class="admin-dashboard-card p-5 group">
+                <summary class="cursor-pointer admin-accent-text text-sm font-bold select-none flex items-center justify-between">
+                    <span>{{ $adminDashboardCopy['calendar_title'] }} ({{ $adminDashboardCopy['calendar_optional'] }})</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </summary>
+                <div class="mt-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="inline-flex items-center gap-2 rounded-xl border admin-border px-2 py-1 bg-[color:var(--admin-surface-raised)]">
+                            <a
+                                href="{{ route('admin.dashboard', array_merge($calendarBaseQuery, ['calendar_month' => $rentalCalendar['previous_month'] ?? now()->subMonth()->format('Y-m')])) }}"
+                                class="admin-secondary-button inline-flex h-8 w-8 items-center justify-center rounded-lg transition"
+                                aria-label="{{ $adminDashboardCopy['calendar_previous_month'] }}"
+                            >
+                                ←
+                            </a>
+                            <span class="min-w-[7rem] text-center text-xs font-semibold admin-title">{{ $rentalCalendar['month_label'] ?? now()->translatedFormat('F Y') }}</span>
+                            <a
+                                href="{{ route('admin.dashboard', array_merge($calendarBaseQuery, ['calendar_month' => $rentalCalendar['next_month'] ?? now()->addMonth()->format('Y-m')])) }}"
+                                class="admin-secondary-button inline-flex h-8 w-8 items-center justify-center rounded-lg transition"
+                                aria-label="{{ $adminDashboardCopy['calendar_next_month'] }}"
+                            >
+                                →
+                            </a>
                         </div>
+                        <div class="flex flex-wrap items-center gap-1.5 text-[10px]">
+                            <span class="rounded-full border admin-border bg-[color:var(--admin-surface-raised)] px-2 py-0.5 font-semibold admin-title">{{ $adminDashboardCopy['unit_days'] }} {{ (int) ($rentalCalendar['total_unit_days'] ?? 0) }}</span>
+                            <span class="rounded-full admin-accent-soft px-2 py-0.5 font-semibold">{{ $adminDashboardCopy['peak'] }} {{ (int) ($rentalCalendar['max_daily_units'] ?? 0) }}</span>
+                        </div>
+                    </div>
 
-                        <div class="mt-4 -mx-1 overflow-x-auto px-1 pb-1 sm:mx-0 sm:overflow-visible sm:px-0">
-                            <div class="min-w-[420px]">
-                                <div class="grid grid-cols-7 gap-1">
-                                    @foreach ((array) __('ui.availability_board.weekdays') as $weekday)
-                                        <p class="text-center text-[10px] font-bold uppercase tracking-wider admin-subtle">{{ $weekday }}</p>
-                                    @endforeach
-                                </div>
-                                <div class="mt-1.5 grid grid-cols-7 gap-1">
-                                    @foreach ($calendarDays as $day)
-                                        @php
-                                            $hasRental = (int) ($day['total_qty'] ?? 0) > 0;
-                                        @endphp
-                                        <div class="admin-calendar-day p-1.5 {{ ($day['in_month'] ?? false) ? '' : 'admin-calendar-day-muted' }}">
-                                            <p class="text-[10px] font-bold admin-title">{{ $day['day'] }}</p>
-                                            <p class="mt-0.5 text-[10px] {{ $hasRental ? 'admin-calendar-rental' : 'admin-subtle' }}">
-                                                {{ $hasRental ? ($day['total_qty'] . ' ' . $adminDashboardCopy['unit']) : '-' }}
-                                            </p>
-                                        </div>
-                                    @endforeach
-                                </div>
+                    <div class="mt-4 -mx-1 overflow-x-auto px-1 pb-1 sm:mx-0 sm:overflow-visible sm:px-0">
+                        <div class="min-w-[420px]">
+                            <div class="grid grid-cols-7 gap-1">
+                                @foreach ((array) __('ui.availability_board.weekdays') as $weekday)
+                                    <p class="text-center text-[10px] font-bold uppercase tracking-wider admin-subtle">{{ $weekday }}</p>
+                                @endforeach
+                            </div>
+                            <div class="mt-1.5 grid grid-cols-7 gap-1">
+                                @foreach ($calendarDays as $day)
+                                    @php
+                                        $hasRental = (int) ($day['total_qty'] ?? 0) > 0;
+                                    @endphp
+                                    <div class="admin-calendar-day p-1.5 {{ ($day['in_month'] ?? false) ? '' : 'admin-calendar-day-muted' }}">
+                                        <p class="text-[10px] font-bold admin-title">{{ $day['day'] }}</p>
+                                        <p class="mt-0.5 text-[10px] {{ $hasRental ? 'admin-calendar-rental' : 'admin-subtle' }}">
+                                            {{ $hasRental ? ($day['total_qty'] . ' ' . $adminDashboardCopy['unit']) : '-' }}
+                                        </p>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
-                </details>
-            </div>
+                </div>
+            </details>
         </section>
 
         @if ($isPaginator)

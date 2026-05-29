@@ -78,14 +78,20 @@
         'w-20': sidebarCollapsed
     }"
 >
-    <div class="admin-sidebar-header flex h-20 items-center justify-between border-b px-4">
-        <a href="{{ route('admin.dashboard') }}" class="manake-sidebar-brand-link inline-flex items-center overflow-hidden transition-all duration-300" :class="sidebarCollapsed ? 'w-10' : 'w-full'">
-            <x-brand.image
-                light="manake-logo-blue.png"
-                dark="manake-logo-white.png"
-                :alt="$brandName"
-                img-class="h-8 w-auto min-w-[32px]"
-            />
+    <div class="admin-sidebar-header flex h-20 items-center justify-between border-b px-5">
+        <a
+            href="{{ route('admin.dashboard') }}"
+            class="admin-sidebar-logo-link inline-flex items-center overflow-hidden transition-all duration-300"
+            :class="sidebarCollapsed ? 'w-10 justify-center is-collapsed' : 'w-full justify-start'"
+        >
+            <span class="admin-sidebar-logo-frame">
+                <x-brand.image
+                    light="manake-logo-blue.png"
+                    dark="manake-logo-white.png"
+                    :alt="$brandName"
+                    img-class="admin-sidebar-logo-img"
+                />
+            </span>
         </a>
         <button type="button" class="admin-secondary-button rounded-lg p-1.5 lg:hidden" @click="sidebarOpen = false" aria-label="{{ __('ui.actions.close') }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

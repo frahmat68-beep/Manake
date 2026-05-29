@@ -565,6 +565,35 @@
             border-color: #1A1A1E !important;
             color: #E8E8EC !important;
         }
+
+        /* ── Sidebar Logo Sizing & Placement ──────────────────────── */
+        body[data-manake-shell="admin"] .admin-sidebar-logo-link {
+            height: 100%;
+        }
+
+        body[data-manake-shell="admin"] .admin-sidebar-logo-frame {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 150px;
+            height: 44px;
+            overflow: hidden;
+        }
+
+        body[data-manake-shell="admin"] .admin-sidebar-logo-img {
+            display: block !important;
+            width: auto !important;
+            max-width: 150px !important;
+            height: auto !important;
+            max-height: 38px !important;
+            object-fit: contain !important;
+        }
+
+        body[data-manake-shell="admin"] [x-data] .admin-sidebar-logo-link.is-collapsed .admin-sidebar-logo-frame,
+        body[data-manake-shell="admin"] .admin-sidebar-logo-link.is-collapsed .admin-sidebar-logo-frame {
+            width: 40px;
+            justify-content: center;
+        }
     </style>
 </head>
 <body class="manake-shell" data-admin-panel="true" data-manake-shell="admin">
@@ -659,7 +688,7 @@
                 </div>
             </header>
 
-            <main class="admin-shell-bg px-4 py-4 sm:px-6 sm:py-6">
+            <main class="admin-shell-bg px-4 py-5 sm:px-6 sm:py-6">
                 <div class="mx-auto w-full max-w-[1320px]">
                     @yield('content')
                 </div>
