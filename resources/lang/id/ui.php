@@ -1419,4 +1419,48 @@ return [
         'save_changes' => 'Simpan Perubahan Teks',
         'saving' => 'Menyimpan...',
     ],
+
+    'admin_website_settings' => [
+        'title' => 'Pengaturan Website',
+        'page_title' => 'Pengaturan Website',
+        'brand' => [
+            'title' => 'Brand',
+            'subtitle' => 'Identitas website',
+            'name' => 'Nama Brand',
+            'tagline' => 'Tagline Brand',
+            'logo' => 'Logo Utama',
+            'favicon' => 'Favicon Browser',
+            'logo_help' => 'Rekomendasi: PNG atau WebP transparan.',
+            'favicon_help' => 'Rekomendasi: PNG, WebP, atau ICO berbentuk kotak.',
+        ],
+        'seo' => [
+            'title' => 'SEO',
+            'subtitle' => 'Tampilan di mesin pencari',
+            'meta_title' => 'SEO Meta Title',
+            'meta_description' => 'SEO Meta Description',
+        ],
+        'contact' => [
+            'title' => 'Kontak & Sosial',
+            'subtitle' => 'Kanal kontak publik yang tampil di website.',
+            'whatsapp' => 'Nomor WhatsApp',
+            'instagram' => 'Instagram',
+            'tiktok' => 'TikTok',
+        ],
+        'preview' => [
+            'title' => 'Pratinjau',
+            'subtitle' => 'Pengaturan Website',
+            'logos' => 'Logo',
+            'logo_alt' => 'Pratinjau logo',
+            'favicon' => 'Favicon',
+            'favicon_alt' => 'Pratinjau favicon',
+        ],
+        'maintenance' => [
+            'title' => 'Maintenance',
+            'subtitle' => 'Mode website',
+            'enabled' => 'Aktifkan mode maintenance',
+            'hint' => 'Saat aktif, pengguna dapat melihat status maintenance sesuai konfigurasi website.',
+        ],
+        'save' => 'Simpan Pengaturan',
+    ],
 ];
+

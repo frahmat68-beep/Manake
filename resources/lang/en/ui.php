@@ -1419,4 +1419,48 @@ return [
         'save_changes' => 'Save Text Changes',
         'saving' => 'Saving...',
     ],
+
+    'admin_website_settings' => [
+        'title' => 'Website Settings',
+        'page_title' => 'Website Settings',
+        'brand' => [
+            'title' => 'Brand',
+            'subtitle' => 'Site identity',
+            'name' => 'Brand Name',
+            'tagline' => 'Brand Tagline',
+            'logo' => 'Primary Logo',
+            'favicon' => 'Browser Favicon',
+            'logo_help' => 'Recommended: transparent PNG or WebP.',
+            'favicon_help' => 'Recommended: square PNG, WebP, or ICO.',
+        ],
+        'seo' => [
+            'title' => 'SEO',
+            'subtitle' => 'Search appearance',
+            'meta_title' => 'SEO Meta Title',
+            'meta_description' => 'SEO Meta Description',
+        ],
+        'contact' => [
+            'title' => 'Contact & Social',
+            'subtitle' => 'Public contact channels shown on the website.',
+            'whatsapp' => 'WhatsApp Number',
+            'instagram' => 'Instagram',
+            'tiktok' => 'TikTok',
+        ],
+        'preview' => [
+            'title' => 'Preview',
+            'subtitle' => 'Website Settings',
+            'logos' => 'Logos',
+            'logo_alt' => 'Logo preview',
+            'favicon' => 'Favicon',
+            'favicon_alt' => 'Favicon preview',
+        ],
+        'maintenance' => [
+            'title' => 'Maintenance',
+            'subtitle' => 'Website mode',
+            'enabled' => 'Enable maintenance mode',
+            'hint' => 'When enabled, users may see a maintenance state depending on the site configuration.',
+        ],
+        'save' => 'Save Settings',
+    ],
 ];
+
