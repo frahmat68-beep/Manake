@@ -1313,4 +1313,34 @@ return [
             'save_edit' => 'Simpan Perubahan',
         ],
     ],
+
+    'admin_users' => [
+        'title' => 'Pengguna',
+        'page_title' => 'Pengguna',
+        'kicker' => 'Pengguna',
+        'heading' => 'Data Pengguna',
+        'subtitle' => 'Admin hanya bisa melihat profil pengguna dan mengirim tautan atur ulang kata sandi. Kata sandi asli tetap dalam bentuk hash.',
+        'filters' => [
+            'search_placeholder' => 'Cari nama / email pengguna...',
+            'search' => 'Cari',
+            'reset' => 'Reset',
+        ],
+        'table' => [
+            'title' => 'Daftar Pengguna',
+            'subtitle' => 'Tinjau status verifikasi dan kelengkapan profil pengguna.',
+            'user' => 'Pengguna',
+            'email_status' => 'Status Email',
+            'phone_status' => 'Status Telepon',
+            'profile' => 'Profil',
+            'action' => 'Aksi',
+            'details' => 'Detail',
+            'empty' => 'Belum ada pengguna.',
+        ],
+        'status' => [
+            'verified' => 'Terverifikasi',
+            'unverified' => 'Belum Verifikasi',
+            'complete' => 'Lengkap',
+            'incomplete' => 'Belum Lengkap',
+        ],
+    ],
 ];

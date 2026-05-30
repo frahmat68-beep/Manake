@@ -1313,4 +1313,34 @@ return [
             'save_edit' => 'Save Changes',
         ],
     ],
+
+    'admin_users' => [
+        'title' => 'Users',
+        'page_title' => 'Users',
+        'kicker' => 'Users',
+        'heading' => 'User Data',
+        'subtitle' => 'Admins can only view user profiles and send password reset links. Original passwords remain hashed.',
+        'filters' => [
+            'search_placeholder' => 'Search user name/email...',
+            'search' => 'Search',
+            'reset' => 'Reset',
+        ],
+        'table' => [
+            'title' => 'User List',
+            'subtitle' => 'Review user verification status and profile completion.',
+            'user' => 'User',
+            'email_status' => 'Email Status',
+            'phone_status' => 'Phone Status',
+            'profile' => 'Profile',
+            'action' => 'Action',
+            'details' => 'Details',
+            'empty' => 'No users found.',
+        ],
+        'status' => [
+            'verified' => 'Verified',
+            'unverified' => 'Unverified',
+            'complete' => 'Complete',
+            'incomplete' => 'Incomplete',
+        ],
+    ],
 ];
