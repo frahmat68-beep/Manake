@@ -1,7 +1,7 @@
 @extends('layouts.admin', ['activePage' => 'copy'])
 
-@section('title', __('Editor Teks Website'))
-@section('page_title', __('Editor Teks Website'))
+@section('title', __('ui.admin_copy_editor.title'))
+@section('page_title', __('ui.admin_copy_editor.page_title'))
 
 @php
     $fallbacks = [
@@ -189,43 +189,273 @@
         'footer.rules_link' => __('app.footer.rules_link'),
         'footer.rules_note' => __('app.footer.rules_note'),
     ];
+
+    $copyEditorCopy = __('ui.admin_copy_editor');
+
+    if (! is_array($copyEditorCopy)) {
+        $copyEditorCopy = [
+            'title' => 'Website Text Editor',
+            'page_title' => 'Website Text Editor',
+            'return_dashboard' => 'Return to Dashboard',
+            'all_fields_note' => 'All fields on this page edit text that appears to users. Fields are grouped by display container so they are easier to manage.',
+            'user_page' => 'User Page',
+            'container_navigation' => 'Container Navigation',
+            'display_location' => 'Display location:',
+            'using_default' => 'Currently using default text',
+            'default_help' => 'Leave field empty to revert to default system text.',
+            'translation_map_help' => 'Format: one key per line, for example ui.nav.my_orders = Rental History.',
+            'save_changes' => 'Save Text Changes',
+            'saving' => 'Saving...',
+        ];
+    }
 @endphp
 
+@push('head')
+<style>
+    .admin-copy-page {
+        color: var(--admin-text);
+    }
+
+    .admin-copy-card {
+        background: var(--admin-surface);
+        border: 1px solid var(--admin-border);
+        color: var(--admin-text);
+        border-radius: 1.35rem;
+        box-shadow: 0 18px 50px -36px rgba(0,0,0,0.45);
+    }
+
+    html[data-theme-resolved="light"] .admin-copy-card {
+        background: #FFFFFF !important;
+        border-color: #E5E7EB !important;
+        box-shadow: 0 22px 55px -38px rgba(15,23,42,0.22);
+    }
+
+    html[data-theme-resolved="dark"] .admin-copy-card {
+        background: #111113 !important;
+        border-color: #1A1A1E !important;
+        box-shadow: 0 18px 50px -36px rgba(0,0,0,0.65);
+    }
+
+    .admin-copy-title {
+        color: var(--admin-text);
+    }
+
+    .admin-copy-muted {
+        color: var(--admin-muted);
+    }
+
+    .admin-copy-subtle {
+        color: var(--admin-subtle);
+    }
+
+    .admin-copy-kicker {
+        color: var(--admin-accent);
+        font-size: 0.72rem;
+        font-weight: 900;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+    }
+
+    .admin-copy-section-link {
+        display: block;
+        border-radius: 0.9rem;
+        padding: 0.72rem 0.85rem;
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: var(--admin-muted);
+        transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+    }
+
+    .admin-copy-section-link:hover {
+        background: var(--admin-surface-raised);
+        color: var(--admin-text);
+    }
+
+    .admin-copy-section-link.is-active {
+        background: var(--admin-accent);
+        color: var(--admin-accent-contrast);
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-copy-section-link.is-active {
+        background: #2563EB !important;
+        color: #FFFFFF !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-copy-section-link.is-active {
+        background: #D9AD3F !important;
+        color: #0A0A0B !important;
+    }
+
+    .admin-copy-container-nav {
+        background: var(--admin-surface-raised);
+        border: 1px solid var(--admin-border);
+        border-radius: 1.1rem;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-copy-container-nav {
+        background: #F8FAFC !important;
+        border-color: #E5E7EB !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-copy-container-nav {
+        background: #0A0A0B !important;
+        border-color: #1A1A1E !important;
+    }
+
+    .admin-copy-chip {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        border: 1px solid var(--admin-border);
+        background: var(--admin-surface);
+        color: var(--admin-muted);
+        padding: 0.35rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 800;
+        transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+    }
+
+    .admin-copy-chip:hover {
+        border-color: var(--admin-accent);
+        color: var(--admin-accent);
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-copy-chip {
+        background: #FFFFFF !important;
+        border-color: #E5E7EB !important;
+        color: #4B5563 !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-copy-chip:hover {
+        border-color: #2563EB !important;
+        color: #2563EB !important;
+        background: #EFF6FF !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-copy-chip {
+        background: #111113 !important;
+        border-color: #1A1A1E !important;
+        color: #A0A0A8 !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-copy-chip:hover {
+        border-color: #D9AD3F !important;
+        color: #D9AD3F !important;
+        background: rgba(217, 173, 63, 0.1) !important;
+    }
+
+    .admin-copy-container {
+        border: 1px solid var(--admin-border);
+        background: var(--admin-surface-raised);
+        border-radius: 1.25rem;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-copy-container {
+        background: #F8FAFC !important;
+        border-color: #E5E7EB !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-copy-container {
+        background: #0A0A0B !important;
+        border-color: #1A1A1E !important;
+    }
+
+    .admin-copy-input {
+        width: 100%;
+        min-height: 2.9rem;
+        border: 1px solid var(--admin-border);
+        background: var(--admin-surface);
+        color: var(--admin-text);
+        border-radius: 0.9rem;
+        padding: 0.7rem 0.9rem;
+        font-size: 0.875rem;
+        outline: none;
+        transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+    }
+
+    .admin-copy-input:focus {
+        border-color: var(--admin-accent);
+        box-shadow: 0 0 0 3px var(--admin-accent-soft);
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-copy-input {
+        background: #FFFFFF !important;
+        border-color: #E5E7EB !important;
+        color: #111827 !important;
+        color-scheme: light;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-copy-input::placeholder {
+        color: #9CA3AF !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-copy-input {
+        background: #111113 !important;
+        border-color: #1A1A1E !important;
+        color: #E8E8EC !important;
+        color-scheme: dark;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-copy-input::placeholder {
+        color: #6B7280 !important;
+    }
+
+    .admin-copy-default-badge {
+        background: rgba(245, 158, 11, 0.12);
+        color: #B45309;
+        border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-copy-default-badge {
+        background: rgba(217, 173, 63, 0.12) !important;
+        color: #D9AD3F !important;
+        border-color: rgba(217, 173, 63, 0.25) !important;
+    }
+</style>
+@endpush
+
 @section('content')
-    <div class="mx-auto max-w-7xl space-y-6">
+    <div class="admin-copy-page mx-auto max-w-7xl space-y-5 sm:space-y-6">
         @if (session('success'))
-            <div class="mk-card border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-300">
+            <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
                 {{ session('success') }}
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="mk-card border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-300">
+            <div class="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-700 dark:text-rose-300">
                 {{ $errors->first() }}
             </div>
         @endif
 
-        <section class="mk-card p-6">
+        <section class="admin-copy-card p-5 sm:p-6">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                    <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-50">{{ __($sectionMeta['label']) }}</h2>
-                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{{ __($sectionMeta['description']) }}</p>
-                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ __('Semua field di halaman ini khusus edit teks yang tampil ke pengguna. Field sudah dirapikan per kontainer tampilan supaya lebih mudah dikelola.') }}</p>
+                    <p class="admin-copy-kicker">{{ $copyEditorCopy['title'] }}</p>
+                    <h2 class="admin-copy-title mt-2 text-2xl font-black">
+                        {{ __($sectionMeta['label']) }}
+                    </h2>
+                    <p class="admin-copy-muted mt-1 text-sm">
+                        {{ __($sectionMeta['description']) }}
+                    </p>
+                    <p class="admin-copy-subtle mt-1 text-xs">
+                        {{ $copyEditorCopy['all_fields_note'] }}
+                    </p>
                 </div>
-                <a href="{{ route('admin.dashboard') }}" class="btn-secondary inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition">
-                    {{ __('Kembali ke Dashboard') }}
+                <a href="{{ route('admin.dashboard') }}" class="admin-secondary-button inline-flex min-h-10 items-center justify-center rounded-xl px-4 text-sm font-bold transition">
+                    {{ $copyEditorCopy['return_dashboard'] }}
                 </a>
             </div>
         </section>
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-[260px,1fr]">
-            <aside class="mk-card h-fit rounded-2xl p-4">
-                <p class="px-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">{{ __('Halaman Pengguna') }}</p>
+            <aside class="admin-copy-card h-fit p-4">
+                <p class="admin-copy-kicker px-2">{{ $copyEditorCopy['user_page'] }}</p>
                 <nav class="mt-3 space-y-1">
                     @foreach ($sections as $sectionKey => $meta)
                         <a
                             href="{{ route('admin.copy.edit', $sectionKey) }}"
-                            class="block rounded-xl px-3 py-2 text-sm font-semibold transition {{ $currentSection === $sectionKey ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}"
+                            class="admin-copy-section-link {{ $currentSection === $sectionKey ? 'is-active' : '' }}"
                         >
                             {{ __($meta['label']) }}
                         </a>
@@ -233,7 +463,7 @@
                 </nav>
             </aside>
 
-            <section class="mk-card rounded-2xl p-6">
+            <section class="admin-copy-card p-5 sm:p-6">
                 @php
                     $fieldsByContainer = collect($sectionMeta['fields'])
                         ->map(function ($meta, $fieldName) {
@@ -258,11 +488,13 @@
                     @csrf
 
                     @if ($fieldsByContainer->count() > 1)
-                        <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900/60">
-                            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{{ __('Navigasi Kontainer') }}</p>
+                        <div class="admin-copy-container-nav px-4 py-3">
+                            <p class="admin-copy-kicker">
+                                {{ $copyEditorCopy['container_navigation'] }}
+                            </p>
                             <div class="mt-2 flex flex-wrap gap-2">
                                 @foreach ($containerAnchors as $container => $anchorId)
-                                    <a href="#{{ $anchorId }}" class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+                                    <a href="#{{ $anchorId }}" class="admin-copy-chip">
                                         {{ __($container) }}
                                     </a>
                                 @endforeach
@@ -271,10 +503,14 @@
                     @endif
 
                     @foreach ($fieldsByContainer as $container => $containerFields)
-                        <article id="{{ $containerAnchors[$container] }}" class="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5 scroll-mt-28 dark:border-slate-800 dark:bg-slate-900/60">
+                        <article id="{{ $containerAnchors[$container] }}" class="admin-copy-container scroll-mt-28 p-4 sm:p-5">
                             <div class="mb-4 flex items-center justify-between gap-3">
-                                <h3 class="text-sm font-semibold text-blue-700 dark:text-blue-400">{{ __($container) }}</h3>
-                                <span class="rounded-full bg-blue-100 px-2.5 py-1 text-[11px] font-semibold text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">{{ $containerFields->count() }} {{ __('isian') }}</span>
+                                <h3 class="admin-copy-title text-sm font-black">
+                                    {{ __($container) }}
+                                </h3>
+                                <span class="admin-copy-default-badge rounded-full px-2.5 py-1 text-[11px] font-black">
+                                    {{ $containerFields->count() }} {{ app()->getLocale() === 'id' ? 'isian' : 'fields' }}
+                                </span>
                             </div>
 
                             <div class="space-y-5">
@@ -290,14 +526,18 @@
                                     <div>
                                         <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                                             <div>
-                                                <label for="{{ $fieldName }}" class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __($meta['label']) }}</label>
+                                                <label for="{{ $fieldName }}" class="admin-copy-title text-sm font-bold">
+                                                    {{ __($meta['label']) }}
+                                                </label>
                                                 @if (!empty($meta['location']))
-                                                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Lokasi tampil:') }} {{ __($meta['location']) }}</p>
+                                                    <p class="admin-copy-muted text-xs">
+                                                        {{ $copyEditorCopy['display_location'] }} {{ __($meta['location']) }}
+                                                    </p>
                                                 @endif
                                             </div>
                                             @if ($usingFallback)
-                                                <span class="inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
-                                                    {{ __('Sedang pakai teks default') }}
+                                                <span class="admin-copy-default-badge inline-flex rounded-full px-2.5 py-1 text-[11px] font-black">
+                                                    {{ $copyEditorCopy['using_default'] }}
                                                 </span>
                                             @endif
                                         </div>
@@ -307,7 +547,7 @@
                                                 id="{{ $fieldName }}"
                                                 name="{{ $fieldName }}"
                                                 rows="{{ $isTranslationMap ? 12 : 4 }}"
-                                                class="input mt-2 w-full rounded-xl px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none {{ $isTranslationMap ? 'font-mono leading-relaxed' : '' }}"
+                                                class="admin-copy-input mt-2 {{ $isTranslationMap ? 'font-mono leading-relaxed' : '' }}"
                                             >{{ $currentValue }}</textarea>
                                         @else
                                             <input
@@ -315,16 +555,18 @@
                                                 name="{{ $fieldName }}"
                                                 type="text"
                                                 value="{{ $currentValue }}"
-                                                class="input mt-2 w-full rounded-xl px-3 py-2 text-sm text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                                                class="admin-copy-input mt-2"
                                             >
                                         @endif
 
                                         @if ($isTranslationMap)
-                                            <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
-                                                {!! __('Format: <code>translation.key = Teks Baru</code>. Satu baris satu key. Contoh: <code>ui.nav.my_orders = Riwayat Sewa</code>.') !!}
+                                            <p class="admin-copy-subtle mt-2 text-xs">
+                                                {!! $copyEditorCopy['translation_map_help'] !!}
                                             </p>
                                         @else
-                                            <p class="mt-1 text-[11px] text-slate-400 dark:text-slate-500">{{ __('Kosongkan field jika mau balik ke teks default bawaan sistem.') }}</p>
+                                            <p class="admin-copy-subtle mt-2 text-xs">
+                                                {{ $copyEditorCopy['default_help'] }}
+                                            </p>
                                         @endif
                                     </div>
                                 @endforeach
@@ -334,8 +576,8 @@
 
                     <div class="flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800">
                         <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Perubahan langsung tampil di halaman pengguna setelah disimpan.') }}</p>
-                        <button type="submit" class="btn-primary inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition">
-                            {{ __('Simpan Teks Halaman') }}
+                        <button type="submit" class="admin-accent-bg inline-flex min-h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition">
+                            {{ $copyEditorCopy['save_changes'] }}
                         </button>
                     </div>
                 </form>

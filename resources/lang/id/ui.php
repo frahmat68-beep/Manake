@@ -1404,4 +1404,19 @@ return [
             'send_reset_link' => 'Kirim Tautan Atur Ulang Kata Sandi ke Email',
         ],
     ],
+
+    'admin_copy_editor' => [
+        'title' => 'Editor Teks Website',
+        'page_title' => 'Editor Teks Website',
+        'return_dashboard' => 'Kembali ke Dashboard',
+        'all_fields_note' => 'Semua field di halaman ini mengubah teks yang tampil ke pengguna. Field dikelompokkan berdasarkan kontainer tampilan agar lebih mudah dikelola.',
+        'user_page' => 'Halaman Pengguna',
+        'container_navigation' => 'Navigasi Kontainer',
+        'display_location' => 'Lokasi tampil:',
+        'using_default' => 'Sedang memakai teks default',
+        'default_help' => 'Kosongkan field untuk memakai kembali teks default sistem.',
+        'translation_map_help' => 'Format: satu key per baris, contoh ui.nav.my_orders = Riwayat Sewa.',
+        'save_changes' => 'Simpan Perubahan Teks',
+        'saving' => 'Menyimpan...',
+    ],
 ];

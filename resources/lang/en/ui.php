@@ -1404,4 +1404,19 @@ return [
             'send_reset_link' => 'Send Password Reset Link by Email',
         ],
     ],
+
+    'admin_copy_editor' => [
+        'title' => 'Website Text Editor',
+        'page_title' => 'Website Text Editor',
+        'return_dashboard' => 'Return to Dashboard',
+        'all_fields_note' => 'All fields on this page edit text that appears to users. Fields are grouped by display container so they are easier to manage.',
+        'user_page' => 'User Page',
+        'container_navigation' => 'Container Navigation',
+        'display_location' => 'Display location:',
+        'using_default' => 'Currently using default text',
+        'default_help' => 'Leave field empty to revert to default system text.',
+        'translation_map_help' => 'Format: one key per line, for example ui.nav.my_orders = Rental History.',
+        'save_changes' => 'Save Text Changes',
+        'saving' => 'Saving...',
+    ],
 ];
