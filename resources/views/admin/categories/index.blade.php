@@ -175,6 +175,7 @@
 </style>
 @endpush
 
+@section('content')
     @php
         $categoriesCopy = __('ui.admin_categories');
 
