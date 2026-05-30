@@ -107,22 +107,31 @@
 
                     <div>
                         <label class="text-xs font-semibold text-slate-500">{{ __('Status Pembayaran') }}</label>
-                        <select name="status_pembayaran" class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
-                            @foreach (['pending', 'paid', 'failed', 'expired', 'refunded'] as $paymentStatus)
-                                @php
-                                    $paymentStatusText = match ($paymentStatus) {
-                                        'paid' => __('Lunas'),
-                                        'failed' => __('Gagal'),
-                                        'expired' => __('Kedaluwarsa'),
-                                        'refunded' => __('Refund'),
-                                        default => __('Menunggu'),
-                                    };
-                                @endphp
-                                <option value="{{ $paymentStatus }}" {{ $order->status_pembayaran === $paymentStatus ? 'selected' : '' }}>
-                                    {{ $paymentStatusText }}
+                        @if (auth('admin')->user()->role === 'super_admin')
+                            <select name="status_pembayaran" class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                                @foreach (['pending', 'paid', 'failed', 'expired', 'refunded'] as $paymentStatus)
+                                    @php
+                                        $paymentStatusText = match ($paymentStatus) {
+                                            'paid' => __('Lunas'),
+                                            'failed' => __('Gagal'),
+                                            'expired' => __('Kedaluwarsa'),
+                                            'refunded' => __('Refund'),
+                                            default => __('Menunggu'),
+                                        };
+                                    @endphp
+                                    <option value="{{ $paymentStatus }}" {{ $order->status_pembayaran === $paymentStatus ? 'selected' : '' }}>
+                                        {{ $paymentStatusText }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @else
+                            <select name="status_pembayaran_disabled" class="mt-1 w-full rounded-2xl border border-slate-200 bg-slate-100 px-3 py-2 text-sm text-slate-500 cursor-not-allowed" disabled>
+                                <option value="{{ $order->status_pembayaran }}" selected>
+                                    {{ $paymentLabel($order->status_pembayaran) }}
                                 </option>
-                            @endforeach
-                        </select>
+                            </select>
+                            <input type="hidden" name="status_pembayaran" value="{{ $order->status_pembayaran }}">
+                        @endif
                     </div>
 
                     <div>

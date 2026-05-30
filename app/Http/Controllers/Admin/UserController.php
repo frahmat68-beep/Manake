@@ -62,6 +62,13 @@ class UserController extends Controller
             return back()->with('success', __('Link reset password berhasil dikirim ke email user.'));
         }
 
+        $allowManual = config('admin.allow_manual_reset_link', false);
+        $isSuperAdmin = auth('admin')->user()->role === 'super_admin';
+
+        if (! $allowManual || ! $isSuperAdmin) {
+            return back()->with('error', __('Email reset gagal dikirim. Periksa konfigurasi mail server.'));
+        }
+
         // Fallback for environments without working outbound email.
         $token = Password::broker('users')->createToken($user);
         $resetUrl = url(route('password.reset', [

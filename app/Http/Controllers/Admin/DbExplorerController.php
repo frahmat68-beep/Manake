@@ -13,8 +13,79 @@ class DbExplorerController extends Controller
 {
     private function isSensitiveField(string $field): bool
     {
-        $sensitive = ['password', 'remember_token', 'token', 'signature_key', 'snap_token', 'payload_json'];
-        return in_array(strtolower($field), $sensitive, true);
+        $fieldLower = strtolower($field);
+        $sensitiveKeywords = [
+            'password', 'token', 'signature', 'secret', 'key', 'snap', 'payload',
+            'nik', 'national_id', 'identity', 'email', 'phone', 'telephone',
+            'address', 'emergency', 'birth', 'maps', 'map', 'lat', 'lng'
+        ];
+
+        foreach ($sensitiveKeywords as $kw) {
+            if (str_contains($fieldLower, $kw)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function maskSensitiveValue(string $field, mixed $value): mixed
+    {
+        if (is_null($value) || $value === '') {
+            return $value;
+        }
+
+        $fieldLower = strtolower($field);
+        $strValue = (string) $value;
+
+        if (
+            str_contains($fieldLower, 'password') ||
+            str_contains($fieldLower, 'token') ||
+            str_contains($fieldLower, 'signature') ||
+            str_contains($fieldLower, 'secret') ||
+            str_contains($fieldLower, 'key') ||
+            str_contains($fieldLower, 'snap') ||
+            str_contains($fieldLower, 'payload')
+        ) {
+            return '********';
+        }
+
+        if (str_contains($fieldLower, 'email')) {
+            $parts = explode('@', $strValue);
+            if (count($parts) === 2) {
+                $name = $parts[0];
+                $domain = $parts[1];
+                $maskedName = strlen($name) > 1 ? $name[0] . str_repeat('*', max(1, strlen($name) - 1)) : '*';
+                return $maskedName . '@' . $domain;
+            }
+            return '********';
+        }
+
+        if (str_contains($fieldLower, 'phone') || str_contains($fieldLower, 'telephone') || str_contains($fieldLower, 'emergency')) {
+            $len = strlen($strValue);
+            if ($len > 6) {
+                return substr($strValue, 0, 3) . str_repeat('*', $len - 6) . substr($strValue, -3);
+            }
+            return str_repeat('*', $len);
+        }
+
+        if (str_contains($fieldLower, 'nik') || str_contains($fieldLower, 'national_id') || str_contains($fieldLower, 'identity')) {
+            $len = strlen($strValue);
+            if ($len > 4) {
+                return str_repeat('*', $len - 4) . substr($strValue, -4);
+            }
+            return str_repeat('*', $len);
+        }
+
+        if (str_contains($fieldLower, 'address') || str_contains($fieldLower, 'maps') || str_contains($fieldLower, 'map') || str_contains($fieldLower, 'lat') || str_contains($fieldLower, 'lng')) {
+            return '[masked address]';
+        }
+
+        if (str_contains($fieldLower, 'birth')) {
+            return '[masked date]';
+        }
+
+        return '********';
     }
 
     private function canEditTable(string $table): bool
@@ -72,7 +143,7 @@ class DbExplorerController extends Controller
             foreach ($columns as $column) {
                 $field = $column['Field'];
                 if ($this->isSensitiveField($field) && isset($rowArray[$field])) {
-                    $rowArray[$field] = '********';
+                    $rowArray[$field] = $this->maskSensitiveValue($field, $rowArray[$field]);
                 }
             }
             return (object) $rowArray;
@@ -112,7 +183,7 @@ class DbExplorerController extends Controller
         foreach ($columns as $column) {
             $field = $column['Field'];
             if ($this->isSensitiveField($field) && isset($recordArray[$field])) {
-                $recordArray[$field] = '********';
+                $recordArray[$field] = $this->maskSensitiveValue($field, $recordArray[$field]);
             }
         }
         $record = (object) $recordArray;
@@ -153,7 +224,7 @@ class DbExplorerController extends Controller
         foreach ($columns as $column) {
             $field = $column['Field'];
             if ($this->isSensitiveField($field) && isset($recordArray[$field])) {
-                $recordArray[$field] = '********';
+                $recordArray[$field] = $this->maskSensitiveValue($field, $recordArray[$field]);
             }
         }
         $record = (object) $recordArray;

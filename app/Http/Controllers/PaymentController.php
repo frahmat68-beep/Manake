@@ -165,6 +165,24 @@ class PaymentController extends Controller
         ]);
     }
 
+    private function isGrossAmountValidForPayment(array $payload, ?Payment $payment, ?Order $order): bool
+    {
+        $payloadAmount = $this->normalizeGrossAmount($payload['gross_amount'] ?? 0);
+
+        if ($payment && $payment->gross_amount > 0) {
+            return $payloadAmount === $payment->gross_amount;
+        }
+
+        if ($order) {
+            $isDamageFee = $payment ? $payment->isDamageFee() : (str_contains((string)($payload['order_id'] ?? ''), '-DMG-'));
+            if (! $isDamageFee) {
+                return $payloadAmount === $order->grand_total;
+            }
+        }
+
+        return true;
+    }
+
     public function handleNotification(Request $request)
     {
         $payload = $request->all();
@@ -188,6 +206,17 @@ class PaymentController extends Controller
             ]);
 
             return response()->json(['message' => __('Order not found')], 404);
+        }
+
+        if (! $this->isGrossAmountValidForPayment($payload, $targetPayment, $order)) {
+            Log::warning('Midtrans callback gross amount mismatch', [
+                'order_id' => $orderId,
+                'payload' => $payload,
+                'payment_gross_amount' => $targetPayment?->gross_amount,
+                'order_grand_total' => $order->grand_total,
+            ]);
+
+            return response()->json(['message' => 'Gross amount mismatch'], 422);
         }
 
         if (! $this->reserveWebhookEvent($payload, $order->id)) {

@@ -101,6 +101,13 @@ class OrderController extends Controller
             'admin_note' => (string) ($order->admin_note ?? ''),
         ];
 
+        $oldPaymentStatus = $order->status_pembayaran;
+        $newPaymentStatus = $data['status_pembayaran'];
+
+        if ($newPaymentStatus !== $oldPaymentStatus && auth('admin')->user()->role !== 'super_admin') {
+            return back()->with('error', __('Hanya Super Admin yang dapat mengubah status pembayaran secara manual.'));
+        }
+
         if ($order->status_pesanan !== $data['status_pesanan'] && ! $order->canTransitionToOrderStatus($data['status_pesanan'])) {
             return back()->with('error', __('Transisi status pesanan tidak valid dari status saat ini.'));
         }
@@ -151,14 +158,22 @@ class OrderController extends Controller
             ]);
         }
 
-        admin_audit('order.update_status', 'orders', $order->id, [
+        $auditPayload = [
             'status_pembayaran' => $order->status_pembayaran,
             'status_pesanan' => $order->status_pesanan,
             'status' => $order->status,
             'additional_fee' => $order->additional_fee,
             'additional_fee_note' => $order->additional_fee_note,
             'admin_note' => $order->admin_note,
-        ], auth('admin')->id());
+        ];
+
+        if ($newPaymentStatus !== $oldPaymentStatus) {
+            $auditPayload['manual_payment_override'] = true;
+            $auditPayload['before_payment_status'] = $oldPaymentStatus;
+            $auditPayload['after_payment_status'] = $newPaymentStatus;
+        }
+
+        admin_audit('order.update_status', 'orders', $order->id, $auditPayload, auth('admin')->id());
 
         return back()->with('success', __('Status order, biaya tambahan, dan notifikasi user berhasil diperbarui.'));
     }

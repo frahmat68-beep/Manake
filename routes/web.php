@@ -70,7 +70,7 @@ Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.ind
 Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 // Chatbot Routes
 Route::post('/chatbot/message', [ChatbotController::class, 'chat'])->name('chatbot.message')->middleware('throttle:10,1');
-Route::post('/chatbot/reset', [ChatbotController::class, 'reset'])->name('chatbot.reset');
+Route::post('/chatbot/reset', [ChatbotController::class, 'reset'])->name('chatbot.reset')->middleware('throttle:20,1');
 
 Route::middleware('auth.feature')->group(function () {
     Route::get('/cart', [CartController::class, 'show'])->name('cart');
