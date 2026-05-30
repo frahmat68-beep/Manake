@@ -1462,5 +1462,44 @@ return [
         ],
         'save' => 'Save Settings',
     ],
+
+    'admin_db' => [
+        'title' => 'Database Data',
+        'page_title' => 'Database Data',
+        'index' => [
+            'kicker' => 'DB Explorer',
+            'heading' => 'List of Database Tables',
+            'subtitle' => 'Select a table to review its data contents. Editing is only active when ADMIN_DB_EDIT_ENABLED=true.',
+            'warning' => 'The main database is Supabase production. Use this page for data audit only, not for mass experiments.',
+            'open_table' => 'Open table contents',
+            'empty' => 'No tables found.',
+        ],
+        'table' => [
+            'kicker' => 'Table',
+            'back' => '← Back to Table List',
+            'filter_column' => 'Filter Column',
+            'all_columns' => 'All Columns',
+            'search' => 'Search',
+            'search_placeholder' => 'Type keyword',
+            'actions' => 'Actions',
+            'view' => 'View',
+            'edit' => 'Edit',
+            'empty' => 'No data found.',
+        ],
+        'show' => [
+            'title' => 'Data Detail',
+            'kicker' => 'Row Data',
+            'back' => '← Back to Table',
+            'edit' => 'Edit Data',
+        ],
+        'edit' => [
+            'title' => 'Edit Data',
+            'kicker' => 'Edit Data',
+            'cancel' => '← Cancel Edit',
+            'confirm' => 'I understand this change will directly update the database.',
+            'save' => 'Save Data',
+        ],
+    ],
 ];
+
 

@@ -1462,5 +1462,44 @@ return [
         ],
         'save' => 'Simpan Pengaturan',
     ],
+
+    'admin_db' => [
+        'title' => 'Data Database',
+        'page_title' => 'Data Database',
+        'index' => [
+            'kicker' => 'DB Explorer',
+            'heading' => 'Daftar Tabel Database',
+            'subtitle' => 'Pilih tabel untuk meninjau isi data. Edit data hanya aktif jika ADMIN_DB_EDIT_ENABLED=true.',
+            'warning' => 'Database utama adalah Supabase production. Gunakan halaman ini hanya untuk audit data, bukan eksperimen massal.',
+            'open_table' => 'Buka isi tabel',
+            'empty' => 'Tidak ada tabel ditemukan.',
+        ],
+        'table' => [
+            'kicker' => 'Tabel',
+            'back' => '← Kembali ke Daftar Tabel',
+            'filter_column' => 'Filter Kolom',
+            'all_columns' => 'Semua Kolom',
+            'search' => 'Cari',
+            'search_placeholder' => 'Ketik kata kunci',
+            'actions' => 'Tindakan',
+            'view' => 'Lihat',
+            'edit' => 'Ubah',
+            'empty' => 'Tidak ada data.',
+        ],
+        'show' => [
+            'title' => 'Detail Data',
+            'kicker' => 'Data Baris',
+            'back' => '← Kembali ke Tabel',
+            'edit' => 'Ubah Data',
+        ],
+        'edit' => [
+            'title' => 'Ubah Data',
+            'kicker' => 'Ubah Data',
+            'cancel' => '← Batal Ubah',
+            'confirm' => 'Saya memahami perubahan ini akan langsung mengubah database.',
+            'save' => 'Simpan Data',
+        ],
+    ],
 ];
+
 
