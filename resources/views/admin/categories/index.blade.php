@@ -109,27 +109,17 @@
         border-bottom: 0 !important;
     }
 
-    /* ── Subtle row hover — light mode ── */
-    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover {
+    /* ── Subtle row hover and backgrounds ── */
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr,
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr td {
+        background: #FFFFFF !important;
+        color: #111827 !important;
+    }
+
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover,
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover td {
         background: #F8FAFC !important;
         color: #111827 !important;
-    }
-
-    /* ── Subtle row hover — dark mode ── */
-    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover {
-        background: #151519 !important;
-        color: #E8E8EC !important;
-    }
-
-    /* Force cell-level override (outranks the global #0a0a0b rule in app.css) */
-    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover td {
-        background-color: #F8FAFC !important;
-        color: #111827 !important;
-    }
-
-    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover td {
-        background-color: #151519 !important;
-        color: #E8E8EC !important;
     }
 
     html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover .admin-categories-title {
@@ -140,11 +130,41 @@
         color: #4B5563 !important;
     }
 
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover a,
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover button {
+        color: inherit;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr,
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr td {
+        background: #111113 !important;
+        color: #E8E8EC !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover,
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover td {
+        background: #151519 !important;
+        color: #E8E8EC !important;
+    }
+
     html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover .admin-categories-title {
         color: #E8E8EC !important;
     }
 
     html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-categories-table tbody tr:hover .admin-categories-muted {
+        color: #A0A0A8 !important;
+    }
+
+    /* ── Locked Button Styles ── */
+    html[data-theme-resolved="light"] body[data-manake-shell="admin"] .admin-category-locked-button {
+        background: #F8FAFC !important;
+        border-color: #E5E7EB !important;
+        color: #6B7280 !important;
+    }
+
+    html[data-theme-resolved="dark"] body[data-manake-shell="admin"] .admin-category-locked-button {
+        background: #0A0A0B !important;
+        border-color: #1A1A1E !important;
         color: #A0A0A8 !important;
     }
 
@@ -278,13 +298,15 @@
                                         {{ $category->name }}
                                     </p>
                                 </td>
-                                <td class="px-5 py-4 align-middle admin-categories-muted">
-                                    <p class="truncate" title="{{ $category->slug }}">
+                                <td class="px-5 py-4 align-middle">
+                                    <p class="truncate admin-categories-muted" title="{{ $category->slug }}">
                                         {{ $category->slug }}
                                     </p>
                                 </td>
-                                <td class="px-5 py-4 align-middle admin-categories-muted">
-                                    {{ str_replace(':count', $category->equipments_count, $categoriesCopy['table']['tool_count']) }}
+                                <td class="px-5 py-4 align-middle">
+                                    <span class="admin-categories-muted">
+                                        {{ str_replace(':count', $category->equipments_count, $categoriesCopy['table']['tool_count']) }}
+                                    </span>
                                 </td>
                                 <td class="px-5 py-4 align-middle">
                                     <div class="flex items-center justify-end gap-2 whitespace-nowrap">
