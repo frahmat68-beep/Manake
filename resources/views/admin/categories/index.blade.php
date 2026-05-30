@@ -178,7 +178,7 @@
     @php
         $categoriesCopy = __('ui.admin_categories');
 
-        if (! is_array($categoriesCopy)) {
+        if (! is_array($categoriesCopy) || ! isset($categoriesCopy['filters']) || ! is_array($categoriesCopy['filters']) || ! isset($categoriesCopy['table']) || ! is_array($categoriesCopy['table'])) {
             $categoriesCopy = [
                 'title' => 'Categories',
                 'page_title' => 'Categories',
