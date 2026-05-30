@@ -31,8 +31,8 @@ class WebsiteSettingsController extends Controller
             'contact_whatsapp' => ['nullable', 'string', 'max:255'],
             'social_instagram' => ['nullable', 'string', 'max:255'],
             'social_tiktok' => ['nullable', 'string', 'max:255'],
-            'brand_logo' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-            'brand_favicon' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,ico', 'max:2048'],
+            'brand_logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'brand_favicon' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,ico', 'max:2048'],
             'maintenance_enabled' => ['nullable', 'boolean'],
         ]);
 

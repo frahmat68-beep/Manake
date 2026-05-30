@@ -7,4 +7,6 @@ return [
     'super_admin_password' => env('SUPERADMIN_PASSWORD', env('SUPER_ADMIN_PASSWORD')),
     'super_admin_password_hash' => env('SUPERADMIN_PASSWORD_HASH', env('SUPER_ADMIN_PASSWORD_HASH')),
     'super_admin_name' => env('SUPER_ADMIN_NAME', 'Fikri Rachmat'),
+    'sync_from_users' => env('ADMIN_SYNC_FROM_USERS', false),
 ];
+

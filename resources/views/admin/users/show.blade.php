@@ -398,6 +398,7 @@
                     {{ $userDetailCopy['security']['description'] }}
                 </p>
 
+                @if (auth('admin')->user()->role === 'super_admin')
                 <form method="POST" action="{{ route('admin.users.set-password', $user) }}" class="space-y-4 rounded-2xl border border-[var(--admin-border)] bg-transparent p-4">
                     @csrf
                     <p class="admin-user-detail-title text-sm font-black">
@@ -425,6 +426,7 @@
                         {{ $userDetailCopy['security']['save_new_password'] }}
                     </button>
                 </form>
+                @endif
 
                 <form method="POST" action="{{ route('admin.users.reset-password', $user) }}">
                     @csrf

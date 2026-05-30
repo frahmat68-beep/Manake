@@ -11,6 +11,22 @@ use Illuminate\Support\Facades\Hash;
 
 class DbExplorerController extends Controller
 {
+    private function isSensitiveField(string $field): bool
+    {
+        $sensitive = ['password', 'remember_token', 'token', 'signature_key', 'snap_token', 'payload_json'];
+        return in_array(strtolower($field), $sensitive, true);
+    }
+
+    private function canEditTable(string $table): bool
+    {
+        if (! config('admin.db_edit_enabled', false)) {
+            return false;
+        }
+
+        $nonEditableTables = ['users', 'admins', 'payments', 'payment_webhook_events', 'audit_logs'];
+        return ! in_array(strtolower($table), $nonEditableTables, true);
+    }
+
     public function index()
     {
         $tables = $this->getTables();
@@ -51,6 +67,17 @@ class DbExplorerController extends Controller
 
         $rows = $query->paginate($perPage)->withQueryString();
 
+        $rows->getCollection()->transform(function ($row) use ($columns) {
+            $rowArray = (array) $row;
+            foreach ($columns as $column) {
+                $field = $column['Field'];
+                if ($this->isSensitiveField($field) && isset($rowArray[$field])) {
+                    $rowArray[$field] = '********';
+                }
+            }
+            return (object) $rowArray;
+        });
+
         return view('admin.db.table', [
             'tables' => $tables,
             'table' => $table,
@@ -59,7 +86,7 @@ class DbExplorerController extends Controller
             'rows' => $rows,
             'searchColumn' => $searchColumn,
             'searchValue' => $searchValue,
-            'canEdit' => (bool) config('admin.db_edit_enabled', false),
+            'canEdit' => $this->canEditTable($table),
         ]);
     }
 
@@ -81,19 +108,28 @@ class DbExplorerController extends Controller
             abort(404);
         }
 
+        $recordArray = (array) $record;
+        foreach ($columns as $column) {
+            $field = $column['Field'];
+            if ($this->isSensitiveField($field) && isset($recordArray[$field])) {
+                $recordArray[$field] = '********';
+            }
+        }
+        $record = (object) $recordArray;
+
         return view('admin.db.show', [
             'tables' => $tables,
             'table' => $table,
             'columns' => $columns,
             'primaryKey' => $primaryKey,
             'record' => $record,
-            'canEdit' => (bool) config('admin.db_edit_enabled', false),
+            'canEdit' => $this->canEditTable($table),
         ]);
     }
 
     public function edit(string $table, string $recordId)
     {
-        if (! config('admin.db_edit_enabled', false)) {
+        if (! $this->canEditTable($table)) {
             abort(403);
         }
 
@@ -113,6 +149,15 @@ class DbExplorerController extends Controller
             abort(404);
         }
 
+        $recordArray = (array) $record;
+        foreach ($columns as $column) {
+            $field = $column['Field'];
+            if ($this->isSensitiveField($field) && isset($recordArray[$field])) {
+                $recordArray[$field] = '********';
+            }
+        }
+        $record = (object) $recordArray;
+
         return view('admin.db.edit', [
             'tables' => $tables,
             'table' => $table,
@@ -124,7 +169,7 @@ class DbExplorerController extends Controller
 
     public function update(Request $request, string $table, string $recordId)
     {
-        if (! config('admin.db_edit_enabled', false)) {
+        if (! $this->canEditTable($table)) {
             abort(403);
         }
 
@@ -172,27 +217,24 @@ class DbExplorerController extends Controller
     private function getTables(): array
     {
         $driver = DB::connection()->getDriverName();
+        $allTables = [];
 
         if (in_array($driver, ['mysql', 'mariadb'], true)) {
             $tablesRaw = DB::select('SHOW TABLES');
 
-            if (empty($tablesRaw)) {
-                return [];
+            if (! empty($tablesRaw)) {
+                $firstRow = (array) $tablesRaw[0];
+                $key = array_key_first($firstRow);
+
+                $allTables = collect($tablesRaw)
+                    ->map(fn ($row) => (array) $row)
+                    ->map(fn ($row) => $row[$key] ?? null)
+                    ->filter()
+                    ->values()
+                    ->all();
             }
-
-            $firstRow = (array) $tablesRaw[0];
-            $key = array_key_first($firstRow);
-
-            return collect($tablesRaw)
-                ->map(fn ($row) => (array) $row)
-                ->map(fn ($row) => $row[$key] ?? null)
-                ->filter()
-                ->values()
-                ->all();
-        }
-
-        if ($driver === 'pgsql') {
-            return collect(DB::select(
+        } elseif ($driver === 'pgsql') {
+            $allTables = collect(DB::select(
                 "SELECT table_name
                  FROM information_schema.tables
                  WHERE table_schema = 'public'
@@ -204,10 +246,8 @@ class DbExplorerController extends Controller
                 ->filter()
                 ->values()
                 ->all();
-        }
-
-        if ($driver === 'sqlite') {
-            return collect(DB::select(
+        } elseif ($driver === 'sqlite') {
+            $allTables = collect(DB::select(
                 "SELECT name
                  FROM sqlite_master
                  WHERE type = 'table'
@@ -219,9 +259,16 @@ class DbExplorerController extends Controller
                 ->filter()
                 ->values()
                 ->all();
+        } else {
+            $allTables = DB::connection()->getSchemaBuilder()->getTableListing();
         }
 
-        return DB::connection()->getSchemaBuilder()->getTableListing();
+        $blacklist = ['password_reset_tokens', 'sessions', 'cache', 'cache_locks', 'jobs', 'failed_jobs'];
+
+        return collect($allTables)
+            ->filter(fn ($t) => ! in_array(strtolower($t), $blacklist, true))
+            ->values()
+            ->all();
     }
 
     private function getColumns(string $table): array
@@ -346,6 +393,10 @@ class DbExplorerController extends Controller
             }
 
             if (in_array($field, ['created_at', 'updated_at'], true)) {
+                continue;
+            }
+
+            if ($this->isSensitiveField($field)) {
                 continue;
             }
 

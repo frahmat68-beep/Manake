@@ -22,7 +22,7 @@ class EquipmentStoreRequest extends FormRequest
             'status' => ['required', 'in:ready,unavailable,maintenance'],
             'description' => ['nullable', 'string', 'max:2000'],
             'specifications' => ['nullable', 'string', 'max:4000'],
-            'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ];
     }
 }

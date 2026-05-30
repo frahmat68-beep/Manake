@@ -81,6 +81,10 @@ class UserController extends Controller
 
     public function setPassword(Request $request, User $user): RedirectResponse
     {
+        if (auth('admin')->user()->role !== 'super_admin') {
+            abort(403, __('Hanya Super Admin yang dapat mengatur ulang password secara langsung.'));
+        }
+
         $data = $request->validate([
             'new_password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [

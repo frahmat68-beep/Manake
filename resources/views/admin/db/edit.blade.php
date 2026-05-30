@@ -5,7 +5,7 @@
 
 @section('content')
     @php
-        $isEditable = fn ($field) => ! in_array($field, [$primaryKey, 'created_at', 'updated_at'], true);
+        $isEditable = fn ($field) => ! in_array($field, [$primaryKey, 'created_at', 'updated_at'], true) && ! in_array(strtolower($field), ['password', 'remember_token', 'token', 'signature_key', 'snap_token', 'payload_json'], true);
         $fieldType = function (string $type) {
             $type = strtolower($type);
             if (str_contains($type, 'int') || str_contains($type, 'decimal') || str_contains($type, 'float') || str_contains($type, 'double')) {

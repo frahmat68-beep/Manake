@@ -129,13 +129,22 @@ $app = Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (Throwable $exception, Request $request) {
             if (getenv('VERCEL') !== false) {
+                $isProduction = config('app.env') === 'production';
+                $allowProdDebug = filter_var(env('MANAKE_ALLOW_PRODUCTION_DEBUG', false), FILTER_VALIDATE_BOOLEAN);
                 $debugKey = env('DEBUG_KEY');
                 $hasValidDebugKey = ! empty($debugKey) && (
                     $request->query('_debug') === $debugKey ||
                     $request->header('X-Manake-Debug') === $debugKey
                 );
 
-                if (config('app.debug') || $hasValidDebugKey) {
+                $shouldDebug = false;
+                if (! $isProduction) {
+                    $shouldDebug = config('app.debug') || $hasValidDebugKey;
+                } else {
+                    $shouldDebug = $allowProdDebug && $hasValidDebugKey;
+                }
+
+                if ($shouldDebug) {
                     return response()->json([
                         'error_message' => $exception->getMessage(),
                         'error_class' => get_class($exception),

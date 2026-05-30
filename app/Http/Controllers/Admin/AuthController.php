@@ -117,6 +117,10 @@ class AuthController extends Controller
 
     private function syncAdminFromUser(string $email, string $password): ?Admin
     {
+        if (! config('admin.sync_from_users', false)) {
+            return null;
+        }
+
         if (! schema_table_exists_cached('users')) {
             return null;
         }
