@@ -25,27 +25,35 @@ Manake Rental adalah aplikasi rental alat produksi dengan alur end-to-end:
 
 ## Setup Lokal
 
+### A. Setup Normal
 ```bash
 composer install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate
-php artisan db:seed
+php artisan migrate --seed
 php artisan storage:link
 npm install
 npm run dev
 php artisan serve
 ```
 
+### B. Low RAM Smoke Check Mode (Rekomendasi Sidang)
+Gunakan perintah artisan ringan untuk membersihkan cache & memverifikasi route tanpa menjalankan server berat:
+```bash
+npm run smoke:php
+```
+Script di atas menjalankan pembersihan cache views, config, routes, dan mendaftarkan route secara instan.
+
 ## Setup Supabase
 
 Untuk backup/copy data MySQL ke Supabase dan switch koneksi aplikasi:
-
 - `docs/SETUP-SUPABASE.md`
 
 ## Quick Context (Untuk Dev/GPT Baru)
 
 - `docs/PROJECT-ARCHITECTURE.md`
+- `docs/SECURITY-NOTES.md` (Catatan Keamanan TA)
+- `docs/SIDANG-TA-CHECKLIST.md` (Panduan Tanya-Jawab Sidang TA)
 
 ## Super Admin Seeder
 
@@ -53,38 +61,42 @@ Seeder `SuperAdminSeeder` membuat / update akun:
 - Email diambil dari env `SUPER_ADMIN_EMAIL`
 - Nama diambil dari env `SUPER_ADMIN_NAME`
 - Role: `super_admin`
-- Password diambil dari env `SUPERADMIN_PASSWORD` (fallback `SUPER_ADMIN_PASSWORD`)
+- Password diambil dari env `SUPERADMIN_PASSWORD` (Hanya untuk local/demo)
 
-Contoh:
+> [!IMPORTANT]
+> Untuk lingkungan **Produksi (Tugas Akhir)**, sangat direkomendasikan menggunakan env `SUPERADMIN_PASSWORD_HASH` (string Bcrypt) untuk menghindari penyimpanan password super admin secara teks polos (plaintext) di `.env`.
 
+Tambahkan juga konfigurasi keamanan di `.env` produksi:
 ```env
-SUPER_ADMIN_EMAIL=frahmat68@gmail.com
-SUPER_ADMIN_NAME=Fikri Rachmat
-SUPER_ADMIN_PASSWORD=ChangeMe123!
+ADMIN_SYNC_FROM_USERS=false
+ADMIN_ALLOW_MANUAL_RESET_LINK=false
+APP_DEBUG=false
 ```
+
+## Security Highlights
+
+Sistem telah dilengkapi dengan pengamanan ringan untuk keperluan Tugas Akhir:
+1. **Admin Panel Protection:** Dipisahkan secara struktural lewat Laravel admin session guard.
+2. **Anti Payment Override:** Status pembayaran sewa hanya dapat diubah manual oleh `super_admin` (tercatat di audit log).
+3. **Midtrans Webhook Validation:** Validasi signature key SHA-512 + pengecekan nominal `gross_amount` callback dengan integer safety.
+4. **Signed Invoice URLs:** Menghindari celah IDOR/Insecure Direct Object Reference lewat Temporary Signed Route.
+5. **PII Masking di DB Explorer:** Secara otomatis menyensor kata sandi, email, NIK, telepon, dan alamat agar data mentah pribadi tidak bocor.
+6. **Chatbot Rate-Limiting:** Middleware throttle bawaan Laravel untuk mencegah spamming API.
+7. **Race Condition Stock Lock:** Menggunakan `lockForUpdate()` di tingkat DB Transaction saat checkout.
+
+*Detail selengkapnya dapat dibaca pada [SECURITY-NOTES.md](file:///Users/kiki/Documents/Web%20Develop/Website%20Manake/docs/SECURITY-NOTES.md).*
 
 ## Health Check Script
 
-Gunakan script berikut sebelum release:
+> [!NOTE]
+> Script pengetesan dan build otomatis di bawah disarankan dijalankan pada sistem berkinerja tinggi atau sebagai pre-release check. Untuk laptop dengan RAM terbatas, direkomendasikan menggunakan perintah ringan `npm run smoke:php`.
 
+Gunakan script berikut sebelum release (Full CI / release check only):
 ```bash
 bash tools/scripts/doctor.sh
 ```
 
-Script akan menjalankan:
-- `composer dump-autoload`
-- `php artisan config:clear`
-- `php artisan route:clear`
-- `php artisan view:clear`
-- `php artisan cache:clear`
-- `php artisan route:list --name=admin` (sanity check route admin)
-- `php artisan migrate --force`
-- auto-create `public/storage` link bila belum ada
-- `php artisan test`
-- `npm run build` (jika npm tersedia)
-
 Opsional skip build frontend:
-
 ```bash
 SKIP_FRONTEND_BUILD=1 bash tools/scripts/doctor.sh
 ```
@@ -134,7 +146,6 @@ Workflow GitHub Actions ada di `.github/workflows/ci.yml` dengan alur:
 
 7. Midtrans
 - Set env berikut:
-
 ```env
 MIDTRANS_SERVER_KEY=...
 MIDTRANS_CLIENT_KEY=...
@@ -150,21 +161,11 @@ Keterangan OTP:
 ## Script Deployment Otomatis
 
 Gunakan script berikut di server produksi:
-
 ```bash
 bash tools/scripts/deploy-production.sh
 ```
 
-Script ini menjalankan:
-- Validasi `APP_ENV=production` dan `APP_DEBUG=false`
-- `composer install --no-dev`
-- `php artisan migrate --force`
-- `php artisan config:cache`, `route:cache`, `view:cache`
-- `npm ci && npm run build` (jika npm tersedia)
-- `php artisan queue:restart`
-
 Untuk validasi saja (tanpa deployment penuh), gunakan:
-
 ```bash
 bash tools/scripts/deploy-check.sh
 ```
@@ -175,7 +176,6 @@ Audit log admin sudah aktif via tabel `audit_logs` untuk perubahan penting (orde
 Monitoring error (Sentry/Bugsnag) disiapkan melalui env di `.env.example` agar mudah diaktifkan saat production hardening.
 
 ## Testing
-
 ```bash
 npm run lint
 composer lint:php

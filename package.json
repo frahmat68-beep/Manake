@@ -5,6 +5,7 @@
     "scripts": {
         "build": "vite build && node tools/scripts/vercel-sync-dist.mjs && node tools/scripts/vercel-sync-storage.mjs",
         "dev": "vite",
+        "smoke:php": "php artisan route:list && php artisan view:clear && php artisan config:clear && php artisan route:clear",
         "test": "npm run test:php && npm run test:frontend",
         "test:php": "vendor/bin/phpunit -c tools/config/phpunit.xml",
         "test:frontend": "if [ -f ./node_modules/vitest/package.json ]; then npx vitest run; else echo 'Vitest not installed, skipping frontend tests.'; fi",

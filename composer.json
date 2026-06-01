@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "manake/rental-system",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Web-based media equipment rental management system for Manake Rental.",
+    "keywords": ["rental", "equipment", "laravel", "midtrans", "inventory", "booking"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
