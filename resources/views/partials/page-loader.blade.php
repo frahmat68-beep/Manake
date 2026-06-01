@@ -6,7 +6,7 @@
             <span class="manake-concentric-loader__ring manake-concentric-loader__ring--inner"></span>
             <span class="manake-concentric-loader__dot"></span>
         </span>
-        <span class="manake-simple-text">Memuat...</span>
+        <span class="sr-only">Loading...</span>
     </div>
 </div>
 
