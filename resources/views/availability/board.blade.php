@@ -800,12 +800,14 @@
                                 aria-label="{{ $availabilitySearchPlaceholder }}"
                                 class="availability-board-input w-full pl-11 pr-12 py-3.5 text-sm"
                             >
-                            <div id="availability-search-loading-spinner" class="absolute right-4 top-1/2 -translate-y-1/2 hidden">
-                                <svg class="availability-accent-text h-5 w-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                            </div>
+                             <div id="availability-search-loading-spinner" class="absolute right-4 top-1/2 -translate-y-1/2 hidden">
+                                 <span class="manake-concentric-loader" style="--loader-size: 20px;">
+                                     <span class="manake-concentric-loader__ring manake-concentric-loader__ring--outer" style="border-width: 1.5px;"></span>
+                                     <span class="manake-concentric-loader__ring manake-concentric-loader__ring--middle" style="border-width: 1.5px;"></span>
+                                     <span class="manake-concentric-loader__ring manake-concentric-loader__ring--inner" style="border-width: 1.5px;"></span>
+                                     <span class="manake-concentric-loader__dot" style="width: 3px; height: 3px;"></span>
+                                 </span>
+                             </div>
                             <div id="availability-search-suggestions-dropdown" class="availability-suggestions-dropdown absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[80] hidden max-h-80 overflow-y-auto rounded-2xl border p-2 shadow-2xl backdrop-blur-xl space-y-1"></div>
                         </div>
                         <div class="board-input-group">

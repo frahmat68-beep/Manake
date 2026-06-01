@@ -1,22 +1,46 @@
-<div id="manake-page-loader" class="manake-page-loader is-hidden" aria-hidden="true">
+<div id="manake-page-loader" class="manake-page-loader is-hidden" aria-hidden="true" role="status" aria-live="polite">
     <div class="manake-simple-loader">
-        <span class="manake-simple-spinner"></span>
+        <span class="manake-concentric-loader">
+            <span class="manake-concentric-loader__ring manake-concentric-loader__ring--outer"></span>
+            <span class="manake-concentric-loader__ring manake-concentric-loader__ring--middle"></span>
+            <span class="manake-concentric-loader__ring manake-concentric-loader__ring--inner"></span>
+            <span class="manake-concentric-loader__dot"></span>
+        </span>
         <span class="manake-simple-text">Memuat...</span>
     </div>
 </div>
 
 <style>
+    :root {
+        --loader-size: 52px;
+        --loader-accent: #2563EB;
+        --loader-muted: rgba(37, 99, 235, 0.18);
+        --loader-overlay-bg: rgba(255, 255, 255, 0.78);
+        --loader-overlay-text: #111827;
+        --loader-overlay-backdrop: blur(8px);
+    }
+
+    html[data-theme-resolved="dark"] {
+        --loader-accent: #D4A843;
+        --loader-muted: rgba(212, 168, 67, 0.18);
+        --loader-overlay-bg: rgba(10, 10, 11, 0.78);
+        --loader-overlay-text: #E8E8EC;
+        --loader-overlay-backdrop: blur(10px);
+    }
+
     .manake-page-loader {
         position: fixed;
         inset: 0;
         z-index: 99999;
-        background: rgba(5, 5, 7, 0.58);
+        background: var(--loader-overlay-bg);
+        backdrop-filter: var(--loader-overlay-backdrop);
+        -webkit-backdrop-filter: var(--loader-overlay-backdrop);
         display: flex;
         align-items: center;
         justify-content: center;
         opacity: 1;
         visibility: visible;
-        transition: opacity .18s ease, visibility .18s ease;
+        transition: opacity .25s cubic-bezier(0.4, 0, 0.2, 1), visibility .25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .manake-page-loader.is-hidden {
@@ -27,29 +51,87 @@
 
     .manake-simple-loader {
         display: inline-flex;
+        flex-direction: column;
         align-items: center;
-        gap: 10px;
-        border: 1px solid rgba(255,255,255,.12);
-        background: rgba(17,17,19,.88);
-        border-radius: 999px;
-        padding: 10px 14px;
-        color: #E8E8EC;
+        gap: 16px;
+        color: var(--loader-overlay-text);
         font-size: 13px;
-        font-weight: 600;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
     }
 
-    .manake-simple-spinner {
-        width: 16px;
-        height: 16px;
+    /* Concentric Loader CSS classes globally reusable */
+    .manake-concentric-loader {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: var(--loader-size, 48px);
+        height: var(--loader-size, 48px);
+    }
+
+    .manake-concentric-loader__ring {
+        position: absolute;
         border-radius: 999px;
-        border: 2px solid rgba(255,255,255,.25);
-        border-top-color: #D4A843;
-        animation: manake-spin .75s linear infinite;
+        border: 2px solid transparent;
     }
 
-    @keyframes manake-spin {
-        to { transform: rotate(360deg); }
+    .manake-concentric-loader__ring--outer {
+        inset: 0;
+        border-top-color: var(--loader-accent);
+        border-bottom-color: var(--loader-accent);
+        animation: manakeLoaderSpin 1.6s cubic-bezier(0.53, 0.21, 0.29, 0.87) infinite;
+    }
+
+    .manake-concentric-loader__ring--middle {
+        inset: 6px;
+        border-left-color: var(--loader-accent);
+        border-right-color: var(--loader-muted);
+        animation: manakeLoaderSpinReverse 1.2s cubic-bezier(0.53, 0.21, 0.29, 0.87) infinite;
+        opacity: 0.85;
+    }
+
+    .manake-concentric-loader__ring--inner {
+        inset: 12px;
+        border-top-color: var(--loader-muted);
+        border-bottom-color: var(--loader-accent);
+        animation: manakeLoaderSpin 0.9s cubic-bezier(0.53, 0.21, 0.29, 0.87) infinite;
+        opacity: 0.7;
+    }
+
+    .manake-concentric-loader__dot {
+        width: 6px;
+        height: 6px;
+        background-color: var(--loader-accent);
+        border-radius: 999px;
+        animation: manakeLoaderPulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes manakeLoaderSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @keyframes manakeLoaderSpinReverse {
+        0% { transform: rotate(360deg); }
+        100% { transform: rotate(0deg); }
+    }
+
+    @keyframes manakeLoaderPulse {
+        0%, 100% { transform: scale(0.7); opacity: 0.5; }
+        50% { transform: scale(1.2); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .manake-concentric-loader__ring--outer,
+        .manake-concentric-loader__ring--middle,
+        .manake-concentric-loader__ring--inner {
+            animation-duration: 3.5s;
+        }
+        .manake-concentric-loader__dot {
+            animation: none;
+        }
     }
 </style>
 
