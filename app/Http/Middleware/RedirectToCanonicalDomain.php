@@ -30,6 +30,11 @@ class RedirectToCanonicalDomain
             ->filter()
             ->all();
 
+        if (in_array(strtolower($canonicalHost), $redirectHosts, true)) {
+            $canonicalUrl = 'https://www.manake.app';
+            $canonicalHost = 'www.manake.app';
+        }
+
         $currentHost = strtolower($request->getHost());
 
         if ($currentHost !== strtolower($canonicalHost) && in_array($currentHost, $redirectHosts, true)) {
