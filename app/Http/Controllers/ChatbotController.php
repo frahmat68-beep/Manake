@@ -37,6 +37,13 @@ class ChatbotController extends Controller
                 ]);
             }
 
+            $instantReply = $this->knowledgeService->buildInstantReply($request->message);
+            if ($instantReply !== null) {
+                return response()->json([
+                    'message' => $instantReply,
+                ]);
+            }
+
             // Get or initialize chat history from session (limited to last 10 exchanges for token safety)
             $history = Session::get('chatbot_history', []);
             
