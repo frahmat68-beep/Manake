@@ -31,7 +31,7 @@ class ChatbotController extends Controller
                 'message' => 'required|string|max:500',
             ]);
 
-            if ($this->isOutOfManakeScope($request->message)) {
+            if ($this->isOutOfManakeScope($request->message) && ! $this->knowledgeService->isCatalogRelated($request->message)) {
                 return response()->json([
                     'message' => 'Maaf, saya hanya bisa membantu pertanyaan seputar Manake: katalog alat, cara sewa, ketersediaan, pembayaran, order, lokasi, dan aturan rental.',
                 ]);

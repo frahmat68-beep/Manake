@@ -46,6 +46,29 @@ class ChatbotKnowledgeService
         return null;
     }
 
+    public function isCatalogRelated(string $message): bool
+    {
+        $normalized = $this->normalize($message);
+
+        if ($normalized === '' || ! schema_table_exists_cached('equipments')) {
+            return false;
+        }
+
+        $equipmentMatch = $this->findEquipmentMatch($normalized);
+        if (is_array($equipmentMatch) && ($equipmentMatch['score'] ?? 0) >= 1) {
+            return true;
+        }
+
+        if (schema_table_exists_cached('categories')) {
+            return Category::query()
+                ->pluck('name')
+                ->filter(fn ($name) => is_string($name) && trim($name) !== '')
+                ->contains(fn (string $name) => str_contains($normalized, $this->normalize($name)));
+        }
+
+        return false;
+    }
+
     public function buildFallbackReply(string $message): string
     {
         $normalized = $this->normalize($message);
@@ -95,43 +118,14 @@ class ChatbotKnowledgeService
             'detail', 'spesifikasi', 'unit', 'booking', 'alat',
         ];
 
-        if (! collect($intentKeywords)->contains(fn (string $keyword) => str_contains($normalized, $keyword))) {
+        $hasRentalIntent = collect($intentKeywords)->contains(fn (string $keyword) => str_contains($normalized, $keyword));
+        $match = $this->findEquipmentMatch($normalized);
+
+        if (! $hasRentalIntent && (! is_array($match) || ($match['score'] ?? 0) < 1)) {
             return null;
         }
 
-        $equipments = Equipment::with('category:id,name')
-            ->orderBy('name')
-            ->limit(80)
-            ->get(['id', 'name', 'slug', 'price_per_day', 'stock', 'status', 'category_id']);
-
-        $match = $equipments
-            ->map(function (Equipment $equipment) use ($normalized) {
-                $name = $this->normalize($equipment->name);
-                $slug = $this->normalize((string) ($equipment->slug ?: Str::slug($equipment->name)));
-                $tokens = collect(explode(' ', $name))
-                    ->filter(fn (string $token) => mb_strlen($token) >= 3)
-                    ->unique()
-                    ->values();
-
-                $score = 0;
-                if ($name !== '' && str_contains($normalized, $name)) {
-                    $score += 5;
-                }
-                if ($slug !== '' && str_contains(str_replace(' ', '-', $normalized), $slug)) {
-                    $score += 5;
-                }
-
-                $score += $tokens->sum(fn (string $token) => str_contains($normalized, $token) ? 1 : 0);
-
-                return [
-                    'score' => $score,
-                    'equipment' => $equipment,
-                ];
-            })
-            ->sortByDesc('score')
-            ->first();
-
-        if (! is_array($match) || ($match['score'] ?? 0) < 2) {
+        if (! is_array($match) || ($match['score'] ?? 0) < 1) {
             return null;
         }
 
@@ -142,7 +136,49 @@ class ChatbotKnowledgeService
         $category = $equipment->category?->name ?: 'Tanpa kategori';
         $slug = $equipment->slug ?: Str::slug($equipment->name);
 
-        return "{$equipment->name} masuk kategori {$category}. Harga sewanya Rp{$price}/hari, stok tercatat {$equipment->stock} unit, dan statusnya {$status}. Untuk booking, buka /product/{$slug}, pilih tanggal sewa, lalu tambahkan ke keranjang.";
+        $dateHint = str_contains($normalized, 'tanggal') || preg_match('/\b\d{1,2}\b/', $normalized)
+            ? ' Saya belum bisa memastikan tanggal hanya dari angka itu; pilih tanggal mulai dan selesai di halaman produk supaya sistem mengecek stok real-time.'
+            : '';
+
+        return "{$equipment->name} masuk kategori {$category}. Harga sewanya Rp{$price}/hari, stok tercatat {$equipment->stock} unit, dan statusnya {$status}.{$dateHint} Untuk booking, buka /product/{$slug}, pilih tanggal sewa, lalu tambahkan ke keranjang.";
+    }
+
+    private function findEquipmentMatch(string $normalized): ?array
+    {
+        if (! schema_table_exists_cached('equipments')) {
+            return null;
+        }
+
+        return Equipment::with('category:id,name')
+            ->orderBy('name')
+            ->limit(120)
+            ->get(['id', 'name', 'slug', 'price_per_day', 'stock', 'status', 'category_id'])
+            ->map(function (Equipment $equipment) use ($normalized) {
+                $name = $this->normalize($equipment->name);
+                $slug = $this->normalize((string) ($equipment->slug ?: Str::slug($equipment->name)));
+                $hyphenatedMessage = str_replace(' ', '-', $normalized);
+                $tokens = collect(explode(' ', str_replace(['-', '/', '_'], ' ', $name.' '.$slug)))
+                    ->filter(fn (string $token) => mb_strlen($token) >= 4)
+                    ->unique()
+                    ->values();
+
+                $score = 0;
+                if ($name !== '' && str_contains($normalized, $name)) {
+                    $score += 8;
+                }
+                if ($slug !== '' && str_contains($hyphenatedMessage, $slug)) {
+                    $score += 8;
+                }
+
+                $score += $tokens->sum(fn (string $token) => str_contains($normalized, $token) ? 2 : 0);
+
+                return [
+                    'score' => $score,
+                    'equipment' => $equipment,
+                ];
+            })
+            ->sortByDesc('score')
+            ->first();
     }
 
     private function categoryReply(string $normalized): ?string

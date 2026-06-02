@@ -87,6 +87,40 @@ class ChatbotFeatureTest extends TestCase
                 && str_contains($message, 'stok tercatat 2 unit'));
     }
 
+    public function test_chatbot_recognizes_partial_equipment_name_as_manake_scope(): void
+    {
+        $this->mock(LocalAiService::class, function ($mock): void {
+            $mock->shouldNotReceive('chat');
+        });
+
+        $this->mock(GeminiAiService::class, function ($mock): void {
+            $mock->shouldNotReceive('chat');
+        });
+
+        $category = \App\Models\Category::create([
+            'name' => 'Audio',
+            'slug' => 'audio',
+        ]);
+
+        \App\Models\Equipment::create([
+            'category_id' => $category->id,
+            'name' => 'Saramonic Blink 500 T4 Wireless',
+            'slug' => 'saramonic-blink500',
+            'price_per_day' => 100000,
+            'stock' => 1,
+            'status' => 'ready',
+        ]);
+
+        $response = $this->postJson(route('chatbot.message'), [
+            'message' => 'saya mau sewa saramonic di tanggal 4 bisa?',
+        ]);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('message', fn (string $message) => str_contains($message, 'Saramonic Blink 500 T4 Wireless')
+                && str_contains($message, 'pilih tanggal mulai dan selesai'));
+    }
+
     public function test_chatbot_rejects_questions_outside_manake_scope(): void
     {
         $this->mock(LocalAiService::class, function ($mock): void {
