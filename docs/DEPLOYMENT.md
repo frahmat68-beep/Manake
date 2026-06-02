@@ -76,7 +76,7 @@ APP_NAME=Manake
 APP_ENV=production
 APP_DEBUG=false
 APP_KEY=base64:...
-APP_URL=https://<your-vercel-domain>
+APP_URL=https://www.manake.app
 
 DB_CONNECTION=pgsql
 DB_URL=postgresql://...
@@ -103,11 +103,23 @@ MIDTRANS_SERVER_KEY=...
 MIDTRANS_CLIENT_KEY=...
 MIDTRANS_IS_PRODUCTION=false
 
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GOOGLE_REDIRECT_URI=https://www.manake.app/auth/google/callback
+
 SUPER_ADMIN_EMAIL=...
 SUPER_ADMIN_PASSWORD=...
 
 ADMIN_DB_EDIT_ENABLED=false
 ```
+
+Production provider callback checklist:
+
+- Google OAuth authorized JavaScript origin: `https://www.manake.app`
+- Google OAuth redirect URI: `https://www.manake.app/auth/google/callback`
+- Midtrans payment notification URL: `https://www.manake.app/api/midtrans/callback`
+- Keep `SESSION_DOMAIN` empty unless cookies intentionally need to span both apex and `www`.
+- Configure `manake.vercel.app` to redirect to `https://www.manake.app` to avoid duplicate sessions and duplicate SEO indexing.
 
 Catatan runtime Vercel untuk project ini:
 

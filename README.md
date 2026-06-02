@@ -141,8 +141,9 @@ Workflow GitHub Actions ada di `.github/workflows/ci.yml` dengan alur:
 
 6. HTTPS & security
 - Wajib aktifkan HTTPS di reverse proxy/web server
-- Set `APP_URL` ke domain HTTPS
-- Verifikasi callback Midtrans memakai endpoint HTTPS
+- Set `APP_URL=https://www.manake.app`
+- Verifikasi callback Midtrans memakai endpoint HTTPS: `https://www.manake.app/api/midtrans/callback`
+- Verifikasi Google OAuth memakai callback HTTPS: `https://www.manake.app/auth/google/callback`
 
 7. Midtrans
 - Set env berikut:

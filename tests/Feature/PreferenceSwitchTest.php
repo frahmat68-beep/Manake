@@ -14,28 +14,28 @@ class PreferenceSwitchTest extends TestCase
     {
         $response = $this
             ->withServerVariables([
-                'HTTP_HOST' => 'manake.vercel.app',
+                'HTTP_HOST' => 'www.manake.app',
                 'HTTPS' => 'on',
             ])
-            ->post('https://manake.vercel.app/theme/dark', [
-                'redirect' => 'https://manake.vercel.app/booking/history',
+            ->post('https://www.manake.app/theme/dark', [
+                'redirect' => 'https://www.manake.app/booking/history',
             ]);
 
-        $response->assertRedirect('https://manake.vercel.app/booking/history');
+        $response->assertRedirect('https://www.manake.app/booking/history');
     }
 
     public function test_locale_switch_accepts_same_host_absolute_redirect(): void
     {
         $response = $this
             ->withServerVariables([
-                'HTTP_HOST' => 'manake.vercel.app',
+                'HTTP_HOST' => 'www.manake.app',
                 'HTTPS' => 'on',
             ])
-            ->post('https://manake.vercel.app/lang/en', [
-                'redirect' => 'https://manake.vercel.app/booking/history',
+            ->post('https://www.manake.app/lang/en', [
+                'redirect' => 'https://www.manake.app/booking/history',
             ]);
 
-        $response->assertRedirect('https://manake.vercel.app/booking/history');
+        $response->assertRedirect('https://www.manake.app/booking/history');
     }
 
     public function test_theme_switch_returns_json_payload_for_ajax_requests(): void
