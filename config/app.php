@@ -56,7 +56,7 @@ return [
 
     'canonical_url' => env('APP_CANONICAL_URL', env('APP_URL', 'http://localhost')),
 
-    'canonical_redirect_hosts' => env('APP_CANONICAL_REDIRECT_HOSTS', ''),
+    'canonical_redirect_hosts' => env('APP_CANONICAL_REDIRECT_HOSTS', 'manake.app,manake.vercel.app'),
 
     'vercel' => (bool) env('VERCEL', false),
 
