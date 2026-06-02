@@ -10,14 +10,22 @@ class RedirectToCanonicalDomain
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $canonicalUrl = rtrim((string) config('app.canonical_url'), '/');
+        $canonicalUrl = rtrim((string) (
+            config('app.canonical_url')
+            ?: env('APP_CANONICAL_URL')
+            ?: 'https://www.manake.app'
+        ), '/');
         $canonicalHost = parse_url($canonicalUrl, PHP_URL_HOST);
 
         if (! $canonicalUrl || ! $canonicalHost) {
             return $next($request);
         }
 
-        $redirectHosts = collect(explode(',', (string) config('app.canonical_redirect_hosts')))
+        $configuredRedirectHosts = config('app.canonical_redirect_hosts')
+            ?: env('APP_CANONICAL_REDIRECT_HOSTS')
+            ?: 'manake.app,manake.vercel.app';
+
+        $redirectHosts = collect(explode(',', (string) $configuredRedirectHosts))
             ->map(fn (string $host): string => strtolower(trim($host)))
             ->filter()
             ->all();
