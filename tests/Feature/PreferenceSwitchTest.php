@@ -38,6 +38,24 @@ class PreferenceSwitchTest extends TestCase
         $response->assertRedirect('https://www.manake.app/booking/history');
     }
 
+    public function test_old_vercel_domain_redirects_to_canonical_domain(): void
+    {
+        config([
+            'app.canonical_url' => 'https://www.manake.app',
+            'app.canonical_redirect_hosts' => 'manake.app,manake.vercel.app',
+        ]);
+
+        $response = $this
+            ->withServerVariables([
+                'HTTP_HOST' => 'manake.vercel.app',
+                'HTTPS' => 'on',
+            ])
+            ->get('https://manake.vercel.app/catalog?category=audio');
+
+        $response->assertRedirect('https://www.manake.app/catalog?category=audio');
+        $this->assertSame(301, $response->getStatusCode());
+    }
+
     public function test_theme_switch_returns_json_payload_for_ajax_requests(): void
     {
         $response = $this

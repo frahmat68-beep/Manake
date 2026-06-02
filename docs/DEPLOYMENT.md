@@ -77,6 +77,8 @@ APP_ENV=production
 APP_DEBUG=false
 APP_KEY=base64:...
 APP_URL=https://www.manake.app
+APP_CANONICAL_URL=https://www.manake.app
+APP_CANONICAL_REDIRECT_HOSTS=manake.app,manake.vercel.app
 
 DB_CONNECTION=pgsql
 DB_URL=postgresql://...

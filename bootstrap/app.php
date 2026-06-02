@@ -8,6 +8,7 @@ use App\Http\Middleware\EnsureAuthenticatedForAccountFeature;
 use App\Http\Middleware\EnsureOtpVerified;
 use App\Http\Middleware\EnsureProfileCompleted;
 use App\Http\Middleware\ForceHttps;
+use App\Http\Middleware\RedirectToCanonicalDomain;
 use App\Http\Middleware\ResolveRuntimeUrls;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\SecurityHeaders;
@@ -116,6 +117,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->web(append: [
+            RedirectToCanonicalDomain::class,
             ResolveRuntimeUrls::class,
             ForceHttps::class,
             SecurityHeaders::class,
