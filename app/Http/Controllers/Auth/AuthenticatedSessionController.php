@@ -120,7 +120,7 @@ class AuthenticatedSessionController extends Controller
         $user->loadMissing('profile');
         if (method_exists($user, 'hasVerifiedRentalIdentity') && $user->hasVerifiedRentalIdentity()) {
             session()->forget('after_profile_redirect');
-            return redirect()->intended(route('home'));
+            return redirect()->route('home');
         }
 
         $intendedUrl = session()->get('url.intended');
