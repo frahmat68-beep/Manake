@@ -109,24 +109,7 @@ class CheckoutProfileGateTest extends TestCase
 
         $this->actingAs($user);
 
-        $payload = [
-            'full_name' => 'Fikri Rahmat',
-            'nik' => '3276020202020001',
-            'date_of_birth' => '1997-02-02',
-            'gender' => 'male',
-            'phone' => '081234567890',
-            'address_line' => 'Jl. Contoh No. 123 RT 01/03',
-            'kelurahan' => 'Cijerah',
-            'kecamatan' => 'Bandung Kulon',
-            'city' => 'Bandung',
-            'province' => 'Jawa Barat',
-            'postal_code' => '40213',
-            'maps_url' => 'https://maps.google.com/?q=bandung',
-            'emergency_name' => 'Alya',
-            'emergency_relation' => 'Saudara',
-            'emergency_phone' => '081234000000',
-            'rental_responsibility_consent' => 1,
-        ];
+        $payload = $this->completeProfilePayload();
 
         $response = $this->post(route('profile.complete.store'), $payload);
 
@@ -144,30 +127,32 @@ class CheckoutProfileGateTest extends TestCase
         $profile = Profile::where('user_id', $user->id)->first();
         $this->assertNotNull($profile);
         $this->assertTrue((bool) $profile->is_completed);
-        $this->assertNull($profile->phone_verified_at);
-
-        $profile->update([
-            'phone_verified_at' => now(),
-        ]);
+        $this->assertNotNull($profile->rental_consent_accepted_at);
 
         $checkoutResponse = $this->get(route('checkout'));
 
         $checkoutResponse->assertOk();
     }
 
-    public function test_authenticated_user_with_unverified_phone_is_redirected_to_phone_verify(): void
+    public function test_authenticated_user_without_rental_consent_cannot_checkout(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->post(route('profile.complete.store'), $this->completeProfilePayload());
-        $response->assertRedirect(route('profile.complete'));
+        $user->profile()->updateOrCreate(
+            ['user_id' => $user->id],
+            array_merge($this->completeProfilePayload(), [
+                'is_completed' => true,
+                'completed_at' => now(),
+                'rental_consent_accepted_at' => null,
+            ])
+        );
 
         $checkoutResponse = $this->get(route('checkout'));
         $checkoutResponse->assertRedirect(route('profile.complete'));
     }
 
-    public function test_authenticated_user_with_unverified_phone_cannot_add_item_to_cart(): void
+    public function test_authenticated_user_without_rental_consent_cannot_add_item_to_cart(): void
     {
         $user = User::factory()->create();
         $equipment = $this->createEquipment();
@@ -177,7 +162,7 @@ class CheckoutProfileGateTest extends TestCase
             array_merge($this->completeProfilePayload(), [
                 'is_completed' => true,
                 'completed_at' => now(),
-                'phone_verified_at' => null,
+                'rental_consent_accepted_at' => null,
             ])
         );
 
@@ -191,7 +176,7 @@ class CheckoutProfileGateTest extends TestCase
         ]);
 
         $response->assertRedirect(route('profile.complete'));
-        $response->assertSessionHas('warning', __('Verifikasi nomor telepon terlebih dahulu sebelum checkout.'));
+        $response->assertSessionHas('warning', __('Setujui pernyataan tanggung jawab sewa sebelum melanjutkan pemesanan.'));
     }
 
     public function test_authenticated_user_with_unverified_email_is_redirected_to_verification_notice(): void
@@ -202,7 +187,7 @@ class CheckoutProfileGateTest extends TestCase
             array_merge($this->completeProfilePayload(), [
                 'is_completed' => true,
                 'completed_at' => now(),
-                'phone_verified_at' => now(),
+                'rental_consent_accepted_at' => now(),
             ])
         );
 
@@ -222,7 +207,7 @@ class CheckoutProfileGateTest extends TestCase
             array_merge($this->completeProfilePayload(), [
                 'is_completed' => true,
                 'completed_at' => now(),
-                'phone_verified_at' => now(),
+                'rental_consent_accepted_at' => now(),
             ])
         );
 
@@ -236,10 +221,10 @@ class CheckoutProfileGateTest extends TestCase
         ]);
 
         $response->assertRedirect(route('profile.complete'));
-        $response->assertSessionHas('warning', __('Verifikasi email terlebih dahulu sebelum checkout.'));
+        $response->assertSessionHas('warning', __('Verifikasi email dan lengkapi profil sebelum melanjutkan pemesanan.'));
     }
 
-    public function test_complete_profile_with_verified_email_and_phone_can_add_item_to_cart(): void
+    public function test_complete_profile_with_verified_email_and_consent_can_add_item_to_cart(): void
     {
         $user = User::factory()->create();
         $equipment = $this->createEquipment();
@@ -249,7 +234,7 @@ class CheckoutProfileGateTest extends TestCase
             array_merge($this->completeProfilePayload(), [
                 'is_completed' => true,
                 'completed_at' => now(),
-                'phone_verified_at' => now(),
+                'rental_consent_accepted_at' => now(),
             ])
         );
 

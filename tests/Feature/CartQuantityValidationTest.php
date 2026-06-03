@@ -183,7 +183,6 @@ class CartQuantityValidationTest extends TestCase
                 'date_of_birth' => '1997-02-02',
                 'gender' => 'male',
                 'phone' => '081234567890',
-                'phone_verified_at' => now(),
                 'address_line' => 'Jl. Contoh No. 123 RT 01/03',
                 'kelurahan' => 'Cijerah',
                 'kecamatan' => 'Bandung Kulon',
@@ -199,6 +198,7 @@ class CartQuantityValidationTest extends TestCase
                 'emergency_contact' => 'Alya (Saudara) - 081234000000',
                 'is_completed' => true,
                 'completed_at' => now(),
+                'rental_consent_accepted_at' => now(),
             ]
         );
     }

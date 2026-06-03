@@ -449,7 +449,6 @@ class CheckoutOrderItemTest extends TestCase
                 'date_of_birth' => '1998-01-01',
                 'gender' => 'male',
                 'phone' => '08123456789',
-                'phone_verified_at' => now(),
                 'address_line' => 'Jl. Test No. 1 RT 01/02',
                 'kelurahan' => 'Sukarasa',
                 'kecamatan' => 'Sukasari',
@@ -463,6 +462,7 @@ class CheckoutOrderItemTest extends TestCase
                 'address' => 'Jl. Test No. 1 RT 01/02',
                 'is_completed' => true,
                 'completed_at' => now(),
+                'rental_consent_accepted_at' => now(),
             ]
         );
     }
