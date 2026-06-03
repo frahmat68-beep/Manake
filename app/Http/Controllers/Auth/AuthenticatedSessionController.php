@@ -117,7 +117,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->put('otp_verified', true);
 
-        $intendedUrl = redirect()->intended()->getTargetUrl();
+        $user->loadMissing('profile');
+        if (method_exists($user, 'hasVerifiedRentalIdentity') && $user->hasVerifiedRentalIdentity()) {
+            session()->forget('after_profile_redirect');
+            return redirect()->intended(route('home'));
+        }
+
+        $intendedUrl = session()->get('url.intended');
         $safeInternalUrl = null;
         if ($intendedUrl) {
             $parsed = parse_url($intendedUrl);

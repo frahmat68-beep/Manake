@@ -90,7 +90,13 @@ class SocialiteController extends Controller
                 return redirect()->intended(route('admin.dashboard'));
             }
 
-            $intendedUrl = redirect()->intended()->getTargetUrl();
+            $user->loadMissing('profile');
+            if (method_exists($user, 'hasVerifiedRentalIdentity') && $user->hasVerifiedRentalIdentity()) {
+                session()->forget('after_profile_redirect');
+                return redirect()->intended(route('home'));
+            }
+
+            $intendedUrl = session()->get('url.intended');
             $safeInternalUrl = null;
             if ($intendedUrl) {
                 $parsed = parse_url($intendedUrl);
@@ -110,8 +116,11 @@ class SocialiteController extends Controller
             return redirect()->route('profile.complete');
 
         } catch (Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Google OAuth Login failure: ' . $e->getMessage(), [
+                'exception' => $e
+            ]);
             return redirect()->route('login')->withErrors([
-                'email' => 'Gagal login menggunakan Google: ' . $e->getMessage(),
+                'email' => 'Gagal login menggunakan Google. Silakan coba lagi atau gunakan login email.',
             ]);
         }
     }
