@@ -28,7 +28,20 @@
             color: #A0A0A8;
         }
         body[data-manake-shell="landing"] section {
-            scroll-margin-top: 5rem;
+            scroll-margin-top: 6rem;
+        }
+        /* Top offset padding for sticky header on main pages */
+        body[data-manake-shell="landing"] main.landing-main {
+            padding-top: 4.5rem; /* ~72px mobile offset */
+        }
+        @media (min-width: 768px) {
+            body[data-manake-shell="landing"] main.landing-main {
+                padding-top: 5.5rem; /* ~88px desktop offset */
+            }
+        }
+        /* Force navbar links to at least 15px */
+        nav.sticky div.hidden.lg\:flex a {
+            font-size: 15px !important;
         }
 
         html[data-theme-resolved='light'] body[data-manake-shell="landing"] {

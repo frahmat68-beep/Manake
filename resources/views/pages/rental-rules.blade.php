@@ -12,11 +12,11 @@
             --rules-accent-soft: rgba(212, 168, 67, 0.12);
             --rules-accent-border: rgba(212, 168, 67, 0.28);
             --rules-accent-glow: rgba(212, 168, 67, 0.10);
-            --rules-text: #E8E8EC;
-            --rules-muted: #A0A0A8;
+            --rules-text: #F5F5F5;
+            --rules-muted: rgba(255, 255, 255, 0.78);
             --rules-surface: rgba(17, 17, 19, 0.70);
             --rules-surface-soft: rgba(17, 17, 19, 0.50);
-            --rules-border: #1A1A1E;
+            --rules-border: rgba(212, 168, 67, 0.28);
         }
 
         html[data-theme-resolved="light"] .rental-rules-page {
@@ -26,11 +26,46 @@
             --rules-accent-soft: rgba(37, 99, 235, 0.08);
             --rules-accent-border: rgba(37, 99, 235, 0.24);
             --rules-accent-glow: rgba(37, 99, 235, 0.08);
-            --rules-text: #111827;
+            --rules-text: #0F172A;
             --rules-muted: #4B5563;
             --rules-surface: rgba(255, 255, 255, 0.92);
             --rules-surface-soft: rgba(255, 255, 255, 0.82);
-            --rules-border: #E5E7EB;
+            --rules-border: #CBD5E1;
+        }
+
+        /* Spacing & Typography Overrides */
+        .rental-rules-page h1 {
+            font-size: clamp(2.2rem, 5vw, 3.4rem) !important;
+            line-height: 1.15 !important;
+        }
+        .rental-rules-page p {
+            font-size: 15px !important;
+            line-height: 1.65 !important;
+        }
+        .rental-rules-page .rules-card {
+            padding: 1.5rem !important;
+        }
+        .rental-rules-page .rules-card h3 {
+            font-size: 15px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.05em !important;
+        }
+        .rental-rules-page .rules-card p {
+            font-size: 14px !important;
+            line-height: 1.65 !important;
+        }
+        .rental-rules-page .rules-card-strong h3 {
+            font-size: 17px !important;
+            font-weight: 700 !important;
+        }
+        .rental-rules-page .rules-card-strong ul li {
+            font-size: 15px !important;
+            line-height: 1.7 !important;
+        }
+        .rental-rules-page a,
+        .rental-rules-page button {
+            font-size: 14.5px !important;
+            font-weight: 600 !important;
         }
 
         .rules-page-bg {

@@ -11,12 +11,12 @@
             --contact-accent-soft: rgba(212, 168, 67, 0.10);
             --contact-accent-border: rgba(212, 168, 67, 0.24);
             --contact-accent-glow: rgba(212, 168, 67, 0.08);
-            --contact-text: #E8E8EC;
-            --contact-muted: #A0A0A8;
+            --contact-text: #F5F5F5;
+            --contact-muted: rgba(255, 255, 255, 0.78);
             --contact-surface: rgba(17, 17, 19, 0.70);
             --contact-surface-soft: rgba(17, 17, 19, 0.44);
             --contact-surface-strong: #0A0A0B;
-            --contact-border: #1A1A1E;
+            --contact-border: rgba(212, 168, 67, 0.28);
         }
 
         html[data-theme-resolved="light"] .contact-page {
@@ -26,12 +26,68 @@
             --contact-accent-soft: rgba(37, 99, 235, 0.08);
             --contact-accent-border: rgba(37, 99, 235, 0.22);
             --contact-accent-glow: rgba(37, 99, 235, 0.08);
-            --contact-text: #111827;
+            --contact-text: #0F172A;
             --contact-muted: #4B5563;
             --contact-surface: rgba(255, 255, 255, 0.92);
             --contact-surface-soft: rgba(255, 255, 255, 0.80);
             --contact-surface-strong: #FFFFFF;
-            --contact-border: #E5E7EB;
+            --contact-border: #CBD5E1;
+        }
+
+        /* Spacing & Typography Overrides */
+        .contact-page h1 {
+            font-size: clamp(2.2rem, 5vw, 3.2rem) !important;
+            line-height: 1.15 !important;
+        }
+        .contact-page p {
+            font-size: 15px !important;
+            line-height: 1.65 !important;
+        }
+        .contact-page ul {
+            font-size: 15px !important;
+        }
+        .contact-page ul li span {
+            font-size: 15px !important;
+            line-height: 1.7 !important;
+        }
+        .contact-page a, .contact-page button {
+            font-size: 14.5px !important;
+            font-weight: 600 !important;
+        }
+        .contact-page .contact-card h3,
+        .contact-page .contact-card-soft h3 {
+            font-size: 17px !important;
+            font-weight: 700 !important;
+        }
+        .contact-page .contact-card p,
+        .contact-page .contact-card-soft p {
+            font-size: 14.5px !important;
+            line-height: 1.65 !important;
+        }
+        .contact-page .contact-wa-card a,
+        .contact-page .contact-card a {
+            font-size: 15px !important;
+            font-weight: 600 !important;
+        }
+        .contact-page .contact-card h4 {
+            font-size: 16px !important;
+            font-weight: 700 !important;
+        }
+        .contact-page .contact-card .contact-muted p {
+            font-size: 15px !important;
+            line-height: 1.65 !important;
+        }
+        .contact-page .contact-card ol li {
+            font-size: 14.5px !important;
+            line-height: 1.7 !important;
+        }
+        .contact-page .contact-card-soft h4 {
+            font-size: 14.5px !important;
+            font-weight: 700 !important;
+        }
+        .contact-page .contact-card-soft p {
+            font-size: 14.5px !important;
+            line-height: 1.65 !important;
         }
 
         .contact-page-bg {
