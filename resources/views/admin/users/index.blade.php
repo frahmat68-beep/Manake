@@ -172,7 +172,7 @@
                     'subtitle' => 'Review user verification status and profile completion.',
                     'user' => 'User',
                     'email_status' => 'Email Status',
-                    'phone_status' => 'Phone Status',
+                    'phone_status' => 'Telepon',
                     'profile' => 'Profile',
                     'action' => 'Action',
                     'details' => 'Details',
@@ -271,10 +271,10 @@
                                     @endif
                                 </td>
                                 <td class="px-5 py-4 align-middle">
-                                    @if ($user->profile?->phone_verified_at)
-                                        <span class="status-chip status-chip-success">{{ $usersCopy['status']['verified'] }}</span>
+                                    @if ($user->profile?->phone)
+                                        <span class="status-chip status-chip-success">Tersedia</span>
                                     @else
-                                        <span class="status-chip status-chip-warning">{{ $usersCopy['status']['unverified'] }}</span>
+                                        <span class="status-chip status-chip-muted">Kosong</span>
                                     @endif
                                 </td>
                                 <td class="px-5 py-4 align-middle">

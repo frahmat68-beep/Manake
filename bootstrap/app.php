@@ -5,7 +5,7 @@ use App\Http\Middleware\AdminSuper;
 use App\Http\Middleware\CheckWebsiteMaintenance;
 use App\Http\Middleware\DisableAuthenticatedCache;
 use App\Http\Middleware\EnsureAuthenticatedForAccountFeature;
-use App\Http\Middleware\EnsureOtpVerified;
+
 use App\Http\Middleware\EnsureProfileCompleted;
 use App\Http\Middleware\ForceHttps;
 use App\Http\Middleware\RedirectToCanonicalDomain;
@@ -104,7 +104,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         }
 
         $middleware->alias([
-            'otp' => EnsureOtpVerified::class,
+
             'ensure.profile.completed' => EnsureProfileCompleted::class,
             'auth.feature' => EnsureAuthenticatedForAccountFeature::class,
             'role' => RoleMiddleware::class,

@@ -16,7 +16,6 @@ class Profile extends Model
         'date_of_birth',
         'gender',
         'phone',
-        'phone_verified_at',
         'address_line',
         'kelurahan',
         'kecamatan',
@@ -45,7 +44,6 @@ class Profile extends Model
     protected $casts = [
         'is_completed' => 'boolean',
         'date_of_birth' => 'date',
-        'phone_verified_at' => 'datetime',
         'completed_at' => 'datetime',
         'rental_consent_accepted_at' => 'datetime',
     ];

@@ -161,7 +161,6 @@ class ProfileController extends Controller
         $resolvedFullName = $existingFullName !== '' ? $existingFullName : $incomingFullName;
         $resolvedNik = $existingNik !== '' ? $existingNik : $incomingNik;
         $normalizedPhone = $this->normalizePhone($data['phone']);
-        $phoneChanged = $profile->phone !== $normalizedPhone;
 
         $profile->fill([
             'full_name' => $resolvedFullName,
@@ -191,10 +190,6 @@ class ProfileController extends Controller
             'emergency_contact' => $data['emergency_name'] . ' (' . $data['emergency_relation'] . ') - ' . $this->normalizePhone($data['emergency_phone']),
         ]);
 
-        if ($phoneChanged) {
-            $profile->phone_verified_at = null;
-        }
-
         $user->setRelation('profile', $profile);
         $profile->is_completed = $user->hasCompleteRentalProfile();
         $profile->completed_at = $profile->is_completed ? ($profile->completed_at ?: now()) : null;
@@ -209,12 +204,6 @@ class ProfileController extends Controller
             return redirect()
                 ->route('profile.complete')
                 ->with('warning', __('Profil berhasil disimpan. Verifikasi email terlebih dahulu sebelum memesan.'));
-        }
-
-        if (! $user->hasVerifiedPhone()) {
-            return redirect()
-                ->route('profile.complete')
-                ->with('warning', __('Profil tersimpan. Lanjutkan verifikasi nomor telepon sebelum memesan.'));
         }
 
         return redirect()

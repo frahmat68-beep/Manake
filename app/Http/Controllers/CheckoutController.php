@@ -62,9 +62,9 @@ class CheckoutController extends Controller
             ], 422);
         }
 
-        if (! $user->hasVerifiedPhone()) {
+        if (! optional($user->profile)->rental_consent_accepted_at) {
             return response()->json([
-                'message' => __('Nomor telepon belum terverifikasi. Silakan verifikasi OTP dulu.'),
+                'message' => __('Profil belum dilengkapi atau persetujuan tanggung jawab belum disetujui.'),
             ], 422);
         }
 

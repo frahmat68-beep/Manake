@@ -7,8 +7,8 @@
     $safeMapsUrl = trusted_map_embed_url((string) ($profile?->maps_url ?? ''), $profile?->address_text ?? null);
     $profileComplete = (bool) ($user?->hasCompleteRentalProfile() ?? false);
     $emailVerified = (bool) ($user?->hasVerifiedEmail() ?? false);
-    $phoneVerified = (bool) ($user?->hasVerifiedPhone() ?? false);
-    $allReady = $profileComplete && $emailVerified && $phoneVerified;
+    $consentAccepted = (bool) optional($profile)->rental_consent_accepted_at;
+    $allReady = $profileComplete && $emailVerified && $consentAccepted;
     $hasSavedProfile = (bool) (($profile?->exists ?? false) && array_filter([
         $profile?->full_name ?? $user?->name,
         $profile?->nik ?? $profile?->identity_number,
@@ -37,11 +37,11 @@
         'tone' => $emailVerified ? 'profile-status-done' : 'profile-status-pending',
     ];
 
-    $phoneStatus = [
-        'done' => $phoneVerified,
-        'label' => $phoneVerified ? 'Terverifikasi' : 'Belum',
-        'name' => 'Telepon Terverifikasi',
-        'tone' => $phoneVerified ? 'profile-status-done' : 'profile-status-pending',
+    $consentStatus = [
+        'done' => $consentAccepted,
+        'label' => $consentAccepted ? 'Disetujui' : 'Belum',
+        'name' => 'Persetujuan Tanggung Jawab',
+        'tone' => $consentAccepted ? 'profile-status-done' : 'profile-status-pending',
     ];
 @endphp
 
@@ -548,7 +548,7 @@
                         </div>
 
                         <div class="mt-5 space-y-3">
-                            @foreach ([$profileStatus, $emailStatus, $phoneStatus] as $item)
+                            @foreach ([$profileStatus, $emailStatus, $consentStatus] as $item)
                                 <div class="profile-inner flex items-center justify-between gap-4 rounded-2xl border px-4 py-3">
                                     <span class="text-sm font-medium profile-title">{{ $item['name'] }}</span>
                                     <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold {{ $item['tone'] }}">
@@ -563,9 +563,9 @@
                             @if (! $profileComplete)
                                 <p class="text-sm leading-6 profile-muted">Lengkapi dan simpan data profil terlebih dahulu.</p>
                             @elseif (! $emailVerified)
-                                <p class="text-sm leading-6 profile-muted">Verifikasi email terlebih dahulu sebelum melanjutkan ke verifikasi nomor telepon.</p>
-                            @elseif (! $phoneVerified)
-                                <p class="text-sm leading-6 profile-muted">Profil tersimpan. Lanjutkan verifikasi nomor telepon sebelum memesan.</p>
+                                <p class="text-sm leading-6 profile-muted">Verifikasi email terlebih dahulu untuk dapat memesan alat.</p>
+                            @elseif (! $consentAccepted)
+                                <p class="text-sm leading-6 profile-muted">Simpan profil untuk menyetujui pernyataan tanggung jawab sewa.</p>
                             @else
                                 <p class="text-sm leading-6 text-emerald-700 dark:text-emerald-200">Profil siap digunakan untuk pemesanan.</p>
                             @endif
@@ -593,47 +593,17 @@
                                 @endif
                             </div>
 
-                            <!-- Phone OTP Verification -->
+                            <!-- Nomor Telepon Penyewa -->
                             <div class="profile-inner rounded-2xl border p-4 space-y-3">
-                                <p class="text-sm font-semibold profile-title">Verifikasi Telepon</p>
-                                @if (! $phoneVerified)
-                                    @if ($emailVerified)
-                                        <!-- Form Kirim OTP -->
-                                        <form method="POST" action="{{ route('phone.otp.request') }}" class="space-y-2">
-                                            @csrf
-                                            <input type="hidden" name="phone" value="{{ $profile->phone ?? '' }}">
-                                            @if ($profile?->phone)
-                                                <button type="submit" class="profile-secondary-button inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition">
-                                                    Kirim OTP
-                                                </button>
-                                            @else
-                                                <p class="text-xs text-amber-500">Lengkapi nomor telepon Anda di form profil untuk mengirim OTP.</p>
-                                            @endif
-                                        </form>
-
-                                        @if ($profile?->phone)
-                                            <!-- Form Konfirmasi OTP -->
-                                            <form method="POST" action="{{ route('phone.otp.verify') }}" class="space-y-2">
-                                                @csrf
-                                                <div class="space-y-1">
-                                                    <label for="otp_input" class="block text-xs font-semibold profile-muted">Masukkan Kode OTP (6 digit)</label>
-                                                    <input id="otp_input" type="text" name="otp" pattern="[0-9]*" inputmode="numeric" maxlength="6" required placeholder="6 digit OTP" class="profile-input w-full px-4 py-2.5 text-sm">
-                                                </div>
-                                                <button type="submit" class="profile-accent-bg inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition">
-                                                    Konfirmasi OTP
-                                                </button>
-                                            </form>
-                                        @endif
-                                    @else
-                                        <p class="text-xs profile-muted">Selesaikan verifikasi email terlebih dahulu sebelum melakukan verifikasi telepon.</p>
-                                        <button disabled class="profile-secondary-button opacity-60 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold cursor-not-allowed">
-                                            Verifikasi OTP
-                                        </button>
-                                    @endif
+                                <p class="text-sm font-semibold profile-title">Nomor Telepon Penyewa</p>
+                                <p class="text-xs profile-muted leading-5">Nomor telepon wajib diisi sebagai kontak utama penyewa. Admin akan mencocokkan nomor telepon dan identitas fisik saat pengambilan alat.</p>
+                                @if ($profile?->phone)
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold profile-status-done">Nomor Tersimpan</span>
+                                        <span class="text-xs font-mono profile-muted">{{ $profile->phone }}</span>
+                                    </div>
                                 @else
-                                    <button disabled class="profile-secondary-button opacity-60 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold cursor-not-allowed">
-                                        Telepon Terverifikasi
-                                    </button>
+                                    <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold profile-status-pending">Belum Diisi</span>
                                 @endif
                             </div>
 

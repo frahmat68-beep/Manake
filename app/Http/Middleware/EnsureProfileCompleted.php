@@ -32,13 +32,13 @@ class EnsureProfileCompleted
         if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
             return redirect()
                 ->route('profile.complete')
-                ->with('warning', __('Verifikasi email terlebih dahulu sebelum checkout.'));
+                ->with('warning', __('Verifikasi email dan lengkapi profil sebelum melanjutkan pemesanan.'));
         }
 
-        if (! $user->hasVerifiedPhone()) {
+        if (! optional($user->profile)->rental_consent_accepted_at) {
             return redirect()
                 ->route('profile.complete')
-                ->with('warning', __('Verifikasi nomor telepon terlebih dahulu sebelum checkout.'));
+                ->with('warning', __('Setujui pernyataan tanggung jawab sewa sebelum melanjutkan pemesanan.'));
         }
 
         return $next($request);

@@ -9,13 +9,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use App\Mail\OtpMail;
 use Throwable;
 
 class RegisteredUserController extends Controller
@@ -65,9 +62,6 @@ class RegisteredUserController extends Controller
             $data['address'] = null;
         }
 
-        if (schema_column_exists_cached('users', 'is_otp_verified')) {
-            $data['is_otp_verified'] = ! config('security.otp_required');
-        }
 
         $user = User::create($data);
         event(new Registered($user));
@@ -81,7 +75,6 @@ class RegisteredUserController extends Controller
                 'date_of_birth' => null,
                 'gender' => null,
                 'phone' => null,
-                'phone_verified_at' => null,
                 'address_line' => null,
                 'kelurahan' => null,
                 'kecamatan' => null,
@@ -98,32 +91,6 @@ class RegisteredUserController extends Controller
                 'is_completed' => false,
                 'completed_at' => null,
             ]);
-        }
-
-        if (config('security.otp_required') && schema_column_exists_cached('users', 'is_otp_verified')) {
-            try {
-                $otp = $user->generateOtp();
-                Mail::to($user->email)->send(new OtpMail(
-                    otp: $otp,
-                    recipientName: (string) ($user->display_name ?? $user->name ?? 'Pelanggan Manake'),
-                    expiresInMinutes: max((int) config('security.otp_ttl_minutes', 5), 1),
-                ));
-                Log::info('Registration OTP sent.', [
-                    'user_id' => $user->id,
-                    'email' => $user->email,
-                ]);
-            } catch (Throwable $exception) {
-                Log::error('Registration OTP failed.', [
-                    'user_id' => $user->id,
-                    'email' => $user->email,
-                    'error' => $exception->getMessage(),
-                ]);
-            }
-            $request->session()->put('otp_verified', false);
-
-            return redirect()
-                ->route('otp.form')
-                ->with('status', __('Kode OTP sudah dikirim ke email kamu.'));
         }
 
         $request->session()->put('otp_verified', true);

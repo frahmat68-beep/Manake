@@ -393,8 +393,13 @@
                     </div>
 
                     <div class="admin-user-detail-field">
-                        <span class="admin-user-detail-label">{{ $userDetailCopy['profile']['phone_status'] }}</span>
-                        <p class="admin-user-detail-value">{!! $formatStatus((bool) ($profile?->phone_verified_at)) !!}</p>
+                        <span class="admin-user-detail-label">Nomor Telepon Tercatat</span>
+                        <p class="admin-user-detail-value">{{ $profile?->phone ?? '-' }}</p>
+                    </div>
+
+                    <div class="admin-user-detail-field">
+                        <span class="admin-user-detail-label">Persetujuan Tanggung Jawab</span>
+                        <p class="admin-user-detail-value">{!! $formatStatus((bool) optional($profile)->rental_consent_accepted_at) !!}</p>
                     </div>
 
                     <div class="admin-user-detail-field">

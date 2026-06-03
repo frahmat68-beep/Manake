@@ -112,12 +112,7 @@
                         </div>
                         <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
                             <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">No. Telepon</span>
-                            <span class="text-[#E8E8EC] font-semibold">
-                                {{ $p->phone ?? '-' }}
-                                <span class="ml-2 text-xs font-semibold px-2 py-0.5 rounded {{ $p->phone_verified_at ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300' }}">
-                                    {{ $p->phone_verified_at ? 'Terverifikasi' : 'Belum Verifikasi' }}
-                                </span>
-                            </span>
+                            <span class="text-[#E8E8EC] font-semibold">{{ $p->phone ?? '-' }}</span>
                         </div>
                         <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
                             <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Tanggal Lahir</span>
@@ -196,13 +191,15 @@
                         $p = $u?->profile;
                         
                         $isEmailVerified = (bool) ($u?->email_verified_at);
-                        $isPhoneVerified = (bool) ($p?->phone_verified_at);
+                        $isConsentAccepted = (bool) optional($p)->rental_consent_accepted_at;
+                        $isPhoneAvailable = (bool) ($p?->phone);
                         $isProfileComplete = (bool) ($u?->hasCompleteRentalProfile());
                         $isEmergencyAvailable = (bool) ($p?->emergency_name && $p?->emergency_phone);
                         $isAddressAvailable = (bool) ($p?->address_line || $p?->address);
                         $isPaymentPaid = $order->status_pembayaran === 'paid';
                         $isReadyForPickup = in_array($order->status_pesanan, ['lunas', 'barang_diambil', 'barang_kembali', 'selesai']);
                     @endphp
+                    <p class="text-xs text-amber-400/80 italic mt-1">Admin wajib mencocokkan identitas fisik penyewa, nomor telepon, dan data profil saat pengambilan alat.</p>
                     <ul class="text-xs space-y-1.5 mt-2">
                         <li class="flex items-center gap-2">
                             <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isEmailVerified ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
@@ -211,16 +208,22 @@
                             <span class="{{ $isEmailVerified ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Email Terverifikasi</span>
                         </li>
                         <li class="flex items-center gap-2">
-                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isPhoneVerified ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
-                                {!! $isPhoneVerified ? '✓' : '✗' !!}
+                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isConsentAccepted ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
+                                {!! $isConsentAccepted ? '✓' : '✗' !!}
                             </span>
-                            <span class="{{ $isPhoneVerified ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Telepon/OTP Terverifikasi</span>
+                            <span class="{{ $isConsentAccepted ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Persetujuan Tanggung Jawab</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isProfileComplete ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
                                 {!! $isProfileComplete ? '✓' : '✗' !!}
                             </span>
                             <span class="{{ $isProfileComplete ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Profil Lengkap</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isPhoneAvailable ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
+                                {!! $isPhoneAvailable ? '✓' : '✗' !!}
+                            </span>
+                            <span class="{{ $isPhoneAvailable ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Nomor Telepon Tersedia</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isEmergencyAvailable ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">

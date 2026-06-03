@@ -107,14 +107,6 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('admin.dashboard'));
         }
 
-        if (config('security.otp_required') && schema_column_exists_cached('users', 'is_otp_verified')) {
-            if (! (bool) $user->is_otp_verified) {
-                $request->session()->put('otp_verified', false);
-
-                return redirect()->route('otp.form');
-            }
-        }
-
         $request->session()->put('otp_verified', true);
 
         $user->loadMissing('profile');

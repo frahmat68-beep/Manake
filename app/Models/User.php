@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Schema;
 use Throwable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -26,9 +24,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'nik',
         'phone',
         'address',
-        'otp_code',
-        'otp_expires_at',
-        'is_otp_verified',
         'google_id',
         'google_token',
         'google_refresh_token',
@@ -42,36 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'otp_expires_at' => 'datetime',
-        'is_otp_verified' => 'boolean',
     ];
-
-    public function generateOtp()
-    {
-        $ttlMinutes = max((int) config('security.otp_ttl_minutes', 5), 1);
-        $otp = random_int(100000, 999999);
-
-        $this->otp_code = Hash::make((string) $otp);
-        $this->otp_expires_at = now()->addMinutes($ttlMinutes);
-        $this->is_otp_verified = false;
-        $this->save();
-
-        return $otp;
-    }
-
-    public function otpIsExpired(): bool
-    {
-        return $this->otp_expires_at && now()->greaterThan($this->otp_expires_at);
-    }
-
-    public function clearOtp()
-    {
-        $this->update([
-            'otp_code' => null,
-            'otp_expires_at' => null,
-            'is_otp_verified' => true,
-        ]);
-    }
 
     public function profile(): HasOne
     {
@@ -86,21 +52,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function orderNotifications(): HasMany
     {
         return $this->hasMany(OrderNotification::class);
-    }
-
-    public function phoneVerification(): HasOne
-    {
-        return $this->hasOne(PhoneVerification::class);
-    }
-
-    public function hasVerifiedPhone(): bool
-    {
-        $profile = $this->profile;
-        if (! $profile) {
-            return false;
-        }
-
-        return $profile->phone_verified_at !== null;
     }
 
     public function hasCompleteRentalProfile(): bool
@@ -148,7 +99,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasCompleteRentalProfile()
             && $this->hasVerifiedEmail()
-            && $this->hasVerifiedPhone();
+            && (bool) optional($this->profile)->rental_consent_accepted_at;
     }
 
     public function getDisplayNameAttribute(): string

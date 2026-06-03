@@ -88,7 +88,7 @@ Route::middleware('auth.feature')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'otp'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/overview', [OverviewController::class, 'redirect'])->name('overview');
 
     Route::get('/dashboard', [OverviewController::class, 'redirect'])->name('dashboard');
@@ -131,7 +131,7 @@ Route::middleware(['auth', 'otp'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'otp', 'ensure.profile.completed'])->group(function () {
+Route::middleware(['auth', 'ensure.profile.completed'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 });

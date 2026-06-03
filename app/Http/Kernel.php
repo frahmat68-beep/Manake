@@ -24,7 +24,7 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.feature' => \App\Http\Middleware\EnsureAuthenticatedForAccountFeature::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'otp' => \App\Http\Middleware\OtpMiddleware::class,
+
         'ensure.profile.completed' => \App\Http\Middleware\EnsureProfileCompleted::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'admin.auth' => \App\Http\Middleware\AdminAuthenticate::class,
