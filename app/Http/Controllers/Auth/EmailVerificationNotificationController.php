@@ -17,7 +17,7 @@ class EmailVerificationNotificationController extends Controller
     public function store(Request $request): RedirectResponse
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->route('profile.complete');
         }
 
         $user = $request->user();
@@ -60,6 +60,6 @@ class EmailVerificationNotificationController extends Controller
             ]);
         }
 
-        return back()->with('status', 'verification-link-sent');
+        return back()->with('success', __('Link verifikasi email berhasil dikirim.'));
     }
 }

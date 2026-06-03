@@ -16,6 +16,7 @@ class BookingOverviewUiTest extends TestCase
 
     public function test_booking_history_uses_detail_for_active_and_invoice_for_recent(): void
     {
+        app()->setLocale('id');
         $user = User::factory()->create();
         $category = Category::create([
             'name' => 'UI Test Category',
@@ -55,10 +56,12 @@ class BookingOverviewUiTest extends TestCase
             'rental_days' => 2,
         ]);
 
-        $response = $this->actingAs($user)->get(route('booking.history'));
+        $response = $this->actingAs($user)
+            ->withSession(['locale' => 'id'])
+            ->get(route('booking.history'));
 
         $response->assertOk();
-        $response->assertSee('Detail & Ubah Jadwal', false);
+        $response->assertSee('Detail & Ubah Jadwal');
         $response->assertSee('Invoice');
         $response->assertSee('MNK-UI-TEST-1');
     }

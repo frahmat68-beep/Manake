@@ -49,6 +49,7 @@ class CheckoutProfileGateTest extends TestCase
             'emergency_name' => 'Alya',
             'emergency_relation' => 'Saudara',
             'emergency_phone' => '081234000000',
+            'rental_responsibility_consent' => 1,
         ];
     }
 
@@ -81,7 +82,7 @@ class CheckoutProfileGateTest extends TestCase
 
         $response = $this->get(route('checkout'));
 
-        $response->assertRedirect(route('profile'));
+        $response->assertRedirect(route('profile.complete'));
     }
 
     public function test_incomplete_profile_cannot_add_item_to_cart(): void
@@ -98,7 +99,7 @@ class CheckoutProfileGateTest extends TestCase
             'rental_end_date' => now()->addDays(2)->toDateString(),
         ]);
 
-        $response->assertRedirect(route('profile'));
+        $response->assertRedirect(route('profile.complete'));
         $response->assertSessionHas('warning', __('Lengkapi profil penyewaan sebelum memesan alat.'));
     }
 
@@ -124,11 +125,12 @@ class CheckoutProfileGateTest extends TestCase
             'emergency_name' => 'Alya',
             'emergency_relation' => 'Saudara',
             'emergency_phone' => '081234000000',
+            'rental_responsibility_consent' => 1,
         ];
 
         $response = $this->post(route('profile.complete.store'), $payload);
 
-        $response->assertRedirect(route('profile'));
+        $response->assertRedirect(route('profile.complete'));
 
         $this->assertDatabaseHas('profiles', [
             'user_id' => $user->id,
@@ -159,10 +161,10 @@ class CheckoutProfileGateTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->post(route('profile.complete.store'), $this->completeProfilePayload());
-        $response->assertRedirect(route('profile'));
+        $response->assertRedirect(route('profile.complete'));
 
         $checkoutResponse = $this->get(route('checkout'));
-        $checkoutResponse->assertRedirect(route('profile'));
+        $checkoutResponse->assertRedirect(route('profile.complete'));
     }
 
     public function test_authenticated_user_with_unverified_phone_cannot_add_item_to_cart(): void
@@ -188,7 +190,7 @@ class CheckoutProfileGateTest extends TestCase
             'rental_end_date' => now()->addDays(2)->toDateString(),
         ]);
 
-        $response->assertRedirect(route('profile'));
+        $response->assertRedirect(route('profile.complete'));
         $response->assertSessionHas('warning', __('Verifikasi nomor telepon terlebih dahulu sebelum checkout.'));
     }
 
@@ -207,7 +209,7 @@ class CheckoutProfileGateTest extends TestCase
         $this->actingAs($user);
         $response = $this->get(route('checkout'));
 
-        $response->assertRedirect(route('profile'));
+        $response->assertRedirect(route('profile.complete'));
     }
 
     public function test_authenticated_user_with_unverified_email_cannot_add_item_to_cart(): void
@@ -233,7 +235,7 @@ class CheckoutProfileGateTest extends TestCase
             'rental_end_date' => now()->addDays(2)->toDateString(),
         ]);
 
-        $response->assertRedirect(route('profile'));
+        $response->assertRedirect(route('profile.complete'));
         $response->assertSessionHas('warning', __('Verifikasi email terlebih dahulu sebelum checkout.'));
     }
 

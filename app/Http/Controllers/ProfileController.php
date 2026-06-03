@@ -37,7 +37,6 @@ class ProfileController extends Controller
     {
         $profile = null;
         $profilesTableMissing = ! schema_table_exists_cached('profiles');
-        $canonicalRoute = 'profile';
 
         if (! $profilesTableMissing && $request->user()) {
             $profile = $request->user()->profile()->firstOrCreate([], [
@@ -45,14 +44,10 @@ class ProfileController extends Controller
             ]);
 
             $request->user()->setRelation('profile', $profile);
-
-            if ($request->user()->hasVerifiedRentalIdentity()) {
-                $canonicalRoute = 'profile.complete';
-            }
         }
 
-        if ($request->route()?->getName() !== $canonicalRoute) {
-            return redirect()->route($canonicalRoute);
+        if ($request->route()?->getName() === 'profile') {
+            return redirect()->route('profile.complete');
         }
 
         return view('profile.complete', [
@@ -132,6 +127,7 @@ class ProfileController extends Controller
             'instagram_handle' => ['nullable', 'string', 'max:100'],
             'organization_name' => ['nullable', 'string', 'max:150'],
             'organization_type' => ['nullable', 'string', 'max:80'],
+            'rental_responsibility_consent' => ['required', 'accepted'],
         ], [
             'nik.regex' => __('NIK harus 16 digit angka.'),
             'nik.unique' => __('NIK sudah terdaftar.'),
@@ -139,6 +135,8 @@ class ProfileController extends Controller
             'emergency_phone.regex' => __('Format nomor kontak darurat tidak valid.'),
             'alternative_phone.regex' => __('Format nomor telepon alternatif tidak valid.'),
             'maps_url.url' => __('Link Google Maps tidak valid.'),
+            'rental_responsibility_consent.required' => __('Anda harus menyetujui pernyataan tanggung jawab sewa.'),
+            'rental_responsibility_consent.accepted' => __('Anda harus menyetujui pernyataan tanggung jawab sewa.'),
         ]);
 
         $incomingFullName = trim((string) ($data['full_name'] ?? ''));
@@ -148,14 +146,14 @@ class ProfileController extends Controller
 
         if ($existingFullName !== '' && strcasecmp($existingFullName, $incomingFullName) !== 0) {
             return redirect()
-                ->route('profile', ['edit' => 1])
+                ->route('profile.complete', ['edit' => 1])
                 ->withInput()
                 ->with('error', __('Nama yang sudah tersimpan tidak dapat diubah demi keamanan data.'));
         }
 
         if ($existingNik !== '' && $existingNik !== $incomingNik) {
             return redirect()
-                ->route('profile', ['edit' => 1])
+                ->route('profile.complete', ['edit' => 1])
                 ->withInput()
                 ->with('error', __('NIK yang sudah tersimpan tidak dapat diubah demi keamanan data.'));
         }
@@ -185,6 +183,8 @@ class ProfileController extends Controller
             'instagram_handle' => $data['instagram_handle'] ?? null,
             'organization_name' => $data['organization_name'] ?? null,
             'organization_type' => $data['organization_type'] ?? null,
+            'rental_consent_accepted_at' => now(),
+            'rental_consent_ip' => $request->ip(),
             // Backward-compatible fields
             'identity_number' => $resolvedNik,
             'address' => $data['address_line'],
@@ -207,13 +207,13 @@ class ProfileController extends Controller
 
         if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
             return redirect()
-                ->route('profile')
+                ->route('profile.complete')
                 ->with('warning', __('Profil berhasil disimpan. Verifikasi email terlebih dahulu sebelum memesan.'));
         }
 
         if (! $user->hasVerifiedPhone()) {
             return redirect()
-                ->route('profile')
+                ->route('profile.complete')
                 ->with('warning', __('Profil tersimpan. Lanjutkan verifikasi nomor telepon sebelum memesan.'));
         }
 
@@ -256,7 +256,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile')->with('status', 'profile-updated');
+        return Redirect::route('profile.complete')->with('status', 'profile-updated');
     }
 
     /**

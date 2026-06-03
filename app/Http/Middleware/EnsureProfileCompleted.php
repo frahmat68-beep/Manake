@@ -19,25 +19,25 @@ class EnsureProfileCompleted
 
         if (! schema_table_exists_cached('profiles')) {
             return redirect()
-                ->route('profile')
+                ->route('profile.complete')
                 ->with('error', __('Profil belum siap, jalankan migrasi terlebih dahulu.'));
         }
 
         if (! $user->hasCompleteRentalProfile()) {
             return redirect()
-                ->route('profile')
+                ->route('profile.complete')
                 ->with('warning', __('Lengkapi profil penyewaan sebelum memesan alat.'));
         }
 
         if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
             return redirect()
-                ->route('profile')
+                ->route('profile.complete')
                 ->with('warning', __('Verifikasi email terlebih dahulu sebelum checkout.'));
         }
 
         if (! $user->hasVerifiedPhone()) {
             return redirect()
-                ->route('profile')
+                ->route('profile.complete')
                 ->with('warning', __('Verifikasi nomor telepon terlebih dahulu sebelum checkout.'));
         }
 

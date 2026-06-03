@@ -518,6 +518,18 @@
                         </div>
                     </article>
 
+                    <div class="profile-card-in space-y-3 animate-delay-[180ms] rounded-2xl border p-4 mb-4" style="border-color: var(--profile-border); background: var(--profile-surface);">
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="checkbox" name="rental_responsibility_consent" value="1" required @checked(old('rental_responsibility_consent') || ($profile?->rental_consent_accepted_at ?? false)) class="mt-1 rounded border-gray-300 text-[var(--profile-accent)] focus:ring-[var(--profile-accent)]">
+                            <span class="text-xs sm:text-sm leading-relaxed profile-muted">
+                                Saya menyatakan data yang saya isi benar dan dapat digunakan Manake untuk verifikasi penyewaan, pengambilan alat, pengembalian alat, serta penanganan keterlambatan, kerusakan, atau kehilangan barang.
+                            </span>
+                        </label>
+                        @error('rental_responsibility_consent')
+                            <p class="text-xs text-rose-300 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div class="profile-card-in flex flex-col gap-3 sm:flex-row animate-delay-[210ms]">
                         <button type="submit" class="profile-accent-bg inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-sm font-semibold transition focus:outline-none">
                             {{ $profileCopy['save_profile'] }}

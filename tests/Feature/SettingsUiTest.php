@@ -48,9 +48,9 @@ class SettingsUiTest extends TestCase
             $response = $this->actingAs($admin, 'admin')->get(route($routeName));
 
             $response->assertOk();
-            $response->assertSee('Pengaturan Situs');
+            $response->assertSee('Pengaturan Website');
             $response->assertSee('Brand');
-            $response->assertSee('Preview');
+            $response->assertSee(__('ui.admin_website_settings.preview.title'));
             $response->assertSee('Maintenance');
         }
     }

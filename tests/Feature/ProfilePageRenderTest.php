@@ -31,7 +31,7 @@ class ProfilePageRenderTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get(route('profile'));
+        $response = $this->get(route('profile.complete'));
 
         $response->assertOk();
         $response->assertSee(__('ui.profile_complete.saved_badge'));

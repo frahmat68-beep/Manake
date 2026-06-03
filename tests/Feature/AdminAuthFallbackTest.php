@@ -14,6 +14,8 @@ class AdminAuthFallbackTest extends TestCase
 
     public function test_admin_login_can_fallback_from_users_table_and_sync_admin_record(): void
     {
+        config(['admin.sync_from_users' => true]);
+
         User::factory()->create([
             'email' => 'role-admin@example.com',
             'password' => Hash::make('secret123'),

@@ -34,8 +34,8 @@ class PrelaunchReadinessTest extends TestCase
 
         $this->get(route('login'))
             ->assertOk()
-            ->assertSee('Masuk Manake')
-            ->assertSee('Lupa password?')
+            ->assertSee(__('ui.auth.login_title'))
+            ->assertSee(__('ui.auth.forgot_password'))
             ->assertDontSee('Manake Login');
 
         $this->assertSame('id', app()->getLocale());

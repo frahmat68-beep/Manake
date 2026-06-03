@@ -31,6 +31,8 @@ class Profile extends Model
         'instagram_handle',
         'organization_name',
         'organization_type',
+        'rental_consent_accepted_at',
+        'rental_consent_ip',
         // Legacy fallback fields
         'address',
         'notes',
@@ -45,6 +47,7 @@ class Profile extends Model
         'date_of_birth' => 'date',
         'phone_verified_at' => 'datetime',
         'completed_at' => 'datetime',
+        'rental_consent_accepted_at' => 'datetime',
     ];
 
     public function user()

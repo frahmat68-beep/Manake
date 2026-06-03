@@ -32,6 +32,15 @@ class PaymentCallbackAndOtpTest extends TestCase
             'midtrans_order_id' => 'MNK-TEST-123',
         ]);
 
+        Payment::create([
+            'order_id' => $order->id,
+            'provider' => 'midtrans',
+            'midtrans_order_id' => $order->midtrans_order_id,
+            'gross_amount' => 250000,
+            'status' => 'pending',
+            'transaction_status' => 'pending',
+        ]);
+
         $payload = [
             'order_id' => $order->midtrans_order_id,
             'status_code' => '200',
@@ -77,6 +86,15 @@ class PaymentCallbackAndOtpTest extends TestCase
             'rental_start_date' => now()->toDateString(),
             'rental_end_date' => now()->toDateString(),
             'midtrans_order_id' => 'MNK-IDEMPOTENT-1',
+        ]);
+
+        Payment::create([
+            'order_id' => $order->id,
+            'provider' => 'midtrans',
+            'midtrans_order_id' => $order->midtrans_order_id,
+            'gross_amount' => 350000,
+            'status' => 'pending',
+            'transaction_status' => 'pending',
         ]);
 
         $payload = [
@@ -245,7 +263,7 @@ class PaymentCallbackAndOtpTest extends TestCase
             'otp' => '123456',
         ]);
 
-        $response->assertRedirect(route('profile'));
+        $response->assertRedirect(route('profile.complete'));
 
         $user->refresh();
         $this->assertTrue((bool) $user->is_otp_verified);
