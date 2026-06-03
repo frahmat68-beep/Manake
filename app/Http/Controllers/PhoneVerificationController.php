@@ -107,9 +107,16 @@ class PhoneVerificationController extends Controller
             return back()->withErrors(['phone' => __('Gagal mengirim OTP. Silakan coba lagi beberapa saat.')]);
         }
 
-        return back()->with('status', __('OTP dikirim ke nomor :phone. (Mode dev: cek laravel.log)', [
-            'phone' => $normalizedPhone,
-        ]));
+        $driver = env('PHONE_OTP_DRIVER', 'mail');
+        $isLocal = app()->environment('local') || env('APP_ENV') === 'local';
+
+        if ($driver === 'log' || $isLocal) {
+            $statusMsg = __('Mode demo: kode OTP verifikasi telepon tersedia di log aplikasi.');
+        } else {
+            $statusMsg = __('Kode OTP verifikasi telepon dikirim ke email akun Anda.');
+        }
+
+        return back()->with('status', $statusMsg);
     }
 
     public function verifyOtp(Request $request): RedirectResponse
