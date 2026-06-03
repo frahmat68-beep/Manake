@@ -69,8 +69,7 @@ class AvailabilityBoardController extends Controller
                 });
             }
 
-            // Limit equipments for performance
-            $equipments = $equipmentQuery->limit(24)->get();
+            $equipments = $equipmentQuery->get();
             $equipmentIds = $equipments->pluck('id')->all();
 
             $allReservations = [];
@@ -306,10 +305,22 @@ class AvailabilityBoardController extends Controller
             ->with(['equipment', 'order'])
             ->whereIn('equipment_id', $equipmentIds->all())
             ->whereHas('order', function ($query) use ($calendarStart, $calendarEnd) {
+                $holdCutoff = now()->subMinutes(60);
                 $query
-                    ->whereIn('status_pesanan', Order::HOLD_SLOT_STATUSES)
                     ->whereDate('rental_start_date', '<=', $calendarEnd->toDateString())
-                    ->whereDate('rental_end_date', '>=', $calendarStart->toDateString());
+                    ->whereDate('rental_end_date', '>=', $calendarStart->toDateString())
+                    ->where(function ($statusQuery) use ($holdCutoff) {
+                        $statusQuery->where(function ($pendingQuery) use ($holdCutoff) {
+                            $pendingQuery->where('status_pesanan', 'menunggu_pembayaran')
+                                ->where('created_at', '>=', $holdCutoff);
+                        })->orWhereIn('status_pesanan', [
+                            'diproses',
+                            'lunas',
+                            'barang_diambil',
+                            'barang_rusak',
+                            'barang_hilang',
+                        ]);
+                    });
             })
             ->latest('id')
             ->limit(180)

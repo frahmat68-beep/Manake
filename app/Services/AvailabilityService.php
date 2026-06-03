@@ -20,6 +20,7 @@ class AvailabilityService
         'lunas',
         'barang_diambil',
         'barang_rusak',
+        'barang_hilang',
     ];
 
     public function evaluateRange(Equipment $equipment, Carbon|string $startDate, Carbon|string $endDate, int $requestedQty = 1, ?int $ignoreOrderId = null): array
