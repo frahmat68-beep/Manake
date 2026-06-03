@@ -117,7 +117,24 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->put('otp_verified', true);
 
-        return redirect()->intended(route('booking.history'));
+        $intendedUrl = redirect()->intended()->getTargetUrl();
+        $safeInternalUrl = null;
+        if ($intendedUrl) {
+            $parsed = parse_url($intendedUrl);
+            $currentHost = $request->getHost();
+            $intendedHost = $parsed['host'] ?? null;
+            if ($intendedHost === null || $intendedHost === $currentHost) {
+                $path = $parsed['path'] ?? '/';
+                if (!in_array($path, ['/login', '/register', '/logout', '/profile', '/profile/complete'], true)) {
+                    $safeInternalUrl = $path . (isset($parsed['query']) ? '?' . $parsed['query'] : '');
+                }
+            }
+        }
+        if ($safeInternalUrl) {
+            session(['after_profile_redirect' => $safeInternalUrl]);
+        }
+
+        return redirect()->route('profile.complete');
     }
 
 

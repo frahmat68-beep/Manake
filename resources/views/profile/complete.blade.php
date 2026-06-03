@@ -23,34 +23,26 @@
     $warningMessage = session('warning');
     $errorMessage = session('error');
 
-    $statusBadge = static function (bool $done, string $label, string $pendingLabel) use ($profileCopy) {
-        $tone = $done ? 'profile-status-done' : 'profile-status-pending';
+    $profileStatus = [
+        'done' => $profileComplete,
+        'label' => $profileComplete ? 'Selesai' : 'Belum',
+        'name' => 'Profil Lengkap',
+        'tone' => $profileComplete ? 'profile-status-done' : 'profile-status-pending',
+    ];
 
-        return [
-            'tone' => $tone,
-            'label' => $done ? $profileCopy['status_finished'] : $pendingLabel,
-            'name' => $label,
-            'done' => $done,
-        ];
-    };
+    $emailStatus = [
+        'done' => $emailVerified,
+        'label' => $emailVerified ? 'Terverifikasi' : 'Belum',
+        'name' => 'Email Terverifikasi',
+        'tone' => $emailVerified ? 'profile-status-done' : 'profile-status-pending',
+    ];
 
-    $profileStatus = $statusBadge(
-        $profileComplete,
-        $profileCopy['status_profile_complete'],
-        $profileCopy['status_pending']
-    );
-
-    $emailStatus = $statusBadge(
-        $emailVerified,
-        $profileCopy['status_email_verified'],
-        $profileCopy['status_need_verification']
-    );
-
-    $phoneStatus = $statusBadge(
-        $phoneVerified,
-        $profileCopy['status_phone_verified'],
-        $profileCopy['status_need_verification']
-    );
+    $phoneStatus = [
+        'done' => $phoneVerified,
+        'label' => $phoneVerified ? 'Terverifikasi' : 'Belum',
+        'name' => 'Telepon Terverifikasi',
+        'tone' => $phoneVerified ? 'profile-status-done' : 'profile-status-pending',
+    ];
 @endphp
 
 @push('head')
@@ -523,39 +515,108 @@
                             @endforeach
                         </div>
 
+                        <!-- Status message & helpers -->
                         <div class="profile-inner mt-5 rounded-2xl border p-4">
                             @if (! $profileComplete)
-                                <p class="text-sm leading-6 profile-muted">{{ $profileCopy['sidebar_profile_incomplete'] }}</p>
+                                <p class="text-sm leading-6 profile-muted">Lengkapi dan simpan data profil terlebih dahulu.</p>
                             @elseif (! $emailVerified)
-                                <p class="text-sm leading-6 profile-muted">{{ $profileCopy['sidebar_email_unverified'] }}</p>
+                                <p class="text-sm leading-6 profile-muted">Verifikasi email terlebih dahulu sebelum melanjutkan ke verifikasi nomor telepon.</p>
                             @elseif (! $phoneVerified)
-                                <p class="text-sm leading-6 profile-muted">{{ $profileCopy['sidebar_phone_unverified'] }}</p>
+                                <p class="text-sm leading-6 profile-muted">Profil tersimpan. Lanjutkan verifikasi nomor telepon sebelum memesan.</p>
                             @else
-                                <p class="text-sm leading-6 text-emerald-700 dark:text-emerald-200">{{ $profileCopy['sidebar_ready'] }}</p>
+                                <p class="text-sm leading-6 text-emerald-700 dark:text-emerald-200">Profil siap digunakan untuk pemesanan.</p>
                             @endif
                         </div>
 
-                        <div class="mt-4 space-y-3">
-                            @if (! $emailVerified)
-                                <form method="POST" action="{{ route('verification.send') }}">
-                                    @csrf
-                                    <button type="submit" class="profile-secondary-button inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition">
-                                        {{ $profileCopy['verify_email'] }}
+                        <!-- Action Buttons and Forms -->
+                        <div class="mt-4 space-y-4">
+                            <!-- Email verification -->
+                            <div class="profile-inner rounded-2xl border p-4 space-y-3">
+                                <p class="text-sm font-semibold profile-title">Verifikasi Email</p>
+                                @if (! $emailVerified)
+                                    <form method="POST" action="{{ route('verification.send') }}" class="space-y-2">
+                                        @csrf
+                                        <button type="submit" class="profile-accent-bg inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition">
+                                            Verifikasi Email
+                                        </button>
+                                        <button type="submit" class="profile-secondary-button inline-flex w-full items-center justify-center rounded-xl px-4 py-2 text-xs font-medium transition">
+                                            Kirim Ulang Link Verifikasi
+                                        </button>
+                                    </form>
+                                @else
+                                    <button disabled class="profile-secondary-button opacity-60 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold cursor-not-allowed">
+                                        Email Terverifikasi
                                     </button>
-                                </form>
-                            @endif
+                                @endif
+                            </div>
 
-                            @if ($emailVerified && ! $phoneVerified)
-                                <a href="{{ route('phone.verify') }}" class="profile-accent-bg inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition">
-                                    {{ $profileCopy['verify_phone'] }}
-                                </a>
-                            @endif
+                            <!-- Phone OTP Verification -->
+                            <div class="profile-inner rounded-2xl border p-4 space-y-3">
+                                <p class="text-sm font-semibold profile-title">Verifikasi Telepon</p>
+                                @if (! $phoneVerified)
+                                    @if ($emailVerified)
+                                        <!-- Form Kirim OTP -->
+                                        <form method="POST" action="{{ route('phone.otp.request') }}" class="space-y-2">
+                                            @csrf
+                                            <input type="hidden" name="phone" value="{{ $profile->phone ?? '' }}">
+                                            @if ($profile?->phone)
+                                                <button type="submit" class="profile-secondary-button inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition">
+                                                    Kirim OTP
+                                                </button>
+                                            @else
+                                                <p class="text-xs text-amber-500">Lengkapi nomor telepon Anda di form profil untuk mengirim OTP.</p>
+                                            @endif
+                                        </form>
 
-                            @if ($allReady)
-                                <a href="{{ route('catalog') }}" class="profile-accent-bg inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition">
-                                    {{ $profileCopy['open_catalog'] }}
-                                </a>
-                            @endif
+                                        @if ($profile?->phone)
+                                            <!-- Form Konfirmasi OTP -->
+                                            <form method="POST" action="{{ route('phone.otp.verify') }}" class="space-y-2">
+                                                @csrf
+                                                <div class="space-y-1">
+                                                    <label for="otp_input" class="block text-xs font-semibold profile-muted">Masukkan Kode OTP (6 digit)</label>
+                                                    <input id="otp_input" type="text" name="otp" pattern="[0-9]*" inputmode="numeric" maxlength="6" required placeholder="6 digit OTP" class="profile-input w-full px-4 py-2.5 text-sm">
+                                                </div>
+                                                <button type="submit" class="profile-accent-bg inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition">
+                                                    Konfirmasi OTP
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @else
+                                        <p class="text-xs profile-muted">Selesaikan verifikasi email terlebih dahulu sebelum melakukan verifikasi telepon.</p>
+                                        <button disabled class="profile-secondary-button opacity-60 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold cursor-not-allowed">
+                                            Verifikasi OTP
+                                        </button>
+                                    @endif
+                                @else
+                                    <button disabled class="profile-secondary-button opacity-60 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold cursor-not-allowed">
+                                        Telepon Terverifikasi
+                                    </button>
+                                @endif
+                            </div>
+
+                            <!-- Lanjutkan / Continue CTA -->
+                            <div class="mt-6 pt-4 border-t border-[var(--profile-border)]">
+                                @if ($allReady)
+                                    <a href="{{ route('profile.continue') }}" class="profile-accent-bg inline-flex w-full items-center justify-center rounded-xl px-4 py-3.5 text-sm font-semibold transition shadow-md">
+                                        @if (session('after_profile_redirect'))
+                                            Lanjutkan Proses Sewa
+                                        @else
+                                            Buka Katalog
+                                        @endif
+                                    </a>
+                                @else
+                                    <div class="space-y-2">
+                                        <p class="text-xs text-rose-400 font-medium">Lengkapi profil dan verifikasi akun sebelum melanjutkan pemesanan.</p>
+                                        <button disabled class="profile-secondary-button opacity-50 inline-flex w-full items-center justify-center rounded-xl px-4 py-3.5 text-sm font-semibold cursor-not-allowed">
+                                            @if (session('after_profile_redirect'))
+                                                Lanjutkan Proses Sewa
+                                            @else
+                                                Buka Katalog
+                                            @endif
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                     </article>
 

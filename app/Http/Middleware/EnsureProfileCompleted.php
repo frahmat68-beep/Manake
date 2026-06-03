@@ -31,13 +31,13 @@ class EnsureProfileCompleted
 
         if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
             return redirect()
-                ->route('verification.notice')
+                ->route('profile')
                 ->with('warning', __('Verifikasi email terlebih dahulu sebelum checkout.'));
         }
 
         if (! $user->hasVerifiedPhone()) {
             return redirect()
-                ->route('phone.verify')
+                ->route('profile')
                 ->with('warning', __('Verifikasi nomor telepon terlebih dahulu sebelum checkout.'));
         }
 

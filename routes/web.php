@@ -95,6 +95,7 @@ Route::middleware(['auth', 'otp'])->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'complete'])->name('profile');
     Route::get('/profile/complete', [ProfileController::class, 'complete'])->name('profile.complete');
+    Route::get('/profile/continue', [ProfileController::class, 'continueWorkflow'])->name('profile.continue');
     Route::post('/profile', [ProfileController::class, 'storeCompletion'])->name('profile.store');
     Route::post('/profile/complete', [ProfileController::class, 'storeCompletion'])->name('profile.complete.store');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

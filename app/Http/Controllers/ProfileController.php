@@ -63,6 +63,27 @@ class ProfileController extends Controller
     }
 
     /**
+     * Continue workflow after verification is completed.
+     */
+    public function continueWorkflow(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        if ($user && $user->hasVerifiedRentalIdentity()) {
+            $redirectUrl = session()->pull('after_profile_redirect');
+            if ($redirectUrl) {
+                $parsed = parse_url($redirectUrl);
+                $path = $parsed['path'] ?? '/';
+                if (!in_array($path, ['/login', '/register', '/logout', '/profile', '/profile/complete'], true)) {
+                    return redirect($redirectUrl);
+                }
+            }
+            return redirect()->route('catalog');
+        }
+
+        return redirect()->route('profile')->with('warning', __('Lengkapi profil dan verifikasi akun terlebih dahulu.'));
+    }
+
+    /**
      * Store profile completion data.
      */
     public function storeCompletion(Request $request): RedirectResponse
@@ -183,7 +204,7 @@ class ProfileController extends Controller
 
         if (! $user->hasVerifiedPhone()) {
             return redirect()
-                ->route('phone.verify')
+                ->route('profile')
                 ->with('warning', __('Profil tersimpan. Lanjutkan verifikasi nomor telepon sebelum memesan.'));
         }
 
