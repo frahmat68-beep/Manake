@@ -128,11 +128,16 @@ class ProfileController extends Controller
             'emergency_name' => ['required', 'string', 'max:120'],
             'emergency_relation' => ['required', 'string', 'max:80'],
             'emergency_phone' => ['required', 'regex:/^(\+62|62|0)8[0-9]{8,13}$/', 'max:25'],
+            'alternative_phone' => ['nullable', 'regex:/^(\+62|62|0)8[0-9]{8,13}$/', 'max:25'],
+            'instagram_handle' => ['nullable', 'string', 'max:100'],
+            'organization_name' => ['nullable', 'string', 'max:150'],
+            'organization_type' => ['nullable', 'string', 'max:80'],
         ], [
             'nik.regex' => __('NIK harus 16 digit angka.'),
             'nik.unique' => __('NIK sudah terdaftar.'),
             'phone.regex' => __('Format nomor telepon tidak valid.'),
             'emergency_phone.regex' => __('Format nomor kontak darurat tidak valid.'),
+            'alternative_phone.regex' => __('Format nomor telepon alternatif tidak valid.'),
             'maps_url.url' => __('Link Google Maps tidak valid.'),
         ]);
 
@@ -176,6 +181,10 @@ class ProfileController extends Controller
             'emergency_name' => $data['emergency_name'],
             'emergency_relation' => $data['emergency_relation'],
             'emergency_phone' => $this->normalizePhone($data['emergency_phone']),
+            'alternative_phone' => empty($data['alternative_phone']) ? null : $this->normalizePhone($data['alternative_phone']),
+            'instagram_handle' => $data['instagram_handle'] ?? null,
+            'organization_name' => $data['organization_name'] ?? null,
+            'organization_type' => $data['organization_type'] ?? null,
             // Backward-compatible fields
             'identity_number' => $resolvedNik,
             'address' => $data['address_line'],

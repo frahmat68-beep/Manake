@@ -84,6 +84,93 @@
                 </div>
             </article>
 
+            <!-- Data Penyewa -->
+            <article class="mk-card p-6 mt-6">
+                <h3 class="manake-heading text-lg font-black text-[#E8E8EC]">{{ __('Data Penyewa') }}</h3>
+                @php
+                    $u = $order->user;
+                    $p = $u?->profile;
+                @endphp
+                @if ($u && $p)
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 text-sm text-[#A0A0A8]">
+                        <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Nama Lengkap</span>
+                            <span class="text-[#E8E8EC] font-semibold">{{ $p->full_name ?? $u->name }}</span>
+                        </div>
+                        <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">NIK (Masked)</span>
+                            <span class="text-[#E8E8EC] font-semibold">{{ $p->masked_nik ?? '-' }}</span>
+                        </div>
+                        <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Email</span>
+                            <span class="text-[#E8E8EC] font-semibold">
+                                {{ $u->email }} 
+                                <span class="ml-2 text-xs font-semibold px-2 py-0.5 rounded {{ $u->email_verified_at ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300' }}">
+                                    {{ $u->email_verified_at ? 'Terverifikasi' : 'Belum Verifikasi' }}
+                                </span>
+                            </span>
+                        </div>
+                        <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">No. Telepon</span>
+                            <span class="text-[#E8E8EC] font-semibold">
+                                {{ $p->phone ?? '-' }}
+                                <span class="ml-2 text-xs font-semibold px-2 py-0.5 rounded {{ $p->phone_verified_at ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300' }}">
+                                    {{ $p->phone_verified_at ? 'Terverifikasi' : 'Belum Verifikasi' }}
+                                </span>
+                            </span>
+                        </div>
+                        <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Tanggal Lahir</span>
+                            <span class="text-[#E8E8EC] font-semibold">{{ optional($p->date_of_birth)->format('d M Y') ?? '-' }}</span>
+                        </div>
+                        <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Jenis Kelamin</span>
+                            <span class="text-[#E8E8EC] font-semibold">{{ $p->gender === 'male' ? 'Laki-laki' : ($p->gender === 'female' ? 'Perempuan' : '-') }}</span>
+                        </div>
+                        <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5 sm:col-span-2">
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Alamat Lengkap</span>
+                            <span class="text-[#E8E8EC] font-semibold">{{ $p->address_text ?? '-' }}</span>
+                        </div>
+                        @if ($p->maps_url)
+                            <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5 sm:col-span-2">
+                                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Google Maps Link</span>
+                                <a href="{{ $p->maps_url }}" target="_blank" rel="noopener noreferrer" class="text-blue-400 font-semibold hover:underline">
+                                    Buka Lokasi di Maps
+                                </a>
+                            </div>
+                        @endif
+                        <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Kontak Darurat</span>
+                            <span class="text-[#E8E8EC] font-semibold">{{ $p->emergency_name ?? '-' }} ({{ $p->emergency_relation ?? '-' }})</span>
+                        </div>
+                        <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">No. Kontak Darurat</span>
+                            <span class="text-[#E8E8EC] font-semibold">{{ $p->emergency_phone ?? '-' }}</span>
+                        </div>
+                        @if ($p->alternative_phone)
+                            <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
+                                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">No. Telepon Alternatif</span>
+                                <span class="text-[#E8E8EC] font-semibold">{{ $p->alternative_phone }}</span>
+                            </div>
+                        @endif
+                        @if ($p->instagram_handle)
+                            <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5">
+                                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Instagram Username</span>
+                                <span class="text-[#E8E8EC] font-semibold">{{ $p->instagram_handle }}</span>
+                            </div>
+                        @endif
+                        @if ($p->organization_name)
+                            <div class="rounded-xl border border-slate-200/40 p-3 bg-white/5 sm:col-span-2">
+                                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Nama Instansi/Organisasi</span>
+                                <span class="text-[#E8E8EC] font-semibold">{{ $p->organization_name }} ({{ strtoupper($p->organization_type ?? '-') }})</span>
+                            </div>
+                        @endif
+                    </div>
+                @else
+                    <p class="text-sm text-slate-500 mt-2">Data penyewa tidak ditemukan atau profil belum selesai diisi.</p>
+                @endif
+            </article>
+
             <aside class="mk-card p-6 space-y-4">
                 <h3 class="manake-heading text-lg font-black text-[#E8E8EC]">{{ __('Kontrol Status') }}</h3>
                 <div class="space-y-2 text-sm text-slate-600">
@@ -99,6 +186,67 @@
                     @if ($order->damaged_at)
                         <p><span class="font-semibold text-slate-800">{{ __('Rusak Dilaporkan:') }}</span> {{ $order->damaged_at->format('d M Y H:i') }}</p>
                     @endif
+                </div>
+
+                <!-- Operational Checklist -->
+                <div class="rounded-2xl border border-slate-200/40 p-4 bg-white/5 space-y-2">
+                    <h4 class="text-sm font-semibold text-[#E8E8EC]">Checklist Validasi Pengambilan</h4>
+                    @php
+                        $u = $order->user;
+                        $p = $u?->profile;
+                        
+                        $isEmailVerified = (bool) ($u?->email_verified_at);
+                        $isPhoneVerified = (bool) ($p?->phone_verified_at);
+                        $isProfileComplete = (bool) ($u?->hasCompleteRentalProfile());
+                        $isEmergencyAvailable = (bool) ($p?->emergency_name && $p?->emergency_phone);
+                        $isAddressAvailable = (bool) ($p?->address_line || $p?->address);
+                        $isPaymentPaid = $order->status_pembayaran === 'paid';
+                        $isReadyForPickup = in_array($order->status_pesanan, ['lunas', 'barang_diambil', 'barang_kembali', 'selesai']);
+                    @endphp
+                    <ul class="text-xs space-y-1.5 mt-2">
+                        <li class="flex items-center gap-2">
+                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isEmailVerified ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
+                                {!! $isEmailVerified ? '✓' : '✗' !!}
+                            </span>
+                            <span class="{{ $isEmailVerified ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Email Terverifikasi</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isPhoneVerified ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
+                                {!! $isPhoneVerified ? '✓' : '✗' !!}
+                            </span>
+                            <span class="{{ $isPhoneVerified ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Telepon/OTP Terverifikasi</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isProfileComplete ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
+                                {!! $isProfileComplete ? '✓' : '✗' !!}
+                            </span>
+                            <span class="{{ $isProfileComplete ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Profil Lengkap</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isEmergencyAvailable ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
+                                {!! $isEmergencyAvailable ? '✓' : '✗' !!}
+                            </span>
+                            <span class="{{ $isEmergencyAvailable ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Kontak Darurat Tersedia</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isAddressAvailable ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
+                                {!! $isAddressAvailable ? '✓' : '✗' !!}
+                            </span>
+                            <span class="{{ $isAddressAvailable ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Alamat / Google Maps Tersedia</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isPaymentPaid ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
+                                {!! $isPaymentPaid ? '✓' : '✗' !!}
+                            </span>
+                            <span class="{{ $isPaymentPaid ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Pembayaran Lunas (Paid)</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] {{ $isReadyForPickup ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300' }}">
+                                {!! $isReadyForPickup ? '✓' : '✗' !!}
+                            </span>
+                            <span class="{{ $isReadyForPickup ? 'text-[#E8E8EC]' : 'text-rose-300/80' }}">Status Siap Diambil / Seterusnya</span>
+                        </li>
+                    </ul>
                 </div>
 
                 <form method="POST" action="{{ route('admin.orders.update', $order) }}" class="space-y-3">

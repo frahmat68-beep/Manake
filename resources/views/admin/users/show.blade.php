@@ -279,7 +279,20 @@
 
                     <div class="admin-user-detail-field">
                         <span class="admin-user-detail-label">{{ $userDetailCopy['profile']['national_id'] }}</span>
-                        <p class="admin-user-detail-value">{{ $profile?->masked_nik ?? '-' }}</p>
+                        <div class="flex items-center justify-between gap-2 mt-1">
+                            <p class="admin-user-detail-value m-0">
+                                @if (isset($revealNik) && $revealNik)
+                                    {{ $profile?->nik ?? $profile?->identity_number ?? '-' }}
+                                @else
+                                    {{ $profile?->masked_nik ?? '-' }}
+                                @endif
+                            </p>
+                            @if (auth('admin')->user()->role === 'super_admin' && (!isset($revealNik) || !$revealNik))
+                                <a href="?reveal_nik=1" onclick="return confirm('Data NIK bersifat sensitif. Gunakan hanya untuk verifikasi penyewaan.')" class="text-xs font-bold text-[var(--admin-accent)] hover:underline border border-[var(--admin-accent)]/20 rounded px-2 py-1">
+                                    Tampilkan NIK Lengkap
+                                </a>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="admin-user-detail-field">
@@ -295,6 +308,40 @@
                     <div class="admin-user-detail-field">
                         <span class="admin-user-detail-label">{{ $userDetailCopy['profile']['phone'] }}</span>
                         <p class="admin-user-detail-value">{{ $profile?->phone ?? '-' }}</p>
+                    </div>
+
+                    <div class="admin-user-detail-field">
+                        <span class="admin-user-detail-label">No. Telepon Alternatif</span>
+                        <p class="admin-user-detail-value">{{ $profile?->alternative_phone ?? '-' }}</p>
+                    </div>
+
+                    <div class="admin-user-detail-field">
+                        <span class="admin-user-detail-label">Instagram Username</span>
+                        <p class="admin-user-detail-value">{{ $profile?->instagram_handle ?? '-' }}</p>
+                    </div>
+
+                    <div class="admin-user-detail-field">
+                        <span class="admin-user-detail-label">Nama Instansi/Organisasi</span>
+                        <p class="admin-user-detail-value">{{ $profile?->organization_name ?? '-' }}</p>
+                    </div>
+
+                    <div class="admin-user-detail-field">
+                        <span class="admin-user-detail-label">Jenis Instansi</span>
+                        <p class="admin-user-detail-value">
+                            @if (($profile?->organization_type ?? '') === 'student')
+                                Kemahasiswaan / Sekolah
+                            @elseif (($profile?->organization_type ?? '') === 'production_house')
+                                Production House (PH)
+                            @elseif (($profile?->organization_type ?? '') === 'freelance')
+                                Pekerja Lepas / Freelance
+                            @elseif (($profile?->organization_type ?? '') === 'event_organizer')
+                                Event Organizer (EO)
+                            @elseif (($profile?->organization_type ?? '') === 'general')
+                                Umum / Lainnya
+                            @else
+                                -
+                            @endif
+                        </p>
                     </div>
 
                     <div class="admin-user-detail-field">

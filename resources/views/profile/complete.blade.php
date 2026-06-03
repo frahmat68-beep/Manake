@@ -368,7 +368,7 @@
                     <article class="profile-card profile-card-in rounded-3xl border p-6 shadow-2xl sm:p-7">
                         <div class="space-y-1">
                             <h2 class="text-xl font-bold tracking-tight profile-title">{{ $profileCopy['identity_title'] }}</h2>
-                            <p class="text-sm profile-muted">{{ $profileCopy['identity_subtitle'] }}</p>
+                            <p class="text-sm profile-muted">{{ $profileCopy['identity_subtitle'] }} <span class="text-amber-500 font-semibold block mt-1">Nama dan NIK dikunci setelah tersimpan untuk keamanan penyewaan.</span></p>
                         </div>
 
                         <div class="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -421,6 +421,37 @@
                                 <label for="maps_url" class="text-sm font-medium profile-title">{{ $profileCopy['labels']['maps_url'] }}</label>
                                 <input id="maps_url" type="url" name="maps_url" value="{{ old('maps_url', $profile->maps_url ?? '') }}" class="profile-input mt-2 w-full px-4 py-3 text-sm @error('maps_url') border-rose-400 @enderror">
                                 @error('maps_url')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                            </div>
+
+                            <div>
+                                <label for="alternative_phone" class="text-sm font-medium profile-title">Nomor Telepon Alternatif (Opsional)</label>
+                                <input id="alternative_phone" type="text" name="alternative_phone" value="{{ old('alternative_phone', $profile->alternative_phone ?? '') }}" placeholder="08xxxxxxxxxx" class="profile-input mt-2 w-full px-4 py-3 text-sm @error('alternative_phone') border-rose-400 @enderror">
+                                @error('alternative_phone')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                            </div>
+
+                            <div>
+                                <label for="instagram_handle" class="text-sm font-medium profile-title">Username Instagram (Opsional)</label>
+                                <input id="instagram_handle" type="text" name="instagram_handle" value="{{ old('instagram_handle', $profile->instagram_handle ?? '') }}" placeholder="@username" class="profile-input mt-2 w-full px-4 py-3 text-sm @error('instagram_handle') border-rose-400 @enderror">
+                                @error('instagram_handle')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                            </div>
+
+                            <div>
+                                <label for="organization_name" class="text-sm font-medium profile-title">Nama Instansi / Organisasi (Opsional)</label>
+                                <input id="organization_name" type="text" name="organization_name" value="{{ old('organization_name', $profile->organization_name ?? '') }}" class="profile-input mt-2 w-full px-4 py-3 text-sm @error('organization_name') border-rose-400 @enderror">
+                                @error('organization_name')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                            </div>
+
+                            <div>
+                                <label for="organization_type" class="text-sm font-medium profile-title">Jenis Instansi (Opsional)</label>
+                                <select id="organization_type" name="organization_type" class="profile-input mt-2 w-full px-4 py-3 text-sm @error('organization_type') border-rose-400 @enderror">
+                                    <option value="" @selected(empty(old('organization_type', $profile->organization_type ?? '')))>-- Pilih Jenis Instansi --</option>
+                                    <option value="student" @selected(old('organization_type', $profile->organization_type ?? '') === 'student')>Kemahasiswaan / Sekolah</option>
+                                    <option value="production_house" @selected(old('organization_type', $profile->organization_type ?? '') === 'production_house')>Production House (PH)</option>
+                                    <option value="freelance" @selected(old('organization_type', $profile->organization_type ?? '') === 'freelance')>Pekerja Lepas / Freelance</option>
+                                    <option value="event_organizer" @selected(old('organization_type', $profile->organization_type ?? '') === 'event_organizer')>Event Organizer (EO)</option>
+                                    <option value="general" @selected(old('organization_type', $profile->organization_type ?? '') === 'general')>Lainnya / Umum</option>
+                                </select>
+                                @error('organization_type')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                             </div>
 
                             <div class="md:col-span-2">

@@ -35,16 +35,26 @@ class UserController extends Controller
         ]);
     }
 
-    public function show(User $user): View
+    public function show(User $user, Request $request): View
     {
         $user->load(['profile', 'orders' => fn ($query) => $query->latest()->limit(5)]);
 
-        admin_audit('user.view_detail', 'users', $user->id, [
-            'email' => $user->email,
-        ], auth('admin')->id());
+        $revealNik = false;
+        if ($request->boolean('reveal_nik') && auth('admin')->user()->role === 'super_admin') {
+            $revealNik = true;
+            admin_audit('user.reveal_nik', 'users', $user->id, [
+                'email' => $user->email,
+                'reason' => 'Verifikasi penyewaan alat',
+            ], auth('admin')->id());
+        } else {
+            admin_audit('user.view_detail', 'users', $user->id, [
+                'email' => $user->email,
+            ], auth('admin')->id());
+        }
 
         return view('admin.users.show', [
             'user' => $user,
+            'revealNik' => $revealNik,
             'activePage' => 'users',
         ]);
     }

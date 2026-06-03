@@ -27,6 +27,10 @@ class Profile extends Model
         'emergency_name',
         'emergency_relation',
         'emergency_phone',
+        'alternative_phone',
+        'instagram_handle',
+        'organization_name',
+        'organization_type',
         // Legacy fallback fields
         'address',
         'notes',

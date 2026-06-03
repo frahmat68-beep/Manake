@@ -371,7 +371,7 @@
                                 <label class="checkout-inner flex cursor-pointer items-start gap-4 rounded-2xl border p-5">
                                     <input type="checkbox" name="confirm_profile" class="checkout-checkbox mt-1 h-5 w-5 rounded" required>
                                     <span class="checkout-muted text-sm font-semibold leading-7">
-                                        {{ $checkoutConfirmProfile }}
+                                        Saya menyatakan data yang saya isi benar dan dapat digunakan Manake untuk verifikasi penyewaan, pengambilan alat, pengembalian alat, serta penanganan keterlambatan, kerusakan, atau kehilangan barang.
                                     </span>
                                 </label>
 
