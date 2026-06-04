@@ -155,21 +155,37 @@ class ChatbotKnowledgeService
         $category = $equipment->category?->name ?: 'Tanpa kategori';
         $slug = $equipment->slug ?: Str::slug($equipment->name);
 
-        $parsedDate = $this->parseDateFromText($normalized);
-        if ($parsedDate) {
-            $dateStr = $parsedDate->locale('id')->isoFormat('D MMMM YYYY');
-            if ($equipment->status !== 'ready') {
-                return "{$equipment->name} saat ini berstatus tidak aktif/maintenance dan tidak dapat disewa pada tanggal {$dateStr}.";
+        $parsedRange = $this->parseDateRangeFromText($normalized);
+        if ($parsedRange) {
+            $start = $parsedRange['start'];
+            $end = $parsedRange['end'];
+
+            if ($end->lt($start)) {
+                return "Format tanggal yang Anda masukkan tidak valid (tanggal selesai mendahului tanggal mulai). Tuliskan tanggal lengkap, misalnya 05/06/2026 atau 5-7 Juni 2026.";
             }
+
+            $dateLabel = $start->isSameDay($end)
+                ? $start->locale('id')->isoFormat('D MMMM YYYY')
+                : $start->locale('id')->isoFormat('D MMMM YYYY') . ' sampai ' . $end->locale('id')->isoFormat('D MMMM YYYY');
+
+            if ($equipment->status !== 'ready') {
+                return "{$equipment->name} saat ini berstatus tidak aktif/maintenance dan tidak dapat disewa pada tanggal {$dateLabel}.";
+            }
+
             $availability = app(\App\Services\AvailabilityService::class);
-            $eval = $availability->evaluateRange($equipment, $parsedDate, $parsedDate, 1);
+            $eval = $availability->evaluateRange($equipment, $start, $end, 1);
             if ($eval['ok']) {
-                $daily = $eval['daily'][$parsedDate->toDateString()] ?? [];
-                $reserved = (int) ($daily['qty'] ?? 0);
-                $remaining = max((int) $equipment->stock - $reserved, 0);
-                return "{$equipment->name} TERSEDIA untuk disewa pada tanggal {$dateStr}. Sisa stok yang ready: {$remaining} dari total {$equipment->stock} unit. Harga sewa Rp{$price}/hari. Silakan buka /product/{$slug} untuk memesan.";
+                $minRemaining = (int) $equipment->stock;
+                foreach ($eval['daily'] as $dateKey => $dayData) {
+                    $reserved = (int) ($dayData['qty'] ?? 0);
+                    $available = max((int) $equipment->stock - $reserved, 0);
+                    if ($available < $minRemaining) {
+                        $minRemaining = $available;
+                    }
+                }
+                return "{$equipment->name} TERSEDIA untuk disewa pada tanggal {$dateLabel}. Sisa stok paling sedikit di rentang tersebut: {$minRemaining} dari total {$equipment->stock} unit. Harga sewa Rp{$price}/hari. Silakan buka /product/{$slug} untuk memesan.";
             } else {
-                return "Maaf, {$equipment->name} TIDAK TERSEDIA (sudah penuh dibooking / masuk masa buffer sewa) pada tanggal {$dateStr}. Silakan cek alternatif tanggal lain di /product/{$slug} atau lihat Availability Board.";
+                return "Maaf, {$equipment->name} TIDAK TERSEDIA (sudah penuh dibooking / masuk masa buffer sewa) pada tanggal {$dateLabel}. Silakan cek alternatif tanggal lain di /product/{$slug} atau lihat Availability Board.";
             }
         }
 
@@ -420,6 +436,82 @@ class ChatbotKnowledgeService
             "- Alat kosong/tersedia: {$freeCount} tipe\n\n" .
             "Beberapa alat yang tersedia untuk dipesan hari ini:\n{$topAvailableStr}\n\n" .
             "Cek jadwal ketersediaan lengkap di halaman /availability-board.";
+    }
+
+    private function parseDateRangeFromText(string $text): ?array
+    {
+        $text = $this->normalize($text);
+        
+        $months = [
+            'januari' => 1, 'februari' => 2, 'maret' => 3, 'april' => 4,
+            'mei' => 5, 'juni' => 6, 'juli' => 7, 'agustus' => 8,
+            'september' => 9, 'oktober' => 10, 'november' => 11, 'desember' => 12,
+            'jan' => 1, 'feb' => 2, 'mar' => 3, 'apr' => 4, 'jun' => 6,
+            'jul' => 7, 'agu' => 8, 'sep' => 9, 'okt' => 10, 'nov' => 11, 'des' => 12
+        ];
+        
+        $monthPattern = '(januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember|jan|feb|mar|apr|jun|jul|agu|sep|okt|nov|des)';
+
+        // 1. Pattern B: 5 Juni sampai 7 Juni 2026 or 5 Juni 2026 sampai 7 Juni 2026
+        if (preg_match('#\b(\d{1,2})\s+' . $monthPattern . '(?:\s+(\d{4}))?\s+(?:-|sampai|s/d)\s+(\d{1,2})\s+' . $monthPattern . '(?:\s+(\d{4}))?\b#', $text, $matches)) {
+            $startDay = (int)$matches[1];
+            $startMonthNum = $months[$matches[2]];
+            $startYear = !empty($matches[3]) ? (int)$matches[3] : null;
+            
+            $endDay = (int)$matches[4];
+            $endMonthNum = $months[$matches[5]];
+            $endYear = !empty($matches[6]) ? (int)$matches[6] : null;
+            
+            if ($endYear === null) {
+                $endYear = (int)now()->year;
+            }
+            if ($startYear === null) {
+                $startYear = $endYear;
+            }
+            
+            try {
+                $start = Carbon::create($startYear, $startMonthNum, $startDay)->startOfDay();
+                $end = Carbon::create($endYear, $endMonthNum, $endDay)->startOfDay();
+                return ['start' => $start, 'end' => $end];
+            } catch (\Throwable $e) {}
+        }
+
+        // 2. Pattern A: 5-7 Juni 2026 or 5 sampai 7 Juni 2026
+        if (preg_match('#\b(\d{1,2})\s*(?:-|sampai|s/d)\s*(\d{1,2})\s+' . $monthPattern . '(?:\s+(\d{4}))?\b#', $text, $matches)) {
+            $startDay = (int)$matches[1];
+            $endDay = (int)$matches[2];
+            $monthNum = $months[$matches[3]];
+            $year = !empty($matches[4]) ? (int)$matches[4] : (int)now()->year;
+            
+            try {
+                $start = Carbon::create($year, $monthNum, $startDay)->startOfDay();
+                $end = Carbon::create($year, $monthNum, $endDay)->startOfDay();
+                return ['start' => $start, 'end' => $end];
+            } catch (\Throwable $e) {}
+        }
+
+        // 3. Pattern C & D for ranges like YYYY-MM-DD to YYYY-MM-DD or DD/MM/YYYY to DD/MM/YYYY
+        if (preg_match('#\b(\d{4})[-/](\d{1,2})[-/](\d{1,2})\s*(?:-|sampai|s/d)\s*(\d{4})[-/](\d{1,2})[-/](\d{1,2})\b#', $text, $matches)) {
+            try {
+                $start = Carbon::create((int)$matches[1], (int)$matches[2], (int)$matches[3])->startOfDay();
+                $end = Carbon::create((int)$matches[4], (int)$matches[5], (int)$matches[6])->startOfDay();
+                return ['start' => $start, 'end' => $end];
+            } catch (\Throwable $e) {}
+        }
+        if (preg_match('#\b(\d{1,2})[-/](\d{1,2})[-/](\d{4})\s*(?:-|sampai|s/d)\s*(\d{1,2})[-/](\d{1,2})[-/](\d{4})\b#', $text, $matches)) {
+            try {
+                $start = Carbon::create((int)$matches[3], (int)$matches[2], (int)$matches[1])->startOfDay();
+                $end = Carbon::create((int)$matches[6], (int)$matches[5], (int)$matches[4])->startOfDay();
+                return ['start' => $start, 'end' => $end];
+            } catch (\Throwable $e) {}
+        }
+
+        $singleDate = $this->parseDateFromText($text);
+        if ($singleDate) {
+            return ['start' => $singleDate, 'end' => $singleDate];
+        }
+
+        return null;
     }
 
     private function parseDateFromText(string $text): ?Carbon

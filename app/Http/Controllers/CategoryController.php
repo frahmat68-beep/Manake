@@ -73,7 +73,7 @@ class CategoryController extends Controller
                     ->values();
             });
 
-            $homeRentalStats = Cache::remember('home:rental_stats:v2', now()->addSeconds(45), function () use ($canResolveUsage) {
+            $homeRentalStats = Cache::remember('home:rental_stats:v2', now()->addSeconds(5), function () use ($canResolveUsage) {
                 $rentedToday = 0;
                 $availableItems = 0;
                 $upcomingBookings = 0;
@@ -101,7 +101,7 @@ class CategoryController extends Controller
 
                 if ($canResolveUsage) {
                     $today = now()->startOfDay();
-                    $holdCutoff = now()->subMinutes(60);
+                    $holdCutoff = now()->subMinutes(\App\Services\AvailabilityService::holdWindowMinutes());
                     $upcomingBookings = (int) \App\Models\OrderItem::query()
                         ->whereHas('order', function ($query) use ($today, $holdCutoff) {
                             $query->whereDate('rental_start_date', '>', $today->toDateString())
@@ -109,13 +109,7 @@ class CategoryController extends Controller
                                     $statusQuery->where(function ($pendingQuery) use ($holdCutoff) {
                                         $pendingQuery->where('status_pesanan', 'menunggu_pembayaran')
                                             ->where('created_at', '>=', $holdCutoff);
-                                    })->orWhereIn('status_pesanan', [
-                                        'diproses',
-                                        'lunas',
-                                        'barang_diambil',
-                                        'barang_rusak',
-                                        'barang_hilang',
-                                    ]);
+                                    })->orWhereIn('status_pesanan', \App\Services\AvailabilityService::blockingOrderStatuses());
                                 });
                         })
                         ->count();
@@ -207,7 +201,7 @@ class CategoryController extends Controller
         }
 
         if (schema_table_exists_cached('orders') && schema_table_exists_cached('order_items') && schema_table_exists_cached('equipments')) {
-            $guestRentalSnapshot = Cache::remember('home:guest_snapshot:v2', now()->addSeconds(45), function () {
+            $guestRentalSnapshot = Cache::remember('home:guest_snapshot:v2', now()->addSeconds(5), function () {
                 $today = now()->startOfDay();
 
                 return OrderItem::query()
@@ -216,18 +210,12 @@ class CategoryController extends Controller
                         'order:id,status_pesanan,status_pembayaran,rental_start_date,rental_end_date',
                     ])
                     ->whereHas('order', function ($query) {
-                        $holdCutoff = now()->subMinutes(60);
+                        $holdCutoff = now()->subMinutes(\App\Services\AvailabilityService::holdWindowMinutes());
                         $query->where(function ($statusQuery) use ($holdCutoff) {
                             $statusQuery->where(function ($pendingQuery) use ($holdCutoff) {
                                 $pendingQuery->where('status_pesanan', 'menunggu_pembayaran')
                                     ->where('created_at', '>=', $holdCutoff);
-                            })->orWhereIn('status_pesanan', [
-                                'diproses',
-                                'lunas',
-                                'barang_diambil',
-                                'barang_rusak',
-                                'barang_hilang',
-                            ]);
+                            })->orWhereIn('status_pesanan', \App\Services\AvailabilityService::blockingOrderStatuses());
                         });
                     })
                     ->latest('id')

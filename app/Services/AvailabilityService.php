@@ -23,6 +23,16 @@ class AvailabilityService
         'barang_hilang',
     ];
 
+    public static function blockingOrderStatuses(): array
+    {
+        return self::BLOCKING_ORDER_STATUSES;
+    }
+
+    public static function holdWindowMinutes(): int
+    {
+        return self::HOLD_WINDOW_MINUTES;
+    }
+
     public function evaluateRange(Equipment $equipment, Carbon|string $startDate, Carbon|string $endDate, int $requestedQty = 1, ?int $ignoreOrderId = null): array
     {
         $start = $this->normalizeDate($startDate);

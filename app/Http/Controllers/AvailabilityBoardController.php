@@ -60,6 +60,8 @@ class AvailabilityBoardController extends Controller
 
             $equipmentQuery = Equipment::query()
                 ->with(['category'])
+                ->where('status', 'ready')
+                ->where('stock', '>', 0)
                 ->orderBy('name');
 
             if ($search !== '') {
@@ -143,8 +145,7 @@ class AvailabilityBoardController extends Controller
                 }
 
                 $orderNumbers = $sources
-                    ->pluck('order_number')
-                    ->filter(fn ($value) => is_string($value) && trim($value) !== '')
+                    ->map(fn () => 'Booked')
                     ->unique()
                     ->values();
 
@@ -305,7 +306,7 @@ class AvailabilityBoardController extends Controller
             ->with(['equipment', 'order'])
             ->whereIn('equipment_id', $equipmentIds->all())
             ->whereHas('order', function ($query) use ($calendarStart, $calendarEnd) {
-                $holdCutoff = now()->subMinutes(60);
+                $holdCutoff = now()->subMinutes(\App\Services\AvailabilityService::holdWindowMinutes());
                 $query
                     ->whereDate('rental_start_date', '<=', $calendarEnd->toDateString())
                     ->whereDate('rental_end_date', '>=', $calendarStart->toDateString())
@@ -313,13 +314,7 @@ class AvailabilityBoardController extends Controller
                         $statusQuery->where(function ($pendingQuery) use ($holdCutoff) {
                             $pendingQuery->where('status_pesanan', 'menunggu_pembayaran')
                                 ->where('created_at', '>=', $holdCutoff);
-                        })->orWhereIn('status_pesanan', [
-                            'diproses',
-                            'lunas',
-                            'barang_diambil',
-                            'barang_rusak',
-                            'barang_hilang',
-                        ]);
+                        })->orWhereIn('status_pesanan', \App\Services\AvailabilityService::blockingOrderStatuses());
                     });
             })
             ->latest('id')
@@ -334,7 +329,7 @@ class AvailabilityBoardController extends Controller
 
                 return [
                     'equipment_name' => (string) ($item->equipment?->name ?? 'Equipment'),
-                    'order_number' => (string) ($item->order?->order_number ?? ('ORD-' . ($item->order?->id ?? 0))),
+                    'order_number' => 'Booked',
                     'status_pesanan' => (string) ($item->order?->status_pesanan ?? '-'),
                     'qty' => max((int) ($item->qty ?? 0), 1),
                     'start_date' => Carbon::parse($startDate)->toDateString(),

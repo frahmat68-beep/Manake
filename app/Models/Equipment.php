@@ -46,7 +46,7 @@ class Equipment extends Model
     public function activeOrderItems(): HasMany
     {
         $today = now()->toDateString();
-        $holdCutoff = now()->subMinutes(60);
+        $holdCutoff = now()->subMinutes(\App\Services\AvailabilityService::holdWindowMinutes());
 
         return $this->hasMany(OrderItem::class, 'equipment_id')
             ->whereHas('order', function ($query) use ($holdCutoff) {
@@ -54,13 +54,7 @@ class Equipment extends Model
                     $statusQuery->where(function ($pendingQuery) use ($holdCutoff) {
                         $pendingQuery->where('status_pesanan', 'menunggu_pembayaran')
                             ->where('created_at', '>=', $holdCutoff);
-                    })->orWhereIn('status_pesanan', [
-                        'diproses',
-                        'lunas',
-                        'barang_diambil',
-                        'barang_rusak',
-                        'barang_hilang',
-                    ]);
+                    })->orWhereIn('status_pesanan', \App\Services\AvailabilityService::blockingOrderStatuses());
                 });
             })
             ->where(function ($query) use ($today) {
