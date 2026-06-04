@@ -25,24 +25,32 @@
 
     $profileStatus = [
         'done' => $profileComplete,
-        'label' => $profileComplete ? 'Selesai' : 'Belum',
+        'label' => $profileComplete ? (App::getLocale() === 'en' ? 'Completed' : 'Selesai') : (App::getLocale() === 'en' ? 'Incomplete' : 'Belum Lengkap'),
         'name' => 'Profil Lengkap',
         'tone' => $profileComplete ? 'profile-status-done' : 'profile-status-pending',
     ];
 
     $emailStatus = [
         'done' => $emailVerified,
-        'label' => $emailVerified ? 'Terverifikasi' : 'Belum',
+        'label' => $emailVerified ? (App::getLocale() === 'en' ? 'Verified' : 'Terverifikasi') : (App::getLocale() === 'en' ? 'Not Verified' : 'Belum Terverifikasi'),
         'name' => 'Email Terverifikasi',
         'tone' => $emailVerified ? 'profile-status-done' : 'profile-status-pending',
     ];
 
     $consentStatus = [
         'done' => $consentAccepted,
-        'label' => $consentAccepted ? 'Disetujui' : 'Belum',
+        'label' => $consentAccepted ? (App::getLocale() === 'en' ? 'Accepted' : 'Disetujui') : (App::getLocale() === 'en' ? 'Not Accepted' : 'Belum Disetujui'),
         'name' => 'Persetujuan Tanggung Jawab',
         'tone' => $consentAccepted ? 'profile-status-done' : 'profile-status-pending',
     ];
+
+    $profileHeaderBadge = $allReady
+        ? (App::getLocale() === 'en' ? 'Ready to Order' : 'Siap Memesan')
+        : ($hasSavedProfile 
+            ? (App::getLocale() === 'en' ? 'Data Saved' : 'Data Tersimpan') 
+            : (App::getLocale() === 'en' ? 'Incomplete' : 'Belum Lengkap'));
+
+    $profileHeaderBadgeTone = $allReady ? 'profile-status-done' : 'profile-status-pending';
 @endphp
 
 @push('head')
@@ -289,12 +297,10 @@
                         <p class="profile-accent-text text-xs font-semibold tracking-[0.18em] uppercase">{{ $profileCopy['kicker'] }}</p>
                         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <h1 class="text-2xl font-bold tracking-tight profile-title sm:text-3xl">{{ $profileCopy['title'] }}</h1>
-                            @if ($hasSavedProfile)
-                                <span class="profile-status-done inline-flex w-fit items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium">
-                                    <span class="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
-                                    {{ $profileCopy['saved_badge'] }}
-                                </span>
-                            @endif
+                            <span class="{{ $profileHeaderBadgeTone }} inline-flex w-fit items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium">
+                                <span class="inline-block h-2 w-2 rounded-full {{ $allReady ? 'bg-emerald-500' : 'bg-amber-500' }}"></span>
+                                {{ $profileHeaderBadge }}
+                            </span>
                         </div>
                         <p class="max-w-3xl text-sm leading-6 profile-muted sm:text-base">
                             {{ $profileCopy['subtitle'] }}

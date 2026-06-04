@@ -482,14 +482,14 @@ return [
         'section_theme_hint' => 'Choose the website appearance.',
     ],
     'profile_complete' => [
-        'page_title' => 'Complete Profile',
-        'kicker' => 'Complete Profile',
-        'title' => 'Rental Profile Data',
-        'subtitle' => 'Complete your identity and contact details so bookings and payments can be verified.',
+        'page_title' => 'Renter Verification',
+        'kicker' => 'Renter Verification',
+        'title' => 'Renter Data',
+        'subtitle' => 'Complete your identity, contact, and consent details before ordering.',
         'saved_badge' => 'Saved',
 
-        'status_finished' => 'Finished',
-        'status_pending' => 'Pending',
+        'status_finished' => 'Completed',
+        'status_pending' => 'Incomplete / Not Verified / Not Accepted',
         'status_need_verification' => 'Needs verification',
         'status_profile_complete' => 'Profile Complete',
         'status_email_verified' => 'Email Verified',
@@ -522,7 +522,7 @@ return [
 
         'helpers' => [
             'national_id' => 'Used for rental verification.',
-            'phone' => 'This number will be used for OTP and pickup coordination.',
+            'phone' => 'This number is used for coordination of pick up and return.',
             'address_line' => 'Enter your domicile address or responsible person address.',
         ],
 
@@ -533,7 +533,7 @@ return [
         'sidebar_title' => 'Booking Requirements',
         'sidebar_subtitle' => 'Complete the following status before adding equipment to cart or checkout.',
         'sidebar_profile_incomplete' => 'Complete and save your profile data first.',
-        'sidebar_email_unverified' => 'Verify your email before continuing to phone OTP verification.',
+        'sidebar_email_unverified' => 'Verify your email before placing an order.',
         'sidebar_phone_unverified' => 'Profile saved. Continue phone number verification before renting.',
         'sidebar_ready' => 'Your profile is ready to use for booking.',
 

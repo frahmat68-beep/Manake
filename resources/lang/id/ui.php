@@ -482,10 +482,10 @@ return [
         'section_theme_hint' => 'Pilih tampilan website.',
     ],
     'profile_complete' => [
-        'page_title' => 'Lengkapi Profil',
-        'kicker' => 'Lengkapi Profil',
-        'title' => 'Data Profil Penyewaan',
-        'subtitle' => 'Lengkapi identitas dan kontak agar proses booking dan pembayaran bisa diverifikasi.',
+        'page_title' => 'Verifikasi Profil Penyewa',
+        'kicker' => 'Verifikasi Profil',
+        'title' => 'Data Penyewa',
+        'subtitle' => 'Lengkapi data identitas, kontak, dan persetujuan sebelum melakukan pemesanan.',
         'saved_badge' => 'Tersimpan',
 
         'status_finished' => 'Selesai',
@@ -522,7 +522,7 @@ return [
 
         'helpers' => [
             'national_id' => 'Digunakan untuk verifikasi penyewaan.',
-            'phone' => 'Nomor ini akan digunakan untuk OTP dan koordinasi pengambilan.',
+            'phone' => 'Nomor ini digunakan untuk koordinasi pengambilan dan pengembalian.',
             'address_line' => 'Isi alamat domisili atau alamat penanggung jawab.',
         ],
 
@@ -533,7 +533,7 @@ return [
         'sidebar_title' => 'Syarat Bisa Memesan',
         'sidebar_subtitle' => 'Lengkapi status berikut sebelum menambahkan alat ke keranjang atau checkout.',
         'sidebar_profile_incomplete' => 'Lengkapi dan simpan data profil terlebih dahulu.',
-        'sidebar_email_unverified' => 'Verifikasi email terlebih dahulu sebelum melanjutkan ke OTP nomor telepon.',
+        'sidebar_email_unverified' => 'Verifikasi email terlebih dahulu sebelum melakukan pemesanan.',
         'sidebar_phone_unverified' => 'Profil tersimpan. Lanjutkan verifikasi nomor telepon sebelum memesan.',
         'sidebar_ready' => 'Profil siap digunakan untuk pemesanan.',
 
