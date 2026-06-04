@@ -95,6 +95,6 @@ class RegisteredUserController extends Controller
 
         $request->session()->put('otp_verified', true);
 
-        return redirect()->route('profile.complete');
+        return redirect()->route('profile');
     }
 }

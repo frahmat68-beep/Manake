@@ -17,7 +17,8 @@ class EmailVerificationNotificationController extends Controller
     public function store(Request $request): RedirectResponse
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->route('profile.complete');
+            $targetRoute = $request->user()->hasVerifiedRentalIdentity() ? 'profile.complete' : 'profile';
+            return redirect()->route($targetRoute);
         }
 
         $user = $request->user();

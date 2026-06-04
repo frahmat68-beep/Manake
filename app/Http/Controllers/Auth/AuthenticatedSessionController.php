@@ -132,7 +132,7 @@ class AuthenticatedSessionController extends Controller
             session(['after_profile_redirect' => $safeInternalUrl]);
         }
 
-        return redirect()->route('profile.complete');
+        return redirect()->route('profile');
     }
 
 

@@ -33,7 +33,7 @@ class ProfileController extends Controller
     /**
      * Display the profile completion form.
      */
-    public function complete(Request $request): View|RedirectResponse
+    public function show(Request $request): View|RedirectResponse
     {
         $profile = null;
         $profilesTableMissing = ! schema_table_exists_cached('profiles');
@@ -46,7 +46,7 @@ class ProfileController extends Controller
             $request->user()->setRelation('profile', $profile);
         }
 
-        if ($request->route()?->getName() === 'profile') {
+        if ($request->user() && $request->user()->hasVerifiedRentalIdentity()) {
             return redirect()->route('profile.complete');
         }
 
@@ -54,6 +54,37 @@ class ProfileController extends Controller
             'user' => $request->user(),
             'profile' => $profile,
             'profilesTableMissing' => $profilesTableMissing,
+            'pageMode' => 'edit',
+        ]);
+    }
+
+    /**
+     * Display the profile completed status page.
+     */
+    public function completed(Request $request): View|RedirectResponse
+    {
+        $profile = null;
+        $profilesTableMissing = ! schema_table_exists_cached('profiles');
+
+        if (! $profilesTableMissing && $request->user()) {
+            $profile = $request->user()->profile()->firstOrCreate([], [
+                'is_completed' => false,
+            ]);
+
+            $request->user()->setRelation('profile', $profile);
+        }
+
+        if ($request->user() && ! $request->user()->hasVerifiedRentalIdentity()) {
+            return redirect()
+                ->route('profile')
+                ->with('warning', __('Lengkapi profil dan verifikasi email terlebih dahulu sebelum memesan.'));
+        }
+
+        return view('profile.complete', [
+            'user' => $request->user(),
+            'profile' => $profile,
+            'profilesTableMissing' => $profilesTableMissing,
+            'pageMode' => 'completed',
         ]);
     }
 
@@ -146,14 +177,14 @@ class ProfileController extends Controller
 
         if ($existingFullName !== '' && strcasecmp($existingFullName, $incomingFullName) !== 0) {
             return redirect()
-                ->route('profile.complete', ['edit' => 1])
+                ->route('profile', ['edit' => 1])
                 ->withInput()
                 ->with('error', __('Nama yang sudah tersimpan tidak dapat diubah demi keamanan data.'));
         }
 
         if ($existingNik !== '' && $existingNik !== $incomingNik) {
             return redirect()
-                ->route('profile.complete', ['edit' => 1])
+                ->route('profile', ['edit' => 1])
                 ->withInput()
                 ->with('error', __('NIK yang sudah tersimpan tidak dapat diubah demi keamanan data.'));
         }
@@ -202,13 +233,19 @@ class ProfileController extends Controller
 
         if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
             return redirect()
-                ->route('profile.complete')
+                ->route('profile')
                 ->with('warning', __('Profil berhasil disimpan. Verifikasi email terlebih dahulu sebelum memesan.'));
         }
 
+        if ($user->hasVerifiedRentalIdentity()) {
+            return redirect()
+                ->route('profile.complete')
+                ->with('status', __('Profil penyewa sudah lengkap. Kamu sudah bisa melakukan pemesanan.'));
+        }
+
         return redirect()
-            ->route('profile.complete')
-            ->with('success', __('Profil lengkap. Kamu sudah bisa memesan alat.'));
+            ->route('profile')
+            ->with('warning', __('Lengkapi data yang masih kurang.'));
     }
 
     /**
@@ -245,7 +282,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.complete')->with('status', 'profile-updated');
+        return Redirect::route('profile')->with('status', 'profile-updated');
     }
 
     /**

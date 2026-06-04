@@ -1,8 +1,20 @@
 @extends('layouts.app')
 
-@section('title', __('ui.profile_complete.page_title'))
-
 @php
+    $pageMode = $pageMode ?? 'edit';
+
+    $metaTitle = $pageMode === 'completed'
+        ? (App::getLocale() === 'en' ? 'Renter Profile Complete' : 'Profil Penyewa Lengkap')
+        : __('ui.profile_complete.page_title');
+
+    $kickerText = $pageMode === 'completed'
+        ? (App::getLocale() === 'en' ? 'Profile Complete' : 'Profil Lengkap')
+        : __('ui.profile_complete.kicker');
+
+    $h1Text = $pageMode === 'completed'
+        ? (App::getLocale() === 'en' ? 'Renter Profile Ready' : 'Profil Penyewa Siap')
+        : __('ui.profile_complete.title');
+
     $profileCopy = __('ui.profile_complete');
     $safeMapsUrl = trusted_map_embed_url((string) ($profile?->maps_url ?? ''), $profile?->address_text ?? null);
     $profileComplete = (bool) ($user?->hasCompleteRentalProfile() ?? false);
@@ -52,6 +64,8 @@
 
     $profileHeaderBadgeTone = $allReady ? 'profile-status-done' : 'profile-status-pending';
 @endphp
+
+@section('title', $metaTitle)
 
 @push('head')
     <style>
@@ -294,9 +308,9 @@
                 <span class="profile-accent-bg absolute left-0 top-0 h-1 w-full"></span>
                 <div class="space-y-5">
                     <div class="space-y-2">
-                        <p class="profile-accent-text text-xs font-semibold tracking-[0.18em] uppercase">{{ $profileCopy['kicker'] }}</p>
+                        <p class="profile-accent-text text-xs font-semibold tracking-[0.18em] uppercase">{{ $kickerText }}</p>
                         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                            <h1 class="text-2xl font-bold tracking-tight profile-title sm:text-3xl">{{ $profileCopy['title'] }}</h1>
+                            <h1 class="text-2xl font-bold tracking-tight profile-title sm:text-3xl">{{ $h1Text }}</h1>
                             <span class="{{ $profileHeaderBadgeTone }} inline-flex w-fit items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium">
                                 <span class="inline-block h-2 w-2 rounded-full {{ $allReady ? 'bg-emerald-500' : 'bg-amber-500' }}"></span>
                                 {{ $profileHeaderBadge }}
@@ -364,6 +378,27 @@
                             {{ $errors->first() }}
                         </div>
                     @endif
+                </div>
+            @endif
+
+            @if ($pageMode === 'completed')
+                <div class="mt-6 profile-card rounded-3xl border p-6 sm:p-7 shadow-lg flex flex-col gap-6 md:flex-row md:items-center md:justify-between animate-delay-[30ms] profile-card-in" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.2);">
+                    <div class="space-y-1.5">
+                        <h2 class="text-xl font-bold tracking-tight text-emerald-800 dark:text-emerald-300">
+                            {{ App::getLocale() === 'en' ? 'Your Rental Profile is Verified' : 'Profil Penyewa Anda Terverifikasi' }}
+                        </h2>
+                        <p class="text-sm profile-muted leading-relaxed">
+                            {{ App::getLocale() === 'en' ? 'You are ready to checkout and rent any production equipment.' : 'Akun Anda sudah siap untuk melakukan penyewaan alat-alat produksi.' }}
+                        </p>
+                    </div>
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <a href="{{ route('catalog') }}" class="profile-accent-bg inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold transition">
+                            {{ __('ui.profile_complete.open_catalog') }}
+                        </a>
+                        <a href="{{ route('availability.board') }}" class="profile-secondary-button inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold transition">
+                            {{ App::getLocale() === 'en' ? 'Check Availability' : 'Cek Ketersediaan' }}
+                        </a>
+                    </div>
                 </div>
             @endif
 

@@ -31,10 +31,10 @@ class ProfilePageRenderTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get(route('profile.complete'));
+        $response = $this->get(route('profile'));
 
         $response->assertOk();
-        $response->assertSee(__('ui.profile_complete.saved_badge'));
+        $response->assertSee('Data Tersimpan');
         $response->assertSee('Dewi Lestari');
         $response->assertSee('Jakarta');
     }

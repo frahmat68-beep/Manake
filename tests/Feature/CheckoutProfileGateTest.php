@@ -82,7 +82,7 @@ class CheckoutProfileGateTest extends TestCase
 
         $response = $this->get(route('checkout'));
 
-        $response->assertRedirect(route('profile.complete'));
+        $response->assertRedirect(route('profile'));
     }
 
     public function test_incomplete_profile_cannot_add_item_to_cart(): void
@@ -99,7 +99,7 @@ class CheckoutProfileGateTest extends TestCase
             'rental_end_date' => now()->addDays(2)->toDateString(),
         ]);
 
-        $response->assertRedirect(route('profile.complete'));
+        $response->assertRedirect(route('profile'));
         $response->assertSessionHas('warning', __('Lengkapi profil penyewaan sebelum memesan alat.'));
     }
 
@@ -149,7 +149,7 @@ class CheckoutProfileGateTest extends TestCase
         );
 
         $checkoutResponse = $this->get(route('checkout'));
-        $checkoutResponse->assertRedirect(route('profile.complete'));
+        $checkoutResponse->assertRedirect(route('profile'));
     }
 
     public function test_authenticated_user_without_rental_consent_cannot_add_item_to_cart(): void
@@ -175,7 +175,7 @@ class CheckoutProfileGateTest extends TestCase
             'rental_end_date' => now()->addDays(2)->toDateString(),
         ]);
 
-        $response->assertRedirect(route('profile.complete'));
+        $response->assertRedirect(route('profile'));
         $response->assertSessionHas('warning', __('Setujui pernyataan tanggung jawab sewa sebelum melanjutkan pemesanan.'));
     }
 
@@ -194,7 +194,7 @@ class CheckoutProfileGateTest extends TestCase
         $this->actingAs($user);
         $response = $this->get(route('checkout'));
 
-        $response->assertRedirect(route('profile.complete'));
+        $response->assertRedirect(route('profile'));
     }
 
     public function test_authenticated_user_with_unverified_email_cannot_add_item_to_cart(): void
@@ -220,7 +220,7 @@ class CheckoutProfileGateTest extends TestCase
             'rental_end_date' => now()->addDays(2)->toDateString(),
         ]);
 
-        $response->assertRedirect(route('profile.complete'));
+        $response->assertRedirect(route('profile'));
         $response->assertSessionHas('warning', __('Verifikasi email dan lengkapi profil sebelum melanjutkan pemesanan.'));
     }
 

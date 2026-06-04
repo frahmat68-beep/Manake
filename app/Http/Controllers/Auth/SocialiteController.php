@@ -113,7 +113,7 @@ class SocialiteController extends Controller
                 session(['after_profile_redirect' => $safeInternalUrl]);
             }
 
-            return redirect()->route('profile.complete');
+            return redirect()->route('profile');
 
         } catch (Throwable $e) {
             \Illuminate\Support\Facades\Log::error('Google OAuth Login failure: ' . $e->getMessage(), [
