@@ -86,6 +86,9 @@ class MidtransService
             ];
         }
 
+        // Pastikan gross_amount = sum(item prices) agar Midtrans tidak reject.
+        $grossAmount = array_sum(array_column($items, 'price'));
+
         return [
             'transaction_details' => [
                 'order_id' => $order->midtrans_order_id,

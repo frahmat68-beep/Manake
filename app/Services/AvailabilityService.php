@@ -62,7 +62,10 @@ class AvailabilityService
 
         $bufferedStart = $start->copy()->subDays(self::BUFFER_DAYS);
         $bufferedEnd = $end->copy()->addDays(self::BUFFER_DAYS);
-        $daily = $this->getDailyReservedUnits($equipment, $bufferedStart, $bufferedEnd, $ignoreOrderId);
+
+        // getDailyReservedUnits menambahkan buffer sendiri secara internal,
+        // jadi kita pass range asli, bukan yang sudah di-buffer.
+        $daily = $this->getDailyReservedUnits($equipment, $start, $end, $ignoreOrderId);
         $conflicts = [];
 
         foreach ($this->dateRangeKeys($bufferedStart, $bufferedEnd) as $dateKey) {

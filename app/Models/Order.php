@@ -68,6 +68,21 @@ class Order extends Model
 
     public const PAYMENT_REFUNDED = 'refunded';
 
+    // General `status` field values (English lifecycle states).
+    public const GENERAL_PENDING = 'pending';
+
+    public const GENERAL_PAID = 'paid';
+
+    public const GENERAL_FAILED = 'failed';
+
+    public const GENERAL_EXPIRED = 'expired';
+
+    public const GENERAL_CANCELLED = 'cancelled';
+
+    public const GENERAL_REFUNDED = 'refunded';
+
+    public const GENERAL_COMPLETED = 'completed';
+
     private const ORDER_STATUS_TRANSITIONS = [
         self::STATUS_PENDING_PAYMENT => [
             self::STATUS_PROCESSING,
@@ -173,6 +188,10 @@ class Order extends Model
         return $this->hasMany(OrderNotification::class);
     }
 
+    /**
+     * Grand total = total_amount (subtotal sebelum PPN) + PPN 11% + penalty + shipping.
+     * total_amount menyimpan subtotal rental, bukan grand total.
+     */
     public function getGrandTotalAttribute(): int
     {
         $subtotal = (int) $this->total_amount;

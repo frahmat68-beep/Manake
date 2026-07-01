@@ -168,6 +168,32 @@ class CheckoutController extends Controller
 
         $userId = (int) $user->id;
 
+        // BUG #3: Pre-check stok mentah tanpa lock sebelum masuk DB transaction
+        $preCheckEquipments = Equipment::query()
+            ->whereIn('id', $equipmentIds)
+            ->get()
+            ->keyBy('id');
+
+        $groupedQty = collect($cartItems)->groupBy(fn ($item) => $item['equipment_id'] ?? $item['product_id']);
+        foreach ($groupedQty as $eqId => $items) {
+            $equipment = $preCheckEquipments->get($eqId);
+            if (! $equipment) {
+                return response()->json([
+                    'message' => __('Beberapa alat tidak tersedia. Silakan perbarui cart.'),
+                ], 422);
+            }
+            $totalRequested = collect($items)->sum('qty');
+            if ($totalRequested > $equipment->stock) {
+                return response()->json([
+                    'message' => __(':name tidak memiliki stok yang cukup (Stok: :stock, Diminta: :requested).', [
+                        'name' => $equipment->name,
+                        'stock' => $equipment->stock,
+                        'requested' => $totalRequested,
+                    ]),
+                ], 422);
+            }
+        }
+
         try {
             $order = DB::transaction(function () use ($userId, $cartItems, $equipmentIds, $startDate, $endDate, $availability, $pricing) {
                 $equipments = Equipment::query()
@@ -272,6 +298,7 @@ class CheckoutController extends Controller
 
                 $pricingSummary = $pricing->calculateOrderTotals([], $subtotal);
 
+                // total_amount = subtotal sebelum PPN. Grand total dihitung via Order::getGrandTotalAttribute().
                 $order->total_amount = $pricingSummary['subtotal'];
                 $order->midtrans_order_id = $this->generateMidtransOrderId($order->id);
                 $order->order_number = $order->midtrans_order_id;

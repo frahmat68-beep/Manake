@@ -283,6 +283,7 @@ class OrderController extends Controller
                     }
 
                     $payment->gross_amount = (int) $pricingSummary['total'];
+                    $payment->snap_token = null;
                     $payment->payload_json = json_encode(array_merge($existingPayload, [
                         'subtotal' => (int) $pricingSummary['subtotal'],
                         'tax' => (int) $pricingSummary['tax'],
@@ -290,6 +291,8 @@ class OrderController extends Controller
                         'rescheduled_at' => now()->toDateTimeString(),
                     ]), JSON_UNESCAPED_UNICODE);
                     $payment->save();
+
+                    $order->snap_token = null;
                 }
             });
         } catch (\RuntimeException $exception) {

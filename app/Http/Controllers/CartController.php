@@ -345,7 +345,7 @@ class CartController extends Controller
 
             $windowStart = $start->copy()->subDays(AvailabilityService::BUFFER_DAYS);
             $windowEnd = $end->copy()->addDays(AvailabilityService::BUFFER_DAYS);
-            for ($cursor = $windowStart; $cursor->lte($windowEnd); $cursor->addDay()) {
+            for ($cursor = $windowStart->copy(); $cursor->lte($windowEnd); $cursor->addDay()) {
                 $dateKey = $cursor->toDateString();
                 $demandByEquipment[$equipmentId]['daily'][$dateKey] = (int) ($demandByEquipment[$equipmentId]['daily'][$dateKey] ?? 0) + $qty;
             }

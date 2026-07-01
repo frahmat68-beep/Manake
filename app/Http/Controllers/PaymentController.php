@@ -407,7 +407,9 @@ class PaymentController extends Controller
         }
         $payment->gross_amount = $grossAmount;
         $payment->status = $mappedStatus;
-        $payment->paid_at = $mappedStatus === Order::PAYMENT_PAID ? now() : null;
+        $payment->paid_at = $mappedStatus === Order::PAYMENT_PAID
+            ? ($payment->paid_at ?? now())
+            : $payment->paid_at;
         $payment->expired_at = $mappedStatus === Order::PAYMENT_EXPIRED ? now() : $payment->expired_at;
         $payment->payload_json = json_encode($payload, JSON_UNESCAPED_UNICODE);
         $payment->save();
@@ -622,7 +624,7 @@ class PaymentController extends Controller
 
     private function generateOrderNumber(int $orderId): string
     {
-        return 'ORDER-' . now()->format('Ymd') . '-' . Str::upper(Str::random(6));
+        return 'MNK-' . now()->format('Ymd') . '-' . $orderId . '-' . Str::upper(Str::random(6));
     }
 
     private function generateDamageFeeOrderNumber(Order $order): string
