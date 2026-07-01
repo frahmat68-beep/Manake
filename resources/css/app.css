@@ -696,40 +696,40 @@
    GLOBAL DESIGN TOKENS (DARK & LIGHT THEMES)
    ================================================== */
 :root,
-[data-theme-resolved="dark"] {
-    --manake-bg: #0A0A0B;
+[data-theme-resolved='dark'] {
+    --manake-bg: #0a0a0b;
     --manake-bg-soft: #070708;
     --manake-surface: #111113;
     --manake-surface-muted: rgba(255, 255, 255, 0.04);
-    --manake-border: rgba(255, 255, 255, 0.10);
-    --manake-text: #E8E8EC;
-    --manake-text-muted: #A0A0A8;
-    --manake-text-soft: #74747D;
-    --manake-accent: #D4A843;
-    --manake-accent-hover: #E0B84F;
+    --manake-border: rgba(255, 255, 255, 0.1);
+    --manake-text: #e8e8ec;
+    --manake-text-muted: #a0a0a8;
+    --manake-text-soft: #74747d;
+    --manake-accent: #d4a843;
+    --manake-accent-hover: #e0b84f;
     --manake-accent-soft: rgba(212, 168, 67, 0.14);
-    --manake-button-text: #0A0A0B;
-    --manake-danger: #F87171;
-    --manake-success: #34D399;
-    --manake-warning: #FBBF24;
+    --manake-button-text: #0a0a0b;
+    --manake-danger: #f87171;
+    --manake-success: #34d399;
+    --manake-warning: #fbbf24;
 }
 
-[data-theme-resolved="light"] {
-    --manake-bg: #F7F7F4;
-    --manake-bg-soft: #F2F0EA;
-    --manake-surface: #FFFFFF;
+[data-theme-resolved='light'] {
+    --manake-bg: #f7f7f4;
+    --manake-bg-soft: #f2f0ea;
+    --manake-surface: #ffffff;
     --manake-surface-muted: rgba(23, 23, 23, 0.035);
-    --manake-border: rgba(23, 23, 23, 0.10);
+    --manake-border: rgba(23, 23, 23, 0.1);
     --manake-text: #171717;
     --manake-text-muted: #666666;
-    --manake-text-soft: #8A8175;
-    --manake-accent: #2563EB;
-    --manake-accent-hover: #1D4ED8;
+    --manake-text-soft: #8a8175;
+    --manake-accent: #2563eb;
+    --manake-accent-hover: #1d4ed8;
     --manake-accent-soft: rgba(37, 99, 235, 0.12);
-    --manake-button-text: #FFFFFF;
-    --manake-danger: #DC2626;
+    --manake-button-text: #ffffff;
+    --manake-danger: #dc2626;
     --manake-success: #059669;
-    --manake-warning: #D97706;
+    --manake-warning: #d97706;
 }
 
 /* Centralized Semantic Utility Classes */
@@ -817,67 +817,67 @@
 /* ==================================================
    LIGHT THEME SMART OVERRIDES (PATCHES)
    ================================================== */
-[data-theme-resolved="light"] body {
+[data-theme-resolved='light'] body {
     background: var(--manake-bg) !important;
     color: var(--manake-text) !important;
 }
 
-[data-theme-resolved="light"] .manake-shell,
-[data-theme-resolved="light"] .landing-shell,
-[data-theme-resolved="light"] .manake-page,
-[data-theme-resolved="light"] .manake-section {
+[data-theme-resolved='light'] .manake-shell,
+[data-theme-resolved='light'] .landing-shell,
+[data-theme-resolved='light'] .manake-page,
+[data-theme-resolved='light'] .manake-section {
     background-color: var(--manake-bg) !important;
     color: var(--manake-text) !important;
 }
 
-[data-theme-resolved="light"] .mk-card,
-[data-theme-resolved="light"] .mk-card-soft,
-[data-theme-resolved="light"] .ui-card,
-[data-theme-resolved="light"] .ui-card-soft,
-[data-theme-resolved="light"] .ui-panel,
-[data-theme-resolved="light"] .ui-panel-solid,
-[data-theme-resolved="light"] [class*="bg-[#111113]"],
-[data-theme-resolved="light"] [class*="bg-[#0A0A0B]"],
-[data-theme-resolved="light"] [class*="bg-white/5"],
-[data-theme-resolved="light"] [class*="bg-white/[0.03]"],
-[data-theme-resolved="light"] [class*="bg-neutral-"],
-[data-theme-resolved="light"] [class*="bg-zinc-"] {
+[data-theme-resolved='light'] .mk-card,
+[data-theme-resolved='light'] .mk-card-soft,
+[data-theme-resolved='light'] .ui-card,
+[data-theme-resolved='light'] .ui-card-soft,
+[data-theme-resolved='light'] .ui-panel,
+[data-theme-resolved='light'] .ui-panel-solid,
+[data-theme-resolved='light'] [class*='bg-[#111113]'],
+[data-theme-resolved='light'] [class*='bg-[#0A0A0B]'],
+[data-theme-resolved='light'] [class*='bg-white/5'],
+[data-theme-resolved='light'] [class*='bg-white/[0.03]'],
+[data-theme-resolved='light'] [class*='bg-neutral-'],
+[data-theme-resolved='light'] [class*='bg-zinc-'] {
     background-color: var(--manake-surface) !important;
     color: var(--manake-text) !important;
     border-color: var(--manake-border) !important;
 }
 
-[data-theme-resolved="light"] [class*="text-[#E8E8EC]"],
-[data-theme-resolved="light"] [class*="text-white"],
-[data-theme-resolved="light"] [class*="text-zinc-100"],
-[data-theme-resolved="light"] [class*="text-zinc-50"] {
+[data-theme-resolved='light'] [class*='text-[#E8E8EC]'],
+[data-theme-resolved='light'] [class*='text-white'],
+[data-theme-resolved='light'] [class*='text-zinc-100'],
+[data-theme-resolved='light'] [class*='text-zinc-50'] {
     color: var(--manake-text) !important;
 }
 
-[data-theme-resolved="light"] [class*="text-[#A0A0A8]"],
-[data-theme-resolved="light"] [class*="text-zinc-400"],
-[data-theme-resolved="light"] [class*="text-zinc-300"] {
+[data-theme-resolved='light'] [class*='text-[#A0A0A8]'],
+[data-theme-resolved='light'] [class*='text-zinc-400'],
+[data-theme-resolved='light'] [class*='text-zinc-300'] {
     color: var(--manake-text-muted) !important;
 }
 
-[data-theme-resolved="light"] [class*="border-white/10"],
-[data-theme-resolved="light"] [class*="border-[#1A1A1E]"],
-[data-theme-resolved="light"] [class*="border-zinc-800"] {
+[data-theme-resolved='light'] [class*='border-white/10'],
+[data-theme-resolved='light'] [class*='border-[#1A1A1E]'],
+[data-theme-resolved='light'] [class*='border-zinc-800'] {
     border-color: var(--manake-border) !important;
 }
 
-[data-theme-resolved="light"] .mk-button-secondary {
+[data-theme-resolved='light'] .mk-button-secondary {
     background-color: var(--manake-surface) !important;
     border-color: var(--manake-border) !important;
     color: var(--manake-text) !important;
 }
 
-[data-theme-resolved="light"] .mk-button-secondary:hover {
+[data-theme-resolved='light'] .mk-button-secondary:hover {
     border-color: var(--manake-accent) !important;
     color: var(--manake-accent) !important;
 }
 
-[data-theme-resolved="light"] .btn-secondary {
+[data-theme-resolved='light'] .btn-secondary {
     background-color: var(--manake-surface) !important;
     border-color: var(--manake-border) !important;
     color: var(--manake-text) !important;
