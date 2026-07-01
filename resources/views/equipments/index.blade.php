@@ -1,5 +1,28 @@
 @extends('layouts.landing')
 
+{{-- 
+======================================================================
+APA YANG SAYA LIHAT?
+➔ [HALAMAN KATALOG UTAMA]
+Halaman untuk mencari, menyaring, dan memilih alat-alat sewa produksi.
+
+🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+- "Bagaimana Anda membatasi rentang tanggal sewa minimal & maksimal?"
+- "Ubah teks judul katalog ini!"
+- "Bagaimana logika pencarian katalog bekerja?"
+
+🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+- Judul & Subtitle: Nilai default diambil dari setting database, tetapi Anda bisa mengganti variabel `$catalogTitle` dan `$catalogSubtitle` (baris di bawah) ke teks string langsung.
+- Batasan Rentang Booking (bookingMaxDate): Ubah `now()->addMonthsNoOverflow(3)` pada baris 450 jika ingin memperbolehkan booking lebih dari 3 bulan ke depan (misal: `6` untuk 6 bulan).
+
+🟡 APA RISIKONYA? (Perlu Hati-hati)
+- Kategori Populer (`$categories`): Diambil dari tabel database `categories`. Jangan diubah manual di kode; jika ingin menambah kategori, tambahkan baris data di tabel `categories` Supabase.
+
+🔴 JANGAN DIUBAH!
+- `@csrf` di dalam form (baris 892): Wajib ada sebagai pengaman serangan CSRF (Cross-Site Request Forgery). Jika dihapus, form tambah keranjang sewa akan error 419.
+======================================================================
+--}}
+
 @section('title', __('app.catalog.title'))
 
 @push('head')

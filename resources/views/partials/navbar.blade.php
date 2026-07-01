@@ -1,4 +1,30 @@
 @php
+    // ======================================================================
+    // APA YANG SAYA LIHAT?
+    // -> Pembungkus utama dan konfigurasi visual untuk NAVBAR UTAMA website.
+    //
+    // 🎓 KEMUNGKINAN PERTANYAAN/PERMINTAAN DOSEN SAAT SIDANG:
+    // 1. "Ganti nama website/brand Anda!"
+    // 2. "Ubah warna latar belakang Navbar (Light/Dark mode)!"
+    // 3. "Naikkan atau turunkan tinggi Navbar!"
+    //
+    // 🟢 APA YANG BISA SAYA UBAH? (Sangat Aman & Mudah)
+    // - Nama Brand default: Ganti teks 'Manake' pada line di bawah pada `site_setting(..., 'Manake')`.
+    // - Tinggi Navbar: Pada baris tag <nav>, cari class `h-16` di dalam kontainer utama (baris di bawah), ubah ke `h-20` (lebih tinggi) atau `h-12` (lebih tipis).
+    // - Warna Latar Belakang (Dark Mode): Cari `#0A0A0B` pada `$navShellClass` di bawah, ubah warnanya (misal `#1E1E24` untuk abu-abu gelap).
+    // - Warna Latar Belakang (Light Mode): Cari `#F7F7F4` pada `$navShellClass` di bawah, ubah warnanya (misal `#FFFFFF` untuk putih bersih).
+    //
+    // 🟡 APA RISIKONYA? (Perlu Hati-hati)
+    // - Variabel `$navShellClass`, `$navLinkClass`, dll: Variabel ini mendeteksi preferensi tema (Light/Dark). Jika Anda mengubah class Tailwind di dalamnya, pastikan formatnya benar agar tidak merusak tampilan saat user berganti tema.
+    //
+    // 🔴 JANGAN DIUBAH! (Bisa Merusak Fitur)
+    // - Jangan ubah/hapus script di bagian bawah file ini. Script tersebut berfungsi untuk menangani klik notifikasi secara real-time dan sinkronisasi dengan database.
+    //
+    // 📝 BAGAIMANA CARA MENGUBAHNYA? (Contoh Konkret)
+    // - Menambah tinggi navbar: Ubah `h-16` di tag pembungkus kontainer menjadi `h-20`.
+    // - Mengubah default nama brand: Ubah `'Manake'` menjadi `'NamaBaru'`.
+    // ======================================================================
+
     $brandName = site_setting('brand.name', 'Manake');
     $homeUrl = route('home');
     $notificationItems = collect($notificationItems ?? []);
@@ -31,6 +57,18 @@
     class="sticky top-0 z-50 border-b {{ $navShellClass }} backdrop-blur-xl"
     x-data="{ mobileOpen: false, userOpen: false, notifOpen: false }"
 >
+    {{--
+    ======================================================================
+    APA YANG SAYA LIHAT?
+    -> Baris Tinggi Navbar Utama (`h-16`).
+    
+    🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+    - "Tolong tinggikan navbar-nya!"
+    
+    🟢 APA YANG BISA SAYA UBAH?
+    - Ubah `h-16` di class di bawah menjadi `h-20` (lebih tinggi) atau `h-12` (lebih pendek).
+    ======================================================================
+    --}}
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <a href="{{ $homeUrl }}" class="inline-flex shrink-0 items-center" aria-label="{{ $brandName }}">
             <x-brand.image light="manake-logo-blue.png" dark="manake-logo-white.png" :alt="$brandName" class="manake-navbar-logo" img-class="manake-navbar-logo__image h-9 md:h-10 w-auto" />

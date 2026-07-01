@@ -1,5 +1,29 @@
 @extends('layouts.landing')
 
+{{-- 
+======================================================================
+APA YANG SAYA LIHAT?
+➔ [HALAMAN DETAIL ALAT/PRODUK]
+Halaman tempat pembeli melihat spesifikasi rinci alat, status ketersediaan,
+serta form untuk memilih tanggal sewa sebelum masuk ke keranjang.
+
+🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+- "Ubah harga sewa per hari untuk produk ini!"
+- "Bagaimana Anda memvalidasi input tanggal mulai dan tanggal selesai sewa?"
+- "Tunjukkan di mana Anda mengambil data spesifikasi alat!"
+
+🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+- Harga default per hari: Disimpan di database, tetapi bisa diedit melalui Controller atau admin dashboard. Di file ini, variabel `$equipment->price_per_day` merender harganya.
+- Spesifikasi (`$specifications`): Mengambil data spesifikasi secara otomatis dari kolom `specifications` atau `description` pada tabel `equipments`.
+
+🟡 APA RISIKONYA? (Perlu Hati-hati)
+- Form Tambah Keranjang (`route('cart.add')`): Mengirim data sewa (id, tanggal, qty). Pastikan seluruh field input `type="hidden"` (baris di bawah) tidak dihapus atau diubah namanya karena akan merusak logic CartService.
+
+🔴 JANGAN DIUBAH!
+- Variabel `$bookingRanges` (baris 32): Mengandung data daftar tanggal yang sudah dibooking sebelumnya untuk memblokir kalender interaktif. Menghapusnya akan membolehkan double-booking (bentrok sewa).
+======================================================================
+--}}
+
 @php
     $statusValue = (string) ($equipment->status ?? ($equipment->stock > 0 ? 'ready' : 'unavailable'));
     $imagePath = $equipment->image_path ?? $equipment->image;

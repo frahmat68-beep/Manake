@@ -1,4 +1,32 @@
 @php
+    // ======================================================================
+    // APA YANG SAYA LIHAT?
+    // -> Pembungkus utama dan konfigurasi visual untuk FOOTER (Bagian bawah website).
+    //
+    // 🎓 KEMUNGKINAN PERTANYAAN/PERMINTAAN DOSEN SAAT SIDANG:
+    // 1. "Ganti teks Hak Cipta (Copyright) di bagian paling bawah!"
+    // 2. "Ubah nomor WhatsApp, Email, atau Instagram untuk hubungi rental!"
+    // 3. "Ganti alamat fisik studio rental alat!"
+    //
+    // 🟢 APA YANG BISA SAYA UBAH? (Sangat Aman & Mudah)
+    // - Tentang Rental (`footer.about`): Ganti teks default di baris 4.
+    // - Kontak WhatsApp: Ganti nomor default di baris 8.
+    // - Kontak Email: Ganti email default di baris 9.
+    // - Kontak Instagram: Ganti instagram default di baris 10.
+    // - Alamat Fisik: Ganti teks alamat default di baris 7.
+    // - Teks Copyright: Pada bagian "Bottom Bar" (baris 147), ubah/tambahkan teks setelah tanda `&copy;`.
+    //
+    // 🟡 APA RISIKONYA? (Perlu Hati-hati)
+    // - Variabel `$buildWhatsappHref` dan `$buildTelHref`: Ini adalah fungsi pembantu untuk mendeteksi digit nomor telepon secara otomatis untuk dijadikan link klik. Jangan merusak regex di dalamnya agar tombol hubungi WA tidak mati.
+    //
+    // 🔴 JANGAN DIUBAH! (Bisa Merusak Fitur)
+    // - Tag pembungkus `<footer id="contact" ...>` -> ID `contact` digunakan sebagai anchor link dari Navbar. Jika ID ini diubah atau dihapus, klik menu "Kontak" di navbar atas tidak akan bisa scroll otomatis ke bawah.
+    //
+    // 📝 BAGAIMANA CARA MENGUBAHNYA? (Contoh Konkret)
+    // - Mengubah email: Ganti `'hello@manakerental.id'` menjadi `'kontak@manake.id'`.
+    // - Mengubah Instagram: Ganti `'@manakerental'` menjadi `'@rental_manake'`.
+    // ======================================================================
+
     $footerAbout = app()->getLocale() === 'en'
         ? __('app.footer.about_body')
         : setting('footer.about', setting('footer_description', site_content('footer.about', __('app.footer.about_body'))));

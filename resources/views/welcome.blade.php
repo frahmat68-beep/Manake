@@ -478,6 +478,25 @@
                 display: none !important;
             }
         </style>
+        {{-- 
+        ======================================================================
+        APA YANG SAYA LIHAT?
+        ➔ [SEKSI HERO UTAMA]
+        Tampilan pertama halaman beranda (gambar latar belakang & judul besar dengan animasi berputar).
+        
+        🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+        - "Coba ganti gambar latar belakang Hero ini!"
+        - "Bagaimana cara mengubah daftar kata kategori yang berputar?"
+        
+        🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+        - Gambar Latar Belakang (Dark Mode): Edit nama file `hero-bg.jpg` di baris 485 ke file gambar baru Anda.
+        - Gambar Latar Belakang (Light Mode): Edit nama file `hero-bg-light.jpg` di baris 492 ke file gambar baru Anda.
+        - Daftar Kata Berputar: Pada array `$heroCategories` di atas (baris 6 / 119), ubah/tambah kategori sewa seperti 'Kamera', 'Lighting', dsb.
+        
+        🔴 JANGAN DIUBAH!
+        - Variabel Alpine.js `x-data="{ words: ... }"`: Ini adalah sistem logika yang memutar teks kategori setiap 2.4 detik. Jika diubah tanpa paham Javascript/Alpine, animasi teks berputar akan macet.
+        ======================================================================
+        --}}
         <section class="manake-hero-island relative min-h-[calc(100svh-8rem)] overflow-hidden" data-theme-island="dark">
             <div class="absolute inset-0">
                 <!-- Dark mode background image & overlay -->
@@ -543,6 +562,24 @@
                 </div>
 
                 <div class="grid gap-4">
+                    {{-- 
+                    ======================================================================
+                    APA YANG SAYA LIHAT?
+                    ➔ [SNAPSHOOT RINGKASAN RENTAL HARI INI]
+                    Kotak statistik ringkasan penyewaan (Alat Disewa Hari Ini, Alat Tersedia, dll).
+                    
+                    🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+                    - "Bagaimana angka statistik ini diperoleh? Apakah datanya real-time?"
+                    - "Ubah warna atau label judul ringkasan ini!"
+                    
+                    🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+                    - Teks Judul/Label: Ubah string penerjemahan seperti `__('app.home.snapshot_title')` dengan teks biasa (misal: "Statistik Rental Live").
+                    - Jenis Data: Ganti array `$tile` jika ingin menampilkan data berbeda.
+                    
+                    🔴 JANGAN DIUBAH!
+                    - Fungsi `number_format($snapshotNumbers['...'])`: Ini adalah pemanggilan variabel hasil query ketersediaan dari `AvailabilityService`. Jika diubah sembarangan, statistik akan bernilai 0 atau terjadi error PHP.
+                    ======================================================================
+                    --}}
                     <div class="rounded-[1.5rem] border p-4 backdrop-blur-md md:p-5 hero-card-glass">
                         <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
                             <div>
@@ -637,6 +674,24 @@
                         }
                     }"
                 >
+                    {{-- 
+                    ======================================================================
+                    APA YANG SAYA LIHAT?
+                    ➔ [CAROUSEL ALAT FEATURED / PILIHAN]
+                    Slider dinamis yang menampilkan daftar alat-alat yang siap disewa di homepage.
+                    
+                    🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+                    - "Dari mana data alat-alat ini diambil?"
+                    - "Ubah kecepatan geser otomatis dari slider-nya!"
+                    
+                    🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+                    - Kecepatan Geser Otomatis: Ubah nilai milidetik `3500` di baris 630 (misal ke `2000` untuk bergeser lebih cepat setiap 2 detik).
+                    - Tulisan Kicker/Judul: Ubah variabel bahasa di `__('app.home.featured_title')` menjadi string teks langsung (misal: "Katalog Kamera Pilihan").
+                    
+                    🔴 JANGAN DIUBAH!
+                    - ID `featured-equipment-track` (baris 680): Berfungsi sebagai selector Javascript untuk menarget arah scroll track. Jika dihapus, tombol panah kiri-kanan carousel akan mati.
+                    ======================================================================
+                    --}}
                     <div>
                         <p class="mb-3 home-kicker">{{ __('app.home.featured_kicker') }}</p>
                         <h2 class="home-heading">
