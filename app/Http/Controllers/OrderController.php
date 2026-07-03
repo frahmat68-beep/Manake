@@ -210,7 +210,7 @@ class OrderController extends Controller
 
                     $windowStart = $newStartDate->copy()->subDays(AvailabilityService::BUFFER_DAYS);
                     $windowEnd = $newEndDate->copy()->addDays(AvailabilityService::BUFFER_DAYS);
-                    for ($cursor = $windowStart; $cursor->lte($windowEnd); $cursor->addDay()) {
+                    for ($cursor = $windowStart->copy(); $cursor->lte($windowEnd); $cursor->addDay()) {
                         $dateKey = $cursor->toDateString();
                         $requestedDailyByEquipment[$equipmentId][$dateKey] = ($requestedDailyByEquipment[$equipmentId][$dateKey] ?? 0) + $qty;
                     }

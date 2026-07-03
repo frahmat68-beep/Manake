@@ -4,6 +4,20 @@ namespace App\Services;
 
 class PricingService
 {
+    // ======================================================================
+    // APA YANG SAYA LIHAT?
+    // -> [LAYANAN HITUNG HARGA & DENDA (PRICING ENGINE)]
+    // Kelas ini bertanggung jawab atas semua kalkulasi keuangan, termasuk pajak dan denda keterlambatan pengembalian.
+    //
+    // 🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+    // 1. "Bagaimana Anda menghitung PPN untuk setiap transaksi sewa?"
+    // 2. "Bagaimana logika penghitungan denda sewa jika penyewa terlambat mengembalikan?"
+    //
+    // 🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+    // - Nilai Pajak (`TAX_RATE`): Ubah `0.11` (PPN 11%) ke nilai lain (misal `0.12` untuk PPN 12%).
+    // - Aturan Denda (`lateFeeFromLateHours` di baris 57): Anda bisa mengubah persentase denda keterlambatan (30%, 50%, 100%) berdasarkan jam keterlambatan sewa.
+    // ======================================================================
+
     public const TAX_RATE = 0.11;
 
     /**
