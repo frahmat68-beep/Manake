@@ -183,6 +183,25 @@ class PaymentController extends Controller
         return true;
     }
 
+    // ======================================================================
+    // APA YANG SAYA LIHAT?
+    // -> [PENERIMA NOTIFIKASI WEBHOOK MIDTRANS]
+    // Fungsi `handleNotification()` dipanggil secara otomatis oleh server Midtrans (Callback URL)
+    // saat status pembayaran pembeli berubah di server Midtrans.
+    //
+    // 🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+    // 1. "Bagaimana aplikasi Anda menjamin bahwa data callback ini benar-benar dikirim oleh Midtrans dan bukan hacker?"
+    // 2. "Di mana data pembayaran disinkronkan statusnya setelah lunas?"
+    //
+    // 🟢 APA YANG BISA SAYA UBAH?
+    // - Logger warning (baris 203): Anda bisa mengubah pesan log untuk penyesuaian jika ingin mempermudah pencarian log kegagalan.
+    //
+    // 🟡 APA RISIKONYA? (Perlu Hati-hati)
+    // - `syncOrderPaymentStatus(...)` (baris 226): Ini memicu perubahan status order di database lokal menjadi lunas/expired. Pastikan fungsi ini selalu dipanggil agar status pembayaran tidak menggantung.
+    //
+    // 🔴 JANGAN DIUBAH!
+    // - `isValidNotificationSignature($payload)` (baris 194): Logika validasi tanda tangan SHA-512 dengan server key Midtrans. Jika dinonaktifkan, aplikasi Anda rentan terhadap pemalsuan pembayaran (hacker menembak URL callback ini agar seolah-olah lunas tanpa membayar).
+    // ======================================================================
     public function handleNotification(Request $request)
     {
         $payload = $request->all();

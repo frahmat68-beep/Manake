@@ -116,6 +116,21 @@ class OrderController extends Controller
             ->with('success', __('Pesanan berhasil dibatalkan.'));
     }
 
+    // ======================================================================
+    // APA YANG SAYA LIHAT?
+    // -> [LOGIKA RESCHEDULE JADWAL SEWA]
+    // Fungsi `reschedule()` memproses permintaan pengguna untuk memindahkan tanggal sewa ke hari lain.
+    //
+    // 🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+    // 1. "Mengapa Anda membatasi durasi hari reschedule harus sama dengan pemesanan awal?"
+    // 2. "Status apa saja yang diperbolehkan untuk melakukan reschedule?"
+    //
+    // 🟢 APA YANG BISA SAYA UBAH?
+    // - Batas status reschedule (baris 123): Saat ini hanya order dengan status `menunggu_pembayaran`, `diproses`, atau `lunas` yang bisa reschedule.
+    //
+    // 🟡 APA RISIKONYA? (Perlu Hati-hati)
+    // - Pembatasan durasi hari (`$newDurationDays !== $currentDurationDays` di baris 151): Kami membatasi durasi sewa baru wajib sama dengan durasi awal. Jika aturan ini dihapus, nominal tagihan pembayaran di Midtrans tidak akan sinkron (mismatch harga) karena jumlah harinya berubah.
+    // ======================================================================
     public function reschedule(Request $request, Order $order, AvailabilityService $availability, PricingService $pricing)
     {
         $this->ensureOwnedOrder($request, $order);

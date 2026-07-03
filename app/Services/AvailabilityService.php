@@ -11,6 +11,23 @@ use Illuminate\Support\Facades\Schema;
 
 class AvailabilityService
 {
+    // ======================================================================
+    // APA YANG SAYA LIHAT?
+    // -> [SISTEM PENGHITUNG KETERSEDIAAN ALAT (OTAK RENTAL)]
+    // Kelas ini adalah "mesin kalkulator" yang menghitung ketersediaan alat.
+    //
+    // 🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+    // 1. "Bagaimana program Anda menangani waktu jeda pembersihan/pemeliharaan alat setelah sewa?"
+    // 2. "Berapa lama pesanan sewa yang belum dibayar akan mengunci stok barang (Hold Window)?"
+    //
+    // 🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+    // - Durasi Penguncian Bayar (`HOLD_WINDOW_MINUTES`): Ubah `60` ke waktu lain dalam satuan menit (misal `30` menit untuk membatalkan booking otomatis jika belum dibayar dalam 30 menit).
+    // - Jeda Pemeliharaan/Buffer (`BUFFER_DAYS`): Ubah `1` ke angka hari lain (misal `2` hari jika studio butuh 2 hari jeda sebelum kamera bisa disewakan kembali ke orang lain).
+    //
+    // 🟡 APA RISIKONYA? (Perlu Hati-hati)
+    // - Status Blokir (`BLOCKING_ORDER_STATUSES`): Daftar status order yang dianggap sedang menyewa alat. Jangan ganti string di dalamnya kecuali nama status di model Order juga disesuaikan.
+    // ======================================================================
+
     public const HOLD_WINDOW_MINUTES = 60;
 
     public const BUFFER_DAYS = 1;

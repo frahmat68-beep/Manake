@@ -83,6 +83,21 @@ class CartController extends Controller
         ]);
     }
 
+    // ======================================================================
+    // APA YANG SAYA LIHAT?
+    // -> [VALIDASI & PENAMBAHAN KE KERANJANG]
+    // Fungsi `add()` bertugas untuk memvalidasi data input sewa dan memasukkannya ke dalam session keranjang.
+    //
+    // 🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+    // 1. "Bagaimana Anda membatasi jumlah kuantitas (`qty`) maksimal alat yang disewa?"
+    // 2. "Di mana validasi agar tanggal sewa tidak boleh sebelum hari ini dilakukan?"
+    //
+    // 🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+    // - Batas Qty Maksimal: Ganti `'max:99'` di baris 97 ke angka lain (misal `'max:10'` untuk membatasi sewa maks 10 unit).
+    //
+    // 🟡 APA RISIKONYA? (Perlu Hati-hati)
+    // - Aturan validasi tanggal `after_or_equal:today` (baris 98): Menjamin penyewa tidak memilih tanggal kemarin. Jika ini dihapus, user bisa menyewa untuk tanggal masa lalu yang akan merusak logika database.
+    // ======================================================================
     public function add(Request $request, CartService $cart, AvailabilityService $availability)
     {
         $maxAllowedDate = $this->maxBookingDateString();

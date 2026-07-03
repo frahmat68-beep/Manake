@@ -9,6 +9,19 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
+    // ======================================================================
+    // APA YANG SAYA LIHAT?
+    // -> [STATUS SIKLUS PERSEWAAN ALAT (STATE MACHINE)]
+    // Konstanta di bawah mendefinisikan seluruh status pesanan sewa yang disimpan di kolom `status_pesanan`.
+    //
+    // 🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+    // 1. "Apa saja siklus status pesanan dari awal disewa sampai selesai?"
+    // 2. "Di mana Anda mendefinisikan label status 'menunggu_pembayaran' atau 'lunas'?"
+    //
+    // 🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+    // - Label Status Database: Anda bisa mengubah nilai string di kanan (misal `'lunas'` diubah ke `'siap_diambil'`), tetapi jika diubah, pastikan database juga di-update agar isi datanya seragam.
+    // ======================================================================
+
     public const STATUS_PENDING_PAYMENT = 'menunggu_pembayaran';
 
     public const STATUS_PROCESSING = 'diproses';

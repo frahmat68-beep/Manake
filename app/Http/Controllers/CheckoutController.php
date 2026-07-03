@@ -168,6 +168,25 @@ class CheckoutController extends Controller
 
         $userId = (int) $user->id;
 
+        // ======================================================================
+        // APA YANG SAYA LIHAT?
+        // -> [PRE-CHECK STOK & TRANSAKSI CHECKOUT]
+        // Blok kode di bawah memvalidasi stok mentah dan memulai transaksi database.
+        //
+        // 🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+        // 1. "Bagaimana program Anda mencegah dua pengguna menyewa alat yang sama sehingga melebihi stok?"
+        // 2. "Tunjukkan baris kode yang menyimpan data order baru ke database!"
+        //
+        // 🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+        // - Pesan Error (baris 182 / 188): Anda bisa mengubah pesan error kegagalan stok ke kalimat buatan Anda sendiri.
+        //
+        // 🟡 APA RISIKONYA? (Perlu Hati-hati)
+        // - `DB::transaction(...)` (baris 198): Menjamin jika salah satu proses gagal (misal stok habis di tengah jalan), maka data order yang sempat terbuat akan dibatalkan otomatis (*rollback*). Jangan hapus pembungkus transaksi ini.
+        //
+        // 🔴 JANGAN DIUBAH!
+        // - `lockForUpdate()` (baris 201): Mengunci baris database alat agar tidak bisa dibaca/diedit oleh request checkout pengguna lain sampai transaksi Anda selesai. Ini adalah solusi utama mencegah *race condition* (tabrakan sewa).
+        // ======================================================================
+
         // BUG #3: Pre-check stok mentah tanpa lock sebelum masuk DB transaction
         $preCheckEquipments = Equipment::query()
             ->whereIn('id', $equipmentIds)
@@ -247,6 +266,14 @@ class CheckoutController extends Controller
                     }
                 }
 
+                // ======================================================================
+                // APA YANG SAYA LIHAT?
+                // -> [PEMBUATAN BARIS ORDER BARU]
+                // Fungsi Eloquent `Order::create` untuk memasukkan data pesanan baru ke tabel `orders`.
+                //
+                // 🟢 APA YANG BISA SAYA UBAH?
+                // - Default status sewa: Diset ke `Order::STATUS_PENDING_PAYMENT` (menunggu pembayaran).
+                // ======================================================================
                 $order = Order::create([
                     'user_id' => $userId,
                     'order_number' => null,
