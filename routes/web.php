@@ -29,6 +29,24 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ThemeController;
 use Illuminate\Support\Facades\Route;
 
+// ======================================================================
+// APA YANG SAYA LIHAT?
+// -> [PETA URL & ROUTING WEBSITE (routes/web.php)]
+// Berkas ini mendefinisikan rute (URL) yang bisa diketikkan di browser dan menghubungkannya ke Controller yang sesuai.
+//
+// 🎓 KEMUNGKINAN PERTANYAAN DOSEN:
+// 1. "Tunjukkan rute mana yang dipakai untuk halaman checkout!"
+// 2. "Bagaimana sistem Anda mencegah tamu yang belum login masuk ke halaman pembayaran?"
+// 3. "Bagaimana cara mendefinisikan URL rute baru?"
+//
+// 🟢 APA YANG BISA SAYA UBAH? (Aman & Mudah)
+// - Pengalihan Redirect: Anda bisa mengubah URL redirect (seperti `/equipment` di-redirect ke `/catalog`).
+//
+// 🟡 APA RISIKONYA? (Perlu Hati-hati)
+// - Middleware `auth` (baris 91): Melindungi rute di dalamnya agar hanya bisa diakses user yang sudah login. Jika dihapus, tamu ilegal bisa mengakses riwayat pesanan sewa orang lain.
+// - Middleware `ensure.profile.completed` (baris 134): Memaksa penyewa melengkapi profil sebelum checkout. Jangan dihapus agar data profil penyewa di database tetap valid dan terverifikasi.
+// ======================================================================
+
 /*
 |--------------------------------------------------------------------------
 | PUBLIC PAGES (NO AUTH)
