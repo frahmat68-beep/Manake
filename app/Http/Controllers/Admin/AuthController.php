@@ -25,6 +25,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        if ($request->has('email')) {
+            $request->merge([
+                'email' => strtolower(trim((string) $request->email)),
+            ]);
+        }
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
