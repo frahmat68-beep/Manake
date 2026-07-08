@@ -58,6 +58,12 @@
 
     if ($isSuperAdmin) {
         $settingsItems[] = [
+            'key' => 'admins',
+            'label' => __('Kelola Admin'),
+            'url' => route('admin.admins.index'),
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="8.5" cy="7" r="4" /><rect x="14" y="14" width="8" height="8" rx="1" /></svg>',
+        ];
+        $settingsItems[] = [
             'key' => 'db',
             'label' => __('ui.admin.db_explorer'),
             'url' => route('admin.db.index'),

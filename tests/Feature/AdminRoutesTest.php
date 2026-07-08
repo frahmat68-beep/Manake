@@ -206,4 +206,76 @@ class AdminRoutesTest extends TestCase
         $this->assertNotNull($order->damaged_at);
         $this->assertNotNull($order->returned_at);
     }
+
+    public function test_super_admin_can_manage_admins_and_create_new_admin(): void
+    {
+        $superAdmin = $this->createAdmin();
+
+        // 1. Can view admin list
+        $response = $this->actingAs($superAdmin, 'admin')
+            ->get(route('admin.admins.index'));
+        $response->assertOk();
+        $response->assertSee('Kelola Admin');
+
+        // 2. Can view create form
+        $response = $this->actingAs($superAdmin, 'admin')
+            ->get(route('admin.admins.create'));
+        $response->assertOk();
+
+        // 3. Can store new admin
+        $response = $this->actingAs($superAdmin, 'admin')
+            ->post(route('admin.admins.store'), [
+                'name' => 'New Staff Admin',
+                'email' => 'staff-admin@example.com',
+                'role' => 'admin',
+                'password' => 'securepassword123',
+                'password_confirmation' => 'securepassword123',
+            ]);
+        $response->assertRedirect(route('admin.admins.index'));
+
+        $this->assertDatabaseHas('admins', [
+            'email' => 'staff-admin@example.com',
+            'role' => 'admin',
+        ]);
+        
+        $newAdmin = Admin::where('email', 'staff-admin@example.com')->first();
+        $this->assertNotNull($newAdmin);
+
+        // 4. Can delete other admin
+        $response = $this->actingAs($superAdmin, 'admin')
+            ->delete(route('admin.admins.destroy', $newAdmin));
+        $response->assertRedirect(route('admin.admins.index'));
+        $this->assertDatabaseMissing('admins', [
+            'id' => $newAdmin->id,
+        ]);
+    }
+
+    public function test_standard_admin_cannot_manage_admins(): void
+    {
+        $standardAdmin = Admin::create([
+            'name' => 'Staff Admin',
+            'email' => 'staff-test@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+
+        $this->actingAs($standardAdmin, 'admin')
+            ->get(route('admin.admins.index'))
+            ->assertStatus(403);
+
+        $this->actingAs($standardAdmin, 'admin')
+            ->get(route('admin.admins.create'))
+            ->assertStatus(403);
+
+        $this->actingAs($standardAdmin, 'admin')
+            ->post(route('admin.admins.store'), [
+                'name' => 'Should Fail',
+                'email' => 'fail@example.com',
+                'role' => 'admin',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ])
+            ->assertStatus(403);
+    }
 }

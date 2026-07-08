@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\StubController as AdminStubController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\WebsiteSettingsController as AdminWebsiteSettingsController;
+use App\Http\Controllers\Admin\AdminManageController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AvailabilityBoardController;
 use App\Http\Controllers\CartController;
@@ -211,6 +212,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
         Route::post('/users/{user}/reset-password', [AdminUserController::class, 'sendResetLink'])->name('users.reset-password');
         Route::post('/users/{user}/set-password', [AdminUserController::class, 'setPassword'])->name('users.set-password');
+    });
+
+    /* === ADMINS MANAGEMENT (SUPER ADMIN ONLY) === */
+    Route::middleware(['admin.auth', 'admin.super'])->group(function () {
+        Route::resource('admins', AdminManageController::class)->except(['show'])->names('admins');
     });
 
     /* === DB EXPLORER (SUPER ADMIN) === */
