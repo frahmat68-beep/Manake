@@ -278,4 +278,29 @@ class AdminRoutesTest extends TestCase
             ])
             ->assertStatus(403);
     }
+
+    public function test_cannot_delete_last_super_admin(): void
+    {
+        $superAdmin = $this->createAdmin();
+
+        $secondSuperAdmin = Admin::create([
+            'name' => 'Second Super Admin',
+            'email' => 'second-super@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'super_admin',
+            'email_verified_at' => now(),
+        ]);
+
+        // Attempting to delete the second super admin while there are two should succeed
+        $response = $this->actingAs($superAdmin, 'admin')
+            ->delete(route('admin.admins.destroy', $secondSuperAdmin));
+        $response->assertRedirect(route('admin.admins.index'));
+        $this->assertDatabaseMissing('admins', ['id' => $secondSuperAdmin->id]);
+
+        // Attempting to delete the last super admin (himself) should fail (returns warning and prevents it)
+        $response = $this->actingAs($superAdmin, 'admin')
+            ->delete(route('admin.admins.destroy', $superAdmin));
+        $response->assertSessionHas('error');
+        $this->assertDatabaseHas('admins', ['id' => $superAdmin->id]);
+    }
 }

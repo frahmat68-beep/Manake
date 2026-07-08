@@ -61,6 +61,10 @@ class AdminManageController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        if (auth('admin')->user()->role !== 'super_admin') {
+            abort(403, __('Akses ditolak. Hanya Super Admin yang dapat menambahkan admin baru.'));
+        }
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:admins,email'],
@@ -96,10 +100,21 @@ class AdminManageController extends Controller
 
     public function destroy(Admin $admin): RedirectResponse
     {
+        if (auth('admin')->user()->role !== 'super_admin') {
+            abort(403, __('Akses ditolak. Hanya Super Admin yang dapat menghapus admin.'));
+        }
+
         $currentAdminId = (int) auth('admin')->id();
 
         if ((int) $admin->id === $currentAdminId) {
             return back()->with('error', __('Anda tidak dapat menghapus akun Anda sendiri yang sedang aktif.'));
+        }
+
+        if ($admin->role === 'super_admin') {
+            $superAdminsCount = Admin::where('role', 'super_admin')->count();
+            if ($superAdminsCount <= 1) {
+                return back()->with('error', __('Tidak dapat menghapus Super Admin terakhir di sistem.'));
+            }
         }
 
         $email = $admin->email;
