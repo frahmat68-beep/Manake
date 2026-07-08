@@ -39,6 +39,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has('email')) {
+            $request->merge([
+                'email' => strtolower(trim((string) $request->email)),
+            ]);
+        }
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],

@@ -57,8 +57,10 @@ class SocialiteController extends Controller
                 ->redirectUrl($this->getRedirectUrl())
                 ->user();
             
+            $socialEmail = strtolower(trim((string) $socialUser->getEmail()));
+
             $user = User::where('google_id', $socialUser->getId())
-                ->orWhere('email', $socialUser->getEmail())
+                ->orWhereRaw('LOWER(email) = ?', [$socialEmail])
                 ->first();
 
             if ($user) {
@@ -74,7 +76,7 @@ class SocialiteController extends Controller
                 // Create new user
                 $user = User::create([
                     'name' => $socialUser->getName() ?? $socialUser->getNickname() ?? 'Google User',
-                    'email' => $socialUser->getEmail(),
+                    'email' => $socialEmail,
                     'google_id' => $socialUser->getId(),
                     'google_token' => $socialUser->token,
                     'google_refresh_token' => $socialUser->refreshToken,
