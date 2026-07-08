@@ -171,4 +171,39 @@ class AdminRoutesTest extends TestCase
         $response->assertSee('Log Pesanan');
         $response->assertSee('MNK-ARCHIVE-001');
     }
+
+    public function test_admin_can_mark_order_as_damaged_with_additional_fee(): void
+    {
+        $admin = $this->createAdmin();
+        $user = User::factory()->create();
+
+        $order = Order::create([
+            'user_id' => $user->id,
+            'order_number' => 'MNK-DAMAGED-TEST',
+            'status_pembayaran' => 'paid',
+            'status_pesanan' => 'barang_diambil',
+            'status' => 'paid',
+            'total_amount' => 500000,
+            'rental_start_date' => now()->subDays(2)->toDateString(),
+            'rental_end_date' => now()->toDateString(),
+            'paid_at' => now()->subDays(3),
+            'picked_up_at' => now()->subDays(2),
+        ]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->patch(route('admin.dashboard.orders.operational-status', $order), [
+                'status_pesanan' => 'barang_rusak',
+                'additional_fee' => 150000,
+                'additional_fee_note' => 'Lensa depan retak karena terjatuh',
+            ]);
+
+        $response->assertRedirect();
+        $order->refresh();
+
+        $this->assertEquals('barang_rusak', $order->status_pesanan);
+        $this->assertEquals(150000, $order->additional_fee);
+        $this->assertEquals('Lensa depan retak karena terjatuh', $order->additional_fee_note);
+        $this->assertNotNull($order->damaged_at);
+        $this->assertNotNull($order->returned_at);
+    }
 }

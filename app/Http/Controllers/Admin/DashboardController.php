@@ -77,6 +77,8 @@ class DashboardController extends Controller
     {
         $data = $request->validate([
             'status_pesanan' => ['required', 'in:barang_diambil,barang_kembali,barang_rusak'],
+            'additional_fee' => ['nullable', 'integer', 'min:0'],
+            'additional_fee_note' => ['nullable', 'string', 'max:500'],
         ]);
 
         $nextStatus = $data['status_pesanan'];
@@ -118,8 +120,12 @@ class DashboardController extends Controller
             $order->returned_at = now();
         }
 
-        if ($nextStatus === 'barang_rusak' && ! $order->damaged_at) {
-            $order->damaged_at = now();
+        if ($nextStatus === 'barang_rusak') {
+            if (! $order->damaged_at) {
+                $order->damaged_at = now();
+            }
+            $order->additional_fee = (int) ($data['additional_fee'] ?? 0);
+            $order->additional_fee_note = trim((string) ($data['additional_fee_note'] ?? '')) ?: null;
         }
 
         $order->save();

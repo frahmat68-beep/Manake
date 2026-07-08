@@ -455,12 +455,13 @@
                                         <form
                                             method="POST"
                                             action="{{ route('admin.dashboard.orders.operational-status', $order) }}"
-                                            data-operational-confirm="{{ strtr($adminDashboardCopy['confirm_damage_message'], [':order' => $order->order_number ?? ('ORD-' . $order->id)]) }}"
+                                            class="mark-damaged-form"
+                                            data-order-number="{{ $order->order_number ?? ('ORD-' . $order->id) }}"
                                         >
                                             @csrf
                                             @method('PATCH')
                                             <input type="hidden" name="status_pesanan" value="barang_rusak">
-                                            <button class="admin-action-danger flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
+                                            <button type="submit" class="admin-action-danger flex min-h-10 w-full items-center justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold">
                                                 {{ $adminDashboardCopy['mark_damaged'] }}
                                             </button>
                                         </form>
@@ -581,19 +582,131 @@
                 {{ $operationalOrders->links() }}
             </div>
         @endif
+
+        <!-- Modal Biaya Kerusakan -->
+        <div id="damage-fee-modal" class="fixed inset-0 z-[120] hidden items-center justify-center bg-[#0A0A0B]/75 p-4" role="dialog" aria-modal="true" aria-labelledby="damage-modal-title">
+            <div class="w-full max-w-md rounded-2xl border border-[#1A1A1E] bg-[#111113] p-6 shadow-2xl">
+                <h3 id="damage-modal-title" class="text-base font-bold text-[#E8E8EC]">
+                    {{ __('Input Biaya Kerusakan') }}
+                </h3>
+                <p class="mt-1 text-xs text-[#A0A0A8]">
+                    {{ __('Pesanan') }}: <span id="damage-modal-order-number" class="font-semibold text-emerald-400"></span>
+                </p>
+
+                <form id="damage-fee-form" method="POST" action="">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="status_pesanan" value="barang_rusak">
+
+                    <div class="mt-4 space-y-4">
+                        <div>
+                            <label for="damage-additional-fee" class="block text-xs font-semibold text-[#A0A0A8]">{{ __('Biaya Kerusakan (Rp)') }}</label>
+                            <input
+                                type="number"
+                                min="0"
+                                step="1000"
+                                id="damage-additional-fee"
+                                name="additional_fee"
+                                placeholder="Contoh: 100000"
+                                class="mt-1.5 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3.5 py-2 text-sm text-[#E8E8EC] placeholder-[#52525B] focus:border-[#D4A843] focus:outline-none focus:ring-1 focus:ring-[#D4A843]"
+                                required
+                            >
+                        </div>
+
+                        <div>
+                            <label for="damage-additional-fee-note" class="block text-xs font-semibold text-[#A0A0A8]">{{ __('Catatan Kerusakan') }}</label>
+                            <textarea
+                                id="damage-additional-fee-note"
+                                name="additional_fee_note"
+                                rows="3"
+                                placeholder="Contoh: Goresan lensa depan, LCD pecah"
+                                class="mt-1.5 w-full rounded-xl border border-[#1A1A1E] bg-[#0A0A0B] px-3.5 py-2 text-sm text-[#E8E8EC] placeholder-[#52525B] focus:border-[#D4A843] focus:outline-none focus:ring-1 focus:ring-[#D4A843]"
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-end gap-2.5">
+                        <button id="close-damage-modal" type="button" class="inline-flex min-h-9 items-center justify-center rounded-xl border border-[#1A1A1E] bg-transparent px-4 py-2 text-xs font-semibold text-[#E8E8EC] transition hover:bg-[#1A1A1E]">
+                            {{ __('Batal') }}
+                        </button>
+                        <button type="submit" class="inline-flex min-h-9 items-center justify-center rounded-xl bg-rose-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-rose-700">
+                            {{ __('Tandai Rusak & Tagih') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 @endsection
 
 @push('scripts')
     <script>
         (function () {
+            // Confirm dialog handler for non-damage operations
             document.querySelectorAll('form[data-operational-confirm]').forEach((form) => {
                 form.addEventListener('submit', (event) => {
+                    if (form.classList.contains('mark-damaged-form')) {
+                        return;
+                    }
                     const message = form.dataset.operationalConfirm || '';
                     if (message && !window.confirm(message)) {
                         event.preventDefault();
                     }
                 });
+            });
+
+            // Modal handlers for damaged mark
+            const damageModal = document.getElementById('damage-fee-modal');
+            const damageForm = document.getElementById('damage-fee-form');
+            const damageOrderNumberSpan = document.getElementById('damage-modal-order-number');
+            const closeDamageModalBtn = document.getElementById('close-damage-modal');
+
+            document.querySelectorAll('form.mark-damaged-form').forEach((form) => {
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const actionUrl = form.getAttribute('action');
+                    const orderNumber = form.dataset.orderNumber || '';
+                    
+                    if (damageModal && damageForm) {
+                        damageForm.setAttribute('action', actionUrl);
+                        if (damageOrderNumberSpan) {
+                            damageOrderNumberSpan.textContent = orderNumber;
+                        }
+                        damageModal.classList.remove('hidden');
+                        damageModal.classList.add('flex');
+                        
+                        // Focus on fee input
+                        const feeInput = document.getElementById('damage-additional-fee');
+                        if (feeInput) {
+                            feeInput.value = '';
+                            feeInput.focus();
+                        }
+                        const noteInput = document.getElementById('damage-additional-fee-note');
+                        if (noteInput) {
+                            noteInput.value = '';
+                        }
+                    }
+                });
+            });
+
+            const hideDamageModal = () => {
+                if (damageModal) {
+                    damageModal.classList.add('hidden');
+                    damageModal.classList.remove('flex');
+                }
+            };
+
+            closeDamageModalBtn?.addEventListener('click', hideDamageModal);
+            damageModal?.addEventListener('click', (event) => {
+                if (event.target === damageModal) {
+                    hideDamageModal();
+                }
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    hideDamageModal();
+                }
             });
         })();
     </script>
